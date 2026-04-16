@@ -53,7 +53,29 @@ DATABASE_URL = os.environ.get(
 )
 
 TERMINAL_STATUSES = {"approved", "rejected", "needs_changes"}
+# Forge's pipeline produces a recommendation and parks the tool at
+# "pending_review" for human admin decision. For eval purposes we treat
+# "pending_review" as terminal too — we're judging the agents, not waiting
+# for a human.
+PIPELINE_DONE_STATUSES = TERMINAL_STATUSES | {"pending_review"}
 POLL_INTERVAL_SEC = 2.0
+
+
+def _map_recommendation_to_outcome(rec: Optional[str]) -> Optional[str]:
+    """Pipeline recommendation -> eval outcome label.
+
+    'approve' / 'approve_with_modifications' -> should_pass
+    'reject' / 'needs_changes'               -> should_reject
+    Anything else / None                     -> None (caller falls back to status mapping)
+    """
+    if not rec:
+        return None
+    rec_l = rec.strip().lower()
+    if rec_l.startswith("approve"):
+        return "should_pass"
+    if rec_l in ("reject", "needs_changes") or rec_l.startswith("reject"):
+        return "should_reject"
+    return None
 
 
 def _load_corpus(corpus_dir: Path) -> list[dict]:
@@ -102,6 +124,12 @@ def _poll_tool(base_url: str, tool_id: int, timeout_sec: int) -> Tuple[Optional[
         last_status = body.get("status")
         if last_status in TERMINAL_STATUSES:
             return body, None
+        if last_status == "pending_review":
+            # Initial state AND post-pipeline state share this status.
+            # The real 'pipeline finished' signal is agent_reviews.completed_at.
+            review = _fetch_agent_review(base_url, tool_id)
+            if isinstance(review, dict) and review.get("completed_at"):
+                return body, None
         time.sleep(POLL_INTERVAL_SEC)
     return None, f"timeout after {timeout_sec}s (last status={last_status})"
 
@@ -168,9 +196,18 @@ def _run_one(conn, base_url: str, item: Dict[str, Any], timeout_sec: int) -> Dic
         if tool_row is None:
             error = poll_err or "poll_failed"
         else:
-            actual_outcome = _map_status_to_outcome(tool_row.get("status") or "")
             actual_tier = tool_row.get("security_tier")
             agent_verdicts = _fetch_agent_review(base_url, tool_id)
+            # Prefer the pipeline's recommendation when status is pending_review
+            # (the pipeline ran but no human has decided yet — that's the agents'
+            # verdict, which is what we're evaluating).
+            tool_status = tool_row.get("status") or ""
+            rec_outcome: Optional[str] = None
+            if tool_status == "pending_review" and isinstance(agent_verdicts, dict):
+                rec_outcome = _map_recommendation_to_outcome(
+                    agent_verdicts.get("agent_recommendation")
+                )
+            actual_outcome = rec_outcome or _map_status_to_outcome(tool_status)
     elif status_code == 400 and isinstance(body, dict) and body.get("error") in (
         "preflight_failed", "validation"
     ):

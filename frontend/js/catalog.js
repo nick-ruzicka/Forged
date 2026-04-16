@@ -59,12 +59,12 @@
         <button class="hero-dismiss" aria-label="Dismiss welcome message">✕</button>
         <h1>Welcome to Forge</h1>
         <p class="text-secondary" style="font-size:15px; max-width:640px;">
-          Navan's internal AI tool platform. Browse tools built by your team, or submit one of your own.
-          Every tool is reviewed and scored before going live.
+          Share the apps and skills you built with Claude Code with your team.
+          Browse what others have shipped; publish yours with <code>forge deploy</code>.
         </p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="#results-container">Browse Tools</a>
-          <a class="btn btn-secondary" href="/submit.html">Submit a Tool</a>
+          <a class="btn btn-primary" href="#results-container">Browse Apps</a>
+          <a class="btn btn-secondary" href="/skills.html">Browse Skills</a>
         </div>
       </div>
     `);
@@ -187,44 +187,8 @@
   }
 
   function renderToolCard(tool) {
-    const isApp = (tool.app_type || tool.tool_type || '') === 'app';
-    return isApp ? appCard(tool) : card(tool);
-  }
-
-  function card(tool) {
-    const tier = Forge.computeTrustTier(tool);
-    const slug = tool.slug || tool.id;
-    const runCount = Forge.formatNumber(tool.run_count || 0);
-    const el = Forge.h(`
-      <article class="card card-hover tool-card" tabindex="0" aria-label="${Forge.escapeHtml(tool.name)}">
-        <div class="tool-card-top">
-          ${Forge.categoryBadge(tool.category)}
-          ${Forge.trustTierBadge(tier)}
-        </div>
-        <h3 class="tool-card-title">${Forge.escapeHtml(tool.name)}</h3>
-        <p class="tool-card-tagline">${Forge.escapeHtml(tool.tagline || '')}</p>
-        <div class="tool-card-divider"></div>
-        ${Forge.outputTypeBadge(tool.output_type)}
-        <div class="tool-card-meta">
-          <span>${Forge.escapeHtml(tool.author_name || 'Unknown')}</span>
-          <div class="tool-card-stats">
-            <span title="Run count">↻ ${runCount} runs</span>
-            ${tool.avg_rating ? `<span>★ ${Number(tool.avg_rating).toFixed(1)}</span>` : ''}
-          </div>
-        </div>
-        <div class="tool-card-actions">
-          <a class="btn btn-primary btn-sm" href="/tool.html?slug=${encodeURIComponent(slug)}">Run Tool →</a>
-        </div>
-      </article>
-    `);
-    el.addEventListener('click', (e) => {
-      if (e.target.closest('a,button')) return;
-      window.location.href = `/tool.html?slug=${encodeURIComponent(slug)}`;
-    });
-    el.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') window.location.href = `/tool.html?slug=${encodeURIComponent(slug)}`;
-    });
-    return el;
+    // After the prompt-stack demolition, every card is an app.
+    return appCard(tool);
   }
 
   function appCard(tool) {
@@ -323,13 +287,12 @@
     grid.innerHTML = '';
     const msg = state.appOnly
       ? { title: 'No apps yet', body: 'Be the first to submit a full App.' }
-      : { title: 'No tools match your search', body: 'Try different filters, or submit the first tool in this category.' };
+      : { title: 'No apps match your search', body: 'Try different filters.' };
     grid.appendChild(Forge.h(`
       <div class="empty-state" style="grid-column: 1 / -1;">
         <div class="empty-state-icon">⚒</div>
         <h3>${Forge.escapeHtml(msg.title)}</h3>
         <p>${Forge.escapeHtml(msg.body)}</p>
-        <div class="mt-3"><a class="btn btn-primary" href="/submit.html">Submit a Tool</a></div>
       </div>
     `));
   }

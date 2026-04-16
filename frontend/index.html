@@ -3,64 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Forge — Internal AI Tool Platform</title>
-  <meta name="description" content="Navan's internal AI tool marketplace. Browse, run, and submit tools built by the team.">
+  <title>Forge — Share your Claude Code apps &amp; skills</title>
+  <meta name="description" content="A place to share the apps and skills you built with Claude Code with your team.">
   <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
   <main class="page" id="page" role="main">
     <section id="hero-container"></section>
 
-    <div id="guided-banner" class="hidden" role="region" aria-label="First-time guide"
-         style="background:#0d1a2e; border:1px solid #1e3a5c; border-radius:10px;
-                padding:14px 18px; margin:12px 0; display:flex; align-items:center;
-                gap:14px; color:#e0e0e0;">
-      <span style="font-size:22px;">🛠️</span>
-      <div style="flex:1;">
-        <div style="font-weight:600;">Never built an AI tool before?</div>
-        <div style="color:#aaa; font-size:13px;">Start with a two-minute guided flow.</div>
-      </div>
-      <a class="btn btn-primary" href="/submit.html?guided=true">Build your first tool →</a>
-      <button type="button" id="guided-dismiss" aria-label="Dismiss"
-              style="background:none; border:none; color:#888; font-size:18px;
-                     cursor:pointer; padding:4px 8px;">×</button>
-    </div>
-    <script>
-    (function () {
-      var banner = document.getElementById('guided-banner');
-      if (!banner) return;
-      var dismissed = false, hasSubmitted = false;
-      try {
-        dismissed = localStorage.getItem('forge_guided_dismissed') === '1';
-        hasSubmitted = localStorage.getItem('forge_has_submitted') === '1';
-      } catch (e) {}
-      if (!dismissed && !hasSubmitted) banner.classList.remove('hidden');
-      document.getElementById('guided-dismiss').addEventListener('click', function () {
-        try { localStorage.setItem('forge_guided_dismissed', '1'); } catch (e) {}
-        banner.classList.add('hidden');
-      });
-    })();
-    </script>
-
-    <nav class="section" aria-label="Platform links" style="display:flex; gap:14px; justify-content:flex-end; align-items:center;">
-      <a href="/index.html?type=app" class="muted" id="nav-apps-link">⊞ Apps</a>
-      <a href="/workflow.html" class="muted">Chain Tools →</a>
-      <a href="/analytics.html" class="muted">Analytics</a>
+    <nav class="section" aria-label="Platform links"
+         style="display:flex; gap:14px; justify-content:flex-end; align-items:center;">
+      <a href="/index.html" class="muted" id="nav-apps-link">⊞ Apps</a>
+      <a href="/skills.html" class="muted">✨ Skills</a>
+      <a href="/my-tools.html" class="muted">My submissions</a>
     </nav>
 
     <section class="section" style="display:flex; gap:10px; align-items:center;">
-      <label class="sr-only" for="catalog-search">Search tools</label>
+      <label class="sr-only" for="catalog-search">Search apps</label>
       <div class="search" style="flex:1;">
         <span class="search-icon" aria-hidden="true">🔍</span>
-        <input type="search" id="catalog-search" data-search placeholder="Search tools by name, category, or what you're trying to do…" autocomplete="off">
+        <input type="search" id="catalog-search" data-search
+               placeholder="Search apps by name, category, or what they do…" autocomplete="off">
         <span class="search-kbd" aria-hidden="true">⌘K</span>
       </div>
-      <a class="btn btn-secondary" href="/creator.html" id="create-with-ai-btn" style="white-space:nowrap;">✨ Create with AI</a>
     </section>
 
     <section class="filter-bar" aria-label="Filters">
       <div class="pill-group" id="category-pills" role="tablist" aria-label="Category"></div>
-      <div class="pill-group" id="trust-pills" role="tablist" aria-label="Trust tier"></div>
       <div style="margin-left:auto;">
         <label class="sr-only" for="sort-select">Sort</label>
         <select id="sort-select" style="width:auto; min-width:160px;">

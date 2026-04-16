@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-04-16T05:57:12.826057+00:00",
-  "files_scanned": 27,
+  "timestamp": "2026-04-16T06:57:12.984060+00:00",
+  "files_scanned": 28,
   "counts": {
     "critical": 0,
     "warning": 6,
-    "info": 147
+    "info": 161
   },
   "findings": [
     {
@@ -268,35 +268,35 @@
     },
     {
       "file": "api/server.py",
-      "line_number": 419,
+      "line_number": 527,
       "issue_type": "missing_docstring",
       "severity": "info",
       "description": "function 'update_tool_draft' is 22 lines but has no docstring"
     },
     {
       "file": "api/server.py",
-      "line_number": 445,
+      "line_number": 553,
       "issue_type": "missing_docstring",
       "severity": "info",
       "description": "function 'fork_tool' is 33 lines but has no docstring"
     },
     {
       "file": "api/server.py",
-      "line_number": 482,
+      "line_number": 590,
       "issue_type": "missing_docstring",
       "severity": "info",
       "description": "function 'run_tool' is 46 lines but has no docstring"
     },
     {
       "file": "api/server.py",
-      "line_number": 616,
+      "line_number": 724,
       "issue_type": "missing_docstring",
       "severity": "info",
       "description": "function 'agent_status' is 53 lines but has no docstring"
     },
     {
       "file": "api/server.py",
-      "line_number": 864,
+      "line_number": 972,
       "issue_type": "missing_docstring",
       "severity": "info",
       "description": "function 'admin_enable_container' is 26 lines but has no docstring"
@@ -334,130 +334,144 @@
       "line_number": 337,
       "issue_type": "dead_code",
       "severity": "info",
-      "description": "function 'submit_app' is defined but never called in this file"
+      "description": "function 'test_prompt' is defined but never called in this file"
     },
     {
       "file": "api/server.py",
-      "line_number": 419,
+      "line_number": 391,
       "issue_type": "dead_code",
       "severity": "info",
-      "description": "function 'update_tool_draft' is defined but never called in this file"
+      "description": "function 'suggest_metadata' is defined but never called in this file"
     },
     {
       "file": "api/server.py",
       "line_number": 445,
       "issue_type": "dead_code",
       "severity": "info",
+      "description": "function 'submit_app' is defined but never called in this file"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 527,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'update_tool_draft' is defined but never called in this file"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 553,
+      "issue_type": "dead_code",
+      "severity": "info",
       "description": "function 'fork_tool' is defined but never called in this file"
     },
     {
       "file": "api/server.py",
-      "line_number": 532,
+      "line_number": 640,
       "issue_type": "dead_code",
       "severity": "info",
       "description": "function 'tool_runs' is defined but never called in this file"
     },
     {
       "file": "api/server.py",
-      "line_number": 565,
+      "line_number": 673,
       "issue_type": "dead_code",
       "severity": "info",
       "description": "function 'rate_run' is defined but never called in this file"
     },
     {
       "file": "api/server.py",
-      "line_number": 585,
+      "line_number": 693,
       "issue_type": "dead_code",
       "severity": "info",
       "description": "function 'flag_run' is defined but never called in this file"
     },
     {
       "file": "api/server.py",
-      "line_number": 601,
+      "line_number": 709,
       "issue_type": "dead_code",
       "severity": "info",
       "description": "function 'resolve_access_token' is defined but never called in this file"
     },
     {
       "file": "api/server.py",
-      "line_number": 616,
+      "line_number": 724,
       "issue_type": "dead_code",
       "severity": "info",
       "description": "function 'agent_status' is defined but never called in this file"
     },
     {
       "file": "api/server.py",
-      "line_number": 673,
+      "line_number": 781,
       "issue_type": "dead_code",
       "severity": "info",
       "description": "function 'agent_review' is defined but never called in this file"
     },
     {
       "file": "api/server.py",
-      "line_number": 681,
+      "line_number": 789,
       "issue_type": "dead_code",
       "severity": "info",
       "description": "function 'agent_rerun' is defined but never called in this file"
     },
     {
       "file": "api/server.py",
-      "line_number": 705,
+      "line_number": 813,
       "issue_type": "dead_code",
       "severity": "info",
       "description": "function 'create_skill' is defined but never called in this file"
     },
     {
       "file": "api/server.py",
-      "line_number": 725,
+      "line_number": 833,
       "issue_type": "dead_code",
       "severity": "info",
       "description": "function 'upvote_skill' is defined but never called in this file"
     },
     {
       "file": "api/server.py",
-      "line_number": 731,
+      "line_number": 839,
       "issue_type": "dead_code",
       "severity": "info",
       "description": "function 'copy_skill' is defined but never called in this file"
     },
     {
       "file": "api/server.py",
-      "line_number": 745,
+      "line_number": 853,
       "issue_type": "dead_code",
       "severity": "info",
       "description": "function 'download_skill' is defined but never called in this file"
     },
     {
       "file": "api/server.py",
-      "line_number": 774,
+      "line_number": 882,
       "issue_type": "dead_code",
       "severity": "info",
       "description": "function 'admin_update_app_html' is defined but never called in this file"
     },
     {
       "file": "api/server.py",
-      "line_number": 816,
+      "line_number": 924,
       "issue_type": "dead_code",
       "severity": "info",
       "description": "function 'admin_sandbox_status' is defined but never called in this file"
     },
     {
       "file": "api/server.py",
-      "line_number": 828,
+      "line_number": 936,
       "issue_type": "dead_code",
       "severity": "info",
       "description": "function 'admin_sandbox_hibernate' is defined but never called in this file"
     },
     {
       "file": "api/server.py",
-      "line_number": 844,
+      "line_number": 952,
       "issue_type": "dead_code",
       "severity": "info",
       "description": "function 'admin_sandbox_prewarm' is defined but never called in this file"
     },
     {
       "file": "api/server.py",
-      "line_number": 864,
+      "line_number": 972,
       "issue_type": "dead_code",
       "severity": "info",
       "description": "function 'admin_enable_container' is defined but never called in this file"
@@ -527,56 +541,56 @@
     },
     {
       "file": "api/apps.py",
-      "line_number": 143,
+      "line_number": 152,
       "issue_type": "missing_docstring",
       "severity": "info",
       "description": "function 'serve_app' is 43 lines but has no docstring"
     },
     {
       "file": "api/apps.py",
-      "line_number": 371,
+      "line_number": 380,
       "issue_type": "missing_docstring",
       "severity": "info",
       "description": "function 'analyze_app' is 22 lines but has no docstring"
     },
     {
       "file": "api/apps.py",
-      "line_number": 143,
+      "line_number": 152,
       "issue_type": "dead_code",
       "severity": "info",
       "description": "function 'serve_app' is defined but never called in this file"
     },
     {
       "file": "api/apps.py",
-      "line_number": 202,
+      "line_number": 211,
       "issue_type": "dead_code",
       "severity": "info",
       "description": "function 'get_app_data' is defined but never called in this file"
     },
     {
       "file": "api/apps.py",
-      "line_number": 220,
+      "line_number": 229,
       "issue_type": "dead_code",
       "severity": "info",
       "description": "function 'set_app_data' is defined but never called in this file"
     },
     {
       "file": "api/apps.py",
-      "line_number": 240,
+      "line_number": 249,
       "issue_type": "dead_code",
       "severity": "info",
       "description": "function 'delete_app_data' is defined but never called in this file"
     },
     {
       "file": "api/apps.py",
-      "line_number": 253,
+      "line_number": 262,
       "issue_type": "dead_code",
       "severity": "info",
       "description": "function 'list_app_data' is defined but never called in this file"
     },
     {
       "file": "api/apps.py",
-      "line_number": 371,
+      "line_number": 380,
       "issue_type": "dead_code",
       "severity": "info",
       "description": "function 'analyze_app' is defined but never called in this file"
@@ -734,6 +748,90 @@
       "issue_type": "dead_code",
       "severity": "info",
       "description": "function 'rerun_pipeline' is defined but never called in this file"
+    },
+    {
+      "file": "api/analytics.py",
+      "line_number": 11,
+      "issue_type": "unused_import",
+      "severity": "info",
+      "description": "import 'annotations' is not used"
+    },
+    {
+      "file": "api/analytics.py",
+      "line_number": 58,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'funnel' is 27 lines but has no docstring"
+    },
+    {
+      "file": "api/analytics.py",
+      "line_number": 92,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'builders' is 33 lines but has no docstring"
+    },
+    {
+      "file": "api/analytics.py",
+      "line_number": 132,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'quality' is 40 lines but has no docstring"
+    },
+    {
+      "file": "api/analytics.py",
+      "line_number": 179,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'latency' is 34 lines but has no docstring"
+    },
+    {
+      "file": "api/analytics.py",
+      "line_number": 220,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'cost_breakdown' is 34 lines but has no docstring"
+    },
+    {
+      "file": "api/analytics.py",
+      "line_number": 32,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'check_admin_key' is defined but never called in this file"
+    },
+    {
+      "file": "api/analytics.py",
+      "line_number": 58,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'funnel' is defined but never called in this file"
+    },
+    {
+      "file": "api/analytics.py",
+      "line_number": 92,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'builders' is defined but never called in this file"
+    },
+    {
+      "file": "api/analytics.py",
+      "line_number": 132,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'quality' is defined but never called in this file"
+    },
+    {
+      "file": "api/analytics.py",
+      "line_number": 179,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'latency' is defined but never called in this file"
+    },
+    {
+      "file": "api/analytics.py",
+      "line_number": 220,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'cost_breakdown' is defined but never called in this file"
     },
     {
       "file": "api/workflow.py",

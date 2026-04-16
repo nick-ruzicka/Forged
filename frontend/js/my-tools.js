@@ -89,7 +89,7 @@
       list.innerHTML = `<div class="empty-state">
         <div class="empty-state-icon">📭</div>
         <h3>No tools in this tab</h3>
-        ${state.activeTab === 'all' ? '<p>Submit your first tool to get started.</p><a class="btn btn-primary mt-3" href="/submit.html">Submit a Tool</a>' : ''}
+        ${state.activeTab === 'all' ? '<p>No submissions yet. Publish an app with <code>forge deploy</code>.</p>' : ''}
       </div>`;
       return;
     }
@@ -111,8 +111,7 @@
           <span>${Forge.formatRelative(tool.submitted_at || tool.created_at)}</span>
         </div>
         <div class="tool-row-actions">
-          ${tool.status === 'approved' ? `<a class="btn btn-secondary btn-sm" href="/tool.html?slug=${encodeURIComponent(tool.slug || tool.id)}">View</a>` : ''}
-          ${tool.status === 'draft' || tool.status === 'needs_changes' ? `<a class="btn btn-secondary btn-sm" href="/submit.html?edit=${tool.id}">Edit</a>` : ''}
+          ${tool.status === 'approved' ? `<a class="btn btn-secondary btn-sm" href="/apps/${encodeURIComponent(tool.slug || tool.id)}">Open</a>` : ''}
           <button class="btn btn-ghost btn-sm" data-action="archive">Archive</button>
         </div>
       </div>

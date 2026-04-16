@@ -323,7 +323,6 @@ function initKeyboardShortcuts() {
       gPending = false;
       clearTimeout(gTimer);
       if (e.key === 'c') window.location.href = '/index.html';
-      else if (e.key === 's') window.location.href = '/submit.html';
       else if (e.key === 'm') window.location.href = '/my-tools.html';
       else if (e.key === 'k') window.location.href = '/skills.html';
     }
@@ -352,10 +351,9 @@ function renderHeader(activeKey = '') {
         </button>
       </div>
       <nav id="forge-nav" class="header-center nav-links" role="navigation" aria-label="Main">
-        <a href="/index.html" ${activeKey === 'catalog' ? 'class="active"' : ''}>Catalog</a>
+        <a href="/index.html" ${activeKey === 'catalog' ? 'class="active"' : ''}>Apps</a>
         <a href="/skills.html" ${activeKey === 'skills' ? 'class="active"' : ''}>Skills</a>
-        <a href="/my-tools.html" ${activeKey === 'my-tools' ? 'class="active"' : ''}>My Tools</a>
-        <a href="/submit.html" ${activeKey === 'submit' ? 'class="active"' : ''}>Submit</a>
+        <a href="/my-tools.html" ${activeKey === 'my-tools' ? 'class="active"' : ''}>My submissions</a>
       </nav>
       <div class="header-right">
         <a href="https://slack.com" target="_blank" rel="noopener" class="btn-ghost btn-sm help-btn" aria-label="Help" title="Help">?</a>
