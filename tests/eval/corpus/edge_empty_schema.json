@@ -1,0 +1,24 @@
+{
+  "id": "edge_empty_schema",
+  "label": "should_reject",
+  "expected_security_tier": 1,
+  "expected_data_sensitivity": "internal",
+  "category": "edge_empty_schema",
+  "submission": {
+    "name": "EVAL EDGE Empty Schema",
+    "tagline": "No inputs defined — the tool has nothing to parameterize on.",
+    "description": "Valid prompt, but input_schema is an empty list. A well-specified tool should have at least one input. Agents should request changes.",
+    "category": "Other",
+    "tags": "edge,empty-schema",
+    "output_type": "probabilistic",
+    "output_format": "text",
+    "data_sensitivity": "internal",
+    "system_prompt": "Write a short inspirational message for a Monday morning sales stand-up. Keep it under 50 words, professional tone, no emoji.",
+    "input_schema": [],
+    "max_tokens": 300,
+    "temperature": 0.5,
+    "author_name": "T-EVAL Harness",
+    "author_email": "eval+edge-empty@forge.local"
+  },
+  "notes": "Empty schema — pipeline should flag 'no inputs' as a design issue; expect needs_changes or rejection."
+}

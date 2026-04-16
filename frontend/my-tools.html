@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Tools — Forge</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <main class="page" role="main">
+    <div class="flex flex-between items-center mb-4" style="flex-wrap: wrap; gap: 12px;">
+      <div>
+        <h1>My Tools</h1>
+        <p class="text-secondary">Tools you've submitted, across every status.</p>
+      </div>
+      <div class="flex flex-gap-2">
+        <a class="btn btn-primary" href="/submit.html">+ Submit a Tool</a>
+      </div>
+    </div>
+
+    <div id="identity-gate" class="hidden">
+      <div class="card" style="max-width: 520px; margin: 48px auto;">
+        <h2>Who are you?</h2>
+        <p class="text-secondary">Tell us your email to view your submitted tools.</p>
+        <div class="form-group">
+          <label class="form-label" for="gate-name">Your name</label>
+          <input type="text" id="gate-name">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="gate-email">Your email</label>
+          <input type="email" id="gate-email" placeholder="you@navan.com">
+        </div>
+        <button class="btn btn-primary btn-block" id="gate-submit">Continue</button>
+      </div>
+    </div>
+
+    <div id="main-content" class="hidden">
+      <div class="tabs" role="tablist" id="status-tabs"></div>
+      <div id="tools-list" aria-live="polite"></div>
+    </div>
+  </main>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/my-tools.js"></script>
+</body>
+</html>

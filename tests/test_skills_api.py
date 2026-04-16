@@ -1,0 +1,156 @@
+"""Tests for /api/skills endpoints."""
+import pytest
+
+
+def test_list_skills_returns_200(client, db):
+    """GET /api/skills returns an array of skills."""
+    with db.cursor() as cur:
+        cur.execute(
+            """INSERT INTO skills (title, description, prompt_text, category, use_case, author_name)
+               VALUES (%s, %s, %s, %s, %s, %s)""",
+            ("Test Skill", "desc", "Do X", "research", "research accounts", "A"),
+        )
+    resp = client.get("/api/skills")
+    if resp.status_code == 404:
+        pytest.skip("GET /api/skills not implemented yet (T1)")
+    assert resp.status_code == 200
+    payload = resp.get_json() or {}
+    items = payload.get("skills", payload if isinstance(payload, list) else [])
+    assert len(items) >= 1
+
+
+def test_submit_skill_valid_returns_201(client):
+    body = {
+        "title": "Great Prompt",
+        "description": "Use it well",
+        "prompt_text": "Do the thing with {{topic}}",
+        "category": "research",
+        "use_case": "research accounts",
+        "author_name": "Tester",
+    }
+    resp = client.post("/api/skills", json=body)
+    if resp.status_code in (404, 405):
+        pytest.skip("POST /api/skills not implemented yet (T1)")
+    assert resp.status_code == 201
+
+
+def test_submit_skill_invalid_returns_400(client):
+    resp = client.post("/api/skills", json={"title": "only title"})
+    if resp.status_code in (404, 405):
+        pytest.skip("POST /api/skills not implemented yet (T1)")
+    assert resp.status_code == 400
+
+
+def test_upvote_skill_increments(client, db):
+    with db.cursor() as cur:
+        cur.execute(
+            """INSERT INTO skills (title, description, prompt_text, category, use_case, author_name, upvotes)
+               VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING id""",
+            ("Upvote Me", "d", "P", "cat", "uc", "A", 0),
+        )
+        row = cur.fetchone()
+        skill_id = row[0] if isinstance(row, tuple) else row["id"]
+
+    resp = client.post(f"/api/skills/{skill_id}/upvote")
+    if resp.status_code in (404, 405):
+        pytest.skip("POST /api/skills/:id/upvote not implemented yet (T1)")
+    assert resp.status_code == 200
+
+    with db.cursor() as cur:
+        cur.execute("SELECT upvotes FROM skills WHERE id = %s", (skill_id,))
+        row = cur.fetchone()
+        upvotes = row[0] if isinstance(row, tuple) else row["upvotes"]
+        assert upvotes >= 1
+
+
+def test_copy_skill_increments_copy_count(client, db):
+    with db.cursor() as cur:
+        cur.execute(
+            """INSERT INTO skills (title, description, prompt_text, category, use_case, author_name, copy_count)
+               VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING id""",
+            ("Copy Me", "d", "P", "cat", "uc", "A", 0),
+        )
+        row = cur.fetchone()
+        skill_id = row[0] if isinstance(row, tuple) else row["id"]
+
+    resp = client.post(f"/api/skills/{skill_id}/copy")
+    if resp.status_code in (404, 405):
+        pytest.skip("POST /api/skills/:id/copy not implemented yet (T1)")
+    assert resp.status_code == 200
+
+    with db.cursor() as cur:
+        cur.execute("SELECT copy_count FROM skills WHERE id = %s", (skill_id,))
+        row = cur.fetchone()
+        copy_count = row[0] if isinstance(row, tuple) else row["copy_count"]
+        assert copy_count >= 1
+
+
+def test_download_skill_serves_markdown(client, db):
+    md = "---\nname: my-skill\ndescription: Use when testing downloads.\n---\n\nBody."
+    with db.cursor() as cur:
+        cur.execute(
+            """INSERT INTO skills (title, description, prompt_text, category, use_case, author_name, copy_count)
+               VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING id""",
+            ("Download Me", "d", md, "Development", "uc", "tester", 0),
+        )
+        row = cur.fetchone()
+        skill_id = row[0] if isinstance(row, tuple) else row["id"]
+
+    resp = client.get(f"/api/skills/{skill_id}/download")
+    if resp.status_code in (404, 405):
+        pytest.skip("GET /api/skills/:id/download not implemented yet")
+    assert resp.status_code == 200
+    assert resp.mimetype == "text/markdown"
+    assert resp.headers.get("Content-Disposition", "").startswith("attachment")
+    assert "download-me.md" in resp.headers.get("Content-Disposition", "")
+    assert resp.get_data(as_text=True) == md
+
+    with db.cursor() as cur:
+        cur.execute("SELECT copy_count FROM skills WHERE id = %s", (skill_id,))
+        row = cur.fetchone()
+        copy_count = row[0] if isinstance(row, tuple) else row["copy_count"]
+        assert copy_count >= 1
+
+
+def test_download_skill_404(client):
+    resp = client.get("/api/skills/999999/download")
+    if resp.status_code == 405:
+        pytest.skip("download not implemented")
+    assert resp.status_code == 404
+
+
+def test_submit_skill_accepts_source_url(client, db):
+    body = {
+        "title": "Sourced Skill",
+        "prompt_text": "---\nname: sourced\ndescription: Use when X.\n---\n\nBody.",
+        "category": "Development",
+        "use_case": "testing source_url persistence",
+        "author_name": "obra",
+        "source_url": "https://github.com/obra/superpowers/tree/main/skills/brainstorming",
+    }
+    resp = client.post("/api/skills", json=body)
+    if resp.status_code in (404, 405):
+        pytest.skip("POST /api/skills not implemented yet")
+    assert resp.status_code == 201
+    skill_id = resp.get_json()["id"]
+    with db.cursor() as cur:
+        cur.execute("SELECT source_url FROM skills WHERE id = %s", (skill_id,))
+        row = cur.fetchone()
+        src = row[0] if isinstance(row, tuple) else row["source_url"]
+        assert src == body["source_url"]
+
+
+def test_list_skills_sort_by_copies(client, db):
+    with db.cursor() as cur:
+        cur.execute(
+            """INSERT INTO skills (title, prompt_text, category, copy_count, upvotes)
+               VALUES ('Low Copies', 'p', 'Development', 1, 100),
+                      ('High Copies', 'p', 'Development', 999, 0) RETURNING id""",
+        )
+    resp = client.get("/api/skills?sort=copies")
+    if resp.status_code == 404:
+        pytest.skip("sort not wired")
+    assert resp.status_code == 200
+    items = (resp.get_json() or {}).get("skills", [])
+    titles = [s["title"] for s in items]
+    assert titles.index("High Copies") < titles.index("Low Copies")

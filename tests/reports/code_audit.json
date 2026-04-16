@@ -1,0 +1,1082 @@
+{
+  "timestamp": "2026-04-16T05:57:12.826057+00:00",
+  "files_scanned": 27,
+  "counts": {
+    "critical": 0,
+    "warning": 6,
+    "info": 147
+  },
+  "findings": [
+    {
+      "file": "api/db.py",
+      "line_number": 122,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'list_tools' is 54 lines but has no docstring"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 370,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'list_skills' is 21 lines but has no docstring"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 39,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'get_connection' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 71,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'init_db' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 92,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'get_tool' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 99,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'get_tool_by_slug' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 106,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'get_tool_by_access_token' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 113,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'update_tool' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 122,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'list_tools' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 179,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'insert_tool' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 193,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'slug_exists' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 199,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'recompute_avg_rating' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 211,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'increment_run_count' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 219,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'increment_flag_count' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 231,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'insert_tool_version' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 247,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'list_tool_versions' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 258,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'insert_run' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 272,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'get_run' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 279,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'update_run' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 288,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'list_recent_runs' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 300,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'get_recent_flagged_runs' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 311,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'count_runs_by_ip' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 318,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'create_agent_review' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 328,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'update_agent_review' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 345,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'get_agent_review_by_tool' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 356,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'get_underperforming_tools' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 370,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'list_skills' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 394,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'insert_skill' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 408,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'increment_skill_upvotes' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 416,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'increment_skill_copy_count' is defined but never called in this file"
+    },
+    {
+      "file": "api/db.py",
+      "line_number": 424,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'get_skill' is defined but never called in this file"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 9,
+      "issue_type": "unused_import",
+      "severity": "info",
+      "description": "import 'secrets' is not used"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 12,
+      "issue_type": "unused_import",
+      "severity": "info",
+      "description": "import 'uuid' is not used"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 16,
+      "issue_type": "unused_import",
+      "severity": "info",
+      "description": "import 'wraps' is not used"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 25,
+      "issue_type": "unused_import",
+      "severity": "info",
+      "description": "import 'compute_trust_tier' is not used"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 200,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'list_tools' is 30 lines but has no docstring"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 267,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'submit_tool' is 66 lines but has no docstring"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 419,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'update_tool_draft' is 22 lines but has no docstring"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 445,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'fork_tool' is 33 lines but has no docstring"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 482,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'run_tool' is 46 lines but has no docstring"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 616,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'agent_status' is 53 lines but has no docstring"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 864,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'admin_enable_container' is 26 lines but has no docstring"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 94,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'health' is defined but never called in this file"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 250,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'run_tool_by_slug' is defined but never called in this file"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 258,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'tool_versions' is defined but never called in this file"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 267,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'submit_tool' is defined but never called in this file"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 337,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'submit_app' is defined but never called in this file"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 419,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'update_tool_draft' is defined but never called in this file"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 445,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'fork_tool' is defined but never called in this file"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 532,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'tool_runs' is defined but never called in this file"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 565,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'rate_run' is defined but never called in this file"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 585,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'flag_run' is defined but never called in this file"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 601,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'resolve_access_token' is defined but never called in this file"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 616,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'agent_status' is defined but never called in this file"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 673,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'agent_review' is defined but never called in this file"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 681,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'agent_rerun' is defined but never called in this file"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 705,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'create_skill' is defined but never called in this file"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 725,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'upvote_skill' is defined but never called in this file"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 731,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'copy_skill' is defined but never called in this file"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 745,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'download_skill' is defined but never called in this file"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 774,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'admin_update_app_html' is defined but never called in this file"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 816,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'admin_sandbox_status' is defined but never called in this file"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 828,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'admin_sandbox_hibernate' is defined but never called in this file"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 844,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'admin_sandbox_prewarm' is defined but never called in this file"
+    },
+    {
+      "file": "api/server.py",
+      "line_number": 864,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'admin_enable_container' is defined but never called in this file"
+    },
+    {
+      "file": "api/deploy.py",
+      "line_number": 9,
+      "issue_type": "unused_import",
+      "severity": "info",
+      "description": "import 'annotations' is not used"
+    },
+    {
+      "file": "api/deploy.py",
+      "line_number": 17,
+      "issue_type": "unused_import",
+      "severity": "info",
+      "description": "import 'Optional' is not used"
+    },
+    {
+      "file": "api/deploy.py",
+      "line_number": 143,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'regenerate_instructions' is 30 lines but has no docstring"
+    },
+    {
+      "file": "api/deploy.py",
+      "line_number": 49,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'deploy_tool' is defined but never called in this file"
+    },
+    {
+      "file": "api/deploy.py",
+      "line_number": 129,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'deployment_status' is defined but never called in this file"
+    },
+    {
+      "file": "api/deploy.py",
+      "line_number": 143,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'regenerate_instructions' is defined but never called in this file"
+    },
+    {
+      "file": "api/models.py",
+      "line_number": 5,
+      "issue_type": "unused_import",
+      "severity": "info",
+      "description": "import 'field' is not used"
+    },
+    {
+      "file": "api/models.py",
+      "line_number": 241,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'compute_trust_tier' is defined but never called in this file"
+    },
+    {
+      "file": "api/apps.py",
+      "line_number": 17,
+      "issue_type": "unused_import",
+      "severity": "info",
+      "description": "import 'annotations' is not used"
+    },
+    {
+      "file": "api/apps.py",
+      "line_number": 143,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'serve_app' is 43 lines but has no docstring"
+    },
+    {
+      "file": "api/apps.py",
+      "line_number": 371,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'analyze_app' is 22 lines but has no docstring"
+    },
+    {
+      "file": "api/apps.py",
+      "line_number": 143,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'serve_app' is defined but never called in this file"
+    },
+    {
+      "file": "api/apps.py",
+      "line_number": 202,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'get_app_data' is defined but never called in this file"
+    },
+    {
+      "file": "api/apps.py",
+      "line_number": 220,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'set_app_data' is defined but never called in this file"
+    },
+    {
+      "file": "api/apps.py",
+      "line_number": 240,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'delete_app_data' is defined but never called in this file"
+    },
+    {
+      "file": "api/apps.py",
+      "line_number": 253,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'list_app_data' is defined but never called in this file"
+    },
+    {
+      "file": "api/apps.py",
+      "line_number": 371,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'analyze_app' is defined but never called in this file"
+    },
+    {
+      "file": "api/admin.py",
+      "line_number": 11,
+      "issue_type": "unused_import",
+      "severity": "info",
+      "description": "import 'annotations' is not used"
+    },
+    {
+      "file": "api/admin.py",
+      "line_number": 193,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'approve_tool' is 63 lines but has no docstring"
+    },
+    {
+      "file": "api/admin.py",
+      "line_number": 261,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'reject_tool' is 22 lines but has no docstring"
+    },
+    {
+      "file": "api/admin.py",
+      "line_number": 288,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'needs_changes' is 22 lines but has no docstring"
+    },
+    {
+      "file": "api/admin.py",
+      "line_number": 315,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'override_scores' is 29 lines but has no docstring"
+    },
+    {
+      "file": "api/admin.py",
+      "line_number": 372,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'list_runs' is 62 lines but has no docstring"
+    },
+    {
+      "file": "api/admin.py",
+      "line_number": 439,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'flag_run' is 23 lines but has no docstring"
+    },
+    {
+      "file": "api/admin.py",
+      "line_number": 469,
+      "issue_type": "long_function",
+      "severity": "warning",
+      "description": "function 'analytics' is 94 lines long (threshold: 80)"
+    },
+    {
+      "file": "api/admin.py",
+      "line_number": 469,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'analytics' is 94 lines but has no docstring"
+    },
+    {
+      "file": "api/admin.py",
+      "line_number": 570,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'rerun_pipeline' is 34 lines but has no docstring"
+    },
+    {
+      "file": "api/admin.py",
+      "line_number": 38,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'check_admin_key' is defined but never called in this file"
+    },
+    {
+      "file": "api/admin.py",
+      "line_number": 103,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'get_queue' is defined but never called in this file"
+    },
+    {
+      "file": "api/admin.py",
+      "line_number": 125,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'get_queue_count' is defined but never called in this file"
+    },
+    {
+      "file": "api/admin.py",
+      "line_number": 193,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'approve_tool' is defined but never called in this file"
+    },
+    {
+      "file": "api/admin.py",
+      "line_number": 261,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'reject_tool' is defined but never called in this file"
+    },
+    {
+      "file": "api/admin.py",
+      "line_number": 288,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'needs_changes' is defined but never called in this file"
+    },
+    {
+      "file": "api/admin.py",
+      "line_number": 315,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'override_scores' is defined but never called in this file"
+    },
+    {
+      "file": "api/admin.py",
+      "line_number": 349,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'archive_tool' is defined but never called in this file"
+    },
+    {
+      "file": "api/admin.py",
+      "line_number": 372,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'list_runs' is defined but never called in this file"
+    },
+    {
+      "file": "api/admin.py",
+      "line_number": 439,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'flag_run' is defined but never called in this file"
+    },
+    {
+      "file": "api/admin.py",
+      "line_number": 469,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'analytics' is defined but never called in this file"
+    },
+    {
+      "file": "api/admin.py",
+      "line_number": 570,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'rerun_pipeline' is defined but never called in this file"
+    },
+    {
+      "file": "api/workflow.py",
+      "line_number": 17,
+      "issue_type": "unused_import",
+      "severity": "info",
+      "description": "import 'annotations' is not used"
+    },
+    {
+      "file": "api/workflow.py",
+      "line_number": 21,
+      "issue_type": "unused_import",
+      "severity": "info",
+      "description": "import 'Optional' is not used"
+    },
+    {
+      "file": "api/workflow.py",
+      "line_number": 81,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'run_workflow' is 59 lines but has no docstring"
+    },
+    {
+      "file": "api/workflow.py",
+      "line_number": 81,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'run_workflow' is defined but never called in this file"
+    },
+    {
+      "file": "api/workflow.py",
+      "line_number": 144,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'list_chainable_tools' is defined but never called in this file"
+    },
+    {
+      "file": "api/workflow.py",
+      "line_number": 209,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'suggest_pairings' is defined but never called in this file"
+    },
+    {
+      "file": "api/dlp.py",
+      "line_number": 9,
+      "issue_type": "unused_import",
+      "severity": "info",
+      "description": "import 'annotations' is not used"
+    },
+    {
+      "file": "api/learning.py",
+      "line_number": 3,
+      "issue_type": "unused_import",
+      "severity": "info",
+      "description": "import 'os' is not used"
+    },
+    {
+      "file": "api/learning.py",
+      "line_number": 49,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'explain' is 40 lines but has no docstring"
+    },
+    {
+      "file": "api/learning.py",
+      "line_number": 93,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'suggest_remix' is 53 lines but has no docstring"
+    },
+    {
+      "file": "api/learning.py",
+      "line_number": 49,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'explain' is defined but never called in this file"
+    },
+    {
+      "file": "api/learning.py",
+      "line_number": 93,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'suggest_remix' is defined but never called in this file"
+    },
+    {
+      "file": "api/creator.py",
+      "line_number": 107,
+      "issue_type": "missing_error_handling",
+      "severity": "warning",
+      "description": "function '_call_claude' makes external calls with no try/except"
+    },
+    {
+      "file": "api/creator.py",
+      "line_number": 146,
+      "issue_type": "long_function",
+      "severity": "warning",
+      "description": "function '_validate_generated_tool' is 86 lines long (threshold: 80)"
+    },
+    {
+      "file": "api/creator.py",
+      "line_number": 333,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'preview_tool' is defined but never called in this file"
+    },
+    {
+      "file": "api/creator.py",
+      "line_number": 352,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'generate_and_submit' is defined but never called in this file"
+    },
+    {
+      "file": "api/forgedata.py",
+      "line_number": 11,
+      "issue_type": "unused_import",
+      "severity": "info",
+      "description": "import 'annotations' is not used"
+    },
+    {
+      "file": "api/forgedata.py",
+      "line_number": 90,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'status' is defined but never called in this file"
+    },
+    {
+      "file": "api/forgedata.py",
+      "line_number": 102,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'sf_accounts' is defined but never called in this file"
+    },
+    {
+      "file": "api/forgedata.py",
+      "line_number": 114,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'sf_opportunities' is defined but never called in this file"
+    },
+    {
+      "file": "api/forgedata.py",
+      "line_number": 127,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'sf_contacts' is defined but never called in this file"
+    },
+    {
+      "file": "api/forgedata.py",
+      "line_number": 140,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'sf_activities' is defined but never called in this file"
+    },
+    {
+      "file": "api/executor.py",
+      "line_number": 9,
+      "issue_type": "unused_import",
+      "severity": "info",
+      "description": "import 'datetime' is not used"
+    },
+    {
+      "file": "api/executor.py",
+      "line_number": 197,
+      "issue_type": "long_function",
+      "severity": "warning",
+      "description": "function 'run_tool' is 83 lines long (threshold: 80)"
+    },
+    {
+      "file": "api/executor.py",
+      "line_number": 197,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'run_tool' is defined but never called in this file"
+    },
+    {
+      "file": "api/connectors/salesforce.py",
+      "line_number": 8,
+      "issue_type": "unused_import",
+      "severity": "info",
+      "description": "import 'annotations' is not used"
+    },
+    {
+      "file": "api/connectors/salesforce.py",
+      "line_number": 106,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'get_accounts' is 21 lines but has no docstring"
+    },
+    {
+      "file": "api/connectors/salesforce.py",
+      "line_number": 129,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'get_opportunities' is 29 lines but has no docstring"
+    },
+    {
+      "file": "api/connectors/salesforce.py",
+      "line_number": 160,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'get_contacts' is 29 lines but has no docstring"
+    },
+    {
+      "file": "agents/red_team.py",
+      "line_number": 59,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'run' is 55 lines but has no docstring"
+    },
+    {
+      "file": "agents/classifier.py",
+      "line_number": 5,
+      "issue_type": "unused_import",
+      "severity": "info",
+      "description": "import 'json' is not used"
+    },
+    {
+      "file": "agents/classifier.py",
+      "line_number": 54,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'run' is 23 lines but has no docstring"
+    },
+    {
+      "file": "agents/tasks.py",
+      "line_number": 19,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'run_pipeline_task' is defined but never called in this file"
+    },
+    {
+      "file": "agents/tasks.py",
+      "line_number": 35,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'self_heal' is defined but never called in this file"
+    },
+    {
+      "file": "agents/trust_calculator.py",
+      "line_number": 9,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'compute_trust_tier' is defined but never called in this file"
+    },
+    {
+      "file": "agents/qa_tester.py",
+      "line_number": 53,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'run' is 72 lines but has no docstring"
+    },
+    {
+      "file": "agents/qa_tester.py",
+      "line_number": 127,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function '_generate_test_cases' is 22 lines but has no docstring"
+    },
+    {
+      "file": "agents/qa_tester.py",
+      "line_number": 157,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function '_evaluate' is 21 lines but has no docstring"
+    },
+    {
+      "file": "agents/security_scanner.py",
+      "line_number": 45,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'run' is 40 lines but has no docstring"
+    },
+    {
+      "file": "agents/pipeline.py",
+      "line_number": 106,
+      "issue_type": "long_function",
+      "severity": "warning",
+      "description": "function 'run_pipeline' is 153 lines long (threshold: 80)"
+    },
+    {
+      "file": "agents/pipeline.py",
+      "line_number": 106,
+      "issue_type": "dead_code",
+      "severity": "info",
+      "description": "function 'run_pipeline' is defined but never called in this file"
+    },
+    {
+      "file": "agents/synthesizer.py",
+      "line_number": 45,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'run' is 74 lines but has no docstring"
+    },
+    {
+      "file": "agents/synthesizer.py",
+      "line_number": 173,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function '_fallback' is 28 lines but has no docstring"
+    },
+    {
+      "file": "agents/prompt_hardener.py",
+      "line_number": 41,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'run' is 36 lines but has no docstring"
+    },
+    {
+      "file": "agents/prompt_hardener.py",
+      "line_number": 79,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function '_format_context' is 31 lines but has no docstring"
+    },
+    {
+      "file": "agents/prompt_hardener.py",
+      "line_number": 112,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function '_fallback' is 24 lines but has no docstring"
+    },
+    {
+      "file": "agents/base.py",
+      "line_number": 42,
+      "issue_type": "missing_error_handling",
+      "severity": "warning",
+      "description": "function 'client' makes external calls with no try/except"
+    },
+    {
+      "file": "agents/self_healer.py",
+      "line_number": 52,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function 'heal_underperforming_tools' is 57 lines but has no docstring"
+    },
+    {
+      "file": "agents/self_healer.py",
+      "line_number": 111,
+      "issue_type": "missing_docstring",
+      "severity": "info",
+      "description": "function '_heal_one' is 78 lines but has no docstring"
+    }
+  ]
+}

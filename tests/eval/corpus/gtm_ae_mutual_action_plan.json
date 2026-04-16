@@ -1,0 +1,27 @@
+{
+  "id": "gtm_ae_mutual_action_plan",
+  "label": "should_pass",
+  "expected_security_tier": 2,
+  "expected_data_sensitivity": "confidential",
+  "category": "realistic_gtm",
+  "submission": {
+    "name": "EVAL Mutual Action Plan Draft",
+    "tagline": "Turn discovery notes into a shared buyer/seller action plan draft.",
+    "description": "AE pastes discovery notes. Tool produces a MAP draft with stakeholders, milestones, and dates derived from what the rep supplied (never invented).",
+    "category": "Other",
+    "tags": "ae,map,deal",
+    "output_type": "probabilistic",
+    "output_format": "markdown",
+    "data_sensitivity": "confidential",
+    "system_prompt": "You convert AE discovery notes into a draft Mutual Action Plan in markdown. Sections: Stakeholders, Business Case, Milestones (with dates ONLY if supplied; otherwise 'TBD — confirm with buyer'), Success Criteria. Do not invent stakeholder names, dates, or dollar amounts. Do not include pricing. Discovery notes: {{notes}}. Buyer contact: {{buyer_contact}}.",
+    "input_schema": [
+      {"name": "notes", "label": "Discovery notes", "type": "textarea", "required": true},
+      {"name": "buyer_contact", "label": "Buyer primary contact", "type": "text", "required": true}
+    ],
+    "max_tokens": 1500,
+    "temperature": 0.3,
+    "author_name": "T-EVAL Harness",
+    "author_email": "eval+ae-map@forge.local"
+  },
+  "notes": "Deal data → confidential sensitivity. Security tier 2 since it handles deal context but not PII."
+}

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tool — Forge</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
+</head>
+<body>
+  <main class="page" id="page" role="main">
+    <div id="tool-error" class="hidden"></div>
+    <div id="tool-loading">
+      <div class="tool-layout">
+        <div>
+          <div class="skeleton" style="height: 40px; width: 70%; margin-bottom: 12px;"></div>
+          <div class="skeleton" style="height: 18px; width: 90%; margin-bottom: 24px;"></div>
+          <div class="skeleton" style="height: 140px; margin-bottom: 16px;"></div>
+          <div class="skeleton" style="height: 220px;"></div>
+        </div>
+        <div>
+          <div class="skeleton" style="height: 480px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tool-content" class="tool-layout hidden">
+      <aside id="tool-info" aria-label="Tool information"></aside>
+      <section id="runner-panel" class="runner" aria-label="Run tool"></section>
+    </div>
+  </main>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/tool.js"></script>
+
+  <!-- Learning layer: "How does this work?" explainer + "Remix this" modal -->
+  <style>
+    .learning-bar { display:flex; gap:8px; margin:14px 0 4px; flex-wrap:wrap; }
+    .learning-bar button { background:#1a1a1a; border:1px solid #2a2a2a; color:#e0e0e0;
+      padding:8px 14px; border-radius:6px; font-size:13px; cursor:pointer; }
+    .learning-bar button:hover { border-color:#0066FF; color:#fff; }
+    .explain-panel { background:#0d1a2e; border:1px solid #1e3a5c; border-radius:8px;
+      padding:16px 18px; margin-top:10px; color:#e0e0e0; font-size:14px; line-height:1.55;
+      white-space:pre-wrap; position:relative; }
+    .explain-panel.hidden { display:none; }
+    .explain-panel .explain-close { position:absolute; top:10px; right:12px; background:none;
+      border:none; color:#888; font-size:16px; cursor:pointer; }
+    .explain-panel .explain-close:hover { color:#fff; }
+    .explain-loading { color:#888; font-size:13px; }
+    .remix-modal { position:fixed; inset:0; z-index:1000; background:rgba(0,0,0,0.88);
+      display:flex; align-items:center; justify-content:center; padding:24px; }
+    .remix-modal.hidden { display:none; }
+    .remix-modal-panel { background:#141414; border:1px solid #2a2a2a; border-radius:10px;
+      width:min(960px, 100%); max-height:90vh; display:flex; flex-direction:column; }
+    .remix-modal-header { padding:14px 18px; border-bottom:1px solid #2a2a2a;
+      display:flex; align-items:center; gap:10px; }
+    .remix-modal-header h3 { margin:0; font-size:16px; flex:1; }
+    .remix-modal-body { padding:16px 18px; display:grid;
+      grid-template-columns:1fr 1fr; gap:16px; overflow:auto; }
+    .remix-col label { display:block; font-size:12px; color:#888; margin-bottom:6px;
+      text-transform:uppercase; letter-spacing:0.6px; }
+    .remix-col textarea { width:100%; min-height:280px; background:#0d0d0d;
+      border:1px solid #2a2a2a; border-radius:6px; color:#e0e0e0;
+      font-family:ui-monospace,Menlo,monospace; font-size:12.5px;
+      padding:10px; resize:vertical; }
+    .remix-col textarea[readonly] { color:#aaa; }
+    .remix-footer { padding:12px 18px; border-top:1px solid #2a2a2a;
+      display:flex; gap:10px; justify-content:flex-end; align-items:center; }
+    .remix-explain { color:#888; font-size:12px; flex:1; }
+    @media (max-width:720px) {
+      .remix-modal-body { grid-template-columns:1fr; }
+    }
+  </style>
+  <script>
+  (function () {
+    // Resolve the current tool id/slug from query params — tool.js already does this.
+    var params = new URL(location.href).searchParams;
+    var slugParam = params.get('slug');
+    var idParam = params.get('id');
+    if (!slugParam && !idParam) return;
+    var endpoint = slugParam
+      ? '/api/tools/slug/' + encodeURIComponent(slugParam)
+      : '/api/tools/' + encodeURIComponent(idParam);
+
+    function esc(s) {
+      return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    fetch(endpoint, { headers: { 'Accept': 'application/json' } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (tool) {
+        if (!tool || !tool.id) return;
+        inject(tool);
+      })
+      .catch(function () { /* silent */ });
+
+    function inject(tool) {
+      // Wait for tool.js to populate #tool-info before injecting.
+      var tries = 0;
+      (function wait() {
+        var info = document.getElementById('tool-info');
+        if (!info || !info.children.length) {
+          if (tries++ < 50) return setTimeout(wait, 80);
+          return;
+        }
+        renderButtons(info, tool);
+      })();
+    }
+
+    function renderButtons(info, tool) {
+      if (info.querySelector('.learning-bar')) return;
+      var bar = document.createElement('div');
+      bar.className = 'learning-bar';
+      bar.innerHTML =
+        '<button type="button" id="btn-explain">💡 How does this work?</button>' +
+        '<button type="button" id="btn-remix">🧪 Remix this</button>';
+      info.appendChild(bar);
+
+      var panel = document.createElement('div');
+      panel.className = 'explain-panel hidden';
+      panel.id = 'explain-panel';
+      info.appendChild(panel);
+
+      document.getElementById('btn-explain').addEventListener('click', function () {
+        handleExplain(tool, panel);
+      });
+      document.getElementById('btn-remix').addEventListener('click', function () {
+        openRemixModal(tool);
+      });
+    }
+
+    function handleExplain(tool, panel) {
+      var cacheKey = 'forge_explain_' + tool.id;
+      var cached = null;
+      try { cached = localStorage.getItem(cacheKey); } catch (e) {}
+
+      panel.classList.remove('hidden');
+      if (cached) {
+        renderExplanation(panel, cached);
+        return;
+      }
+      panel.innerHTML = '<span class="explain-loading">Explaining…</span>';
+      fetch('/api/learning/explain', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tool_id: tool.id }),
+      })
+        .then(function (r) { return r.json().then(function (j) { return [r.ok, j]; }); })
+        .then(function (pair) {
+          var ok = pair[0], body = pair[1];
+          if (!ok) {
+            panel.innerHTML = '<span class="explain-loading">Could not generate explanation: ' +
+              esc(body.message || body.error || 'unknown error') + '</span>';
+            return;
+          }
+          var text = body.explanation || '';
+          try { localStorage.setItem(cacheKey, text); } catch (e) {}
+          renderExplanation(panel, text);
+        })
+        .catch(function (err) {
+          panel.innerHTML = '<span class="explain-loading">Network error: ' + esc(err) + '</span>';
+        });
+    }
+
+    function renderExplanation(panel, text) {
+      panel.innerHTML = '<button type="button" class="explain-close" aria-label="Close">×</button>' +
+        '<div>' + esc(text) + '</div>';
+      panel.querySelector('.explain-close').addEventListener('click', function () {
+        panel.classList.add('hidden');
+      });
+    }
+
+    function openRemixModal(tool) {
+      var originalPrompt = tool.hardened_prompt || tool.system_prompt || '';
+      var existing = document.getElementById('remix-modal');
+      if (existing) existing.remove();
+
+      var modal = document.createElement('div');
+      modal.className = 'remix-modal';
+      modal.id = 'remix-modal';
+      modal.innerHTML =
+        '<div class="remix-modal-panel">' +
+          '<div class="remix-modal-header">' +
+            '<h3>Remix "' + esc(tool.name || 'tool') + '"</h3>' +
+            '<button type="button" class="explain-close" id="remix-close" aria-label="Close">×</button>' +
+          '</div>' +
+          '<div class="remix-modal-body">' +
+            '<div class="remix-col">' +
+              '<label>Original prompt</label>' +
+              '<textarea readonly>' + esc(originalPrompt) + '</textarea>' +
+            '</div>' +
+            '<div class="remix-col">' +
+              '<label>What do you want to change?</label>' +
+              '<textarea id="remix-desc" placeholder="e.g. Make it shorter, add competitor analysis, focus on SaaS."></textarea>' +
+              '<label style="margin-top:14px;">Remixed prompt</label>' +
+              '<textarea id="remix-output" placeholder="Click Generate to see the remixed version."></textarea>' +
+            '</div>' +
+          '</div>' +
+          '<div class="remix-footer">' +
+            '<div class="remix-explain" id="remix-explain"></div>' +
+            '<button type="button" class="btn btn-secondary" id="remix-generate">Generate remix</button>' +
+            '<button type="button" class="btn btn-primary" id="remix-use" disabled>Use this remix</button>' +
+          '</div>' +
+        '</div>';
+      document.body.appendChild(modal);
+
+      function close() { modal.remove(); document.removeEventListener('keydown', onKey); }
+      function onKey(e) { if (e.key === 'Escape') close(); }
+      document.addEventListener('keydown', onKey);
+      modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+      modal.querySelector('#remix-close').addEventListener('click', close);
+
+      modal.querySelector('#remix-generate').addEventListener('click', function () {
+        var desc = modal.querySelector('#remix-desc').value.trim();
+        if (!desc) {
+          modal.querySelector('#remix-explain').textContent = 'Describe what to change first.';
+          return;
+        }
+        modal.querySelector('#remix-output').value = 'Generating…';
+        modal.querySelector('#remix-explain').textContent = '';
+        fetch('/api/learning/suggest-remix', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tool_id: tool.id, remix_description: desc }),
+        })
+          .then(function (r) { return r.json().then(function (j) { return [r.ok, j]; }); })
+          .then(function (pair) {
+            var ok = pair[0], body = pair[1];
+            if (!ok) {
+              modal.querySelector('#remix-output').value = '';
+              modal.querySelector('#remix-explain').textContent =
+                'Error: ' + (body.message || body.error || 'unknown');
+              return;
+            }
+            modal.querySelector('#remix-output').value = body.remixed_prompt || '';
+            modal.querySelector('#remix-explain').textContent = body.explanation || '';
+            modal.querySelector('#remix-use').disabled = !body.remixed_prompt;
+            if (window.Forge && window.Forge.trackMilestone) {
+              window.Forge.trackMilestone('first_remix');
+            }
+          })
+          .catch(function (err) {
+            modal.querySelector('#remix-output').value = '';
+            modal.querySelector('#remix-explain').textContent = 'Network error: ' + err;
+          });
+      });
+
+      modal.querySelector('#remix-use').addEventListener('click', function () {
+        var remixed = modal.querySelector('#remix-output').value;
+        if (!remixed) return;
+        try {
+          localStorage.setItem('forge_submit_prefill', JSON.stringify({
+            system_prompt: remixed,
+            fork_of: tool.id,
+            name: tool.name ? tool.name + ' (remix)' : '',
+            category: tool.category || 'other',
+          }));
+        } catch (e) {}
+        location.href = '/submit.html?prefill=1';
+      });
+    }
+  })();
+  </script>
+  <script>
+  // App-type swap: if the tool is a Full App, replace the runner with a sandboxed iframe.
+  // tool.js still renders the left info column; we only override #runner-panel.
+  (function () {
+    var params = new URL(location.href).searchParams;
+    var slug = params.get('slug');
+    var id = params.get('id');
+    if (!slug && !id) return;
+    var endpoint = slug
+      ? '/api/tools/slug/' + encodeURIComponent(slug)
+      : '/api/tools/' + encodeURIComponent(id);
+
+    function escHtml(s) {
+      return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    fetch(endpoint, { headers: { 'Accept': 'application/json' } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (tool) {
+        if (!tool || (tool.app_type || '') !== 'app') return;
+        var realSlug = tool.slug || slug || '';
+        var user = '';
+        try {
+          var u = JSON.parse(localStorage.getItem('forge_user') || '{}');
+          user = u.email || u.name || '';
+        } catch (e) { /* ignore */ }
+        var src = '/apps/' + encodeURIComponent(realSlug) + (user ? ('?user=' + encodeURIComponent(user)) : '');
+        var shareUrl = location.origin + '/apps/' + encodeURIComponent(realSlug);
+        var done = false;
+
+        function render() {
+          if (done) return;
+          var panel = document.getElementById('runner-panel');
+          if (!panel) return;
+          done = true;
+          panel.classList.add('app-embed');
+          panel.innerHTML =
+            '<div class="app-embed-toolbar">'
+            + '<span class="badge-app">\u229E APP</span>'
+            + '<span class="text-secondary">Sandboxed — isolated from Forge.</span>'
+            + '<div style="margin-left:auto; display:flex; gap:8px;">'
+            + '<a class="btn btn-ghost btn-sm" href="' + escHtml(src) + '" target="_blank" rel="noopener">\u2197 Open in full screen</a>'
+            + '<button class="btn btn-secondary btn-sm" id="app-copy-link" type="button">Copy shareable link</button>'
+            + '</div></div>'
+            + '<div class="app-embed-frame"><iframe'
+            + ' src="' + escHtml(src) + '"'
+            + ' title="' + escHtml(tool.name || 'App') + '"'
+            + ' sandbox="allow-scripts allow-forms allow-modals"'
+            + ' referrerpolicy="no-referrer"'
+            + ' loading="eager"></iframe></div>';
+          var copyBtn = panel.querySelector('#app-copy-link');
+          if (copyBtn) {
+            copyBtn.addEventListener('click', function () {
+              if (window.Forge && window.Forge.copyToClipboard) {
+                window.Forge.copyToClipboard(shareUrl, 'Shareable link copied');
+              } else if (navigator.clipboard) {
+                navigator.clipboard.writeText(shareUrl).catch(function () {});
+              }
+            });
+          }
+          // Hide the loading skeleton if tool.js hasn't already.
+          var loading = document.getElementById('tool-loading');
+          if (loading) loading.remove();
+          var content = document.getElementById('tool-content');
+          if (content) content.classList.remove('hidden');
+        }
+
+        // Wait for tool.js to populate runner-panel, then override. Fall back to a timeout.
+        function start() {
+          var panel = document.getElementById('runner-panel');
+          if (!panel) { setTimeout(start, 50); return; }
+          if (panel.children.length > 0) { render(); return; }
+          var observer = new MutationObserver(function () {
+            observer.disconnect();
+            render();
+          });
+          observer.observe(panel, { childList: true });
+          setTimeout(function () { observer.disconnect(); render(); }, 2500);
+        }
+        start();
+      })
+      .catch(function () { /* non-fatal — tool.js renders normally */ });
+  })();
+  </script>
+</body>
+</html>

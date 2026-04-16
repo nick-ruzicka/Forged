@@ -1,0 +1,89 @@
+/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+[api_tester] started. Base URL: http://localhost:8090. Report: /Users/nicholasruzicka/projects/forge/tests/reports/api_report.json
+[api_tester] cycle error: 'response_preview'
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:20:17.811309+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 3 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:20:47.940825+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 4 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:21:18.049024+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 5 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:21:48.205866+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 6 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:22:18.317347+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 7 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:22:48.406500+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 8 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:23:18.525363+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 9 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:23:48.626692+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 10 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:24:18.700182+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 11 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:24:48.787142+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 12 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:25:18.917514+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 13 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:25:48.993565+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 14 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:26:19.086320+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 15 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:26:49.241390+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 16 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:27:19.348824+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 17 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:27:49.472402+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 18 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:28:19.553267+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 19 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:28:49.668113+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 20 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:29:19.714196+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 21 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:29:49.809519+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 22 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:30:19.873003+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 23 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:30:49.955006+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 24 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:31:20.035523+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 25 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:31:50.164729+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 26 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:32:20.292848+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 27 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:32:50.429889+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 28 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:33:20.501056+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 29 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:33:50.885932+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 30 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:34:20.952033+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 31 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:34:51.084534+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 32 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:35:21.203434+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 33 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:35:51.319728+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 34 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:36:21.439252+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 35 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:36:51.504801+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 36 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:37:21.575960+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 37 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:37:51.651732+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 38 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:38:21.744065+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 39 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:38:52.011315+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 40 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+2026-04-16T04:39:22.114989+00:00 CRITICAL POST /api/tools/slug/account-research-brief/run failed 41 consecutive cycles. status=405 error=expected 200, got 405
+[api_tester] cycle error: 'response_preview'
+/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(

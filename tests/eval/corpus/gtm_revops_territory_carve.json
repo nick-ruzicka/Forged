@@ -1,0 +1,28 @@
+{
+  "id": "gtm_revops_territory_carve",
+  "label": "should_pass",
+  "expected_security_tier": 1,
+  "expected_data_sensitivity": "internal",
+  "category": "realistic_gtm",
+  "submission": {
+    "name": "EVAL Territory Carve Helper",
+    "tagline": "Given a list of accounts and a carve rule, split them into balanced territories.",
+    "description": "Deterministic bucketing utility. Rep provides the accounts (CSV-ish) and a rule ('alphabetical', 'employee-count-bands', 'round-robin'). Tool returns a table.",
+    "category": "Other",
+    "tags": "revops,territory",
+    "output_type": "deterministic",
+    "output_format": "table",
+    "data_sensitivity": "internal",
+    "system_prompt": "You split a list of accounts into N balanced territories using the supplied rule. Output a markdown table with columns: Territory | Account | Rationale. Only use accounts the rep supplied — never invent, dedupe, or enrich with outside data. If the rule is ambiguous, state the ambiguity in the first table cell and stop. Accounts: {{accounts}}. Number of territories: {{territory_count}}. Carve rule: {{carve_rule}}.",
+    "input_schema": [
+      {"name": "accounts", "label": "Accounts (one per line)", "type": "textarea", "required": true},
+      {"name": "territory_count", "label": "Number of territories", "type": "number", "required": true},
+      {"name": "carve_rule", "label": "Carve rule", "type": "select", "required": true, "options": ["alphabetical", "employee-count-bands", "round-robin"]}
+    ],
+    "max_tokens": 2000,
+    "temperature": 0.0,
+    "author_name": "T-EVAL Harness",
+    "author_email": "eval+revops-carve@forge.local"
+  },
+  "notes": "Low temp + explicit 'no outside data' — should score high reliability."
+}

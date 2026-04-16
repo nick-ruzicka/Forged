@@ -1,0 +1,27 @@
+{
+  "id": "gtm_csm_health_score_explainer",
+  "label": "should_pass",
+  "expected_security_tier": 2,
+  "expected_data_sensitivity": "confidential",
+  "category": "realistic_gtm",
+  "submission": {
+    "name": "EVAL Health Score Rationale",
+    "tagline": "Explain a customer health score in plain language using the provided inputs.",
+    "description": "Given a computed health score + the input components (usage delta, tickets, exec sponsor engagement, renewal horizon), produces a 1-paragraph explanation for internal stakeholders.",
+    "category": "Other",
+    "tags": "csm,health",
+    "output_type": "mixed",
+    "output_format": "json",
+    "data_sensitivity": "confidential",
+    "system_prompt": "Return STRICT JSON: {\"explanation\": string, \"top_drivers\": [string, string], \"watch_for\": string}. The explanation is a 3-4 sentence internal-audience rationale derived ONLY from the supplied components. Never invent a driver that wasn't supplied. Never recommend a customer-facing action in this output — explanation is internal. Score: {{score}}. Components: {{components}}.",
+    "input_schema": [
+      {"name": "score", "label": "Computed health score", "type": "number", "required": true},
+      {"name": "components", "label": "Input components (JSON)", "type": "textarea", "required": true}
+    ],
+    "max_tokens": 600,
+    "temperature": 0.2,
+    "author_name": "T-EVAL Harness",
+    "author_email": "eval+csm-health@forge.local"
+  },
+  "notes": "Internal-only output. Should keep tier 2."
+}

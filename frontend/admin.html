@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Forge Admin</title>
+<link rel="stylesheet" href="/css/styles.css">
+<style>
+  :root {
+    --bg: #0b0d12;
+    --panel: #12151c;
+    --panel-2: #161a23;
+    --border: #222735;
+    --text: #e7e9ee;
+    --muted: #9aa3b2;
+    --accent: #0066ff;
+    --accent-2: #3b82f6;
+    --success: #10b981;
+    --warn: #f59e0b;
+    --danger: #ef4444;
+    --info: #38bdf8;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: "DM Sans", -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
+  code, pre, .mono { font-family: "DM Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+  a { color: var(--accent-2); text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; }
+
+  header.app-header { height: 56px; display: flex; align-items: center; padding: 0 20px; border-bottom: 1px solid var(--border); background: var(--panel); position: sticky; top: 0; z-index: 10; }
+  .brand { font-family: "DM Mono", monospace; font-weight: 700; letter-spacing: 2px; margin-right: 28px; }
+  .brand .hammer { color: var(--accent-2); margin-right: 6px; }
+  nav.main-nav { display: flex; gap: 18px; flex: 1; }
+  nav.main-nav a { color: var(--muted); font-size: 14px; }
+  nav.main-nav a.active { color: var(--text); }
+  .admin-badge { background: var(--accent); color: #fff; padding: 3px 10px; border-radius: 99px; font-size: 11px; font-weight: 700; letter-spacing: 1px; }
+
+  .queue-badge {
+    background: var(--danger); color: #fff; padding: 2px 8px; border-radius: 99px;
+    font-size: 11px; font-weight: 700; margin-left: 6px; min-width: 18px; display: inline-block; text-align: center;
+  }
+  .queue-badge.zero { background: #2a2f3c; color: var(--muted); }
+
+  main { padding: 24px; max-width: 1400px; margin: 0 auto; }
+  h1 { font-size: 22px; margin: 0 0 6px 0; }
+  h2 { font-size: 16px; margin: 0 0 10px 0; }
+  h3 { font-size: 14px; margin: 0 0 8px 0; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+  .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin: 16px 0 20px; }
+  .tab { padding: 10px 16px; background: transparent; border: none; color: var(--muted); font-size: 14px; border-bottom: 2px solid transparent; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--text); border-bottom-color: var(--accent); }
+
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 14px; }
+  .panel.tight { padding: 12px; }
+
+  .row { display: flex; gap: 12px; align-items: center; }
+  .col { display: flex; flex-direction: column; gap: 10px; }
+  .spread { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .muted { color: var(--muted); }
+  .small { font-size: 12px; }
+
+  input[type="text"], input[type="number"], input[type="email"], input[type="password"], select, textarea {
+    background: var(--panel-2); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font-family: inherit; font-size: 13px; width: 100%;
+  }
+  textarea { min-height: 80px; resize: vertical; }
+  label { font-size: 12px; color: var(--muted); display: block; margin-bottom: 4px; }
+
+  .btn {
+    background: var(--accent); color: #fff; border: none; padding: 8px 14px; border-radius: 6px; font-size: 13px; font-weight: 600;
+  }
+  .btn:hover { filter: brightness(1.08); }
+  .btn.ghost { background: transparent; border: 1px solid var(--border); color: var(--text); }
+  .btn.warn { background: var(--warn); color: #10141c; }
+  .btn.danger { background: var(--danger); color: #fff; }
+  .btn.success { background: var(--success); color: #fff; }
+  .btn.small { padding: 5px 10px; font-size: 12px; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 99px; font-size: 11px; font-weight: 600; }
+  .badge.trusted { background: rgba(16,185,129,.15); color: var(--success); }
+  .badge.verified { background: rgba(59,130,246,.15); color: var(--accent-2); }
+  .badge.caution { background: rgba(245,158,11,.18); color: var(--warn); }
+  .badge.restricted { background: rgba(239,68,68,.18); color: var(--danger); }
+  .badge.unverified { background: #2a2f3c; color: var(--muted); }
+  .badge.rec-approve { background: rgba(16,185,129,.15); color: var(--success); }
+  .badge.rec-approve_with_modifications { background: rgba(59,130,246,.15); color: var(--accent-2); }
+  .badge.rec-needs_hardening { background: rgba(245,158,11,.18); color: var(--warn); }
+  .badge.rec-reject { background: rgba(239,68,68,.18); color: var(--danger); }
+
+  .score-bar { height: 6px; background: var(--panel-2); border-radius: 3px; overflow: hidden; width: 100%; margin-top: 3px; }
+  .score-bar > span { display: block; height: 100%; background: var(--accent); }
+
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); font-size: 13px; }
+  th { color: var(--muted); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+  tr.clickable { cursor: pointer; }
+  tr.clickable:hover { background: var(--panel-2); }
+
+  .kv { display: grid; grid-template-columns: 140px 1fr; gap: 6px 12px; font-size: 13px; }
+  .kv .k { color: var(--muted); }
+
+  .toast-stack { position: fixed; right: 16px; bottom: 16px; display: flex; flex-direction: column; gap: 8px; z-index: 50; }
+  .toast { background: var(--panel); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 10px 14px; border-radius: 6px; min-width: 220px; font-size: 13px; }
+  .toast.success { border-left-color: var(--success); }
+  .toast.error { border-left-color: var(--danger); }
+
+  /* Review panel */
+  .review-card { border-left: 3px solid var(--accent); }
+  .review-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin: 10px 0; flex-wrap: wrap; }
+  .review-tab { padding: 8px 12px; background: transparent; border: none; color: var(--muted); font-size: 12px; border-bottom: 2px solid transparent; cursor: pointer; }
+  .review-tab.active { color: var(--text); border-bottom-color: var(--accent); }
+  .review-body { min-height: 100px; }
+
+  /* Diff viewer */
+  .diff { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .diff > div { background: var(--panel-2); padding: 10px; border-radius: 6px; font-family: "DM Mono", monospace; font-size: 12px; white-space: pre-wrap; line-height: 1.45; max-height: 400px; overflow: auto; }
+  .diff .hardened .changed { background: rgba(245, 158, 11, 0.2); padding: 1px 2px; border-radius: 2px; cursor: help; }
+  .diff h4 { margin: 0 0 6px 0; font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+
+  .metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+  .metric-card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+  .metric-card .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+  .metric-card .value { font-size: 26px; font-weight: 700; margin-top: 6px; }
+
+  .chart-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .chart-grid .panel { min-height: 280px; }
+
+  .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 100; }
+  .modal { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 20px; max-width: 720px; width: 90%; max-height: 86vh; overflow: auto; }
+  .modal .close { float: right; background: transparent; border: none; color: var(--muted); font-size: 18px; cursor: pointer; }
+
+  .dur-badge { padding: 2px 7px; border-radius: 99px; font-size: 11px; font-weight: 600; background: var(--panel-2); color: var(--muted); }
+  .dur-badge.green { background: rgba(16,185,129,.15); color: var(--success); }
+  .dur-badge.yellow { background: rgba(245,158,11,.15); color: var(--warn); }
+  .dur-badge.red { background: rgba(239,68,68,.15); color: var(--danger); }
+
+  .score-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+  .agent-row { display: flex; gap: 8px; align-items: center; font-size: 13px; margin: 4px 0; }
+  .ok { color: var(--success); } .pending { color: var(--muted); } .running { color: var(--accent-2); } .fail { color: var(--danger); }
+
+  .key-setup { max-width: 360px; margin: 80px auto; text-align: center; }
+  .hidden { display: none !important; }
+
+  pre.code { background: var(--panel-2); border: 1px solid var(--border); border-radius: 6px; padding: 10px; overflow: auto; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="brand"><span class="hammer">⚒</span>FORGE</div>
+  <nav class="main-nav">
+    <a href="/index.html">Catalog</a>
+    <a href="/skills.html">Skills</a>
+    <a href="/my-tools.html">My Tools</a>
+    <a href="/submit.html">Submit</a>
+    <a href="/admin.html" class="active">Admin</a>
+  </nav>
+  <span id="queue-badge" class="queue-badge zero hidden">0</span>
+  <span class="admin-badge" style="margin-left:10px">ADMIN</span>
+</header>
+
+<!-- Setup screen: shown if no key in localStorage -->
+<section id="key-setup" class="key-setup hidden">
+  <h1>Admin Access</h1>
+  <p class="muted small">Enter your admin key to manage the review queue.</p>
+  <div class="panel">
+    <label for="key-input">X-Admin-Key</label>
+    <input id="key-input" type="password" placeholder="admin key">
+    <div style="margin-top:10px;display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn" id="key-save">Save & Continue</button>
+    </div>
+  </div>
+</section>
+
+<!-- Main admin UI -->
+<main id="admin-main" class="hidden">
+  <div class="spread">
+    <div>
+      <h1>Admin</h1>
+      <div class="muted small">Queue, live tools, run monitor, analytics, settings.</div>
+    </div>
+    <div>
+      <button id="logout-btn" class="btn ghost small">Clear key</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="queue">Queue</button>
+    <button class="tab" data-tab="live">Live Tools</button>
+    <button class="tab" data-tab="runs">Run Monitor</button>
+    <button class="tab" data-tab="analytics">Analytics</button>
+    <button class="tab" data-tab="settings">Settings</button>
+  </div>
+
+  <section id="tab-queue" class="tab-pane">
+    <div id="queue-root"><div class="muted">Loading queue…</div></div>
+  </section>
+
+  <section id="tab-live" class="tab-pane hidden">
+    <div id="live-root"><div class="muted">Loading live tools…</div></div>
+  </section>
+
+  <section id="tab-runs" class="tab-pane hidden">
+    <div id="runs-root"><div class="muted">Loading runs…</div></div>
+  </section>
+
+  <section id="tab-analytics" class="tab-pane hidden">
+    <div id="analytics-root"><div class="muted">Loading analytics…</div></div>
+  </section>
+
+  <section id="tab-settings" class="tab-pane hidden">
+    <div id="settings-root"><div class="muted">Loading settings…</div></div>
+  </section>
+</main>
+
+<div id="toasts" class="toast-stack"></div>
+<div id="modal-root"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="/js/admin.js"></script>
+</body>
+</html>

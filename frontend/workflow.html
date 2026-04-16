@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chain Tools — Forge</title>
+  <meta name="description" content="Chain two Forge tools together: the output of the first feeds into the second.">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <main class="page" id="page" role="main">
+    <section class="section">
+      <a href="/" class="muted" style="text-decoration:none;">← Back to catalog</a>
+      <h1 style="margin-top:0.5rem;">Chain Tools</h1>
+      <p class="muted">
+        Run two tools in sequence. The first tool's output can be referenced inside
+        the second tool's inputs as <code>{{step1.output}}</code>.
+      </p>
+    </section>
+
+    <section class="section" id="builder" aria-label="Workflow builder">
+      <!-- Step 1 -->
+      <div class="card step-card" id="step1-card">
+        <h2>Step 1</h2>
+        <label for="step1-tool">Tool</label>
+        <select id="step1-tool" data-step="1"></select>
+        <div class="step-inputs" id="step1-inputs" aria-live="polite"></div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="card step-card" id="step2-card" style="margin-top:1rem;">
+        <h2>Step 2</h2>
+        <label for="step2-tool">Tool</label>
+        <select id="step2-tool" data-step="2"></select>
+
+        <div class="step-inputs" id="step2-inputs" aria-live="polite"></div>
+
+        <div class="mapping" id="mapping-ui" style="margin-top:1rem;">
+          <label for="mapping-target">Map Step 1 output → Step 2 field</label>
+          <select id="mapping-target">
+            <option value="">(none — don't auto-map)</option>
+          </select>
+          <p class="muted" style="font-size:0.85em;">
+            The selected field will be set to <code>{{step1.output}}</code> when the chain runs.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-label="User identity">
+      <label for="user-name">Your name</label>
+      <input id="user-name" type="text" autocomplete="name" placeholder="e.g. Sarah Chen">
+      <label for="user-email" style="margin-top:0.5rem;">Your email</label>
+      <input id="user-email" type="email" autocomplete="email" placeholder="you@navan.com">
+    </section>
+
+    <section class="section">
+      <button id="run-chain" type="button" class="btn btn-primary">Run Chain</button>
+      <span id="run-status" class="muted" style="margin-left:0.75rem;"></span>
+    </section>
+
+    <section class="section" id="results" aria-live="polite" aria-label="Chain results">
+      <div id="results-container"></div>
+    </section>
+  </main>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/workflow.js"></script>
+</body>
+</html>

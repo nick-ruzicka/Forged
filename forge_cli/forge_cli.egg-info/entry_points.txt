@@ -1,0 +1,3 @@
+[console_scripts]
+forge = forge_cli.cli:main
+

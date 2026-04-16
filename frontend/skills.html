@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skills — Forge</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <main class="page" role="main">
+    <div class="flex flex-between items-center mb-4" style="flex-wrap: wrap; gap: 12px;">
+      <div>
+        <h1>Skills Library</h1>
+        <p class="text-secondary">Real SKILL.md files for Claude Code. Download and drop into <code class="mono">~/.claude/skills/</code>.</p>
+      </div>
+      <button class="btn btn-primary" id="submit-skill-btn">+ Submit a Skill</button>
+    </div>
+
+    <div class="section">
+      <div class="search">
+        <span class="search-icon" aria-hidden="true">🔍</span>
+        <input type="search" id="skills-search" data-search placeholder="Search skills…" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="filter-bar">
+      <div class="pill-group" id="skill-categories" role="tablist" aria-label="Category"></div>
+      <div style="margin-left:auto;">
+        <label class="sr-only" for="skills-sort">Sort</label>
+        <select id="skills-sort" style="width:auto; min-width:160px;">
+          <option value="upvotes">Most Upvoted</option>
+          <option value="newest">Newest</option>
+          <option value="copies">Most Downloaded</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid grid-3" id="skills-grid" aria-live="polite"></div>
+  </main>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/skills.js"></script>
+</body>
+</html>

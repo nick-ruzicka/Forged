@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create with AI — Forge</title>
+  <meta name="description" content="Describe what you want your tool to do. The AI designer builds the full submission.">
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    .creator-wrap { max-width: 880px; margin: 0 auto; }
+    .creator-hero h1 { font-size: 32px; margin: 0 0 8px; }
+    .creator-hero p { color: var(--text-secondary); margin: 0 0 24px; }
+
+    .creator-input {
+      width: 100%;
+      min-height: 160px;
+      padding: 16px;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.55;
+      resize: vertical;
+    }
+    .creator-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+
+    .examples {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .example-chip {
+      text-align: left;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 13px;
+      line-height: 1.4;
+      transition: all var(--transition);
+    }
+    .example-chip:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--text-primary);
+    }
+    .example-chip strong {
+      display: block;
+      color: var(--text-primary);
+      font-weight: 600;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .loading-state {
+      display: none;
+      align-items: center;
+      gap: 14px;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      margin-top: 20px;
+    }
+    .loading-state.active { display: flex; }
+    .spinner {
+      width: 20px; height: 20px;
+      border: 2px solid var(--border-strong);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+      flex-shrink: 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-text .line-1 { font-weight: 600; margin-bottom: 2px; }
+    .loading-text .line-2 { color: var(--text-secondary); font-size: 13px; }
+
+    .preview-card {
+      display: none;
+      margin-top: 24px;
+      padding: 24px;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+    }
+    .preview-card.active { display: block; }
+
+    .preview-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+    .preview-title-group h2 { margin: 0 0 4px; font-size: 22px; }
+    .preview-tagline { color: var(--text-secondary); margin: 0; }
+    .preview-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+
+    .preview-section { margin-top: 18px; }
+    .preview-section label {
+      display: block;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .preview-section .edit-input,
+    .preview-section .edit-textarea {
+      width: 100%;
+      padding: 10px 12px;
+      background: var(--bg);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-family: inherit;
+      font-size: 14px;
+    }
+    .preview-section .edit-textarea {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      min-height: 160px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+    .preview-section .edit-input:focus,
+    .preview-section .edit-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-soft);
+    }
+
+    .schema-list { display: grid; gap: 8px; margin-top: 4px; }
+    .schema-field {
+      display: grid;
+      grid-template-columns: 160px 1fr 110px 70px;
+      gap: 8px;
+      align-items: center;
+      padding: 10px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 13px;
+    }
+    .schema-field code {
+      font-family: var(--font-mono);
+      color: var(--accent);
+      background: transparent;
+      padding: 0;
+    }
+    .schema-field .field-type { color: var(--text-secondary); font-family: var(--font-mono); font-size: 12px; }
+    .schema-field .field-required {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      text-align: center;
+      font-weight: 600;
+    }
+    .schema-field .field-required.optional {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+
+    .preview-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .identity-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .identity-row input {
+      padding: 10px 12px;
+      background: var(--bg);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-family: inherit;
+      font-size: 14px;
+    }
+
+    .error-banner {
+      display: none;
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: var(--danger-soft);
+      color: #ff8a7a;
+      border: 1px solid var(--danger);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+    }
+    .error-banner.active { display: block; }
+
+    .success-state {
+      display: none;
+      padding: 40px 24px;
+      text-align: center;
+      border: 1px solid var(--trusted);
+      background: var(--trusted-soft);
+      border-radius: var(--radius-lg);
+      margin-top: 24px;
+    }
+    .success-state.active { display: block; }
+    .success-state h2 { margin-top: 0; color: var(--trusted); }
+
+    .nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 640px) {
+      .schema-field { grid-template-columns: 1fr; }
+      .identity-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" role="main">
+    <div class="creator-wrap">
+      <a href="/" class="nav-back">← Back to catalog</a>
+
+      <div class="creator-hero">
+        <h1>Create a Tool with AI</h1>
+        <p>Describe what you want the tool to do in plain English. The AI designer will build the full submission — inputs, prompt, governance — for you to review.</p>
+      </div>
+
+      <section id="input-stage">
+        <label class="sr-only" for="desc">Describe what you want this tool to do</label>
+        <textarea
+          class="creator-input"
+          id="desc"
+          placeholder="Describe what you want this tool to do…&#10;&#10;Example: A tool that takes a company name and generates a one-page research brief with funding history, key executives, and recent news."
+          maxlength="1200"
+        ></textarea>
+
+        <div class="examples" id="examples"></div>
+
+        <div class="flex flex-gap-2 mt-4" style="justify-content: flex-end; gap: 10px;">
+          <button class="btn btn-primary btn-lg" id="generate-btn">✨ Design my tool</button>
+        </div>
+
+        <div class="loading-state" id="loading">
+          <div class="spinner" aria-hidden="true"></div>
+          <div class="loading-text">
+            <div class="line-1">AI is designing your tool…</div>
+            <div class="line-2">Writing the prompt, building inputs, classifying governance. Usually takes 10-20 seconds.</div>
+          </div>
+        </div>
+
+        <div class="error-banner" id="error-banner" role="alert"></div>
+      </section>
+
+      <section class="preview-card" id="preview" aria-live="polite">
+        <div class="preview-header">
+          <div class="preview-title-group">
+            <h2 id="pv-name">Tool name</h2>
+            <p class="preview-tagline" id="pv-tagline">Tagline</p>
+          </div>
+          <div class="preview-badges" id="pv-badges"></div>
+        </div>
+
+        <div class="preview-section">
+          <label for="edit-name">Name</label>
+          <input class="edit-input" id="edit-name" maxlength="80">
+        </div>
+
+        <div class="preview-section">
+          <label for="edit-tagline">Tagline</label>
+          <input class="edit-input" id="edit-tagline" maxlength="120">
+        </div>
+
+        <div class="preview-section">
+          <label>Description</label>
+          <div id="pv-description" class="text-secondary" style="white-space: pre-wrap;"></div>
+        </div>
+
+        <div class="preview-section">
+          <label>Inputs this tool asks for</label>
+          <div class="schema-list" id="pv-schema"></div>
+        </div>
+
+        <div class="preview-section">
+          <label for="edit-prompt">System prompt (Claude sees this)</label>
+          <textarea class="edit-textarea" id="edit-prompt"></textarea>
+        </div>
+
+        <div class="preview-section">
+          <label>Reliability note</label>
+          <div id="pv-reliability" class="text-secondary" style="white-space: pre-wrap;"></div>
+        </div>
+
+        <div class="preview-section">
+          <label>Your identity (required to submit)</label>
+          <div class="identity-row">
+            <input id="author-name" placeholder="Your name" autocomplete="name">
+            <input id="author-email" placeholder="Your email" type="email" autocomplete="email">
+          </div>
+        </div>
+
+        <div class="preview-actions">
+          <button class="btn btn-ghost" id="start-over-btn">← Describe differently</button>
+          <div style="flex: 1;"></div>
+          <button class="btn btn-secondary" id="regenerate-btn">Regenerate</button>
+          <button class="btn btn-primary" id="submit-btn">Submit for Review →</button>
+        </div>
+      </section>
+
+      <section class="success-state" id="success" aria-live="polite">
+        <h2>🔨 Tool submitted!</h2>
+        <p>Your tool is in the review queue. The agent pipeline is analyzing it now.</p>
+        <div class="flex flex-gap-2 mt-4" style="justify-content: center; gap: 10px;">
+          <a class="btn btn-primary" id="view-tool-link" href="#">View submission</a>
+          <a class="btn btn-secondary" href="/creator.html">Create another</a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/creator.js"></script>
+</body>
+</html>

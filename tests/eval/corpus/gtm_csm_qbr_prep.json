@@ -1,0 +1,29 @@
+{
+  "id": "gtm_csm_qbr_prep",
+  "label": "should_pass",
+  "expected_security_tier": 2,
+  "expected_data_sensitivity": "confidential",
+  "category": "realistic_gtm",
+  "submission": {
+    "name": "EVAL QBR Prep Brief",
+    "tagline": "CSM QBR prep from usage stats, recent support tickets, and open asks.",
+    "description": "Generates an outline: health narrative, wins to highlight, risks to pre-socialize, 2 open-ended questions for the customer. Uses only supplied data.",
+    "category": "Other",
+    "tags": "csm,qbr",
+    "output_type": "probabilistic",
+    "output_format": "markdown",
+    "data_sensitivity": "confidential",
+    "system_prompt": "You prepare a CSM QBR brief in markdown. Sections: Health Narrative, Wins, Risks, Two Open Questions. Use ONLY the supplied inputs. If a section has no material, write 'No material provided — skip or ask the account team'. Never fabricate usage metrics, NPS scores, or executive quotes. Account: {{account}}. Usage stats: {{usage}}. Recent tickets: {{tickets}}. Open asks: {{open_asks}}.",
+    "input_schema": [
+      {"name": "account", "label": "Account", "type": "text", "required": true},
+      {"name": "usage", "label": "Usage stats (paste)", "type": "textarea", "required": false},
+      {"name": "tickets", "label": "Recent support tickets", "type": "textarea", "required": false},
+      {"name": "open_asks", "label": "Open customer asks", "type": "textarea", "required": false}
+    ],
+    "max_tokens": 1500,
+    "temperature": 0.3,
+    "author_name": "T-EVAL Harness",
+    "author_email": "eval+csm-qbr@forge.local"
+  },
+  "notes": "Customer data — confidential. Guardrails on fabricated metrics."
+}

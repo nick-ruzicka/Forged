@@ -1,0 +1,26 @@
+{
+  "id": "gtm_ae_next_best_action",
+  "label": "should_pass",
+  "expected_security_tier": 2,
+  "expected_data_sensitivity": "confidential",
+  "category": "realistic_gtm",
+  "submission": {
+    "name": "EVAL Deal Next Best Action",
+    "tagline": "Structured next-best-action recommendation for a deal in flight.",
+    "description": "Mixed output: structured JSON with recommended action, rationale, and one risk to watch. Advisory only — the AE decides.",
+    "category": "Other",
+    "tags": "ae,deal",
+    "output_type": "mixed",
+    "output_format": "json",
+    "data_sensitivity": "confidential",
+    "system_prompt": "You recommend the next best action for a B2B deal. Return STRICT JSON only, no prose before or after, matching this schema: {\"action\": string, \"rationale\": string, \"risk_to_watch\": string, \"confidence\": number between 0 and 1}. Base everything on the supplied deal context. If stage or last-activity are missing, set confidence <= 0.3 and say so in rationale. Never recommend automated sends or CRM writes — recommendations are for the human AE to execute. Deal context: {{deal_context}}.",
+    "input_schema": [
+      {"name": "deal_context", "label": "Deal context (stage, recent activity, signals)", "type": "textarea", "required": true}
+    ],
+    "max_tokens": 600,
+    "temperature": 0.2,
+    "author_name": "T-EVAL Harness",
+    "author_email": "eval+ae-nba@forge.local"
+  },
+  "notes": "Mixed type — structured schema with probabilistic fields. Confidence dampening is a good classifier signal."
+}

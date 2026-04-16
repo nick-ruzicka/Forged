@@ -1,0 +1,9 @@
+name: My App
+tagline: What my app does in one sentence
+category: other
+entry: index.html
+type: app
+# Optional
+# description: Longer description rendered on the Forge catalog card
+# schedule: "0 8 * * 1-5"
+# slack_channel: "#sales-team"

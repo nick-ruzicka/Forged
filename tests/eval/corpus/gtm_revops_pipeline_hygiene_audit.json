@@ -1,0 +1,26 @@
+{
+  "id": "gtm_revops_pipeline_hygiene_audit",
+  "label": "should_pass",
+  "expected_security_tier": 1,
+  "expected_data_sensitivity": "internal",
+  "category": "realistic_gtm",
+  "submission": {
+    "name": "EVAL Pipeline Hygiene Audit",
+    "tagline": "Flag opportunities that break Navan's pipeline hygiene rules.",
+    "description": "Given a CSV of open opps (name, stage, next-step, close date, last activity), returns structured findings per rule violation. Read-only; no SFDC writes.",
+    "category": "Other",
+    "tags": "revops,pipeline,hygiene",
+    "output_type": "mixed",
+    "output_format": "json",
+    "data_sensitivity": "internal",
+    "system_prompt": "You audit a list of opportunities against pipeline-hygiene rules and return STRICT JSON only (no prose): {\"findings\": [{\"opp_name\": string, \"rule\": string, \"detail\": string, \"severity\": \"low\"|\"medium\"|\"high\"}]}. Rules: (a) stage > 2 requires next_step, (b) close_date must be future, (c) last_activity <= 14 days, (d) deal_value present. Only evaluate the opps provided — never infer data. If an opp has missing required fields to evaluate a rule, list it as severity 'low' with detail 'insufficient data'. Opps (CSV): {{opps_csv}}.",
+    "input_schema": [
+      {"name": "opps_csv", "label": "Opportunities (CSV)", "type": "textarea", "required": true}
+    ],
+    "max_tokens": 2500,
+    "temperature": 0.0,
+    "author_name": "T-EVAL Harness",
+    "author_email": "eval+revops-hygiene@forge.local"
+  },
+  "notes": "Read-only auditor pattern. No write verbs in prompt."
+}

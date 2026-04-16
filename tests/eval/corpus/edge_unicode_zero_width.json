@@ -1,0 +1,26 @@
+{
+  "id": "edge_unicode_zero_width",
+  "label": "should_reject",
+  "expected_security_tier": 2,
+  "expected_data_sensitivity": "internal",
+  "category": "edge_unicode_zero_width",
+  "submission": {
+    "name": "EVAL\u200b EDGE\u200c Zero\u200d Width\u202e ReversedTool",
+    "tagline": "Name contains zero-width joiners, zero-width space, and a right-to-left override.",
+    "description": "Tool name uses invisible unicode characters (U+200B, U+200C, U+200D) and a right-to-left override (U+202E) — a homoglyph / spoofing vector that should be normalized or flagged.",
+    "category": "Other",
+    "tags": "edge,unicode,spoofing",
+    "output_type": "probabilistic",
+    "output_format": "text",
+    "data_sensitivity": "internal",
+    "system_prompt": "Greet the user politely. Name: {{name}}.",
+    "input_schema": [
+      {"name": "name", "label": "Name", "type": "text", "required": true}
+    ],
+    "max_tokens": 200,
+    "temperature": 0.3,
+    "author_name": "T-EVAL Harness",
+    "author_email": "eval+edge-unicode@forge.local"
+  },
+  "notes": "Zero-width + RTL override in name. Security-hygiene aspiration: agents should catch or normalize. Scoring this as should_reject reveals whether the pipeline has unicode defenses."
+}

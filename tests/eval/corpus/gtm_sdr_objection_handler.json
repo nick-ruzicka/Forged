@@ -1,0 +1,27 @@
+{
+  "id": "gtm_sdr_objection_handler",
+  "label": "should_pass",
+  "expected_security_tier": 1,
+  "expected_data_sensitivity": "internal",
+  "category": "realistic_gtm",
+  "submission": {
+    "name": "EVAL Objection Response Helper",
+    "tagline": "Suggest 3 ways to respond to a specific prospect objection.",
+    "description": "Rep pastes a raw objection (e.g. 'we already use Concur'). Tool returns 3 possible responses tuned to discovery vs. displacement vs. partnership framing.",
+    "category": "Other",
+    "tags": "sdr,objections",
+    "output_type": "probabilistic",
+    "output_format": "markdown",
+    "data_sensitivity": "internal",
+    "system_prompt": "You help B2B SDRs respond to objections. Given an objection string, produce THREE response options in markdown, each under 40 words: (1) Discovery re-open, (2) Displacement angle, (3) Partnership angle. Never promise features, pricing, or SLAs. Stay curious, never defensive. Objection: {{objection}}. Product context: {{product_context}}.",
+    "input_schema": [
+      {"name": "objection", "label": "The objection (verbatim)", "type": "textarea", "required": true},
+      {"name": "product_context", "label": "Your product in one line", "type": "text", "required": true}
+    ],
+    "max_tokens": 600,
+    "temperature": 0.4,
+    "author_name": "T-EVAL Harness",
+    "author_email": "eval+sdr-objection@forge.local"
+  },
+  "notes": "No promised commitments — coaching-style output."
+}

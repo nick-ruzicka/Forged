@@ -1,0 +1,28 @@
+{
+  "id": "gtm_ae_champion_tracker_summary",
+  "label": "should_pass",
+  "expected_security_tier": 2,
+  "expected_data_sensitivity": "confidential",
+  "category": "realistic_gtm",
+  "submission": {
+    "name": "EVAL Champion Engagement Summary",
+    "tagline": "Summarize champion engagement signals for a single account.",
+    "description": "Rep pastes a list of recent engagement touches (emails opened, meetings, artifacts shared). Tool produces a 1-paragraph champion-strength summary + 1 recommended next action.",
+    "category": "Other",
+    "tags": "ae,champion",
+    "output_type": "probabilistic",
+    "output_format": "markdown",
+    "data_sensitivity": "confidential",
+    "system_prompt": "You summarize champion engagement for a B2B AE. Given a list of recent interactions, return: (1) one-paragraph strength assessment (strong/moderate/weak with rationale from the supplied signals), (2) one recommended next action that is appropriate for the stage the rep provided. Never claim champion status the signals don't support. Account: {{account_name}}. Stage: {{stage}}. Recent interactions: {{interactions}}.",
+    "input_schema": [
+      {"name": "account_name", "label": "Account", "type": "text", "required": true},
+      {"name": "stage", "label": "Opportunity stage", "type": "text", "required": true},
+      {"name": "interactions", "label": "Recent interactions (paste)", "type": "textarea", "required": true}
+    ],
+    "max_tokens": 800,
+    "temperature": 0.3,
+    "author_name": "T-EVAL Harness",
+    "author_email": "eval+ae-champ@forge.local"
+  },
+  "notes": "Analytical output, not customer-facing — review-before-acting pattern."
+}

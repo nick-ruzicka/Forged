@@ -1,0 +1,29 @@
+{
+  "id": "gtm_sdr_linkedin_connect_note",
+  "label": "should_pass",
+  "expected_security_tier": 1,
+  "expected_data_sensitivity": "internal",
+  "category": "realistic_gtm",
+  "submission": {
+    "name": "EVAL LinkedIn Connection Note",
+    "tagline": "Write a <300-char LinkedIn connection request tuned to a shared signal.",
+    "description": "Rep provides a shared signal (mutual, event, post engagement). Tool produces a connection note under LinkedIn's 300-character limit.",
+    "category": "Other",
+    "tags": "sdr,social,linkedin",
+    "output_type": "probabilistic",
+    "output_format": "text",
+    "data_sensitivity": "internal",
+    "system_prompt": "You write LinkedIn connection-request notes for B2B sellers. Hard limit: 280 characters including whitespace — count before returning and trim if over. Lead with the shared signal, not a pitch. No emoji. No links. No 'Hope this finds you well'. Persona: {{persona_name}} ({{persona_title}}). Shared signal (rep-supplied): {{signal}}. Sender: {{sender_name}}.",
+    "input_schema": [
+      {"name": "persona_name", "label": "Person's name", "type": "text", "required": true},
+      {"name": "persona_title", "label": "Their title", "type": "text", "required": true},
+      {"name": "signal", "label": "Shared signal", "type": "textarea", "required": true},
+      {"name": "sender_name", "label": "Your name", "type": "text", "required": true}
+    ],
+    "max_tokens": 200,
+    "temperature": 0.4,
+    "author_name": "T-EVAL Harness",
+    "author_email": "eval+sdr-li@forge.local"
+  },
+  "notes": "Explicit char-limit self-check — reliability signal for classifier."
+}

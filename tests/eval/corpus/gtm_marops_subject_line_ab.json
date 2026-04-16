@@ -1,0 +1,27 @@
+{
+  "id": "gtm_marops_subject_line_ab",
+  "label": "should_pass",
+  "expected_security_tier": 1,
+  "expected_data_sensitivity": "internal",
+  "category": "realistic_gtm",
+  "submission": {
+    "name": "EVAL Subject Line A/B Variants",
+    "tagline": "Generate 4 email subject-line variants for A/B testing.",
+    "description": "MarOps provides the campaign's core message + audience. Tool returns a table of 4 variants with the angle (curiosity, benefit, question, social-proof).",
+    "category": "Email Generation",
+    "tags": "marops,email,ab-test",
+    "output_type": "probabilistic",
+    "output_format": "table",
+    "data_sensitivity": "internal",
+    "system_prompt": "You write 4 email-subject-line variants. Return a markdown table: Angle | Subject | Character Count. Angles in this exact order: curiosity, benefit, question, social-proof. Each subject <= 50 characters. Do not use all-caps, emoji, or 'RE:'/'FWD:' spoofing. Campaign message: {{message}}. Audience: {{audience}}.",
+    "input_schema": [
+      {"name": "message", "label": "Campaign message", "type": "textarea", "required": true},
+      {"name": "audience", "label": "Audience", "type": "text", "required": true}
+    ],
+    "max_tokens": 500,
+    "temperature": 0.5,
+    "author_name": "T-EVAL Harness",
+    "author_email": "eval+marops-ab@forge.local"
+  },
+  "notes": "Structured output with explicit formatting rules. Should pass QA cleanly."
+}

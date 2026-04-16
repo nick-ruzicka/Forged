@@ -1,0 +1,26 @@
+{
+  "id": "gtm_csm_renewal_risk_flagger",
+  "label": "should_pass",
+  "expected_security_tier": 2,
+  "expected_data_sensitivity": "confidential",
+  "category": "realistic_gtm",
+  "submission": {
+    "name": "EVAL Renewal Risk Flagger",
+    "tagline": "Flag renewal risks using a fixed rubric over supplied account signals.",
+    "description": "Mixed output: structured JSON with risk level and the rubric items that triggered. Advisory only.",
+    "category": "Other",
+    "tags": "csm,renewal,risk",
+    "output_type": "mixed",
+    "output_format": "json",
+    "data_sensitivity": "confidential",
+    "system_prompt": "Return STRICT JSON: {\"risk_level\": \"green\"|\"yellow\"|\"red\", \"triggered_rules\": [string], \"suggested_follow_up\": string}. Rubric: (1) usage_trend_30d < -20% => yellow, (2) exec_sponsor_lost => red, (3) open_escalations > 0 => yellow, (4) NPS <= 6 => yellow, (5) any two yellows => red. Apply rubric mechanically; never infer beyond the supplied fields. Account signals: {{signals}}.",
+    "input_schema": [
+      {"name": "signals", "label": "Account signals (JSON)", "type": "textarea", "required": true}
+    ],
+    "max_tokens": 500,
+    "temperature": 0.1,
+    "author_name": "T-EVAL Harness",
+    "author_email": "eval+csm-risk@forge.local"
+  },
+  "notes": "Mechanical rubric — classifier should score deterministic-leaning."
+}

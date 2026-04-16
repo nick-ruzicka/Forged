@@ -1,0 +1,752 @@
+{
+  "timestamp": "2026-04-16T06:52:40.394560+00:00",
+  "base_url": "http://localhost:8090",
+  "counts": {
+    "high": 16,
+    "medium": 35,
+    "low": 28,
+    "total": 79
+  },
+  "pages": [
+    {
+      "page": "catalog",
+      "url": "http://localhost:8090/",
+      "description": "The tool catalog \u2014 users land here first.",
+      "findings": [
+        {
+          "severity": "high",
+          "category": "accessibility",
+          "viewport": "both",
+          "observation": "Trust badge colors \u2014 green for Verified, orange for Restricted, yellow for Caution \u2014 carry meaning solely through color and a small icon. No text label differentiates Restricted from Caution at a glance; both use warning-adjacent hues.",
+          "impact": "Color-blind users (especially deuteranopes) cannot reliably distinguish Caution from Restricted badges, which have meaningfully different access implications.",
+          "fix": "Add a distinct icon shape per trust level (e.g., shield-check for Verified, lock for Restricted, triangle for Caution) and ensure the badge text label is always visible, not just the icon."
+        },
+        {
+          "severity": "high",
+          "category": "mobile",
+          "viewport": "mobile",
+          "observation": "The category filter chips wrap into a multi-row scrollable list that is not obviously scrollable \u2014 no fade/gradient edge or scroll indicator is shown, and chips like 'Other' appear cut at the viewport edge without affordance.",
+          "impact": "Users will not discover all available category filters, leading to incomplete browsing and missed tools.",
+          "fix": "Convert the chip row to a single horizontally scrollable row with a right-edge gradient fade-out to signal overflow, or replace with a compact dropdown/drawer filter on mobile."
+        },
+        {
+          "severity": "high",
+          "category": "affordance",
+          "viewport": "both",
+          "observation": "Tool cards have two distinct primary actions \u2014 'Run Tool \u2192' (blue) and 'Open App' (green) \u2014 with no explanation of what differentiates them. A user landing on the catalog for the first time has no mental model for why some tools run and others open.",
+          "impact": "Decision paralysis and confusion; users may avoid App-type tools entirely or have wrong expectations before clicking.",
+          "fix": "Add a one-line inline explanation or tooltip on the card (e.g., 'App: opens a full interface' vs 'Tool: runs a prompt and returns output'), and consider a small type label near the button to reinforce the distinction."
+        },
+        {
+          "severity": "medium",
+          "category": "visual_hierarchy",
+          "viewport": "both",
+          "observation": "The welcome banner and the 'Never built an AI tool before?' onboarding strip compete at the same visual weight and are stacked immediately one after the other, both taking up significant vertical space above the fold.",
+          "impact": "Users who have already seen the welcome message cannot easily skip to the catalog; returning users are forced to scroll past redundant onboarding content on every visit.",
+          "fix": "Persist the dismiss (\u00d7) state via localStorage so the welcome banner stays closed after first dismissal. Collapse the onboarding strip into a single small text link after initial visit."
+        },
+        {
+          "severity": "medium",
+          "category": "navigation",
+          "viewport": "both",
+          "observation": "The '?' help icon in the top-right desktop header is a lone, unlabeled icon with no tooltip visible in the screenshot. On mobile it is absent entirely, replaced by a hamburger that presumably hides it.",
+          "impact": "Users who need help have no clear path; the icon is easy to overlook and its function is ambiguous (could be FAQ, documentation, or support chat).",
+          "fix": "Add a visible label 'Help' next to the icon on desktop, and ensure the help link is surfaced in the mobile menu with a descriptive label rather than buried or removed."
+        },
+        {
+          "severity": "medium",
+          "category": "information_density",
+          "viewport": "desktop",
+          "observation": "Cards for App-type tools (Meeting Prep Generator, Job Search Pipeline, etc.) show a 'opens' metric while prompt-based tool cards show 'runs'. This metric inconsistency means the sort order ('Most Used') is comparing heterogeneous numbers across card types.",
+          "impact": "Users cannot compare popularity across tool types on a level playing field, reducing confidence in the sort order.",
+          "fix": "Normalize the metric label to a single term (e.g., 'uses') across both tool types, or display both metrics contextually and clarify what each means with a tooltip."
+        },
+        {
+          "severity": "medium",
+          "category": "consistency",
+          "viewport": "both",
+          "observation": "The cost/token indicator uses a flame icon (\u26a1) with label 'Variable' or 'Mixed' on prompt tools, but App cards omit this indicator entirely, showing only a category label in its place.",
+          "impact": "Users cannot assess the relative cost or complexity of App-type tools before opening them, creating an inconsistent pre-click information model.",
+          "fix": "Either surface a cost indicator on App cards (even if it's 'N/A \u2014 fixed cost') or explicitly document in the card that Apps don't consume tokens, so the absence is meaningful rather than an oversight."
+        },
+        {
+          "severity": "medium",
+          "category": "copy",
+          "viewport": "both",
+          "observation": "The 'Restricted' badge appears on tool cards but there is no explanation anywhere on the page of what 'Restricted' means \u2014 who can access it, and what the user should do if they need access.",
+          "impact": "Users who see a relevant-looking Restricted tool have no path forward; they may not click, or may click and hit an unexplained access wall.",
+          "fix": "Add a tooltip on the Restricted badge explaining the access policy (e.g., 'Requires manager approval \u2014 click to request access') and link to a request flow."
+        },
+        {
+          "severity": "low",
+          "category": "typography",
+          "viewport": "desktop",
+          "observation": "Category filter chip labels and Trust filter chip labels are the same size, weight, and style, making the two filter rows feel like one undifferentiated group despite controlling different dimensions.",
+          "impact": "Users may not realize CATEGORY and TRUST are independent axes, leading to incorrect filtering assumptions.",
+          "fix": "Visually separate the two filter rows with a slightly larger gap or a subtle divider, and increase the weight of the row labels ('CATEGORY', 'TRUST') to reinforce they control distinct dimensions."
+        },
+        {
+          "severity": "low",
+          "category": "mobile",
+          "viewport": "mobile",
+          "observation": "On mobile, the '\u2726 Apps | Chain Tools \u2192 | Analytics' toggle row is rendered as three tappable text links in a single line with pipe characters as separators, with very small tap targets.",
+          "impact": "Pipe-separated text links are not recognizable as interactive tab controls; small tap targets increase mis-tap rate, especially on the narrow mobile viewport.",
+          "fix": "Replace with visually distinct segmented control tabs or chips with adequate padding (minimum 44\u00d744px tap target per WCAG 2.5.5)."
+        },
+        {
+          "severity": "low",
+          "category": "empty_state",
+          "viewport": "both",
+          "observation": "The 'Account Health Dashboard' card shows '0 opens' with no other usage data, making it visually identical to a broken or abandoned tool rather than a newly published one.",
+          "impact": "Users may skip this tool entirely, assuming low quality, when it may simply be new.",
+          "fix": "For tools with 0 usage, replace the '0 opens' metric with a 'New' badge or suppress the count altogether until a minimum threshold is reached."
+        }
+      ],
+      "strengths": [
+        "The dual-mode card design cleanly differentiates prompt-based tools from full apps using button color and label ('Run Tool' vs 'Open App'), establishing a consistent visual language across the catalog.",
+        "The search bar's placeholder text ('Search tools by name, category, or what you're trying to do\u2026') is genuinely instructive and lowers the barrier for users who don't yet know Forge's taxonomy."
+      ],
+      "summary": "Forge's catalog has a solid structural foundation with clear categorization and card patterns, but suffers from trust badge ambiguity, inconsistent metadata across tool types, and mobile filter discoverability issues that collectively erode user confidence in browsing and selecting tools."
+    },
+    {
+      "page": "tool_detail",
+      "url": "http://localhost:8090/tool.html?slug=account-research-brief",
+      "description": "A prompt-tool detail page with run form.",
+      "findings": [
+        {
+          "severity": "medium",
+          "category": "navigation",
+          "viewport": "desktop",
+          "observation": "A lone '?' help icon sits in the far top-right corner of the nav bar, isolated with no label, far from any related controls.",
+          "impact": "Users will not know what it does without hovering; its purpose and scope are ambiguous next to the top-level nav.",
+          "fix": "Replace with a labeled 'Help' link or give it a tooltip that appears on focus/hover; group it with other utility actions or place it in the footer."
+        },
+        {
+          "severity": "medium",
+          "category": "navigation",
+          "viewport": "mobile",
+          "observation": "The mobile header shows a hamburger menu icon and a '?' icon side by side, with no labels for either.",
+          "impact": "Two unlabeled icon-only controls adjacent to each other create ambiguity; users may not distinguish the hamburger's nav function from the help function.",
+          "fix": "Add aria-labels and visible tooltips; consider replacing '?' with a text 'Help' link inside the hamburger menu to reduce top-bar icon clutter."
+        },
+        {
+          "severity": "medium",
+          "category": "visual_hierarchy",
+          "viewport": "desktop",
+          "observation": "The left column has three distinct sections (Verified banner, 'How was this scored?' accordion, About This Tool, Version history, stats/actions, attribution, bottom CTAs) all stacked with inconsistent vertical spacing and no visual grouping separators.",
+          "impact": "Users scanning the page cannot quickly identify where metadata ends and actionable controls begin, slowing orientation.",
+          "fix": "Introduce consistent section dividers or card containers to group: (1) trust signals, (2) tool description, (3) meta/stats, (4) action buttons."
+        },
+        {
+          "severity": "high",
+          "category": "mobile",
+          "viewport": "mobile",
+          "observation": "On mobile the 'Run Tool' form panel is placed below all the tool detail content, requiring significant scrolling (~800px) before the user reaches the primary action.",
+          "impact": "The primary conversion action\u2014running the tool\u2014is buried; users who arrive with intent to run must scroll through all metadata first.",
+          "fix": "On mobile, surface a sticky 'Run Tool' button or tab at the bottom of the viewport that anchors to the form, or place the form in a bottom sheet triggered by a persistent CTA."
+        },
+        {
+          "severity": "low",
+          "category": "affordance",
+          "viewport": "both",
+          "observation": "The 'Copy Shareable Link' action on desktop is a plain text link styled differently (no border, no background) compared to the 'Fork This Tool' and 'Usage Instructions' buttons next to it.",
+          "impact": "Visual inconsistency between sibling actions causes users to perceive them as having different weights or importance, potentially missing 'Copy Shareable Link' entirely.",
+          "fix": "Apply the same outlined button style to all three sibling actions, or intentionally de-emphasize 'Copy Shareable Link' with a consistent ghost/tertiary button pattern."
+        },
+        {
+          "severity": "low",
+          "category": "consistency",
+          "viewport": "both",
+          "observation": "Two separate CTA rows exist at the bottom of the left column: one with 'Fork This Tool' and 'Usage Instructions', and a second below attribution with 'How does this work?' and 'Remix this'.",
+          "impact": "Splitting related actions across two rows separated by attribution text forces users to hunt for all available actions rather than finding them in one place.",
+          "fix": "Consolidate all secondary actions into a single action group after the attribution line, ordered by frequency of use."
+        },
+        {
+          "severity": "low",
+          "category": "typography",
+          "viewport": "both",
+          "observation": "The 'ABOUT THIS TOOL' label uses all-caps small text that is visually very close in weight and size to the body paragraphs that follow, making it read as a weak heading.",
+          "impact": "Section labels lose their hierarchy signal; users may not register the transition between sections.",
+          "fix": "Increase the label's font weight or add a small amount of letter-spacing and a bottom margin to differentiate it clearly from body text."
+        },
+        {
+          "severity": "low",
+          "category": "information_density",
+          "viewport": "desktop",
+          "observation": "The stats row ('325 runs \u00b7 4.0 rating \u00b7 Last run: 1h ago') is displayed in a single line with bullet separators but no iconographic visual weight difference between the three metrics.",
+          "impact": "At a glance, the three metrics blend together; the most trust-relevant metric (rating) does not stand out.",
+          "fix": "Give the star rating a distinct color accent (e.g., amber star icon) and slightly larger text to draw attention, keeping run count and last-run time in a secondary muted style."
+        },
+        {
+          "severity": "medium",
+          "category": "empty_state",
+          "viewport": "both",
+          "observation": "The 'Previous runs' accordion at the bottom of the Run Tool panel shows no content or placeholder state\u2014it is simply a collapsed row with no indication of whether there are 0 or N previous runs.",
+          "impact": "Users don't know if expanding it will yield useful history or an empty state, adding uncertainty and reducing trust in the feature.",
+          "fix": "Show a count badge next to 'Previous runs' (e.g., 'Previous runs (3)') when runs exist, or display '\u2014 No previous runs yet' in muted text when empty, even in collapsed state."
+        },
+        {
+          "severity": "low",
+          "category": "accessibility",
+          "viewport": "both",
+          "observation": "Required fields 'Company name' and 'Segment' are marked with a red asterisk (*) but there is no legend or helper text anywhere on the form explaining that * denotes required fields.",
+          "impact": "Users unfamiliar with the convention\u2014or screen reader users who hear '* Company name'\u2014receive no explicit explanation of the required-field marker.",
+          "fix": "Add a small 'Required fields' note (e.g., '* Required') above or below the form header, and ensure aria-required='true' is set on those inputs."
+        }
+      ],
+      "strengths": [
+        "The two-column desktop layout cleanly separates informational content (left) from the actionable run form (right), giving expert users an efficient at-a-glance orientation.",
+        "The 'Verified' badge with its explanatory sub-text ('Reviewed and tested. Exercise standard professional judgment.') sets appropriate trust expectations without being verbose."
+      ],
+      "summary": "The page has a solid structural foundation with clear trust signals and a well-organized run form on desktop, but suffers from a buried primary action on mobile, inconsistent action button styling, weak section hierarchy in the left column, and several small accessibility gaps."
+    },
+    {
+      "page": "submit",
+      "url": "http://localhost:8090/submit.html",
+      "description": "Tool submission \u2014 first step asks which format.",
+      "findings": [
+        {
+          "severity": "high",
+          "category": "visual_hierarchy",
+          "viewport": "both",
+          "observation": "The prompt textarea displays a large block of example placeholder text that reads as real content, making it impossible to distinguish the empty/instructional state from an actual filled prompt at a glance.",
+          "impact": "Users may not realize they need to clear the example before typing their own prompt, leading to accidental submission of example content or confusion about how to start.",
+          "fix": "Replace the example text with a styled ghost placeholder (CSS ::placeholder) that disappears on focus, or add a visible 'Clear example' button overlaid on the textarea with a distinct muted style that differentiates it from real input."
+        },
+        {
+          "severity": "high",
+          "category": "information_density",
+          "viewport": "both",
+          "observation": "The '\u2022 Details \u2014 need: prompt, name, tagline, email' row is styled identically to the surrounding card text with no clear affordance \u2014 it reads as an inline status label but is actually signaling a required next step before submission.",
+          "impact": "Users do not understand that these are blocking requirements for submission, potentially clicking 'Submit for review' without completing mandatory fields and encountering an opaque error.",
+          "fix": "Convert this row into a structured checklist with per-item completion indicators (e.g., checkmarks vs. empty circles), a clear heading like 'Required before submitting', and link each item to its corresponding section."
+        },
+        {
+          "severity": "high",
+          "category": "affordance",
+          "viewport": "both",
+          "observation": "'Submit for review' is fully active and visually prominent (solid blue) even though no prompt has been written and detected variables are zero, giving no indication the form is in an incomplete state.",
+          "impact": "Users can attempt submission prematurely, leading to validation failures with no preemptive guidance, increasing frustration and submission errors.",
+          "fix": "Disable or visually dim 'Submit for review' until the minimum required fields (prompt, name, tagline, email) are satisfied, and show a tooltip or inline count like '3 of 4 required fields complete' to communicate progress."
+        },
+        {
+          "severity": "medium",
+          "category": "mobile",
+          "viewport": "mobile",
+          "observation": "On mobile the INPUTS panel is pushed below the fold to the very bottom of the page (after the sticky action bar), completely decoupled from the PROMPT textarea it annotates.",
+          "impact": "Users writing a prompt on mobile have no way to see auto-detected variables without scrolling past the action buttons to the bottom, breaking the feedback loop the panel is designed to provide.",
+          "fix": "On mobile, relocate the INPUTS panel immediately below the PROMPT card (before TEST IT), or use a collapsible inline section within the PROMPT card so variable detection is visible in context."
+        },
+        {
+          "severity": "medium",
+          "category": "affordance",
+          "viewport": "both",
+          "observation": "The 'Run test' button is enabled even though no variables have been added to the prompt and the instructional italic copy says 'Add {{variables}} to your prompt to enable testing', creating a contradiction.",
+          "impact": "Clicking 'Run test' in this state will likely produce an empty or error result, wasting the user's time and eroding trust in the interface.",
+          "fix": "Disable the 'Run test' button (with a muted style) until at least one variable is detected, replacing the italic instruction with the disabled button's tooltip explaining why it is inactive."
+        },
+        {
+          "severity": "medium",
+          "category": "empty_state",
+          "viewport": "both",
+          "observation": "The 'Output will appear here' area in TEST IT has no border, background differentiation, or minimum height \u2014 it renders as a single line of muted text indistinguishable from instructional copy.",
+          "impact": "Users do not perceive it as an output zone and may miss results after running a test, or not understand where to look.",
+          "fix": "Give the output zone a visible dashed border, a slightly differentiated background (e.g., rgba white 4%), and a minimum height of ~80px so it reads as a distinct result container even when empty."
+        },
+        {
+          "severity": "medium",
+          "category": "copy",
+          "viewport": "both",
+          "observation": "The page subtitle reads 'Write your prompt, test it, then submit. Inputs are detected automatically from {{variables}}.' \u2014 the literal monospace '{{variables}}' in the headline copy is ambiguous; it looks like a rendering bug or unfilled template variable to first-time users.",
+          "impact": "New users may interpret this as a broken page before reading closely enough to understand it is intentional syntax documentation.",
+          "fix": "Wrap the syntax example in a styled inline code badge with a brief parenthetical, e.g., 'detected automatically from variables you wrap in double braces' with a code badge showing {{variable_name}}."
+        },
+        {
+          "severity": "low",
+          "category": "consistency",
+          "viewport": "both",
+          "observation": "The bottom footer note 'Need the old five-step form? Use the advanced editor.' is styled as body text with only a blue hyperlink, placed below the primary action buttons with no visual separation.",
+          "impact": "Users who need the advanced editor may miss this escape hatch entirely, or mistake it for a legal/footer link rather than a functional navigation option.",
+          "fix": "Elevate this link to a small but distinct secondary action, perhaps a text-button with a subtle border placed above the Save/Submit row, or add a brief icon (e.g., \u2699) to signal it is a mode switch."
+        },
+        {
+          "severity": "low",
+          "category": "typography",
+          "viewport": "both",
+          "observation": "Section labels PROMPT, TEST IT, and INPUTS use all-caps small tracking text but have no consistent vertical rhythm \u2014 PROMPT and TEST IT are inside bordered cards while INPUTS floats in a right-column card with different padding on desktop.",
+          "impact": "Minor inconsistency reduces perceived polish and can make the layout feel assembled rather than designed.",
+          "fix": "Standardize section header typography, padding-top, and card border treatment across all three panels so they form a cohesive visual language."
+        }
+      ],
+      "strengths": [
+        "The live variable detection concept (auto-populating the INPUTS panel from {{syntax}} in the prompt) is a genuinely powerful affordance that reduces form friction and is clearly communicated with consistent monospace styling throughout.",
+        "The two-action footer (Save draft + Submit for review) correctly separates destructive-adjacent actions with visual weight difference \u2014 ghost style for draft, filled blue for submit \u2014 which is an appropriate and clear hierarchy."
+      ],
+      "summary": "The submit page has a solid structural concept but suffers from several high-severity affordance failures \u2014 an always-enabled submit button, an ambiguous requirements row, and a misleading example prompt \u2014 that together create a high likelihood of confused or failed first submissions."
+    },
+    {
+      "page": "creator",
+      "url": "http://localhost:8090/creator.html",
+      "description": "Plain-English tool creator (AI designer).",
+      "findings": [
+        {
+          "severity": "medium",
+          "category": "affordance",
+          "viewport": "both",
+          "observation": "The four prompt-suggestion cards (Cold..., Acc..., De..., Mee...) have truncated labels with ellipsis but no visible click indicator \u2014 no arrow, hover state shown, or copy button \u2014 making it unclear whether clicking one populates the textarea or navigates somewhere.",
+          "impact": "Users may not realize the cards are interactive shortcuts, missing a key affordance that could accelerate task completion.",
+          "fix": "Add a visible interactive cue: on hover (desktop) show a subtle border highlight and cursor:pointer; on the card itself add a small '\u2197 Use this' label or a fill-textarea icon so the action is self-evident on both viewports."
+        },
+        {
+          "severity": "medium",
+          "category": "typography",
+          "viewport": "both",
+          "observation": "The truncated card labels ('Cold...', 'Acc...', 'De...', 'Mee...') are cut to 4\u20135 characters, making the category tag nearly meaningless as a scannable label.",
+          "impact": "Users cannot distinguish card topics at a glance; the label provides no navigational value and forces reading the full body text of every card.",
+          "fix": "Allow the label to wrap to two lines or increase the label column width so at least a recognizable keyword shows (e.g., 'Cold Outreach', 'Account Research'). Alternatively, replace the truncated text with a short icon + full label."
+        },
+        {
+          "severity": "medium",
+          "category": "accessibility",
+          "viewport": "desktop",
+          "observation": "The '?' help icon in the top-right corner is a standalone character with no visible button boundary, label, or aria-label visible in the UI, and its contrast against the dark background appears low.",
+          "impact": "Keyboard and screen-reader users may not find or activate the help entry point; low-vision users may miss it entirely.",
+          "fix": "Wrap the '?' in a proper <button> with aria-label='Help', add a visible focus ring, and ensure the icon meets a 4.5:1 contrast ratio against the background."
+        },
+        {
+          "severity": "low",
+          "category": "copy",
+          "viewport": "both",
+          "observation": "The textarea placeholder reads 'Describe what you want this tool to do\u2026' and then separately shows a long example sentence inside the same text area area, making it ambiguous whether the example is pre-filled content or secondary placeholder guidance.",
+          "impact": "Users may be confused about whether they should clear the example text before typing, increasing cognitive friction at the point of action.",
+          "fix": "Separate the instructional example from the placeholder: place the example sentence below the textarea as a static hint line ('e.g., A tool that takes a company name\u2026') styled in a muted caption, leaving only the short prompt as the true placeholder."
+        },
+        {
+          "severity": "low",
+          "category": "visual_hierarchy",
+          "viewport": "desktop",
+          "observation": "The 'Design my tool' CTA button is right-aligned at the bottom of the content area, visually disconnected from the textarea above it, with no clear vertical relationship to the input or the suggestion cards.",
+          "impact": "Users who finish typing may scan left or center for a submission action, and the isolated right-aligned button could be overlooked.",
+          "fix": "Center the CTA below the textarea and cards, or place it directly beneath the textarea with full width (matching the textarea's width) to create a clear input \u2192 submit flow line."
+        },
+        {
+          "severity": "low",
+          "category": "mobile",
+          "viewport": "mobile",
+          "observation": "On mobile the 'Design my tool' button is full-width, which is correct, but it sits with a large gap below the last suggestion card and above the footer, creating dead whitespace that pushes the CTA near the fold edge inconsistently depending on content length.",
+          "impact": "On shorter device heights the button may not be immediately visible without scrolling, and the spacing feels unintentional rather than deliberate.",
+          "fix": "Fix the CTA to the bottom of the viewport as a sticky bar on mobile so it is always accessible regardless of how many suggestion cards are present."
+        },
+        {
+          "severity": "low",
+          "category": "consistency",
+          "viewport": "desktop",
+          "observation": "On desktop the suggestion cards are arranged in a 3+1 grid (three in the first row, one in the second), while on mobile they are a single full-width column. The desktop layout leaves two empty card slots in the second row, making the grid feel incomplete.",
+          "impact": "The asymmetric grid signals an unfinished UI rather than an intentional design decision, reducing perceived polish.",
+          "fix": "Either populate the grid with additional example cards to complete the second row, or switch to a 2\u00d72 grid on desktop so the lone fourth card does not orphan itself."
+        }
+      ],
+      "strengths": [
+        "The plain-English description copy ('Describe what you want the tool to do\u2026 inputs, prompt, governance') clearly sets user expectations and lowers the barrier to entry for non-technical users.",
+        "The dark theme is consistently applied across both viewports with good contrast on primary text and the blue CTA button, maintaining brand coherence without visual fatigue."
+      ],
+      "summary": "The creator page communicates its purpose clearly but suffers from ambiguous card affordances, nearly unreadable truncated labels, and a disconnected CTA placement that collectively increase friction at the critical moment of user action."
+    },
+    {
+      "page": "workflow",
+      "url": "http://localhost:8090/workflow.html",
+      "description": "Two-tool chain builder (workflow composer).",
+      "findings": [
+        {
+          "severity": "high",
+          "category": "affordance",
+          "viewport": "both",
+          "observation": "The 'Map Step 1 output \u2192 Step 2 field' dropdown is visible and active even before any tools have been selected in Step 1 or Step 2, making the mapping option meaningless at this state.",
+          "impact": "Users may attempt to configure the mapping before selecting tools, then find the dropdown options irrelevant or empty, causing confusion about the correct sequence of actions.",
+          "fix": "Disable or hide the mapping dropdown until both Step 1 and Step 2 tools are selected. Show a contextual hint like 'Select tools above to configure field mapping' in its place."
+        },
+        {
+          "severity": "high",
+          "category": "affordance",
+          "viewport": "both",
+          "observation": "The 'Run Chain' button is fully active and clickable even though no tools have been selected in either step and name/email fields are empty, with no visible form validation state.",
+          "impact": "Users can attempt to submit an incomplete chain, likely receiving an error with no clear recovery path, wasting a round-trip and eroding trust.",
+          "fix": "Disable the 'Run Chain' button until at minimum both tool dropdowns have a selection. Add inline validation on the name and email fields before allowing submission."
+        },
+        {
+          "severity": "medium",
+          "category": "information_density",
+          "viewport": "both",
+          "observation": "The 'Your name' and 'Your email' fields appear below the chain configuration with no section label or explanation for why user identity is required to run a chain on an internal tool.",
+          "impact": "Users are confused about why personal credentials are needed mid-workflow, which may introduce hesitation or abandonment, especially for an internal tool where identity should be known.",
+          "fix": "Add a brief label or section heading (e.g., 'Run as') with a one-line explanation such as 'Results will be attributed to your account.' Alternatively, auto-populate from the authenticated session if one exists."
+        },
+        {
+          "severity": "medium",
+          "category": "visual_hierarchy",
+          "viewport": "both",
+          "observation": "Step 1 and Step 2 cards have identical visual weight and styling with no visual connector or arrow between them to communicate sequential flow.",
+          "impact": "The sequential dependency between steps is not immediately obvious; users may treat the two steps as independent parallel configurations rather than a chain.",
+          "fix": "Add a visual connector between the two step cards \u2014 a downward arrow or a small labeled connector band reading 'output passed as {{step1.output}}' \u2014 to reinforce the sequential, dependent relationship."
+        },
+        {
+          "severity": "medium",
+          "category": "copy",
+          "viewport": "both",
+          "observation": "The subtitle 'Run two tools in sequence. The first tool's output can be referenced inside the second tool's inputs as {{step1.output}}.' uses raw template syntax in prose directed at end users without a plain-language explanation of what that means practically.",
+          "impact": "Non-technical users or new users may not understand what {{step1.output}} means or how to use it, reducing the discoverability and usability of the chaining feature.",
+          "fix": "Add a plain-language example after the template syntax, such as: 'For example, if Step 1 summarizes text, Step 2 can translate that summary automatically.'"
+        },
+        {
+          "severity": "medium",
+          "category": "accessibility",
+          "viewport": "both",
+          "observation": "The helper text beneath the mapping dropdown ('The selected field will be set to {{step1.output}} when the chain runs.') is rendered in a noticeably smaller, lower-contrast gray compared to the surrounding content.",
+          "impact": "Users with low vision or in bright ambient conditions may miss this important explanation of how the mapping works, leading to misconfigured chains.",
+          "fix": "Increase the font size to at least 13px and ensure the text color meets WCAG AA contrast ratio (minimum 4.5:1 against the dark background). Consider using the same gray as the dropdown label text."
+        },
+        {
+          "severity": "low",
+          "category": "navigation",
+          "viewport": "desktop",
+          "observation": "A '?' help icon appears in the top-right corner of the desktop nav, while the mobile view uses a hamburger menu that also contains a '?' icon, resulting in no unified help entry point.",
+          "impact": "Users switching between devices encounter inconsistent help access patterns, which can reduce discoverability of support resources.",
+          "fix": "Standardize the help affordance: on desktop keep the '?' icon but ensure it opens the same content as the mobile '?' within the hamburger menu. Consider a persistent help link in the footer or a contextual tooltip near the chain builder title."
+        },
+        {
+          "severity": "low",
+          "category": "empty_state",
+          "viewport": "both",
+          "observation": "The tool dropdowns in Step 1 and Step 2 both show '\u2014 Select a tool \u2014' with no indication of how many tools are available, what categories exist, or a shortcut to browse the catalog.",
+          "impact": "Users with no prior knowledge of available tools have no signal about what to expect when they open the dropdown, increasing time-to-first-selection.",
+          "fix": "Add a subtle hint below each dropdown such as 'Choose from 24 available tools' or link to the catalog: 'Browse catalog \u2197'. If the dropdown itself supports search, surface a search hint inside the placeholder text."
+        },
+        {
+          "severity": "low",
+          "category": "consistency",
+          "viewport": "both",
+          "observation": "The '\u2190 Back to catalog' link uses a plain left-arrow character (\u2190) while the 'Map Step 1 output \u2192 Step 2 field' label uses a styled arrow (\u2192), mixing typographic and semantic arrow conventions on the same page.",
+          "impact": "Minor visual inconsistency that slightly undermines the polish of the interface, especially on a tooling platform where precision signals credibility.",
+          "fix": "Standardize arrow usage: use a consistent SVG icon or Unicode arrow character (\u2192/\u2190) across all directional indicators on the page."
+        }
+      ],
+      "strengths": [
+        "The two-step card layout with clear 'Step 1' and 'Step 2' headers provides a clean, scannable structure that makes the dual-tool concept immediately apparent.",
+        "The helper text explaining that {{step1.output}} will be injected when the chain runs is a genuinely useful piece of inline documentation placed exactly where the user needs it."
+      ],
+      "summary": "The Chain Tools page has a clear structural layout but suffers from premature affordance exposure (active Run button and mapping dropdown before tools are selected), insufficient visual feedback on the sequential relationship between steps, and copy that assumes technical familiarity, all of which create friction for both new and occasional users."
+    },
+    {
+      "page": "skills",
+      "url": "http://localhost:8090/skills.html",
+      "description": "Skills library \u2014 copy/paste prompt templates.",
+      "findings": [
+        {
+          "severity": "high",
+          "category": "mobile",
+          "viewport": "mobile",
+          "observation": "The filter category pills (Development, Testing, Debugging, Planning, Code Review, Documents, Other) and the sort dropdown appear to be stacked or compressed into a very narrow horizontal scroll area with no visible affordance indicating they are scrollable.",
+          "impact": "Mobile users may not discover all filter options, leading to missed content and an assumption that fewer categories exist.",
+          "fix": "Add a subtle fade/gradient on the right edge of the filter row to signal horizontal scrollability, or convert to a 2-row wrap layout at this breakpoint."
+        },
+        {
+          "severity": "high",
+          "category": "affordance",
+          "viewport": "both",
+          "observation": "Each card has two separate CTAs \u2014 'Copy' (for the curl install command) and 'Download .md' \u2014 but the 'Copy' button is small, low-contrast gray text inside the code snippet area, making it visually subordinate and easy to miss.",
+          "impact": "Users who prefer the curl workflow may overlook the Copy action and resort to manually selecting text, increasing friction for the primary install path.",
+          "fix": "Elevate the Copy button to a visible icon-button (clipboard icon) with a clear label outside the code block, or give it equal visual weight to 'Download .md' by using a secondary button style."
+        },
+        {
+          "severity": "medium",
+          "category": "visual_hierarchy",
+          "viewport": "both",
+          "observation": "The category badge (e.g., TESTING, DEVELOPMENT, DOCUMENTS) at the top of each card uses the same small all-caps gray style as secondary metadata, giving it the same visual weight as the download count. The skill name directly below is the only strong typographic anchor.",
+          "impact": "Users scanning by category must read carefully rather than glance, slowing browsing especially when filters are not applied.",
+          "fix": "Differentiate category badges with a subtle colored pill background per category (matching the filter pill colors) so category is scannable at a glance."
+        },
+        {
+          "severity": "medium",
+          "category": "information_density",
+          "viewport": "desktop",
+          "observation": "The code snippet preview inside each card is truncated at roughly 3\u20134 lines with an ellipsis, but the truncation cut-off appears to sometimes end mid-word or mid-sentence, providing no meaningful signal about the skill's content.",
+          "impact": "The preview adds visual weight without adding informational value, consuming card real estate that could be used for a more descriptive summary.",
+          "fix": "Either remove the code preview in favor of an expanded description, or limit the preview to the first meaningful line (the 'description:' value) extracted from the frontmatter."
+        },
+        {
+          "severity": "medium",
+          "category": "accessibility",
+          "viewport": "both",
+          "observation": "The '+ Install with curl' toggle/label and the code snippet area appear to use very low contrast text on a dark background (near-black on dark gray), likely failing WCAG AA contrast ratios.",
+          "impact": "Users with low vision or in bright ambient lighting cannot reliably read the install commands, degrading the primary utility of the card.",
+          "fix": "Increase the code snippet text color to at least #B0B0B0 on the dark background, and verify all text passes a minimum 4.5:1 contrast ratio."
+        },
+        {
+          "severity": "medium",
+          "category": "navigation",
+          "viewport": "desktop",
+          "observation": "There is a lone '?' icon button on the far right of the top navigation bar with no label and no visible tooltip in the screenshot.",
+          "impact": "Users cannot determine what help or documentation this links to without clicking, reducing discoverability of support resources.",
+          "fix": "Add a visible label 'Help' next to the icon, or implement a tooltip on hover that describes its purpose."
+        },
+        {
+          "severity": "medium",
+          "category": "copy",
+          "viewport": "both",
+          "observation": "The subtitle beneath 'Skills Library' reads 'Real SKILL.md files for Claude Code. Download and drop into ~/.claude/skills/' \u2014 this assumes the user knows what SKILL.md files are and how Claude Code's directory structure works.",
+          "impact": "New users or those unfamiliar with Claude Code's file-based skill system will not understand the workflow from this description alone.",
+          "fix": "Add a secondary sentence or a linked 'Learn more' that briefly explains the concept: e.g., 'Skills extend Claude Code's capabilities. Download a file and place it in your skills folder to activate it.'"
+        },
+        {
+          "severity": "low",
+          "category": "consistency",
+          "viewport": "both",
+          "observation": "The upvote count display uses '\u2191 0' for all visible cards, but the download count ('2 downloads', '3 downloads') only appears on select cards with no count shown on others, creating an inconsistent data presentation pattern.",
+          "impact": "Users cannot rely on the absence of a download count to mean zero downloads versus data simply not being displayed, reducing trust in the metrics.",
+          "fix": "Consistently show '0 downloads' on all cards rather than omitting the field, so the data model is predictable."
+        },
+        {
+          "severity": "low",
+          "category": "typography",
+          "viewport": "mobile",
+          "observation": "On mobile, skill names like 'dispatching-parallel-agents' and 'verification-before-completion' are hyphenated slugs rather than human-readable titles, and at the smaller font size they are harder to parse quickly.",
+          "impact": "Cognitive load increases when scanning a long list on mobile, slowing users from finding the skill they need.",
+          "fix": "Display a formatted display name (e.g., 'Dispatching Parallel Agents') in the card heading while keeping the slug as secondary metadata or reserved for the install command."
+        },
+        {
+          "severity": "low",
+          "category": "empty_state",
+          "viewport": "both",
+          "observation": "There is no visible empty state or zero-results message design for the search bar, and no placeholder interaction hint beyond 'Search skills...'.",
+          "impact": "If a user searches for a term with no results, there is no indication of what to do next (e.g., submit a new skill), missing an opportunity for re-engagement.",
+          "fix": "Design an explicit empty state for the search results view with a message like 'No skills found for X \u2014 want to submit one?' with a direct link to the Submit flow."
+        }
+      ],
+      "strengths": [
+        "The card layout consistently surfaces the three most decision-relevant elements (category, name, description) in a predictable hierarchy, making the library scannable even at high density.",
+        "The dual install options (curl command with Copy + Download .md) on every card thoughtfully accommodate different user workflows without requiring navigation away from the library."
+      ],
+      "summary": "The Skills Library page has a solid structural foundation and clear dual-CTA pattern, but suffers from low-contrast code snippets, inconsistent metadata display, and mobile filter discoverability issues that collectively friction the core install workflow for a technical audience."
+    },
+    {
+      "page": "my_tools",
+      "url": "http://localhost:8090/my-tools.html",
+      "description": "User's own submissions across statuses.",
+      "findings": [
+        {
+          "severity": "high",
+          "category": "affordance",
+          "viewport": "both",
+          "observation": "The identity gate ('Who are you?') requires both a name and email to view the user's own submissions, yet this is an internal tool where the user is presumably already known or could be authenticated via SSO/session.",
+          "impact": "Users must re-identify themselves every visit, creating friction and eroding trust in the platform's professionalism. There is no persistent session, so repeat visits repeat the same gate.",
+          "fix": "Implement session persistence (cookie or localStorage) so the identity form is shown only once. Better yet, integrate with Navan's existing SSO so the user is auto-identified and the gate is removed entirely."
+        },
+        {
+          "severity": "medium",
+          "category": "copy",
+          "viewport": "both",
+          "observation": "The email placeholder reads 'you@navan.com', implying only @navan.com addresses are valid, but no validation rule is communicated and no error state is shown for non-Navan emails.",
+          "impact": "Users with different internal domains or contractors may be confused about what to enter and whether they will be accepted.",
+          "fix": "Either enforce @navan.com validation and state it explicitly ('Must be your @navan.com email'), or use a generic placeholder like 'your-email@company.com' if other domains are allowed."
+        },
+        {
+          "severity": "medium",
+          "category": "empty_state",
+          "viewport": "both",
+          "observation": "The page behind the identity gate is completely empty \u2014 there is no preview or indication of what the user will see after authenticating (e.g., tool cards with statuses like Draft, Pending, Approved).",
+          "impact": "Users have no motivation model for why they should complete the form, reducing completion rates.",
+          "fix": "Add a brief visual or textual preview below or beside the card \u2014 for example, a ghost/skeleton of a tool card with status badges \u2014 to communicate what awaits after identification."
+        },
+        {
+          "severity": "medium",
+          "category": "accessibility",
+          "viewport": "both",
+          "observation": "The 'Your name' field has no visible placeholder text and no helper text, leaving it ambiguous whether a display name, full legal name, or username is expected.",
+          "impact": "Users may enter inconsistent values, causing identity mismatches when the same person submits tools multiple times under slightly different names.",
+          "fix": "Add placeholder text such as 'e.g. Jane Smith' and a brief helper note: 'Use the name you go by at Navan.'"
+        },
+        {
+          "severity": "medium",
+          "category": "visual_hierarchy",
+          "viewport": "desktop",
+          "observation": "The '+ Submit a Tool' CTA button is pinned to the top-right of the page header at the same visual level as the page title, while the primary task on the page is identifying yourself in the centered card.",
+          "impact": "The CTA competes with the identity flow, potentially pulling users away before they complete identification, or making the page feel incoherent in purpose.",
+          "fix": "Move the '+ Submit a Tool' button to below the identity card, or into a secondary position (e.g., small text link), so it surfaces prominently only after the user is identified."
+        },
+        {
+          "severity": "low",
+          "category": "navigation",
+          "viewport": "desktop",
+          "observation": "A lone '?' icon sits in the far top-right corner of the desktop nav with no label or tooltip visible in the screenshot.",
+          "impact": "Users cannot determine what this icon does (Help? FAQ? Keyboard shortcuts?) without clicking it, reducing discoverability.",
+          "fix": "Add a visible tooltip on hover (e.g., 'Help') or replace the icon with a labeled link if space allows."
+        },
+        {
+          "severity": "low",
+          "category": "mobile",
+          "viewport": "mobile",
+          "observation": "On mobile, the '+ Submit a Tool' button appears between the page subtitle and the identity card, creating an awkward flow interruption \u2014 the user sees a submission CTA before being told they need to identify themselves.",
+          "impact": "The cognitive sequence is broken: action CTA precedes the gating requirement, which may confuse users about the page's primary purpose.",
+          "fix": "Reorder mobile layout to: page title \u2192 subtitle \u2192 identity card \u2192 '+ Submit a Tool' button (conditionally shown after identification, or moved to a FAB)."
+        },
+        {
+          "severity": "low",
+          "category": "consistency",
+          "viewport": "both",
+          "observation": "The page subtitle says 'Tools you've submitted, across every status' while the identity card says 'Tell us your email to view your submitted tools' \u2014 'your name' is also collected but not mentioned in the card subtitle.",
+          "impact": "Minor trust erosion \u2014 users may wonder why their name is needed if only email was mentioned, and may question data usage.",
+          "fix": "Update the card subtitle to: 'Tell us your name and email to view your submitted tools.' Ensure both fields are justified in the UX copy."
+        }
+      ],
+      "strengths": [
+        "The dark theme is consistently applied across both viewports with sufficient contrast on interactive elements like the blue 'Continue' CTA and the '+ Submit a Tool' button.",
+        "The scoped page concept \u2014 showing only the current user's tools across all statuses \u2014 is a clear and useful mental model communicated concisely in the subtitle."
+      ],
+      "summary": "The My Tools page is conceptually sound but is undermined by an unnecessary manual identity gate that should be replaced with session persistence or SSO, compounded by layout sequencing issues on mobile and missing contextual scaffolding that would motivate users to complete the identification flow."
+    },
+    {
+      "page": "admin",
+      "url": "http://localhost:8090/admin.html",
+      "description": "Admin review queue (gated).",
+      "findings": [
+        {
+          "severity": "high",
+          "category": "navigation",
+          "viewport": "mobile",
+          "observation": "The top navigation wraps to two lines on mobile, with 'My Tools' splitting across rows, creating an uneven and cramped nav bar that overlaps the page content area.",
+          "impact": "Users may mis-tap nav items or perceive the interface as broken, reducing trust in an internal admin tool.",
+          "fix": "Implement a hamburger menu or condensed icon-based nav for mobile viewports to collapse the five nav items into a drawer, keeping the top bar to a single line."
+        },
+        {
+          "severity": "high",
+          "category": "accessibility",
+          "viewport": "both",
+          "observation": "The admin key input field has no visible label above it in the rendered state \u2014 only a placeholder 'admin key' \u2014 and the 'X-Admin-Key' label appears very small and low-contrast (gray on dark gray) above the field.",
+          "impact": "Screen readers may not correctly associate the label with the input, and sighted users lose the label context when typing because the placeholder disappears.",
+          "fix": "Use a persistent visible label rendered as a proper <label> element with sufficient contrast (at least 4.5:1 against the background), and keep it visible above the input at all times rather than relying on placeholder text."
+        },
+        {
+          "severity": "high",
+          "category": "affordance",
+          "viewport": "both",
+          "observation": "The admin key input is type='text' (or visually appears so) \u2014 there is no password masking (no eye-toggle or hidden characters indicated) for what is clearly a sensitive credential field.",
+          "impact": "Admin keys entered on shared or observed screens are exposed in plaintext, creating a security risk and violating user expectations for credential inputs.",
+          "fix": "Set the input type to 'password' and add an optional show/hide toggle icon inside the field so the key is masked by default but can be revealed intentionally."
+        },
+        {
+          "severity": "medium",
+          "category": "information_density",
+          "viewport": "both",
+          "observation": "The gate page provides no context about what happens after the admin key is accepted \u2014 no description of the review queue, no indication of what 'manage the review queue' entails, and no link to documentation or support.",
+          "impact": "First-time admins have no orientation about what they are unlocking or what to do if they don't have a key, leading to confusion and support requests.",
+          "fix": "Add a brief secondary line below the subtitle explaining the next step (e.g., 'You'll be able to approve, reject, and flag submitted tools.') and a 'Don't have a key? Contact your administrator' link."
+        },
+        {
+          "severity": "medium",
+          "category": "affordance",
+          "viewport": "both",
+          "observation": "There is no error state visible, and no indication of what happens if an incorrect admin key is submitted \u2014 no inline validation hint or failure message pattern is shown.",
+          "impact": "When users enter a wrong key, they will have no feedback on what failed or how to correct it, causing repeated failed attempts without guidance.",
+          "fix": "Design and document an inline error state below the input field (e.g., red border + 'Invalid admin key. Please try again.') and ensure the button does not navigate away on failure."
+        },
+        {
+          "severity": "medium",
+          "category": "consistency",
+          "viewport": "both",
+          "observation": "The 'ADMIN' badge in the top-right corner duplicates the already-highlighted 'Admin' nav link, serving no clear additional purpose.",
+          "impact": "Redundant UI elements create visual noise and may confuse users about whether these two elements have different functions.",
+          "fix": "Remove the 'ADMIN' pill badge from the top-right, or repurpose it as a logged-in admin role indicator that only appears after successful authentication, distinguishing it semantically from the nav link."
+        },
+        {
+          "severity": "low",
+          "category": "visual_hierarchy",
+          "viewport": "both",
+          "observation": "The card/form container occupies only a small central band of the page with a large empty black void below it, giving the page an unfinished appearance.",
+          "impact": "The large dead space below the form signals incompleteness and reduces perceived quality of the tool.",
+          "fix": "Either vertically center the card within the full viewport height (using flexbox/grid on the page wrapper), or add contextual content below such as recent admin activity or a status indicator."
+        },
+        {
+          "severity": "low",
+          "category": "copy",
+          "viewport": "both",
+          "observation": "The button label 'Save & Continue' is ambiguous \u2014 'Save' implies persisting data, while the action is really authenticating with a key and proceeding.",
+          "impact": "Users may be uncertain whether the key is being stored locally/server-side or just used for session authentication, which matters for security-conscious admins.",
+          "fix": "Rename the button to 'Unlock Admin Access' or 'Authenticate' to accurately reflect the action being taken."
+        }
+      ],
+      "strengths": [
+        "The dark theme is consistently applied across all elements including the form card, nav, and background, maintaining visual cohesion throughout the gated page.",
+        "The focused state on the admin key input field is clearly communicated with a visible blue border, providing good affordance for the primary interaction."
+      ],
+      "summary": "The admin gate page has a clear single-purpose layout but suffers from critical security and accessibility gaps \u2014 most urgently the plaintext credential input and insufficient label contrast \u2014 along with mobile navigation wrapping and ambiguous copy that together undermine trust in an internal tool context."
+    },
+    {
+      "page": "app_kanban",
+      "url": "http://localhost:8090/apps/job-search-pipeline",
+      "description": "A live app \u2014 kanban for job search tracking.",
+      "findings": [
+        {
+          "severity": "high",
+          "category": "empty_state",
+          "viewport": "both",
+          "observation": "All six kanban columns are completely empty with no visual guidance, illustration, or call-to-action inside the column bodies. The only affordance is the bottom status bar hint.",
+          "impact": "First-time users land on a blank board with no clear next step inside the work area itself, increasing cognitive load and likelihood of abandonment.",
+          "fix": "Add an inline empty state to at least the 'Applied' column with a brief label (e.g., 'No applications yet') and a small '+' icon or 'Add company' ghost button directly inside the column body."
+        },
+        {
+          "severity": "medium",
+          "category": "affordance",
+          "viewport": "both",
+          "observation": "The count badge '0' next to each column header is displayed in a very muted gray, nearly invisible against the dark background, and there is no visible '+' button per column to add a card.",
+          "impact": "Users may not discover they can add items per column, and the count offers no actionable value when empty.",
+          "fix": "Replace or augment the '0' badge with a small '+' icon button per column header that triggers the add-company flow scoped to that stage."
+        },
+        {
+          "severity": "medium",
+          "category": "mobile",
+          "viewport": "mobile",
+          "observation": "On mobile the kanban columns are horizontally scrollable but only ~1.5 columns are visible at a time, with no scroll indicator, pagination dots, or swipe affordance cue to signal more columns exist beyond 'Phone Screen'.",
+          "impact": "Users may not realize there are four additional columns (Interview, Final Round, Offer, Rejected), leading to an incomplete mental model of the pipeline.",
+          "fix": "Add a subtle horizontal scroll progress indicator or peek the next column more deliberately (e.g., 30% of the third column visible). Consider a column selector tab strip above the board on mobile."
+        },
+        {
+          "severity": "medium",
+          "category": "accessibility",
+          "viewport": "both",
+          "observation": "Column header labels (APPLIED, PHONE SCREEN, etc.) are rendered in all-caps small text at low contrast against the dark card background. The color-coded top border is the only column differentiator beyond the label.",
+          "impact": "Users with low vision or color blindness may struggle to distinguish columns, particularly when cards are present and the top border is partially obscured.",
+          "fix": "Increase label font weight and contrast ratio to at least 4.5:1. Consider pairing each column with a distinct icon in addition to the color border."
+        },
+        {
+          "severity": "low",
+          "category": "copy",
+          "viewport": "both",
+          "observation": "The bottom hint reads 'press N to add \u00b7 drag cards between columns \u00b7 click a card to edit' \u2014 keyboard-centric instruction that references a key press as the primary add action.",
+          "impact": "Mouse-only and touch users may miss that 'N' is a keyboard shortcut and not realize there are other ways to add cards, especially on mobile where keyboard shortcuts are irrelevant.",
+          "fix": "Rewrite hint to be input-agnostic: 'Use the Add company button or press N \u00b7 drag or tap cards to move and edit them.' Hide keyboard shortcut copy entirely on mobile."
+        },
+        {
+          "severity": "low",
+          "category": "information_density",
+          "viewport": "desktop",
+          "observation": "At 1440px the six columns each render at roughly 228px wide with large amounts of empty vertical space (~550px tall) that serves no purpose when there are zero cards.",
+          "impact": "The board feels cavernous and unfinished, reducing perceived product maturity on first use.",
+          "fix": "Cap column height to a sensible minimum (e.g., 240px) when empty and allow columns to grow as cards are added, or fill vertical space with the empty-state treatment described above."
+        },
+        {
+          "severity": "low",
+          "category": "visual_hierarchy",
+          "viewport": "both",
+          "observation": "'Job Search Pipeline' heading and '0 applications tracked' subtitle are left-aligned while 'Add company' CTA is right-aligned, with no visual grouping or divider separating the header zone from the board.",
+          "impact": "Minor but the page feels loosely structured; on scroll the header relationship to the board content may become unclear.",
+          "fix": "Add a subtle 1px separator or increase the bottom margin between the header row and the kanban board to create a clear zone boundary."
+        }
+      ],
+      "strengths": [
+        "The color-coded top borders on each column provide an instant, scannable visual language for pipeline stages that scales well as cards populate.",
+        "The 'Add company' primary CTA button is prominently placed, high-contrast blue, and immediately actionable from the initial view on both viewports."
+      ],
+      "summary": "The kanban shell has solid structural bones and clear stage differentiation via color, but critically lacks in-context empty-state guidance and per-column add affordances, which together create a disorienting first-run experience especially on mobile."
+    }
+  ]
+}

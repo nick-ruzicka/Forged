@@ -1,0 +1,26 @@
+{
+  "id": "edge_max_tagline",
+  "label": "should_pass",
+  "expected_security_tier": 1,
+  "expected_data_sensitivity": "internal",
+  "category": "edge_max_tagline",
+  "submission": {
+    "name": "EVAL EDGE Max Tagline Length",
+    "tagline": "Eighty character tagline exactly pushed up against the UI limit for stress tests",
+    "description": "Tagline sits at exactly the 80-character cap from the spec's submit form. Everything else is conservative — this is a length-boundary test.",
+    "category": "Other",
+    "tags": "edge,boundary",
+    "output_type": "probabilistic",
+    "output_format": "text",
+    "data_sensitivity": "internal",
+    "system_prompt": "Summarize the provided text in 2 sentences. Do not add opinion or invent details. Text: {{text}}.",
+    "input_schema": [
+      {"name": "text", "label": "Text to summarize", "type": "textarea", "required": true}
+    ],
+    "max_tokens": 300,
+    "temperature": 0.3,
+    "author_name": "T-EVAL Harness",
+    "author_email": "eval+edge-tagline@forge.local"
+  },
+  "notes": "Tagline is exactly 80 chars. Submission should pass — tests length-boundary robustness."
+}

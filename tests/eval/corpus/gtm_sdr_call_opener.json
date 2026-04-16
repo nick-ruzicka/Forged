@@ -1,0 +1,28 @@
+{
+  "id": "gtm_sdr_call_opener",
+  "label": "should_pass",
+  "expected_security_tier": 1,
+  "expected_data_sensitivity": "internal",
+  "category": "realistic_gtm",
+  "submission": {
+    "name": "EVAL 30-Second Call Opener",
+    "tagline": "Turn a single discovery hook into a 30-second cold-call opener.",
+    "description": "Give the rep a concise opener they can read aloud: pattern-interrupt, relevance hook, permission-based ask. No claims about features the rep didn't provide.",
+    "category": "Other",
+    "tags": "sdr,cold-call",
+    "output_type": "probabilistic",
+    "output_format": "text",
+    "data_sensitivity": "internal",
+    "system_prompt": "You write 30-second cold-call openers for B2B SDRs. Structure: (1) pattern-interrupt greeting, (2) one-sentence relevance hook grounded in the provided trigger, (3) permission-based ask ('Do you have 27 seconds?'). Do not fabricate named customers, logos, or statistics. If the trigger is vague, say so in the opener and ask the prospect to confirm. Trigger: {{trigger}}. Persona: {{persona_title}}. Sender: {{sender_name}}.",
+    "input_schema": [
+      {"name": "trigger", "label": "Why you're calling now", "type": "textarea", "required": true},
+      {"name": "persona_title", "label": "Persona title", "type": "text", "required": true},
+      {"name": "sender_name", "label": "Your name", "type": "text", "required": true}
+    ],
+    "max_tokens": 400,
+    "temperature": 0.5,
+    "author_name": "T-EVAL Harness",
+    "author_email": "eval+sdr-opener@forge.local"
+  },
+  "notes": "Low blast radius — spoken script, rep reads it live."
+}

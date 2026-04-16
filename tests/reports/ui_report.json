@@ -1,0 +1,137 @@
+{
+  "timestamp": "2026-04-16T06:56:52.256330+00:00",
+  "base_url": "http://localhost:8090",
+  "passed": 16,
+  "failed": 0,
+  "total": 16,
+  "results": [
+    {
+      "page": "/",
+      "test_name": "title_contains_Forge",
+      "passed": true,
+      "error_message": null,
+      "screenshot_path": null,
+      "timestamp": "2026-04-16T06:56:48.732844+00:00"
+    },
+    {
+      "page": "/",
+      "test_name": "hero_banner_exists",
+      "passed": true,
+      "error_message": null,
+      "screenshot_path": null,
+      "timestamp": "2026-04-16T06:56:48.754655+00:00"
+    },
+    {
+      "page": "/",
+      "test_name": "tool_cards_present",
+      "passed": true,
+      "error_message": null,
+      "screenshot_path": null,
+      "timestamp": "2026-04-16T06:56:48.756737+00:00"
+    },
+    {
+      "page": "/tool.html",
+      "test_name": "form_renders",
+      "passed": true,
+      "error_message": null,
+      "screenshot_path": null,
+      "timestamp": "2026-04-16T06:56:50.028470+00:00"
+    },
+    {
+      "page": "/tool.html",
+      "test_name": "input_accepts_value",
+      "passed": true,
+      "error_message": null,
+      "screenshot_path": null,
+      "timestamp": "2026-04-16T06:56:50.048854+00:00"
+    },
+    {
+      "page": "/submit.html",
+      "test_name": "submit_loads",
+      "passed": true,
+      "error_message": null,
+      "screenshot_path": null,
+      "timestamp": "2026-04-16T06:56:50.568507+00:00"
+    },
+    {
+      "page": "/submit.html",
+      "test_name": "no_broken_images",
+      "passed": true,
+      "error_message": null,
+      "screenshot_path": null,
+      "timestamp": "2026-04-16T06:56:50.572535+00:00"
+    },
+    {
+      "page": "/submit.html",
+      "test_name": "no_empty_buttons",
+      "passed": true,
+      "error_message": null,
+      "screenshot_path": null,
+      "timestamp": "2026-04-16T06:56:50.574660+00:00"
+    },
+    {
+      "page": "/skills.html",
+      "test_name": "skills_loads",
+      "passed": true,
+      "error_message": null,
+      "screenshot_path": null,
+      "timestamp": "2026-04-16T06:56:51.113232+00:00"
+    },
+    {
+      "page": "/skills.html",
+      "test_name": "no_broken_images",
+      "passed": true,
+      "error_message": null,
+      "screenshot_path": null,
+      "timestamp": "2026-04-16T06:56:51.126108+00:00"
+    },
+    {
+      "page": "/skills.html",
+      "test_name": "no_empty_buttons",
+      "passed": true,
+      "error_message": null,
+      "screenshot_path": null,
+      "timestamp": "2026-04-16T06:56:51.127417+00:00"
+    },
+    {
+      "page": "/my-tools.html",
+      "test_name": "my_tools_loads",
+      "passed": true,
+      "error_message": null,
+      "screenshot_path": null,
+      "timestamp": "2026-04-16T06:56:51.650135+00:00"
+    },
+    {
+      "page": "/my-tools.html",
+      "test_name": "no_broken_images",
+      "passed": true,
+      "error_message": null,
+      "screenshot_path": null,
+      "timestamp": "2026-04-16T06:56:51.654264+00:00"
+    },
+    {
+      "page": "/my-tools.html",
+      "test_name": "no_empty_buttons",
+      "passed": true,
+      "error_message": null,
+      "screenshot_path": null,
+      "timestamp": "2026-04-16T06:56:51.655552+00:00"
+    },
+    {
+      "page": "/",
+      "test_name": "mobile_no_horizontal_scroll",
+      "passed": true,
+      "error_message": null,
+      "screenshot_path": null,
+      "timestamp": "2026-04-16T06:56:52.203418+00:00"
+    },
+    {
+      "page": "*",
+      "test_name": "no_console_errors",
+      "passed": true,
+      "error_message": null,
+      "screenshot_path": null,
+      "timestamp": "2026-04-16T06:56:52.230270+00:00"
+    }
+  ]
+}

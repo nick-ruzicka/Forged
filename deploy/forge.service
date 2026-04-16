@@ -1,0 +1,19 @@
+[Unit]
+Description=Forge AI Tool Platform (Flask API)
+After=network.target postgresql.service redis-server.service
+Wants=postgresql.service redis-server.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/forge
+EnvironmentFile=/root/forge/.env
+ExecStart=/usr/bin/python3 api/server.py
+Restart=always
+RestartSec=5
+StandardOutput=append:/root/forge/logs/forge.log
+StandardError=append:/root/forge/logs/forge.error.log
+LimitNOFILE=8192
+
+[Install]
+WantedBy=multi-user.target

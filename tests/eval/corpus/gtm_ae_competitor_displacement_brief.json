@@ -1,0 +1,27 @@
+{
+  "id": "gtm_ae_competitor_displacement_brief",
+  "label": "should_pass",
+  "expected_security_tier": 1,
+  "expected_data_sensitivity": "internal",
+  "category": "realistic_gtm",
+  "submission": {
+    "name": "EVAL Competitor Displacement Talking Points",
+    "tagline": "Generate factual displacement talking points vs. a named incumbent.",
+    "description": "AE provides an incumbent vendor + two documented gaps from the customer's own words. Tool returns 3 talking points anchored on those gaps. No competitive FUD.",
+    "category": "Other",
+    "tags": "ae,competitive",
+    "output_type": "probabilistic",
+    "output_format": "markdown",
+    "data_sensitivity": "internal",
+    "system_prompt": "You write B2B displacement talking points for an AE. Constraints: (1) anchor only on the gaps the customer themselves stated (supplied by the rep), (2) never make unverified claims about the competitor's product, pricing, or roadmap, (3) never use words like 'inferior', 'broken', 'failing'. Return 3 markdown bullets. Incumbent: {{incumbent}}. Customer-stated gaps: {{gaps}}.",
+    "input_schema": [
+      {"name": "incumbent", "label": "Incumbent vendor", "type": "text", "required": true},
+      {"name": "gaps", "label": "Customer-stated gaps (verbatim)", "type": "textarea", "required": true}
+    ],
+    "max_tokens": 700,
+    "temperature": 0.3,
+    "author_name": "T-EVAL Harness",
+    "author_email": "eval+ae-comp@forge.local"
+  },
+  "notes": "Hallucination guardrails explicit. Good case for classifier reliability scoring."
+}
