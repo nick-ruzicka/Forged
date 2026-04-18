@@ -1,195 +1,343 @@
-// My Tools — status tabs + live pipeline progress polling for in-review tools.
+// My Forge — anonymous-by-default shelf. Identity card prompts only when needed.
 
 (function () {
-  const STATUS_TABS = [
-    { key: 'all', label: 'All', match: () => true },
-    { key: 'draft', label: 'Drafts', match: (t) => t.status === 'draft' },
-    { key: 'in_review', label: 'In Review', match: (t) => t.status === 'pending' || t.status === 'pending_review' || t.status === 'in_review' },
-    { key: 'needs_changes', label: 'Changes Needed', match: (t) => t.status === 'needs_changes' },
-    { key: 'approved', label: 'Live', match: (t) => t.status === 'approved' || t.status === 'live' },
-    { key: 'rejected', label: 'Rejected', match: (t) => t.status === 'rejected' },
-    { key: 'archived', label: 'Archived', match: (t) => t.status === 'archived' },
-  ];
+  'use strict';
 
-  const state = {
-    activeTab: 'all',
-    tools: [],
-    counts: {},
-    pollTimers: new Map(),
-  };
+  const STORAGE_USER_ID = 'forge_user_id';
+  const STORAGE_USER_EMAIL = 'forge_user_email';
+  const STORAGE_USER_NAME = 'forge_user_name';
 
-  function init() {
-    Forge.renderLayout('my-tools');
-    Forge.renderFooter();
-    const user = Forge.getUser();
-    if (!user.email) renderIdentityGate();
-    else loadAndRender();
-  }
-
-  function renderIdentityGate() {
-    Forge.qs('#identity-gate').classList.remove('hidden');
-    Forge.qs('#main-content').classList.add('hidden');
-    const submit = Forge.qs('#gate-submit');
-    submit.addEventListener('click', () => {
-      const name = Forge.qs('#gate-name').value.trim();
-      const email = Forge.qs('#gate-email').value.trim();
-      if (!email || !email.includes('@')) { Forge.showToast('Valid email required', 'error'); return; }
-      Forge.setUser(name, email);
-      Forge.qs('#identity-gate').classList.add('hidden');
-      Forge.qs('#main-content').classList.remove('hidden');
-      loadAndRender();
+  function uuidv4() {
+    if (window.crypto && window.crypto.randomUUID) return window.crypto.randomUUID();
+    return 'anon-xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+      const r = (Math.random() * 16) | 0;
+      const v = c === 'x' ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
     });
   }
 
-  async function loadAndRender() {
-    Forge.qs('#main-content').classList.remove('hidden');
-    Forge.qs('#identity-gate').classList.add('hidden');
-    await loadTools();
-    renderTabs();
-    renderList();
-  }
-
-  async function loadTools() {
-    const user = Forge.getUser();
-    const list = Forge.qs('#tools-list');
-    list.innerHTML = '<div class="flex flex-gap-2 items-center mb-4"><span class="spinner"></span> Loading your tools…</div>';
-    try {
-      const res = await ForgeApi.getMyTools(user.email);
-      state.tools = Array.isArray(res) ? res : (res.tools || res.data || []);
-    } catch (err) {
-      state.tools = [];
-      list.innerHTML = `<div class="empty-state"><h3>Could not load your tools</h3><p>${Forge.escapeHtml(err.message)}</p></div>`;
-      return;
+  function getUserId() {
+    let id = '';
+    try { id = localStorage.getItem(STORAGE_USER_ID) || ''; } catch (e) {}
+    if (!id) {
+      id = uuidv4();
+      try { localStorage.setItem(STORAGE_USER_ID, id); } catch (e) {}
     }
-    state.counts = {};
-    STATUS_TABS.forEach((tab) => {
-      state.counts[tab.key] = state.tools.filter(tab.match).length;
-    });
+    return id;
   }
 
-  function renderTabs() {
-    const el = Forge.qs('#status-tabs');
-    el.innerHTML = '';
-    STATUS_TABS.forEach((tab) => {
-      const btn = Forge.h(`<button class="tab ${state.activeTab === tab.key ? 'active' : ''}" role="tab" aria-selected="${state.activeTab === tab.key}">${Forge.escapeHtml(tab.label)}<span class="count">${state.counts[tab.key] || 0}</span></button>`);
-      btn.addEventListener('click', () => { state.activeTab = tab.key; renderTabs(); renderList(); });
-      el.appendChild(btn);
-    });
+  function getEmail() { try { return localStorage.getItem(STORAGE_USER_EMAIL) || ''; } catch (e) { return ''; } }
+  function getName() { try { return localStorage.getItem(STORAGE_USER_NAME) || ''; } catch (e) { return ''; } }
+
+  function authHeaders() {
+    const h = { 'X-Forge-User-Id': getUserId() };
+    const e = getEmail();
+    if (e) h['X-Forge-User-Email'] = e;
+    return h;
   }
 
-  function renderList() {
-    const list = Forge.qs('#tools-list');
-    list.innerHTML = '';
-    state.pollTimers.forEach((t) => clearTimeout(t));
-    state.pollTimers.clear();
+  function escapeHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
 
-    const tab = STATUS_TABS.find((t) => t.key === state.activeTab);
-    const filtered = state.tools.filter(tab.match);
-    if (filtered.length === 0) {
-      list.innerHTML = `<div class="empty-state">
-        <div class="empty-state-icon">📭</div>
-        <h3>No tools in this tab</h3>
-        ${state.activeTab === 'all' ? '<p>No submissions yet. Publish an app with <code>forge deploy</code>.</p>' : ''}
+  // ---------- DOM refs ----------
+  const shelfContent = document.getElementById('shelf-content');
+  const shelfCount = document.getElementById('shelf-count');
+  const identityBanner = document.getElementById('identity-banner');
+  const updatesBanner = document.getElementById('updates-banner');
+  const skillsList = document.getElementById('skills-list');
+
+  const extModal = document.getElementById('external-modal');
+  const extName = document.getElementById('ext-name');
+  const extTagline = document.getElementById('ext-tagline');
+  const extInstallBlock = document.getElementById('ext-install-block');
+  const extLaunchBlock = document.getElementById('ext-launch-block');
+  const extInstallCmd = document.getElementById('ext-install-cmd');
+  const extInstallLabel = document.getElementById('ext-install-label');
+  const extSource = document.getElementById('ext-source');
+  const extMarkInstalled = document.getElementById('ext-mark-installed');
+  const extClose = document.getElementById('ext-close');
+
+  const paneOverlay = document.getElementById('pane-overlay');
+  const paneTitle = document.getElementById('pane-title');
+  const paneIframe = document.getElementById('pane-iframe');
+  const paneNewtab = document.getElementById('pane-newtab');
+  const paneClose = document.getElementById('pane-close');
+
+  let activeItem = null;
+
+  // ---------- Identity card (lazy ask) ----------
+
+  function renderIdentityCard() {
+    const email = getEmail();
+    if (email) {
+      identityBanner.innerHTML = `<div class="identity-card signed-in">
+        <span style="font-size:18px;">👤</span>
+        <div class="who">Signed in as <strong>${escapeHtml(getName() || email)}</strong></div>
+        <button id="signout-btn">Sign out</button>
       </div>`;
-      return;
+      identityBanner.querySelector('#signout-btn').onclick = () => {
+        if (!confirm('Sign out? Your shelf stays anonymous on this device.')) return;
+        try {
+          localStorage.removeItem(STORAGE_USER_EMAIL);
+          localStorage.removeItem(STORAGE_USER_NAME);
+        } catch (e) {}
+        renderIdentityCard();
+      };
+    } else {
+      identityBanner.innerHTML = `<div class="identity-card">
+        <span style="font-size:18px;">👋</span>
+        <div class="who">Anonymous. Add your email to sync your Forge across devices and publish apps.</div>
+        <button id="claim-btn">Set up identity</button>
+      </div>`;
+      identityBanner.querySelector('#claim-btn').onclick = openIdentityForm;
     }
-    filtered.forEach((tool) => list.appendChild(renderRow(tool)));
   }
 
-  function renderRow(tool) {
-    const tier = tool.status === 'approved' ? Forge.computeTrustTier(tool) : null;
-    const row = Forge.h(`
-      <div class="tool-row">
-        <div>
-          <h3 class="tool-row-title">${Forge.escapeHtml(tool.name)}</h3>
-          <p class="tool-row-tagline">${Forge.escapeHtml(tool.tagline || '')}</p>
+  function openIdentityForm() {
+    // Inline modal — no native prompts.
+    let modal = document.getElementById('identity-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'identity-modal';
+      modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1200;display:flex;align-items:center;justify-content:center;padding:24px;';
+      document.body.appendChild(modal);
+    }
+    modal.innerHTML = `
+      <div style="background:#141414;border:1px solid #2a2a2a;border-radius:12px;max-width:440px;width:100%;padding:24px;">
+        <h2 style="margin:0 0 6px;">Set up your identity</h2>
+        <p style="color:#888;font-size:13px;margin:0 0 18px;">Your name and email so teammates can see who built what, and you can sync your Forge across devices.</p>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div>
+            <label style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px;">Name</label>
+            <input id="id-name" type="text" value="${escapeHtml(getName())}"
+              style="width:100%;background:#0d0d0d;border:1px solid #2a2a2a;color:#e0e0e0;padding:10px;border-radius:6px;box-sizing:border-box;font-size:14px;">
+          </div>
+          <div>
+            <label style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px;">Work email</label>
+            <input id="id-email" type="email" value="${escapeHtml(getEmail())}" placeholder="you@navan.com"
+              style="width:100%;background:#0d0d0d;border:1px solid #2a2a2a;color:#e0e0e0;padding:10px;border-radius:6px;box-sizing:border-box;font-size:14px;">
+          </div>
+          <div id="id-err" style="color:#ff8a80;font-size:12px;min-height:14px;"></div>
+          <div style="display:flex;gap:8px;justify-content:flex-end;">
+            <button id="id-cancel" style="background:none;border:1px solid #2a2a2a;color:#ccc;padding:9px 16px;border-radius:6px;cursor:pointer;">Cancel</button>
+            <button id="id-save" style="background:#0066FF;color:white;border:none;padding:9px 16px;border-radius:6px;cursor:pointer;font-weight:600;">Save</button>
+          </div>
         </div>
-        <div class="tool-row-meta">
-          ${Forge.statusBadge(tool.status)}
-          ${tier ? Forge.trustTierBadge(tier) : ''}
-          ${tool.status === 'approved' ? `<span>▶ ${Forge.formatNumber(tool.run_count || 0)}</span>` : ''}
-          <span>${Forge.formatRelative(tool.submitted_at || tool.created_at)}</span>
-        </div>
-        <div class="tool-row-actions">
-          ${tool.status === 'approved' ? `<a class="btn btn-secondary btn-sm" href="/apps/${encodeURIComponent(tool.slug || tool.id)}">Open</a>` : ''}
-          <button class="btn btn-ghost btn-sm" data-action="archive">Archive</button>
+      </div>`;
+    function close() { modal.remove(); }
+    modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
+    modal.querySelector('#id-cancel').onclick = close;
+    modal.querySelector('#id-save').onclick = async () => {
+      const name = modal.querySelector('#id-name').value.trim();
+      const email = modal.querySelector('#id-email').value.trim();
+      if (email && email.indexOf('@') === -1) {
+        modal.querySelector('#id-err').textContent = 'Email looks invalid.';
+        return;
+      }
+      try {
+        if (name) localStorage.setItem(STORAGE_USER_NAME, name);
+        if (email) localStorage.setItem(STORAGE_USER_EMAIL, email);
+      } catch (e) {}
+      await fetch('/api/me', {
+        method: 'POST',
+        headers: { ...authHeaders(), 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email }),
+      });
+      close();
+      renderIdentityCard();
+      loadShelf();
+    };
+    modal.querySelector('#id-name').focus();
+  }
+
+  // ---------- Shelf ----------
+
+  async function loadShelf() {
+    shelfContent.innerHTML = '<div style="color:#666;padding:40px;text-align:center;">Loading…</div>';
+    let res;
+    try {
+      res = await fetch('/api/me/items', { headers: authHeaders() });
+    } catch (err) {
+      shelfContent.innerHTML = `<div class="empty"><h2>Couldn't load your Forge</h2><p>${escapeHtml(err.message || err)}</p></div>`;
+      return;
+    }
+    const body = await res.json().catch(() => ({}));
+    const items = body.items || [];
+    shelfCount.textContent = items.length === 0 ? 'empty' : `(${items.length})`;
+    if (items.length === 0) {
+      shelfContent.innerHTML = `
+        <div class="empty">
+          <h2>Your Forge is empty</h2>
+          <p style="margin:0 0 16px;">Add apps from the catalog. They'll show up here, ready to open.</p>
+          <a class="btn btn-primary" href="/" style="display:inline-block;background:#0066FF;color:white;padding:10px 20px;border-radius:6px;text-decoration:none;">Browse the catalog →</a>
+        </div>`;
+      return;
+    }
+    const grid = document.createElement('div');
+    grid.className = 'shelf-grid';
+    items.forEach((item) => grid.appendChild(renderTile(item)));
+    shelfContent.innerHTML = '';
+    shelfContent.appendChild(grid);
+  }
+
+  function renderTile(item) {
+    const tile = document.createElement('div');
+    tile.className = 'shelf-tile';
+    const installNeeded = item.delivery === 'external' && !item.installed_locally;
+    const launchLabel = item.delivery === 'external'
+      ? (item.installed_locally ? 'Launch' : 'Install')
+      : 'Open';
+    tile.innerHTML = `
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div class="shelf-tile-icon">${escapeHtml(item.icon || '⊞')}</div>
+        <div style="flex:1;min-width:0;">
+          <h3 class="shelf-tile-name">${escapeHtml(item.name)}</h3>
         </div>
       </div>
-    `);
-    row.querySelector('[data-action="archive"]').addEventListener('click', async () => {
-      if (!confirm('Archive this tool?')) return;
-      try {
-        await ForgeApi.updateTool(tool.id, { status: 'archived' });
-        Forge.showToast('Archived', 'success');
-        await loadTools();
-        renderTabs(); renderList();
-      } catch (err) { Forge.showToast(err.message || 'Archive failed', 'error'); }
-    });
-
-    if (tool.status === 'pending' || tool.status === 'pending_review' || tool.status === 'in_review') {
-      const expanded = Forge.h(`<div class="tool-row-expanded">
-        <div class="text-secondary text-sm mb-2">Live agent pipeline progress:</div>
-        <div class="pipeline" data-tool-id="${tool.id}"></div>
-        <div class="text-muted text-sm mt-2">Usually takes 2-3 minutes. We'll email you when it's done.</div>
-      </div>`);
-      row.appendChild(expanded);
-      pollPipelineFor(tool.id, expanded.querySelector('.pipeline'));
-    }
-    return row;
-  }
-
-  const PIPELINE_STAGES = [
-    { key: 'preflight', label: 'Pre-flight check' },
-    { key: 'classifier', label: 'Classification agent' },
-    { key: 'security_scanner', label: 'Security scanner' },
-    { key: 'red_team', label: 'Red team agent' },
-    { key: 'prompt_hardener', label: 'Prompt hardener' },
-    { key: 'qa_tester', label: 'QA tester' },
-    { key: 'synthesizer', label: 'Review synthesizer' },
-  ];
-
-  function renderPipeline(target, status) {
-    if (!target) return;
-    const apiStages = Array.isArray(status && status.stages) ? status.stages : [];
-    const byKey = {};
-    apiStages.forEach((s) => { if (s && s.key) byKey[s.key] = s; });
-    const alias = { security_scanner: 'security', prompt_hardener: 'hardener', qa_tester: 'qa' };
-    target.innerHTML = PIPELINE_STAGES.map((stage) => {
-      const s = byKey[stage.key] || byKey[alias[stage.key]] || {};
-      const st = (s.status || 'waiting').toLowerCase();
-      const icon = st === 'done' ? '✓' : (st === 'running' || st === 'in_progress') ? '⟳' : (st === 'failed' || st === 'error') ? '✕' : '○';
-      const iconCls = st === 'done' ? 'done' : (st === 'running' || st === 'in_progress') ? 'running' : (st === 'failed' || st === 'error') ? 'failed' : 'waiting';
-      const label = st === 'done' ? 'Done' : (st === 'running' || st === 'in_progress') ? 'Running…' : (st === 'failed' || st === 'error') ? (s.detail || 'Failed') : 'Waiting';
-      return `<div class="pipeline-row">
-        <span class="icon ${iconCls}">${icon}</span>
-        <span class="label">${Forge.escapeHtml(stage.label)}</span>
-        <span class="status">${Forge.escapeHtml(label)}</span>
+      <p class="shelf-tile-tagline">${escapeHtml(item.tagline || '')}</p>
+      <div class="shelf-tile-meta">
+        <span>${item.open_count || 0} opens</span>
+        ${item.delivery === 'external' ? `<span>· ${item.installed_locally ? 'installed' : 'not installed'}</span>` : ''}
+      </div>
+      <div class="shelf-tile-action">
+        <button class="btn-launch ${installNeeded ? 'install-needed' : ''}" data-act="launch">${launchLabel}</button>
+        <button class="btn-remove" data-act="remove" title="Remove from Forge">×</button>
       </div>`;
-    }).join('');
+
+    tile.querySelector('[data-act="launch"]').addEventListener('click', (e) => {
+      e.stopPropagation(); openItem(item);
+    });
+    tile.querySelector('[data-act="remove"]').addEventListener('click', async (e) => {
+      e.stopPropagation();
+      if (!confirm(`Remove ${item.name} from your Forge?`)) return;
+      await fetch(`/api/me/items/${item.id}`, { method: 'DELETE', headers: authHeaders() });
+      loadShelf();
+    });
+    tile.addEventListener('click', () => openItem(item));
+    return tile;
   }
 
-  function pollPipelineFor(toolId, target) {
-    renderPipeline(target, {});
-    let cancelled = false;
-    const poll = async () => {
-      if (cancelled) return;
-      try {
-        const status = await ForgeApi.getAgentStatus(toolId);
-        renderPipeline(target, status);
-        const s = (status && status.status) || '';
-        const complete = s === 'approved' || s === 'rejected' || s === 'needs_changes' || (Number(status?.progress_pct) >= 100);
-        if (complete) {
-          await loadTools();
-          renderTabs(); renderList();
-          return;
-        }
-      } catch (e) { /* retry */ }
-      const timer = setTimeout(poll, 5000);
-      state.pollTimers.set(toolId, timer);
-    };
-    poll();
+  function openItem(item) {
+    activeItem = item;
+    bumpOpen(item.id).catch(() => {});
+    if (item.delivery === 'external') openExternalModal(item);
+    else openEmbeddedPane(item);
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-  else init();
+  async function bumpOpen(toolId) {
+    await fetch(`/api/me/items/${toolId}/launch`, {
+      method: 'POST',
+      headers: { ...authHeaders(), 'Content-Type': 'application/json' },
+      body: JSON.stringify({}),
+    });
+  }
+
+  function openExternalModal(item) {
+    extName.textContent = item.name;
+    extTagline.textContent = item.tagline || '';
+    extInstallCmd.textContent = item.install_command || '(no install command provided)';
+    const isMultistep = (item.setup_complexity === 'multi-step' || item.setup_complexity === 'manual-setup');
+    extInstallLabel.textContent = isMultistep
+      ? "This app needs setup. Run these in a terminal — takes about 10 minutes:"
+      : "Run this in a terminal:";
+    if (item.installed_locally) {
+      extInstallBlock.classList.add('hidden');
+      extLaunchBlock.classList.remove('hidden');
+      extMarkInstalled.style.display = 'none';
+    } else {
+      extInstallBlock.classList.remove('hidden');
+      extLaunchBlock.classList.add('hidden');
+      extMarkInstalled.style.display = '';
+    }
+    if (item.source_url) { extSource.href = item.source_url; extSource.style.display = ''; }
+    else extSource.style.display = 'none';
+    extModal.classList.add('open');
+  }
+
+  extMarkInstalled.addEventListener('click', async () => {
+    if (!activeItem) return;
+    await fetch(`/api/me/items/${activeItem.id}/install`, {
+      method: 'POST',
+      headers: { ...authHeaders(), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ version: 'manual' }),
+    });
+    extInstallBlock.classList.add('hidden');
+    extLaunchBlock.classList.remove('hidden');
+    extMarkInstalled.style.display = 'none';
+    loadShelf();
+  });
+
+  extClose.addEventListener('click', () => { extModal.classList.remove('open'); activeItem = null; });
+  extModal.addEventListener('click', (e) => { if (e.target === extModal) extClose.click(); });
+
+  function openEmbeddedPane(item) {
+    paneTitle.textContent = item.name;
+    const src = `/apps/${encodeURIComponent(item.slug)}?user=${encodeURIComponent(getUserId())}`;
+    paneIframe.src = src;
+    paneNewtab.href = src;
+    paneOverlay.classList.add('open');
+  }
+
+  paneClose.addEventListener('click', () => {
+    paneOverlay.classList.remove('open');
+    paneIframe.src = 'about:blank';
+    activeItem = null;
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    if (paneOverlay.classList.contains('open')) paneClose.click();
+    else if (extModal.classList.contains('open')) extClose.click();
+  });
+
+  // ---------- Updates banner ----------
+
+  async function loadUpdates() {
+    try {
+      const res = await fetch('/api/me/updates', { headers: authHeaders() });
+      const body = await res.json().catch(() => ({}));
+      const updates = body.updates || [];
+      if (!updates.length) { updatesBanner.innerHTML = ''; return; }
+      const security = updates.some((u) => u.is_security);
+      updatesBanner.innerHTML = `<div class="updates-banner ${security ? 'security' : ''}">
+        <span class="badge">${security ? 'Security' : 'Updates'}</span>
+        <span style="flex:1;color:#e0e0e0;font-size:13px;">${updates.length} app${updates.length === 1 ? '' : 's'} on your shelf ${security ? 'have security updates' : 'have new versions'}.</span>
+        <button style="background:#1f1f1f;border:1px solid #444;color:#ccc;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:12px;" onclick="alert('Use forge sync (CLI) or check each app from your shelf.')">View</button>
+      </div>`;
+    } catch (e) { /* silent */ }
+  }
+
+  // ---------- Skills sidebar ----------
+
+  async function loadSkills() {
+    try {
+      const res = await fetch('/api/me/skills', { headers: authHeaders() });
+      const body = await res.json().catch(() => ({}));
+      const skills = body.skills || [];
+      if (!skills.length) {
+        skillsList.innerHTML = '<div class="skill-empty">No skills synced yet. Browse the Skills library and Subscribe.</div>';
+        return;
+      }
+      skillsList.innerHTML = skills.map((s) => `
+        <div class="skill-row">
+          <div>${escapeHtml(s.title)}</div>
+          <div class="skill-meta">${escapeHtml(s.category || 'general')} · by ${escapeHtml(s.author_name || 'unknown')}</div>
+        </div>`).join('');
+    } catch (e) {
+      skillsList.innerHTML = '<div class="skill-empty">Couldn\'t load skills.</div>';
+    }
+  }
+
+  // ---------- Init ----------
+
+  async function init() {
+    getUserId();  // ensure UUID exists
+    renderIdentityCard();
+    await Promise.all([loadShelf(), loadUpdates(), loadSkills()]);
+  }
+
+  init();
 })();

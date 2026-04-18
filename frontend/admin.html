@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Forge</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    .admin-root { max-width: 1100px; margin: 0 auto; }
+    .key-gate { background: #141414; border: 1px solid #2a2a2a; border-radius: 10px; padding: 28px; max-width: 460px; margin: 80px auto; }
+    .queue-tile { background: #141414; border: 1px solid #2a2a2a; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+    .queue-tile h3 { margin: 0 0 4px; font-size: 16px; }
+    .queue-tile .qmeta { color: #888; font-size: 12px; margin-bottom: 12px; display: flex; gap: 12px; flex-wrap: wrap; }
+    .qbadges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; font-size: 12px; }
+    .qbadge { background: #0d0d0d; border: 1px solid #2a2a2a; padding: 4px 8px; border-radius: 4px; color: #aaa; }
+    .qbadge.warn { background: #2a1f0d; border-color: #5c4a1e; color: #FF9800; }
+    .qactions { display: flex; gap: 6px; }
+    .qactions button { padding: 6px 14px; border-radius: 5px; font-size: 13px; cursor: pointer; font-weight: 600; border: none; }
+    .qactions .approve { background: #1a7f4b; color: white; }
+    .qactions .approve:hover { background: #156b3e; }
+    .qactions .reject { background: #b71c1c; color: white; }
+    .qactions .reject:hover { background: #8a1515; }
+    .qactions .preview { background: #1f1f1f; border: 1px solid #2a2a2a; color: #ccc; }
+    .qactions .preview:hover { border-color: #0066FF; }
+
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 18px 0; }
+    .stat-card { background: #141414; border: 1px solid #2a2a2a; border-radius: 8px; padding: 14px; }
+    .stat-card .v { font-size: 24px; font-weight: 700; color: #0066FF; }
+    .stat-card .l { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+  </style>
+</head>
+<body>
+  <main class="page admin-root" role="main">
+    <header style="display:flex; gap:14px; justify-content:space-between; align-items:center; padding: 14px 0;">
+      <a href="/" style="display:flex;gap:8px;align-items:center;text-decoration:none;color:#f0f0f0;">
+        <span style="font-weight:700;letter-spacing:0.5px;">⚒ FORGE — Admin</span>
+      </a>
+      <nav style="display:flex; gap:14px; align-items:center;">
+        <a href="/" class="muted">Apps</a>
+        <a href="/skills.html" class="muted">Skills</a>
+        <a href="/my-tools.html" class="muted">My Forge</a>
+      </nav>
+    </header>
+
+    <div id="gate-view" class="hidden">
+      <div class="key-gate">
+        <h2 style="margin:0 0 6px;">Admin access</h2>
+        <p style="color:#888;margin:0 0 18px;font-size:13px;">Enter the admin key (from <code>ADMIN_KEY</code> env var).</p>
+        <input id="gate-key" type="password" placeholder="Admin key"
+          style="width:100%;background:#0d0d0d;border:1px solid #2a2a2a;color:#e0e0e0;padding:10px;border-radius:6px;margin-bottom:10px;box-sizing:border-box;">
+        <button id="gate-submit" style="width:100%;background:#0066FF;color:white;border:none;padding:10px;border-radius:6px;cursor:pointer;font-weight:600;">Continue</button>
+      </div>
+    </div>
+
+    <div id="admin-view" class="hidden">
+      <h1 style="margin: 12px 0 4px; font-size: 26px;">Review queue</h1>
+      <p style="color:#888;margin:0 0 8px;">Apps awaiting approval. Approve to make them live in the catalog.</p>
+
+      <div class="stats" id="stats"></div>
+      <div id="queue"></div>
+    </div>
+  </main>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

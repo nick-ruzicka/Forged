@@ -3,50 +3,235 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Forge — Share your Claude Code apps &amp; skills</title>
-  <meta name="description" content="A place to share the apps and skills you built with Claude Code with your team.">
+  <title>Forge — Apps for your team</title>
+  <meta name="description" content="What others on your team built and use. Add to your Forge with one click.">
   <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    html, body { height: 100%; margin: 0; overflow: hidden; }
+    body { background: #0d0d0d; color: #e8e8e8; font-family: -apple-system, system-ui, sans-serif; }
+
+    .split { display: flex; height: 100vh; }
+
+    /* ---- Resize handle ---- */
+    .resize-handle {
+      width: 5px; cursor: col-resize; background: transparent;
+      flex-shrink: 0; position: relative; z-index: 10;
+    }
+    .resize-handle::after {
+      content: ''; position: absolute; top: 0; bottom: 0; left: 2px;
+      width: 1px; background: #2a2a2a; transition: background 0.15s;
+    }
+    .resize-handle:hover::after, .resize-handle.dragging::after {
+      background: #0066FF; width: 2px; left: 1px;
+    }
+
+    /* ---- LEFT: catalog ---- */
+    .cat-col {
+      width: 38%; min-width: 280px; max-width: 500px;
+      display: flex; flex-direction: column;
+      background: #0d0d0d;
+      flex-shrink: 0;
+    }
+    .cat-head {
+      padding: 14px 16px 10px;
+      border-bottom: 1px solid #1a1a1a;
+      flex-shrink: 0;
+    }
+    .cat-head .logo {
+      display: flex; align-items: center; gap: 8px;
+      text-decoration: none; color: #f0f0f0; font-weight: 700;
+      letter-spacing: 0.5px; font-size: 14px; margin-bottom: 10px;
+    }
+    .cat-head nav { display: flex; gap: 12px; font-size: 12px; margin-bottom: 10px; }
+    .cat-head nav a { color: #888; text-decoration: none; }
+    .cat-head nav a:hover, .cat-head nav a.active { color: #0066FF; }
+    .cat-search {
+      width: 100%; background: #141414; border: 1px solid #2a2a2a;
+      color: #e0e0e0; padding: 9px 12px; border-radius: 6px;
+      font-size: 13px; box-sizing: border-box;
+    }
+    .cat-search:focus { outline: 1px solid #0066FF; border-color: #0066FF; }
+    .cat-filters {
+      display: flex; gap: 6px; padding: 8px 16px;
+      border-bottom: 1px solid #1a1a1a;
+      overflow-x: auto; flex-shrink: 0;
+    }
+    .cat-pill {
+      background: #1a1a1a; border: 1px solid #2a2a2a; color: #aaa;
+      padding: 6px 14px; border-radius: 14px; font-size: 11px;
+      cursor: pointer; white-space: nowrap; flex-shrink: 0;
+    }
+    .cat-pill.active { background: #0066FF; border-color: #0066FF; color: white; }
+    .cat-pill:hover:not(.active) { border-color: #555; }
+    .cat-list {
+      flex: 1; overflow-y: auto; padding: 6px 0;
+    }
+
+    /* Compact card */
+    .c-card {
+      display: flex; gap: 12px; align-items: center;
+      padding: 16px 14px;
+      cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: background 150ms;
+    }
+    /* Recommendation chips */
+    .rec-chip {
+      background: #141414; border: 1px solid #2a2a2a; border-radius: 6px;
+      padding: 6px 10px; cursor: pointer; white-space: nowrap; font-size: 11px;
+      display: flex; gap: 6px; align-items: center; flex-shrink: 0;
+      transition: border-color 0.15s;
+    }
+    .rec-chip:hover { border-color: #0066FF; }
+    .rec-chip .rec-icon { font-size: 14px; }
+    .rec-chip .rec-name { color: #e0e0e0; font-weight: 500; font-size: 12px; }
+    .rec-chip .rec-why { color: rgba(255,255,255,0.3); font-size: 9px; }
+
+    .c-card:hover { background: rgba(255,255,255,0.03); }
+    .c-card.selected { background: rgba(0,102,255,0.06); border-left-color: #0066FF; }
+    .c-card:focus-visible { outline: 1px solid rgba(0,102,255,0.5); outline-offset: -1px; border-radius: 2px; }
+    .c-icon {
+      font-size: 20px; width: 36px; height: 36px;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .c-card.selected .c-icon { border-color: rgba(0,102,255,0.4); }
+    .c-info { flex: 1; min-width: 0; }
+    .c-name { font-size: 15px; font-weight: 600; color: #f0f0f0; margin: 0 0 2px;
+              white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+              font-family: 'DM Sans', system-ui, sans-serif; }
+    .c-tag { font-size: 13px; color: rgba(255,255,255,0.6); margin: 0;
+             white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .c-badges { display: flex; gap: 4px; margin-top: 3px; }
+    .c-badge {
+      font-size: 9px; padding: 1px 6px; border-radius: 3px;
+      text-transform: uppercase; letter-spacing: 0.4px; font-weight: 600;
+    }
+    .c-badge.ext { background: #1a1a2e; color: #7c8cf0; }
+    .c-badge.int { background: #1a2e1a; color: #7cf08c; }
+    .c-badge.backend { background: #2e2a1a; color: #f0c87c; }
+    .c-star {
+      background: none; border: none; color: #555; cursor: pointer;
+      font-size: 16px; padding: 2px 4px; flex-shrink: 0;
+      transition: color 0.15s;
+    }
+    .c-star:hover { color: #FFC107; }
+    .c-star.starred { color: #FFC107; }
+    .c-action {
+      background: #0066FF; color: white; border: none;
+      padding: 4px 12px; border-radius: 5px; font-size: 11px;
+      font-weight: 600; cursor: pointer; flex-shrink: 0;
+      white-space: nowrap; min-width: 48px; text-align: center;
+      height: 28px; line-height: 20px;
+    }
+    .c-action:hover { background: #0052cc; }
+    .c-action:active { transform: scale(0.98); }
+    .c-action.done { background: #1a7f4b; }
+    .c-action:disabled { opacity: 0.5; }
+
+    /* ---- RIGHT: app pane ---- */
+    .app-col {
+      flex: 1; display: flex; flex-direction: column;
+      background: #111; min-width: 0;
+    }
+    .app-bar {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 16px;
+      background: #141414; border-bottom: 1px solid #2a2a2a;
+      flex-shrink: 0; min-height: 42px;
+    }
+    .app-bar .app-name { font-size: 14px; font-weight: 600; flex: 1;
+                         white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .app-bar .app-name .app-tagline-inline { color: #666; font-weight: 400; margin-left: 8px; font-size: 12px; }
+    .app-bar button, .app-bar a {
+      background: #1f1f1f; border: 1px solid #2a2a2a; color: #ccc;
+      padding: 5px 12px; border-radius: 5px; font-size: 11px;
+      cursor: pointer; text-decoration: none; white-space: nowrap;
+    }
+    .app-bar button:hover, .app-bar a:hover { border-color: #0066FF; }
+    .app-bar .bar-install {
+      background: #0066FF; border-color: #0066FF; color: white; font-weight: 600;
+    }
+    .app-bar .bar-install:hover { background: #0052cc; }
+    .app-bar .bar-install.done { background: #1a7f4b; border-color: #1a7f4b; }
+    .app-pane { flex: 1; position: relative; }
+    /* No global iframe positioning — each view sets its own iframe layout */
+    .app-empty {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 8px; color: #555;
+    }
+    .app-empty .arrow { font-size: 28px; }
+    .app-empty .msg { font-size: 14px; }
+
+    /* External app detail (no iframe) */
+    .app-detail {
+      position: absolute; inset: 0; overflow: auto; padding: 28px 32px;
+    }
+    .app-detail h2 { margin: 0 0 6px; font-size: 20px; }
+    .app-detail .ad-tagline { color: #888; font-size: 14px; margin: 0 0 20px; }
+    .app-detail .ad-desc { color: #ccc; font-size: 14px; line-height: 1.6; white-space: pre-wrap; margin-bottom: 20px; }
+    .install-block {
+      background: #0d0d0d; border: 1px solid #2a2a2a; border-radius: 8px;
+      padding: 18px; margin-bottom: 20px;
+    }
+    .install-block .il-label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .install-block pre {
+      margin: 0; color: #c3e88d; font-family: ui-monospace, Menlo, monospace;
+      font-size: 13px; line-height: 1.55; white-space: pre-wrap;
+      cursor: pointer; user-select: all;
+    }
+    .install-block pre:hover { color: #e0ffb0; }
+    .badges-section { margin-top: 20px; }
+    .badges-section h3 {
+      font-size: 11px; color: #888; text-transform: uppercase;
+      letter-spacing: 0.5px; margin: 0 0 10px;
+    }
+    .badge-row { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 6px; }
+    .badge-row .bi { font-size: 14px; flex-shrink: 0; }
+    .badge-row .bl { font-size: 13px; color: #e0e0e0; }
+    .badge-row .bd { font-size: 11px; color: #888; }
+
+    @media (max-width: 768px) {
+      .split { flex-direction: column; }
+      .cat-col { width: 100%; max-width: none; height: 50vh; border-right: none; border-bottom: 1px solid #2a2a2a; }
+      .app-col { height: 50vh; }
+    }
+  </style>
 </head>
 <body>
-  <main class="page" id="page" role="main">
-    <section id="hero-container"></section>
-
-    <nav class="section" aria-label="Platform links"
-         style="display:flex; gap:14px; justify-content:flex-end; align-items:center;">
-      <a href="/index.html" class="muted" id="nav-apps-link">⊞ Apps</a>
-      <a href="/skills.html" class="muted">✨ Skills</a>
-      <a href="/my-tools.html" class="muted">My submissions</a>
-    </nav>
-
-    <section class="section" style="display:flex; gap:10px; align-items:center;">
-      <label class="sr-only" for="catalog-search">Search apps</label>
-      <div class="search" style="flex:1;">
-        <span class="search-icon" aria-hidden="true">🔍</span>
-        <input type="search" id="catalog-search" data-search
-               placeholder="Search apps by name, category, or what they do…" autocomplete="off">
-        <span class="search-kbd" aria-hidden="true">⌘K</span>
+  <div class="split">
+    <div class="cat-col">
+      <div class="cat-head">
+        <a href="/" class="logo">⚒ FORGE</a>
+        <nav>
+          <a href="/" class="active">Apps</a>
+          <a href="/skills.html">Skills</a>
+          <a href="/my-tools.html">My Forge</a>
+          <a href="/publish.html">+ Publish</a>
+        </nav>
+        <input class="cat-search" id="search" type="search" placeholder="Search…" autocomplete="off">
       </div>
-    </section>
-
-    <section class="filter-bar" aria-label="Filters">
-      <div class="pill-group" id="category-pills" role="tablist" aria-label="Category"></div>
-      <div style="margin-left:auto;">
-        <label class="sr-only" for="sort-select">Sort</label>
-        <select id="sort-select" style="width:auto; min-width:160px;">
-          <option value="most_used">Most Used</option>
-          <option value="newest">Newest</option>
-          <option value="highest_rated">Highest Rated</option>
-          <option value="alphabetical">A-Z</option>
-        </select>
+      <div id="recs" style="display:none;padding:10px 16px;border-bottom:1px solid #1a1a1a;">
+        <div style="font-size:10px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:8px;font-weight:500;">Recommended for you</div>
+        <div id="recs-list" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;"></div>
       </div>
-    </section>
-
-    <section id="results-container" aria-live="polite">
-      <div class="grid grid-3" id="results-grid"></div>
-      <div id="load-sentinel" style="height: 40px;"></div>
-    </section>
-  </main>
-
+      <div class="cat-filters" id="filters"></div>
+      <div class="cat-list" id="list" tabindex="0"></div>
+    </div>
+    <div class="resize-handle" id="resize-handle"></div>
+    <div class="app-col">
+      <div class="app-bar" id="app-bar" style="display:none;"></div>
+      <div class="app-pane" id="app-pane">
+        <div class="app-empty" id="empty-state">
+          <div class="arrow">←</div>
+          <div class="msg">Select an app to preview it</div>
+        </div>
+      </div>
+    </div>
+  </div>
   <script src="/js/utils.js"></script>
   <script src="/js/api.js"></script>
   <script src="/js/catalog.js"></script>

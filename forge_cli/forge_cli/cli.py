@@ -292,6 +292,126 @@ def cmd_login(args) -> int:
 
 # -------------------- Parser --------------------
 
+def cmd_install(args) -> int:
+    """`forge install <slug>` — runs the install_command for an external app.
+
+    Looks up the app by slug, fetches install_command, runs each step.
+    Reports the user_id back to Forge so the install gets tracked in their shelf.
+    """
+    import subprocess
+    host = _resolve_host(args)
+    slug = args.slug
+    user_id = _get_or_create_user_id()
+
+    try:
+        with urlrequest.urlopen(f"{host}/api/tools/slug/{slug}", timeout=10) as r:
+            tool = json.loads(r.read())
+    except urlerror.HTTPError as e:
+        print(f"App '{slug}' not found on {host}: HTTP {e.code}", file=sys.stderr)
+        return 1
+    except Exception as e:
+        print(f"Could not reach {host}: {e}", file=sys.stderr)
+        return 1
+
+    if (tool.get("delivery") or "embedded") != "external":
+        print(f"'{slug}' is an embedded app — open it in your browser:")
+        print(f"  {host}/apps/{slug}")
+        return 0
+
+    cmd = tool.get("install_command")
+    if not cmd:
+        print(f"'{slug}' has no install_command set. Manual install required.", file=sys.stderr)
+        if tool.get("source_url"):
+            print(f"Source: {tool['source_url']}")
+        return 1
+
+    print(f"Installing {tool.get('name')} ({slug})...")
+    print(f"Running:\n{cmd}\n")
+    if not args.yes:
+        ans = input("Run these commands? [y/N] ").strip().lower()
+        if ans != "y":
+            print("Cancelled.")
+            return 0
+    proc = subprocess.run(cmd, shell=True)
+    if proc.returncode != 0:
+        print(f"\nInstall failed (exit {proc.returncode}).", file=sys.stderr)
+        return proc.returncode
+
+    # Mark installed in Forge
+    try:
+        body = json.dumps({"version": "cli"}).encode()
+        req = urlrequest.Request(
+            f"{host}/api/me/items/{tool['id']}",
+            data=json.dumps({"user_id": user_id}).encode(),
+            method="POST",
+            headers={"Content-Type": "application/json", "X-Forge-User-Id": user_id},
+        )
+        urlrequest.urlopen(req, timeout=5).read()
+        req2 = urlrequest.Request(
+            f"{host}/api/me/items/{tool['id']}/install",
+            data=body,
+            method="POST",
+            headers={"Content-Type": "application/json", "X-Forge-User-Id": user_id},
+        )
+        urlrequest.urlopen(req2, timeout=5).read()
+    except Exception as e:
+        print(f"(Couldn't sync install state with Forge: {e})", file=sys.stderr)
+
+    print(f"\n✓ Installed {tool.get('name')}")
+    return 0
+
+
+def cmd_sync(args) -> int:
+    """`forge sync` — pull all subscribed skills into ~/.claude/skills/."""
+    host = _resolve_host(args)
+    user_id = _get_or_create_user_id()
+    skills_dir = os.path.expanduser("~/.claude/skills")
+    os.makedirs(skills_dir, exist_ok=True)
+
+    try:
+        req = urlrequest.Request(
+            f"{host}/api/me/skills/sync",
+            headers={"X-Forge-User-Id": user_id},
+        )
+        with urlrequest.urlopen(req, timeout=10) as r:
+            payload = json.loads(r.read())
+    except Exception as e:
+        print(f"Couldn't fetch skills: {e}", file=sys.stderr)
+        return 1
+
+    skills = payload.get("skills") or []
+    if not skills:
+        print("No subscribed skills. Visit Forge → Skills and Subscribe to one.")
+        return 0
+
+    written = 0
+    for s in skills:
+        title = s.get("title") or f"skill-{s.get('id')}"
+        # Slugify title for the filename
+        safe = "".join(c if c.isalnum() or c in "-_" else "-" for c in title.lower())
+        path = os.path.join(skills_dir, f"{safe}.md")
+        with open(path, "w") as f:
+            f.write(s.get("prompt_text") or "")
+        print(f"  ↑ {title} → {path}")
+        written += 1
+    print(f"\n✓ Synced {written} skill(s) to {skills_dir}")
+    return 0
+
+
+def _resolve_host(args) -> str:
+    return getattr(args, "host", None) or _load_config().get("host") or os.environ.get("FORGE_HOST") or DEFAULT_HOST
+
+
+def _get_or_create_user_id() -> str:
+    cfg = _load_config()
+    if cfg.get("user_id"):
+        return cfg["user_id"]
+    user_id = str(uuid.uuid4())
+    cfg["user_id"] = user_id
+    _save_config(cfg)
+    return user_id
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="forge",
@@ -326,6 +446,16 @@ def build_parser() -> argparse.ArgumentParser:
     p_login = sub.add_parser("login", help="Save default Forge host to ~/.forge/config.json")
     p_login.add_argument("host_arg", nargs="?", default=DEFAULT_HOST, help="Host URL")
     p_login.set_defaults(func=cmd_login)
+
+    p_install = sub.add_parser("install", help="Install an external app from Forge")
+    p_install.add_argument("slug", help="App slug (e.g. 'meetily', 'raycast')")
+    p_install.add_argument("--host", help="Forge host")
+    p_install.add_argument("-y", "--yes", action="store_true", help="Skip confirmation prompt")
+    p_install.set_defaults(func=cmd_install)
+
+    p_sync = sub.add_parser("sync", help="Pull subscribed skills into ~/.claude/skills/")
+    p_sync.add_argument("--host", help="Forge host")
+    p_sync.set_defaults(func=cmd_sync)
 
     return parser
 

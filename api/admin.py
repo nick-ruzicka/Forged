@@ -9,9 +9,15 @@ import os
 from datetime import datetime
 from functools import wraps
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, after_this_request
 
 from api import db
+
+
+def _restrict_cors(response):
+    """Override the global CORS * with a pinned origin for admin routes."""
+    response.headers["Access-Control-Allow-Origin"] = "http://localhost:8090"
+    return response
 
 log = logging.getLogger("forge.admin")
 
@@ -26,6 +32,7 @@ def check_admin_key(view):
         key = request.headers.get("X-Admin-Key")
         if key != ADMIN_KEY:
             return jsonify({"error": "unauthorized"}), 401
+        after_this_request(_restrict_cors)
         return view(*args, **kwargs)
     return wrapped
 

@@ -107,7 +107,10 @@
             <button class="upvote-btn ${isUpvoted ? 'upvoted' : ''}" data-action="upvote">⬆ ${Forge.formatNumber(skill.upvotes || 0)}</button>
             ${authorLink}
           </div>
-          <a class="btn btn-primary btn-sm" data-action="download" href="${Forge.escapeHtml(ForgeApi.skillDownloadUrl(skill.id))}" download>Download .md</a>
+          <div style="display:flex;gap:6px;">
+            <button class="btn btn-secondary btn-sm" data-action="subscribe" data-id="${skill.id}" style="background:#1f1f1f;border:1px solid #2a2a2a;color:#ccc;padding:6px 12px;border-radius:5px;font-size:12px;cursor:pointer;">+ Subscribe</button>
+            <a class="btn btn-primary btn-sm" data-action="download" href="${Forge.escapeHtml(ForgeApi.skillDownloadUrl(skill.id))}" download>Download .md</a>
+          </div>
         </div>
       </article>
     `);
@@ -115,7 +118,42 @@
     el.querySelector('[data-action="download"]').addEventListener('click', () => onDownload(skill, el));
     const copyBtn = el.querySelector('[data-action="copy-cmd"]');
     copyBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); onCopyCmd(cmd, copyBtn); });
+    el.querySelector('[data-action="subscribe"]').addEventListener('click', (e) => {
+      e.preventDefault(); e.stopPropagation();
+      onSubscribe(skill, e.currentTarget);
+    });
     return el;
+  }
+
+  async function onSubscribe(skill, btn) {
+    let userId = '';
+    try { userId = localStorage.getItem('forge_user_id') || ''; } catch (e) {}
+    if (!userId) {
+      // Generate UUID lazily — same as catalog.js / my-tools.js
+      userId = (window.crypto && window.crypto.randomUUID)
+        ? window.crypto.randomUUID()
+        : 'anon-' + Date.now() + '-' + Math.random().toString(16).slice(2);
+      try { localStorage.setItem('forge_user_id', userId); } catch (e) {}
+    }
+    btn.disabled = true;
+    btn.textContent = '…';
+    try {
+      const res = await fetch(`/api/me/skills/${skill.id}`, {
+        method: 'POST',
+        headers: { 'X-Forge-User-Id': userId, 'Content-Type': 'application/json' },
+        body: JSON.stringify({}),
+      });
+      if (!res.ok) throw new Error('Subscribe failed');
+      btn.textContent = '✓ Subscribed';
+      btn.style.background = '#1a7f4b';
+      btn.style.color = 'white';
+      btn.style.border = 'none';
+      Forge.showToast(`Subscribed to "${skill.title}". Run "forge sync" to install.`, 'success');
+    } catch (err) {
+      btn.textContent = '+ Subscribe';
+      btn.disabled = false;
+      Forge.showToast('Subscribe failed', 'error');
+    }
   }
 
   async function onUpvote(skill, card) {

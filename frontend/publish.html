@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publish — Forge</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    .publish-root { max-width: 880px; margin: 0 auto; }
+    .mode-pills { display: flex; gap: 8px; margin: 18px 0; flex-wrap: wrap; }
+    .mode-pill {
+      background: #141414; border: 1px solid #2a2a2a; color: #ccc;
+      padding: 10px 18px; border-radius: 8px; cursor: pointer; font-size: 14px;
+      display: flex; gap: 8px; align-items: center;
+    }
+    .mode-pill.active { background: #0066FF; color: white; border-color: #0066FF; }
+    .mode-pill:hover:not(.active) { border-color: #0066FF; }
+
+    .publish-panel {
+      background: #141414; border: 1px solid #2a2a2a; border-radius: 10px;
+      padding: 20px; margin-bottom: 16px;
+    }
+    .publish-panel h3 { margin: 0 0 6px; font-size: 16px; }
+    .publish-panel .panel-sub { color: #888; font-size: 13px; margin: 0 0 14px; }
+
+    textarea#html-source, input[type="url"]#github-url {
+      width: 100%; background: #0d0d0d; border: 1px solid #2a2a2a; color: #e0e0e0;
+      padding: 12px; font-family: ui-monospace, Menlo, monospace; font-size: 12px;
+      border-radius: 6px; box-sizing: border-box;
+    }
+    textarea#html-source { min-height: 220px; resize: vertical; }
+
+    .file-drop {
+      border: 2px dashed #2a2a2a; border-radius: 10px; padding: 40px 20px;
+      text-align: center; color: #888; cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .file-drop.over { border-color: #0066FF; background: #0d1a2e; }
+    .file-drop input { display: none; }
+
+    .meta-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+      margin-top: 16px;
+    }
+    .meta-grid label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px; }
+    .meta-grid input, .meta-grid select {
+      width: 100%; background: #0d0d0d; border: 1px solid #2a2a2a; color: #e0e0e0;
+      padding: 9px 10px; border-radius: 6px; box-sizing: border-box; font-size: 13px;
+    }
+    .meta-grid .full { grid-column: 1 / -1; }
+
+    .publish-footer {
+      margin-top: 20px; padding-top: 16px; border-top: 1px solid #222;
+      display: flex; gap: 10px; align-items: center; justify-content: flex-end;
+    }
+    .publish-status { flex: 1; color: #888; font-size: 12px; }
+    .publish-status.error { color: #ff8a80; }
+
+    .success-card {
+      background: #0d2a1a; border: 1px solid #1a7f4b; border-radius: 12px;
+      padding: 32px; text-align: center;
+    }
+    .success-card h2 { margin: 0 0 8px; }
+    .success-card p { color: #aaa; margin: 0 0 18px; }
+    .success-card a, .success-card button {
+      display: inline-block; margin: 0 4px;
+      background: #0066FF; color: white; padding: 10px 20px;
+      border-radius: 6px; text-decoration: none; border: none; cursor: pointer; font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <main class="page publish-root" role="main">
+    <header style="display:flex; gap:14px; justify-content:space-between; align-items:center; padding: 14px 0;">
+      <a href="/" style="display:flex;gap:8px;align-items:center;text-decoration:none;color:#f0f0f0;">
+        <span style="font-weight:700;letter-spacing:0.5px;">⚒ FORGE</span>
+      </a>
+      <nav style="display:flex; gap:14px; align-items:center;">
+        <a href="/" class="muted">Apps</a>
+        <a href="/skills.html" class="muted">Skills</a>
+        <a href="/my-tools.html" class="muted">My Forge</a>
+        <a href="/publish.html" style="color:#0066FF;">+ Publish</a>
+      </nav>
+    </header>
+
+    <div id="form-view">
+      <h1 style="margin: 12px 0 4px; font-size: 26px;">Publish to Forge</h1>
+      <p style="color: #888; margin: 0;">Share an app you built with your team. Three ways to do it.</p>
+
+      <div class="mode-pills" role="tablist">
+        <button class="mode-pill active" data-mode="paste"><span>📝</span> Paste HTML</button>
+        <button class="mode-pill" data-mode="upload"><span>📦</span> Upload zip</button>
+        <button class="mode-pill" data-mode="github"><span>🐙</span> From GitHub</button>
+      </div>
+
+      <div class="publish-panel" id="panel-paste">
+        <h3>Paste your HTML</h3>
+        <p class="panel-sub">Single-file app. Should include all CSS/JS inline (or via CDN).</p>
+        <textarea id="html-source" spellcheck="false" placeholder="<!DOCTYPE html>&#10;<html>&#10;<body>&#10;  ..."></textarea>
+        <div style="margin-top:8px; font-size:11px; color:#666;">
+          Tip: drag-drop an .html file directly into this box.
+        </div>
+      </div>
+
+      <div class="publish-panel" id="panel-upload" style="display:none;">
+        <h3>Upload a zip</h3>
+        <p class="panel-sub">Folder must contain index.html. Forge serves it as a static bundle.</p>
+        <label class="file-drop" id="file-drop">
+          <input type="file" id="file-input" accept=".zip,.html">
+          <div style="font-size:32px;">📦</div>
+          <div style="margin-top:8px;">Drop a zip or .html file here, or click to browse</div>
+          <div id="file-name" style="margin-top:8px;color:#0066FF;font-size:12px;font-family:ui-monospace,Menlo,monospace;"></div>
+        </label>
+      </div>
+
+      <div class="publish-panel" id="panel-github" style="display:none;">
+        <h3>Deploy from a GitHub repo</h3>
+        <p class="panel-sub">Forge will clone the repo, look for index.html or forge.yaml, and publish it. Pushes to main auto-redeploy if you wire the webhook.</p>
+        <input id="github-url" type="url" placeholder="https://github.com/your-team/your-app">
+        <div style="margin-top:8px; font-size:11px; color:#666;">
+          Public repos work out of the box. Private repos need a deploy token (set up in Settings).
+        </div>
+      </div>
+
+      <div class="publish-panel">
+        <h3>About this app</h3>
+        <div class="meta-grid">
+          <div class="full">
+            <label for="meta-name">Name</label>
+            <input id="meta-name" type="text" maxlength="60" placeholder="e.g. Pipeline Hygiene Checker">
+          </div>
+          <div class="full">
+            <label for="meta-tagline">Tagline (one sentence)</label>
+            <input id="meta-tagline" type="text" maxlength="100" placeholder="What does it do, in 8 words?">
+          </div>
+          <div>
+            <label for="meta-category">Category</label>
+            <select id="meta-category">
+              <option>Productivity</option>
+              <option>Account Research</option>
+              <option>Email</option>
+              <option>Reporting</option>
+              <option>Onboarding</option>
+              <option>Forecasting</option>
+              <option>Developer Tools</option>
+              <option>Writing</option>
+              <option>Meetings</option>
+              <option selected>Other</option>
+            </select>
+          </div>
+          <div>
+            <label for="meta-icon">Icon (emoji)</label>
+            <input id="meta-icon" type="text" maxlength="3" value="⊞">
+          </div>
+          <div class="full">
+            <label for="meta-description">Description</label>
+            <textarea id="meta-description" style="min-height: 80px; resize: vertical; width: 100%; background: #0d0d0d; border: 1px solid #2a2a2a; color: #e0e0e0; padding: 9px 10px; border-radius: 6px; box-sizing: border-box; font-size: 13px; font-family: inherit;" placeholder="Optional. 2-3 sentences. Who uses it, what they get, what makes it better than alternatives."></textarea>
+          </div>
+          <div>
+            <label for="meta-name-author">Your name</label>
+            <input id="meta-name-author" type="text" placeholder="First Last">
+          </div>
+          <div>
+            <label for="meta-email-author">Your email</label>
+            <input id="meta-email-author" type="email" placeholder="you@navan.com" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="publish-footer">
+        <span class="publish-status" id="publish-status"></span>
+        <button id="publish-btn" style="background:#0066FF;color:white;border:none;padding:10px 24px;border-radius:6px;cursor:pointer;font-weight:600;font-size:14px;">Publish</button>
+      </div>
+    </div>
+
+    <div id="success-view" style="display:none;"></div>
+  </main>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/publish.js"></script>
+</body>
+</html>
