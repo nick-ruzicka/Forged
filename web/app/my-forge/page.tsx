@@ -154,12 +154,12 @@ export default function MyForgePage() {
                   isRunning={item.delivery === "external" && !!runningData?.apps.find(a => a.slug === item.slug && a.running)}
                   onOpen={() => {
                     if (item.delivery === "external" && item.slug) {
-                      handleLaunch(item.tool_id, item.slug, item.name || item.slug);
+                      handleLaunch(item.tool_id ?? item.id, item.slug, item.name || item.slug);
                     } else if (item.slug) {
                       openPane(item.slug, item.name || item.slug);
                     }
                   }}
-                  onRemove={() => handleRemoveItem(item.tool_id)}
+                  onRemove={() => handleRemoveItem(item.tool_id ?? item.id)}
                 />
               ))}
             </div>
@@ -182,7 +182,7 @@ export default function MyForgePage() {
                 <SavedTile
                   key={star.id}
                   star={star}
-                  onUnsave={() => handleUnsave(star.tool_id)}
+                  onUnsave={() => handleUnsave(star.tool_id ?? star.id)}
                 />
               ))}
             </div>
@@ -309,7 +309,7 @@ function SavedTile({
           href={star.slug ? `/apps/${star.slug}` : "#"}
           className="truncate text-sm font-medium text-foreground hover:underline"
         >
-          {star.name || star.slug || `#${star.tool_id}`}
+          {star.name || star.slug || `#${star.tool_id ?? star.id}`}
         </Link>
         {star.tagline && (
           <span className="truncate text-xs text-text-secondary">
