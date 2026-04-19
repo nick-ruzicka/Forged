@@ -157,6 +157,18 @@ class Skill:
     copy_count: int = 0
     featured: bool = False
     source_url: Optional[str] = None
+
+    # Governance (migration 018)
+    review_status: str = "pending"
+    review_id: Optional[int] = None
+    version: int = 1
+    parent_skill_id: Optional[int] = None
+    data_sensitivity: Optional[str] = None
+    submitted_at: Optional[datetime] = None
+    approved_at: Optional[datetime] = None
+    blocked_reason: Optional[str] = None
+    blocked_at: Optional[datetime] = None
+
     created_at: Optional[datetime] = None
 
     @classmethod
