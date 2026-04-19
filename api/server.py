@@ -884,9 +884,11 @@ def unstar_item(tool_id: int):
 
 @app.route("/api/me/items", methods=["GET"])
 def shelf_list():
-    """Return everything on a user's shelf, joined with the tool row.
+    """Return everything on a user's shelf. Includes detected unknown apps.
 
-    Accepts user_id (preferred) or email (back-compat).
+    Excludes rows where:
+      - hidden = TRUE
+      - tool_id IS NULL AND installed_locally = FALSE  (uninstalled unknowns)
     """
     uid, email = _get_identity()
     if not uid and not email:
@@ -894,26 +896,55 @@ def shelf_list():
     with db.get_db() as cur:
         cur.execute(
             """
-            SELECT t.*, ui.added_at, ui.installed_locally, ui.installed_at,
-                   ui.installed_version, ui.last_opened_at, ui.open_count
+            SELECT ui.id AS shelf_id, ui.tool_id, ui.added_at, ui.installed_locally,
+                   ui.installed_at, ui.installed_version, ui.last_opened_at, ui.open_count,
+                   ui.source AS ui_source, ui.hidden, ui.detected_bundle_id, ui.detected_name,
+                   t.*
             FROM user_items ui
-            JOIN tools t ON t.id = ui.tool_id
+            LEFT JOIN tools t ON t.id = ui.tool_id
             WHERE (ui.user_id = %s OR (%s IS NOT NULL AND ui.user_email = %s))
-              AND t.status = 'approved'
+              AND ui.hidden = FALSE
+              AND (
+                t.id IS NOT NULL AND t.status = 'approved'
+                OR (ui.tool_id IS NULL AND ui.installed_locally = TRUE)
+              )
             ORDER BY ui.last_opened_at DESC NULLS LAST, ui.added_at DESC
             """,
             (uid, email, email),
         )
         rows = [dict(r) for r in cur.fetchall()]
+
     items = []
     for r in rows:
+        if r.get("tool_id") is None:
+            # Unknown app row.
+            items.append({
+                "id": r["shelf_id"],
+                "tool_id": None,
+                "slug": None,
+                "name": r.get("detected_name"),
+                "icon": None,
+                "delivery": "external",
+                "detected_bundle_id": r.get("detected_bundle_id"),
+                "source": r.get("ui_source") or "detected",
+                "installed_locally": True,
+                "installed_at": r.get("installed_at").isoformat() if r.get("installed_at") else None,
+                "added_at": r.get("added_at").isoformat() if r.get("added_at") else None,
+                "open_count": r.get("open_count") or 0,
+            })
+            continue
+        # Catalog-matched row — preserve previous behaviour and add new fields.
         d = _jsonify_tool(r)
+        d["id"] = r["shelf_id"]
+        d["tool_id"] = r["tool_id"]
         d["added_at"] = r.get("added_at").isoformat() if r.get("added_at") else None
         d["installed_locally"] = r.get("installed_locally") or False
         d["installed_at"] = r.get("installed_at").isoformat() if r.get("installed_at") else None
         d["installed_version"] = r.get("installed_version")
         d["last_opened_at"] = r.get("last_opened_at").isoformat() if r.get("last_opened_at") else None
         d["open_count"] = r.get("open_count") or 0
+        d["source"] = r.get("ui_source") or "manual"
+        d["detected_bundle_id"] = None
         items.append(d)
     return jsonify({"items": items, "count": len(items)})
 

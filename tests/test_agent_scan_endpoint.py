@@ -102,3 +102,68 @@ def test_hide_endpoint_rejects_other_users(client, db, sample_tool):
 
     r = client.post(f"/api/me/items/{ui_id}/hide", headers={"X-Forge-User-Id": intruder})
     assert r.status_code == 404, "Other users must not be able to hide rows on someone else's shelf"
+
+
+def test_shelf_list_returns_detected_unknowns(client, db):
+    uid = f"user-{uuid.uuid4().hex[:8]}"
+    with db.cursor() as cur:
+        cur.execute(
+            """INSERT INTO user_items (user_id, tool_id, detected_bundle_id, detected_name,
+                                       source, installed_locally)
+               VALUES (%s, NULL, 'com.unknown.app', 'UnknownApp', 'detected', TRUE)""",
+            (uid,),
+        )
+    r = client.get(f"/api/me/items?user_id={uid}")
+    assert r.status_code == 200
+    items = r.get_json()["items"]
+    unknown = [i for i in items if i.get("detected_bundle_id") == "com.unknown.app"]
+    assert len(unknown) == 1
+    assert unknown[0]["name"] == "UnknownApp"
+    assert unknown[0]["source"] == "detected"
+    assert unknown[0]["tool_id"] is None
+    assert unknown[0]["installed_locally"] is True
+
+
+def test_shelf_list_excludes_hidden(client, db, sample_tool):
+    uid = f"user-{uuid.uuid4().hex[:8]}"
+    with db.cursor() as cur:
+        cur.execute(
+            """INSERT INTO user_items (user_id, tool_id, installed_locally, source, hidden)
+               VALUES (%s, %s, TRUE, 'detected', TRUE)""",
+            (uid, sample_tool["id"]),
+        )
+    r = client.get(f"/api/me/items?user_id={uid}")
+    assert r.status_code == 200
+    items = r.get_json()["items"]
+    assert all(i.get("tool_id") != sample_tool["id"] for i in items), \
+        "Hidden rows must not appear on the shelf"
+
+
+def test_shelf_list_excludes_uninstalled_unknowns(client, db):
+    uid = f"user-{uuid.uuid4().hex[:8]}"
+    with db.cursor() as cur:
+        cur.execute(
+            """INSERT INTO user_items (user_id, tool_id, detected_bundle_id, detected_name,
+                                       source, installed_locally)
+               VALUES (%s, NULL, 'com.gone.app', 'Gone', 'detected', FALSE)""",
+            (uid,),
+        )
+    r = client.get(f"/api/me/items?user_id={uid}")
+    items = r.get_json()["items"]
+    assert all(i.get("detected_bundle_id") != "com.gone.app" for i in items), \
+        "Unknown rows with installed_locally=FALSE should not render"
+
+
+def test_shelf_list_includes_source_field_for_matched(client, db, sample_tool):
+    uid = f"user-{uuid.uuid4().hex[:8]}"
+    with db.cursor() as cur:
+        cur.execute(
+            """INSERT INTO user_items (user_id, tool_id, installed_locally, source)
+               VALUES (%s, %s, TRUE, 'detected')""",
+            (uid, sample_tool["id"]),
+        )
+    r = client.get(f"/api/me/items?user_id={uid}")
+    items = r.get_json()["items"]
+    matched = [i for i in items if i.get("tool_id") == sample_tool["id"]]
+    assert len(matched) == 1
+    assert matched[0]["source"] == "detected"
