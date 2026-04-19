@@ -20,6 +20,7 @@ export function AppPane({ slug, name, onClose }: AppPaneProps) {
           <Button
             variant="ghost"
             size="xs"
+            nativeButton={false}
             render={
               <a
                 href={`/embed/${slug}`}

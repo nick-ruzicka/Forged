@@ -197,6 +197,7 @@ export function ExternalControlPanel({
           <Button
             variant="outline"
             size="sm"
+            nativeButton={false}
             render={
               <a
                 href={app.source_url}

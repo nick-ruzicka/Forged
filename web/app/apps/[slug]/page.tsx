@@ -134,6 +134,7 @@ export default function AppDetailPage({
             <Button
               variant="ghost"
               size="icon"
+              nativeButton={false}
               render={
                 <a
                   href={app.source_url}

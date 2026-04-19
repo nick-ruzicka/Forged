@@ -45,6 +45,7 @@ export function InstallButton({
         await installApp(toolId);
         const msg = trackMilestone("first_install");
         if (msg) toast.success(msg);
+        router.push(`/apps/${slug}`);
       } catch {
         toast.error("Failed to install app");
       } finally {

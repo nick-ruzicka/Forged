@@ -183,9 +183,10 @@ function QueueTile({
           <Button
             size="sm"
             variant="ghost"
+            nativeButton={false}
             render={
               <a
-                href={`/apps/${item.slug}`}
+                href={`/embed/${item.slug}`}
                 target="_blank"
                 rel="noopener noreferrer"
               />

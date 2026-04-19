@@ -161,6 +161,7 @@ export function SkillCard({ skill }: SkillCardProps) {
           <Button
             variant="ghost"
             size="icon-xs"
+            nativeButton={false}
             render={
               <a
                 href={downloadSkillUrl(skill.id)}
