@@ -1038,6 +1038,9 @@ if __name__ == "__main__":
     print(f"Audit: {AUDIT_LOG}")
     print(f"CORS: {ALLOWED_ORIGIN}")
     try:
-        http.server.HTTPServer(("localhost", PORT), AgentHandler).serve_forever()
+        from socketserver import ThreadingMixIn
+        class ThreadedHTTPServer(ThreadingMixIn, http.server.HTTPServer):
+            daemon_threads = True
+        ThreadedHTTPServer(("localhost", PORT), AgentHandler).serve_forever()
     except KeyboardInterrupt:
         print("\nStopped.")
