@@ -1204,6 +1204,43 @@ def _reconcile_uninstalls(user_id: str, payload: dict, matched_tool_ids: set, cu
     return len(to_unmark)
 
 
+@app.route("/api/agent/scan", methods=["POST"])
+def agent_scan():
+    """Receive a scan payload from forge_agent and reconcile against this user's shelf.
+
+    Body shape:
+        {"apps": [{"bundle_id": str, "name": str, "path": str}, ...],
+         "brew": [str, ...],
+         "brew_casks": [str, ...]}
+    """
+    uid, _email = _get_identity()
+    if not uid:
+        return jsonify({"error": "user_id_required"}), 400
+
+    payload = request.get_json(silent=True) or {}
+    if not isinstance(payload.get("apps"), list):
+        return jsonify({"error": "apps_must_be_list"}), 400
+
+    with db.get_db(dict_cursor=False) as cur:
+        matched = _reconcile_matches(uid, payload, cur)
+        _reconcile_unknowns(uid, payload["apps"], matched, cur)
+        unmarked = _reconcile_uninstalls(uid, payload, matched, cur)
+
+        cur.execute(
+            """SELECT COUNT(*) FROM user_items
+               WHERE user_id = %s AND tool_id IS NULL
+                 AND installed_locally = TRUE AND hidden = FALSE""",
+            (uid,),
+        )
+        detected_count = cur.fetchone()[0]
+
+    return jsonify({
+        "matched":  len(matched),
+        "detected": detected_count,
+        "unmarked": unmarked,
+    })
+
+
 # -------------------- Reviews --------------------
 
 @app.route("/api/tools/<int:tool_id>/reviews", methods=["GET"])
