@@ -1159,18 +1159,11 @@ def list_my_submissions():
     uid, _ = _get_identity()
     if not uid:
         return jsonify({"error": "user_id_required"}), 400
-    # Get user name to match against author_name
-    with db.get_db() as cur:
-        cur.execute("SELECT name FROM users WHERE user_id = %s", (uid,))
-        row = cur.fetchone()
-        user_name = row.get("name") if row else None
-    if not user_name:
-        return jsonify({"submissions": [], "count": 0})
-    # Find skills authored by this user (all statuses)
+    # Match by author_user_id (set at submission time)
     with db.get_db() as cur:
         cur.execute(
-            "SELECT * FROM skills WHERE author_name = %s ORDER BY created_at DESC",
-            (user_name,),
+            "SELECT * FROM skills WHERE author_user_id = %s ORDER BY created_at DESC",
+            (uid,),
         )
         rows = [dict(r) for r in cur.fetchall()]
     return jsonify({
