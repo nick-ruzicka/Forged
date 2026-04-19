@@ -50,10 +50,17 @@ export function Sidebar({ onOpenCommandMenu }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Hydrate collapsed state from localStorage
+  // Hydrate collapsed state from localStorage + listen for external toggle
   useEffect(() => {
     const stored = localStorage.getItem("forge_sidebar_collapsed");
     if (stored === "true") setCollapsed(true);
+
+    const handleToggle = () => {
+      const current = localStorage.getItem("forge_sidebar_collapsed") === "true";
+      setCollapsed(current);
+    };
+    window.addEventListener("forge-sidebar-toggle", handleToggle);
+    return () => window.removeEventListener("forge-sidebar-toggle", handleToggle);
   }, []);
 
   const toggleCollapsed = useCallback(() => {

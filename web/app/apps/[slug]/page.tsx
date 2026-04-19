@@ -3,7 +3,7 @@
 import { use, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, PanelLeftClose, PanelLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -90,10 +90,27 @@ export default function AppDetailPage({
 
   // Full-screen embed for installed embedded apps
   if (isInstalled && !isExternal) {
+    const toggleSidebar = () => {
+      const stored = localStorage.getItem("forge_sidebar_collapsed");
+      const next = stored !== "true";
+      localStorage.setItem("forge_sidebar_collapsed", String(next));
+      // Dispatch storage event so sidebar component picks it up
+      window.dispatchEvent(new Event("forge-sidebar-toggle"));
+    };
+
     return (
       <div className="flex h-full flex-col">
         <div className="flex items-center justify-between border-b border-border bg-surface px-4 py-1.5">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={toggleSidebar}
+              aria-label="Toggle sidebar"
+              className="text-text-muted hover:text-foreground"
+            >
+              <PanelLeftClose className="size-4" />
+            </Button>
             <Link
               href="/"
               className="text-xs text-text-muted hover:text-foreground transition-colors"
