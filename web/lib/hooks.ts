@@ -134,10 +134,17 @@ export function useClaudeRun(id: number | undefined) {
 // Agent
 // ---------------------------------------------------------------------------
 
-export function useAgentRunning(enabled: boolean) {
-  return useSWR<{ running: boolean }>(
-    enabled ? "/agent/status" : null,
-    getAgentRunning,
+export function useAgentAvailable(enabled: boolean = true) {
+  return useSWR<boolean>(
+    enabled ? "/agent/available" : null,
+    async () => {
+      try {
+        const data = await getAgentRunningApps();
+        return Array.isArray(data.apps);
+      } catch {
+        return false;
+      }
+    },
     { refreshInterval: 15000 },
   );
 }

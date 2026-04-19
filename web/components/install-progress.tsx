@@ -1,11 +1,10 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { Loader2, Copy, Check, Download } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { installApp } from "@/lib/hooks";
-import { getUserId } from "@/lib/api";
 
 interface InstallProgressProps {
   toolId: number;
@@ -13,6 +12,7 @@ interface InstallProgressProps {
   agentAvailable?: boolean;
   installCommand?: string;
   installMeta?: string;
+  autoInstall?: boolean;
   onInstalled?: () => void;
 }
 
@@ -22,6 +22,7 @@ export function InstallProgress({
   agentAvailable,
   installCommand,
   installMeta,
+  autoInstall,
   onInstalled,
 }: InstallProgressProps) {
   const [status, setStatus] = useState<string | null>(null);
@@ -107,6 +108,15 @@ export function InstallProgress({
       toast.error("Forge Agent not available — use the manual install command below");
     }
   }, [toolId, slug, installCommand, installMeta, onInstalled]);
+
+  // Auto-install when agent is available and autoInstall is set
+  const autoTriggered = useRef(false);
+  useEffect(() => {
+    if (autoInstall && agentAvailable && !autoTriggered.current && !installing && !done) {
+      autoTriggered.current = true;
+      handleInstall();
+    }
+  }, [autoInstall, agentAvailable, installing, done, handleInstall]);
 
   // Installing / done state
   if (installing || done) {

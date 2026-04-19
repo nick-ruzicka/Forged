@@ -1,6 +1,7 @@
 "use client";
 
 import { use, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -21,7 +22,7 @@ import {
   useMyItems,
   useMyStars,
   useReviews,
-  useAgentRunning,
+  useAgentAvailable,
   uninstallApp,
 } from "@/lib/hooks";
 
@@ -31,6 +32,8 @@ export default function AppDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = use(params);
+  const searchParams = useSearchParams();
+  const autoInstall = searchParams.get("install") === "1";
 
   const { data: app, isLoading } = useApp(slug);
   const { data: items } = useMyItems();
@@ -38,7 +41,7 @@ export default function AppDetailPage({
   const { data: reviews, mutate: mutateReviews } = useReviews(app?.id);
 
   const isExternal = app?.delivery === "external";
-  const { data: agentStatus } = useAgentRunning(isExternal);
+  const { data: agentAvailable } = useAgentAvailable(isExternal);
 
   const installedIds = useMemo(
     () => new Set((Array.isArray(items) ? items : []).map((i) => i.tool_id)),
@@ -178,9 +181,10 @@ export default function AppDetailPage({
               <InstallProgress
                 toolId={app.id}
                 slug={app.slug}
-                agentAvailable={agentStatus?.running}
+                agentAvailable={agentAvailable ?? false}
                 installCommand={app.install_command}
                 installMeta={app.install_meta}
+                autoInstall={autoInstall}
               />
             )}
 

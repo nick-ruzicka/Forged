@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EmptyState } from "@/components/empty-state";
 import { AppPane } from "@/components/app-pane";
-import { useMyItems, useMyStars, useMySkills, useAgentRunning, uninstallApp } from "@/lib/hooks";
+import { useMyItems, useMyStars, useMySkills, useAgentAvailable, uninstallApp } from "@/lib/hooks";
 import { launchItem, removeStar } from "@/lib/api";
 import { useUser } from "@/lib/user-context";
 import type { UserItem, Star, Skill } from "@/lib/types";
@@ -20,7 +20,7 @@ export default function MyForgePage() {
   const { data: items, mutate: mutateItems } = useMyItems();
   const { data: stars, mutate: mutateStars } = useMyStars();
   const { data: skills } = useMySkills();
-  useAgentRunning(true);
+  useAgentAvailable(true);
 
   // App pane state
   const [paneSlug, setPaneSlug] = useState<string | null>(null);

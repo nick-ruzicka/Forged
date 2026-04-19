@@ -34,9 +34,9 @@ export function InstallButton({
         return;
       }
 
-      // External apps: navigate to detail page where agent install flow lives
+      // External apps: navigate to detail page and auto-trigger install
       if (delivery === "external") {
-        router.push(`/apps/${slug}`);
+        router.push(`/apps/${slug}?install=1`);
         return;
       }
 
