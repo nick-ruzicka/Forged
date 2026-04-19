@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-19T17:42:53.101298+00:00",
+  "timestamp": "2026-04-19T17:46:06.729471+00:00",
   "base_url": "http://localhost:8090",
   "passed": 12,
   "failed": 3,
@@ -11,7 +11,7 @@
       "passed": true,
       "error_message": null,
       "screenshot_path": null,
-      "timestamp": "2026-04-19T17:42:50.169427+00:00"
+      "timestamp": "2026-04-19T17:46:03.598281+00:00"
     },
     {
       "page": "/",
@@ -19,23 +19,23 @@
       "passed": false,
       "error_message": null,
       "screenshot_path": null,
-      "timestamp": "2026-04-19T17:42:50.183665+00:00"
+      "timestamp": "2026-04-19T17:46:03.629729+00:00"
     },
     {
       "page": "/",
       "test_name": "tool_cards_present",
       "passed": false,
       "error_message": "found 0 cards",
-      "screenshot_path": "tests/reports/screenshots/catalog-no-cards-20260419T174250.png",
-      "timestamp": "2026-04-19T17:42:50.224184+00:00"
+      "screenshot_path": "tests/reports/screenshots/catalog-no-cards-20260419T174603.png",
+      "timestamp": "2026-04-19T17:46:03.671875+00:00"
     },
     {
       "page": "/",
       "test_name": "click_first_run_tool",
       "passed": false,
       "error_message": "no Run Tool button found",
-      "screenshot_path": "tests/reports/screenshots/no-run-button-20260419T174250.png",
-      "timestamp": "2026-04-19T17:42:50.780179+00:00"
+      "screenshot_path": "tests/reports/screenshots/no-run-button-20260419T174604.png",
+      "timestamp": "2026-04-19T17:46:04.251766+00:00"
     },
     {
       "page": "/submit.html",
@@ -43,7 +43,7 @@
       "passed": true,
       "error_message": null,
       "screenshot_path": null,
-      "timestamp": "2026-04-19T17:42:51.301743+00:00"
+      "timestamp": "2026-04-19T17:46:04.776145+00:00"
     },
     {
       "page": "/submit.html",
@@ -51,7 +51,7 @@
       "passed": true,
       "error_message": null,
       "screenshot_path": null,
-      "timestamp": "2026-04-19T17:42:51.305907+00:00"
+      "timestamp": "2026-04-19T17:46:04.783592+00:00"
     },
     {
       "page": "/submit.html",
@@ -59,7 +59,7 @@
       "passed": true,
       "error_message": null,
       "screenshot_path": null,
-      "timestamp": "2026-04-19T17:42:51.306849+00:00"
+      "timestamp": "2026-04-19T17:46:04.787086+00:00"
     },
     {
       "page": "/skills.html",
@@ -67,7 +67,7 @@
       "passed": true,
       "error_message": null,
       "screenshot_path": null,
-      "timestamp": "2026-04-19T17:42:51.865825+00:00"
+      "timestamp": "2026-04-19T17:46:05.441416+00:00"
     },
     {
       "page": "/skills.html",
@@ -75,7 +75,7 @@
       "passed": true,
       "error_message": null,
       "screenshot_path": null,
-      "timestamp": "2026-04-19T17:42:51.868535+00:00"
+      "timestamp": "2026-04-19T17:46:05.446899+00:00"
     },
     {
       "page": "/skills.html",
@@ -83,7 +83,7 @@
       "passed": true,
       "error_message": null,
       "screenshot_path": null,
-      "timestamp": "2026-04-19T17:42:51.869507+00:00"
+      "timestamp": "2026-04-19T17:46:05.449507+00:00"
     },
     {
       "page": "/my-tools.html",
@@ -91,7 +91,7 @@
       "passed": true,
       "error_message": null,
       "screenshot_path": null,
-      "timestamp": "2026-04-19T17:42:52.550116+00:00"
+      "timestamp": "2026-04-19T17:46:06.155926+00:00"
     },
     {
       "page": "/my-tools.html",
@@ -99,7 +99,7 @@
       "passed": true,
       "error_message": null,
       "screenshot_path": null,
-      "timestamp": "2026-04-19T17:42:52.551520+00:00"
+      "timestamp": "2026-04-19T17:46:06.159475+00:00"
     },
     {
       "page": "/my-tools.html",
@@ -107,7 +107,7 @@
       "passed": true,
       "error_message": null,
       "screenshot_path": null,
-      "timestamp": "2026-04-19T17:42:52.552156+00:00"
+      "timestamp": "2026-04-19T17:46:06.162005+00:00"
     },
     {
       "page": "/",
@@ -115,7 +115,7 @@
       "passed": true,
       "error_message": null,
       "screenshot_path": null,
-      "timestamp": "2026-04-19T17:42:53.079387+00:00"
+      "timestamp": "2026-04-19T17:46:06.701941+00:00"
     },
     {
       "page": "*",
@@ -123,7 +123,7 @@
       "passed": true,
       "error_message": null,
       "screenshot_path": null,
-      "timestamp": "2026-04-19T17:42:53.083456+00:00"
+      "timestamp": "2026-04-19T17:46:06.707019+00:00"
     }
   ]
 }
