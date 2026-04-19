@@ -38,6 +38,7 @@ import {
   getSocial,
   getAgentUsage,
   getAgentRunningApps,
+  scanInstalled,
 } from "./api";
 
 // ---------------------------------------------------------------------------
@@ -222,4 +223,11 @@ export async function uninstallApp(toolId: number): Promise<void> {
   );
   await removeItem(toolId);
   await globalMutate("/me/items");
+}
+
+// Trigger a scan; on success, invalidate /me/items so the shelf re-renders.
+export async function refreshInstalled(): Promise<{ matched: number; detected: number; unmarked: number }> {
+  const result = await scanInstalled();
+  await globalMutate("/me/items");
+  return result;
 }
