@@ -162,29 +162,100 @@ T3_NEW DONE
 T3-APP DONE
 
 ## COORDINATOR STATUS
-Last check: 2026-04-18 20:20 local (Cycle 75)
+Last check: 2026-04-19 (Cycle 79)
 
-### Cycle 75 Highlights — SCREENSHOT BURN 3853 → **4623** (+770 in ~15h, ~51/hr) — slightly decelerating vs C74's ~60/hr but still active; **FOURTH STUCK PID (8992 code_auditor.py) now surfaced in coordinator status** (T6_testing.md:24 flagged it at C93 but coordinator blocks C73/C74 under-enumerated); all 4 PIDs now at **~2d 15-16h elapsed** — past 60h continuous runtime; TASK QUEUE FROZEN 58TH CYCLE (190 incomplete = 10/file × 19 files, every file returns exactly 10); ZERO new tasks added (literal `<3` rule does not fire on any file); ZERO new UNBLOCKED notes written (63rd consecutive zero-bump cycle — duplicate guidance prohibited, every file already carries its applicable Cycle 17/11/20/22/25/72/93 rescue block); HALT RECOMMENDATION STANDS (57TH OVERRIDE)
+### Cycle 79 Highlights — **INSTALL-FLOW FIX BURST**: HEAD `a9a231d` → `127219e` via **9 commits** (C78→C79, all `fix(web)`/`fix:` on the Next.js install-progress flow — InstallProgress live log output, SSE streaming via Flask CORS proxy, error-state surfacing, brew tap handling, multi-threaded forge-agent, success-state toast suppression, post-install refresh to control panel + Launch, brew installed/starred detection); 4 stuck PIDs now past **~84h** runtime (PID 3358 at 03-12:38, PID 8992 at 03-12:00, PIDs 9962/9974 at 03-11:55); screenshot burn `5241 → 5325` (+84 in ~24h ≈ **3.5/hr** — mild uptick from C78's 2/hr but still 7× below C77's 26/hr peak); newest capture `no-run-button-20260419T165744.png` at **2026-04-19 12:57 — fresh today** (vs C78's 3-day-stale newest), so the loop did fire at least once this interval; `.env.example` UNCHANGED at 1344 bytes (23+ cycles stale, 68 cycles overdue); TASK QUEUE FROZEN 62ND CYCLE (190 incomplete = 10/file × 19 files); ZERO new tasks added (literal `<3` rule does not fire on any file); ZERO new UNBLOCKED notes written (67th consecutive zero-bump cycle — duplicates prohibited, all 4 stuck-PID notes already verbatim-operative).
 
-- **Task queue audit (literal re-check 2026-04-18 20:20):** `for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` → every file returns `10`. 19 × 10 = **190 incomplete**, unchanged since Cycle 17. Literal `<3` threshold does not fire on any file → **zero new tasks added per rule**. No terminal qualifies for refill.
-- **Stuck-terminal audit:** identical partition to C71/C72/C73/C74. Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new. Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new. Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL. Every task file carries ≥1 UNBLOCKED block (T3_frontend: 6, T6_testing: 4 including C93's 4th-PID note; minimum 1 on T1_app_platform/T4_admin/T_DASH/T_EVAL). **Zero new UNBLOCKED notes added** — all required guidance already in place.
-- **Screenshot burn:** **4623 accumulated** in `tests/reports/screenshots/` (up from C74's 3853 → **+770 over ~15h, ~51/hour**). Newest capture `no-run-button-20260418T201750.png` at 20:17 today — loop is still emitting. Rate slowed from C74's +60/hr regime but remains non-zero; 4000 threshold crossed, 5000 reachable within 1 coordinator cycle. (Reminder: the `tests/reports/ux_shots/` set reported in earlier cycles is a different, static set — the active burn lives in `screenshots/`.)
-- **Stuck PIDs (re-verified 2026-04-18 20:20):** `ps -p 3358,8992,9962,9974` confirms all **four** alive — PID 3358 (ui_tester.py) at **02-15:58:47** (~2d 15h 59m), PID 8992 (code_auditor.py) at **02-15:20:52** (~2d 15h 21m), PIDs 9962 (test_dashboard.py) + 9974 (ux_auditor.py) at **02-15:15:5x** (~2d 15h 16m). All four now past **60h** continuous runtime. Coordinator cycles C73/C74 under-enumerated this set (omitted 8992); T6_testing.md:24 (C93) already carries the correct 4-PID guidance. HUMAN: `kill 3358 8992 9962 9974` (4 PIDs — note the added 8992).
-- **`.env.example` state:** **1344 bytes** (unchanged 19+ cycles, C56→C75); `grep -cE "SLACK|FLASK_ENV" .env.example` → **0**. T5_deploy Cycle 11 rescue now **64 cycles overdue**. 30-second human edit per T5_deploy.md:28-36.
-- **Git state:** HEAD unchanged at `837ed88` — **58 cycles elapsed since last commit**. All 4623 screenshots still untracked; same modified `tasks/` + `tests/reports/*` files untouched.
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — literal audit `for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` returns `10` on every one of 19 files; 62-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at T3_frontend.md:38 and T6_testing.md:22,24; kill command `kill 3358 8992 9962 9974` unchanged since C75, now 5 cycles stale).
+- COORDINATOR STATUS Cycle 79 block prepended; Cycle 78 block demoted to Prior Cycle Archive (this commit).
 
-### Pending Unblocks (Cycle 75 — both carry over, same content, counters advanced)
-1. **Screenshot harness root-cause** (C56, 20 cycles overdue) — loop lives in `tests/agents/ui_tester.py` (PID 3358). Companion idle-but-stuck PIDs: 8992 (code_auditor.py), 9962 (test_dashboard.py), 9974 (ux_auditor.py). Required: `kill 3358 8992 9962 9974` (4 PIDs), then fix/disable stale DOM selectors in `tests/agents/ui_tester.py` producing `catalog-no-cards` + `no-run-button` + `tool-nav-fail` + `catalog-load-fail` captures against the post-demolition UI.
-2. **`.env.example` Slack/Flask append** (C11, 64 cycles overdue) — file exists at 1344 bytes; 4-line append documented inline in T5_deploy.md:28-36. ~30-second human edit.
+### What Changed This Cycle
+- **Commit velocity resumed (post-lull):** 9 commits in the C78→C79 interval — `6b2d2d1` (QA rounds 2), `bcb271f` (SSE Flask proxy w/ CORS), `471e0e7` (install error state), `6dbbc85` (brew taps + extra formulas), `27d6751` (multi-threaded forge-agent — installs no longer block all requests), `77d0f7b` (suppress false success-toast error), `c56203c` (rewrite InstallProgress with live log output), `e38267b` (post-install refresh → control panel + Launch button), `127219e` (HEAD — `tool_id` missing from API broke installed/starred detection). All commits target the Next.js (`web/`) install-progress flow + `forge-agent` backend — the tight cluster suggests a focused install-UX hardening sprint. Velocity (9/cycle) sits between C77's burst (26) and C78's lull (1) — looks like normal feature-development cadence resuming.
+- **Screenshot burn ticked up modestly:** `ls tests/reports/screenshots/ | wc -l` returned **5325** vs C78's 5241 → **+84 in ~24h ≈ 3.5/hr**, up from C78's 2/hr but nowhere near C77's 26/hr or C74's 60/hr. **Critical correction to C78's wedged-loop hypothesis:** newest capture is `no-run-button-20260419T165744.png` at **2026-04-19 12:57 — same day as this audit**, not 3 days stale. The loop IS still firing (intermittently); C78's "wedged/idle" framing was incomplete. Capture pattern (`no-run-button-*`, `catalog-no-cards-*`) suggests ui_tester.py is still asserting against the legacy `frontend/` selectors — which would be expected to fail given the canonical UI is `web/` now.
+- **Stuck PIDs past 84h:** `ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms all 4 alive: PID 3358 (ui_tester.py) at **03-12:38:35**, PID 8992 (code_auditor.py) at **03-12:00:40**, PID 9962 (test_dashboard.py) at **03-11:55:39**, PID 9974 (ux_auditor.py) at **03-11:55:37**. PID 3358 is the one producing the new screenshots — it's stuck in a polling loop, not crashed. HUMAN action unchanged: `kill 3358 8992 9962 9974`.
+- **.env.example STILL at 1344 bytes:** `wc -c .env.example` returns 1344. T5_deploy Cycle 11 rescue now **68 cycles overdue**. The C78→C79 9-commit burst did not touch this file (all 9 commits are on `web/` + `forge_agent/`).
+- **Task queue state:** 190 incomplete across 19 files, 10 each, frozen 62 cycles. Staleness concern from C77/C78 deepens — install-flow work this cycle landed entirely in `web/` (Next.js) + `forge_agent/`, neither of which is reflected in any of the 19 task queues. The task files describe the original vanilla-frontend + Flask architecture; the work the user is actually shipping is on the new stack.
+- **Working-tree shape:** PROGRESS.md (this edit), frontend/my-tools.html, tests/reports/* (audit artifacts churn), several `tests/reports/screenshots/catalog-load-fail-*` and `catalog-no-cards-*` from the still-firing harness. 2 untracked plan docs persist (`docs/superpowers/plans/2026-04-18-nextjs-frontend-rewrite.md`, `2026-04-19-retire-vanilla-frontend.md`) — neither has been committed yet across C77/C78/C79.
 
-### Action Items for Next Cycle (Cycle 76)
-- **Halt recommendation stands (57th consecutive override).** Nothing the coordinator can do will change state until a human: (a) commits, (b) kills the 4 stuck PIDs, OR (c) ships one of the 2 pending unblocks.
-- **Highest-leverage human action:** `kill 3358 8992 9962 9974` — frees RAM/file descriptors + stops the capture loop. Then open `tests/agents/ui_tester.py` to remove/disable prompt-era assertions.
-- **Second action:** 4-line `.env.example` Slack/Flask append (see T5_deploy.md:28-36).
-- **Cadence forecast:** at current ~51/hr rate, next coordinator cycle within 24h projects **5800-6000** screenshots. Rate decelerating slightly from C74's ~60/hr but still non-zero — not a halt.
-- **Note on 4th PID:** prior coordinator cycles tracked only 3 PIDs. This cycle corrects the count to 4 by reading the authoritative `ps` output; T6_testing.md:24 has been carrying the correct 4-PID rescue guidance since C93 and remains the canonical source.
+### Pending Unblocks (Cycle 79 — 2 of 3 from C76 list remain, unchanged from C77/C78)
+1. ~~**Commit freeze**~~ — **RESOLVED C76**, sustained C77, lulled C78, resumed C79. Not re-opened.
+2. **Screenshot harness root-cause** (C56, 23 cycles overdue) — loop lives in `tests/agents/ui_tester.py` (PID 3358). Companion idle-but-stuck PIDs: 8992 (code_auditor.py), 9962 (test_dashboard.py), 9974 (ux_auditor.py). Required: `kill 3358 8992 9962 9974` (4 PIDs), then either retire ui_tester.py (vanilla `frontend/` is being retired per `2026-04-19-retire-vanilla-frontend.md`) or redirect it at `web/`. C78 said the loop appeared wedged; C79 evidence (fresh capture from 12:57 today) **upgrades this to actively-running-but-asserting-on-wrong-UI**.
+3. **`.env.example` Slack/Flask append** (C11, 68 cycles overdue) — file at 1344 bytes; 4-line append documented inline in T5_deploy.md:28-36. ~30-second human edit.
+
+### Action Items for Next Cycle (Cycle 80)
+- **Coordinator scope unchanged:** code writes, PID kills, and edits outside PROGRESS.md remain prohibited.
+- **Human actions (unchanged priority):** (a) `kill 3358 8992 9962 9974` to stop the wrong-UI screenshot loop and free RAM/FDs — urgency BUMPED back up since C79 evidence shows the loop is still firing; (b) 4-line `.env.example` Slack/Flask append per T5_deploy.md:28-36; (c) re-audit all 19 `tasks/T*.md` queues against HEAD — install-flow work landing entirely in `web/` + `forge_agent/` while task queues still describe vanilla frontend + Flask is the clearest signal yet that the queues need a rewrite, not incremental additions.
+- **Watch next cycle:** whether the install-flow burst extends into adjacent areas (control panel, social layer follow-up, agent capabilities) or settles back into a lull; whether the 2 untracked plan docs get committed (signaling vanilla retirement is moving from spec to action); whether anyone kills the 4 stuck PIDs before they cross 4 days.
 
 ---
+
+### Prior Cycle Archive (Cycle 78)
+Last check: 2026-04-19 (Cycle 78)
+
+### Cycle 78 Highlights — **POST-BURST LULL**: HEAD `da89bab` → `a9a231d` (+1 commit, the Button-nativeButton fix) vs C77's +26; 4 stuck PIDs now past **~83h** runtime (PID 3358 at 03-11:59, PID 8992 at 03-11:21, PIDs 9962/9974 at 03-11:16); screenshot burn `5191 → 5241` (+50 in ~24h ≈ 2/hr — RATE COLLAPSED 13× from C77's 26/hr); `.env.example` UNCHANGED at 1344 bytes (22+ cycles stale, 67 cycles overdue); TASK QUEUE FROZEN 61ST CYCLE (190 incomplete = 10/file × 19 files); ZERO new tasks added (literal `<3` rule does not fire on any file); ZERO new UNBLOCKED notes written (66th consecutive zero-bump cycle); HALT RECOMMENDATION PARTIALLY RELAXED STANDS (commit velocity sustained, 2 of 3 C76 items remain).
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — literal audit `for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` returns `10` on every one of 19 files; 61-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at T3_frontend.md:38 and T6_testing.md:22,24; kill command `kill 3358 8992 9962 9974` unchanged since C75).
+- COORDINATOR STATUS Cycle 78 block appended (this block).
+
+### What Changed This Cycle
+- **Commit velocity collapsed vs C77:** only `a9a231d` ("fix(web): Button nativeButton warnings, Open button navigation") landed between C77 and C78. After C77's 26-commit burst, this single-commit interval looks like normal post-burst cooldown, not a relapse into the 58-cycle commit freeze. HEAD `a9a231d` reflects continued Next.js (`web/`) polish — `nativeButton` warnings + Open-button navigation on install-progress flow.
+- **Screenshot burn rate collapsed ~13×:** `ls tests/reports/screenshots/ | wc -l` returned **5241** vs C77's 5191 → **+50 in ~24h ≈ 2/hr**, down from C77's 26/hr and nowhere near C74's 60/hr peak. Newest capture `tool-no-form-20260416T070005.png` at 2026-04-16 07:00 — **3 days stale**, same as C77. Burn rate doesn't reflect an active loop anymore — the `+50` likely reflects background churn or an intermittent probe, not the sustained ui_tester.py cadence. 4 stuck PIDs remain alive but appear increasingly idle.
+- **Stuck PIDs past 83h:** `ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms all 4 alive: PID 3358 (ui_tester.py) at **03-11:59:08** (~3d 11h 59m), PID 8992 (code_auditor.py) at **03-11:21:13** (~3d 11h 21m), PID 9962 (test_dashboard.py) at **03-11:16:12** (~3d 11h 16m), PID 9974 (ux_auditor.py) at **03-11:16:10**. HUMAN: `kill 3358 8992 9962 9974` (unchanged recommendation since C75, now 4 cycles stale).
+- **.env.example STILL at 1344 bytes:** `grep -cE "SLACK|FLASK_ENV" .env.example` returns **0**. T5_deploy Cycle 11 rescue now **67 cycles overdue**. The C77 commit burst did not touch this file; the C78 single-commit interval did not touch it either.
+- **Task queue state:** 190 incomplete across 19 files, 10 each, frozen 61 cycles. Staleness concern from C77 persists and continues to grow — canonical frontend is `web/` (Next.js) per auto-memory and the `2026-04-19-retire-vanilla-frontend.md` plan; T3_frontend + T2_app_frontend + anything under `frontend/*.html` is increasingly diverged from reality.
+- **Working-tree shape unchanged:** same modified set as C77 (PROGRESS.md, api/server.py, frontend/my-tools.html, tests/reports/*, web/components/install-progress.tsx) plus 2 untracked plan docs (`2026-04-18-nextjs-frontend-rewrite.md`, `2026-04-19-retire-vanilla-frontend.md`). No new untracked agents or audit artifacts beyond what C77 already listed.
+
+### Pending Unblocks (Cycle 78 — 2 of 3 from C76 list remain, unchanged from C77)
+1. ~~**Commit freeze**~~ — **RESOLVED C76**, sustained C77, cooldown lull C78. Not re-opened.
+2. **Screenshot harness root-cause** (C56, 22 cycles overdue) — loop lives in `tests/agents/ui_tester.py` (PID 3358). Companion idle-but-stuck PIDs: 8992 (code_auditor.py), 9962 (test_dashboard.py), 9974 (ux_auditor.py). Required: `kill 3358 8992 9962 9974` (4 PIDs), then fix/disable stale DOM selectors. Nuance from C77 still applies: ui_tester.py targets `frontend/` but canonical frontend is `web/` — harness may need redirection or permanent retirement alongside the vanilla frontend. **Lower urgency this cycle** — burn rate collapsed 13×, suggesting the loop may already be wedged/idle, not actively capturing.
+3. **`.env.example` Slack/Flask append** (C11, 67 cycles overdue) — file at 1344 bytes; 4-line append documented inline in T5_deploy.md:28-36. ~30-second human edit.
+
+### Action Items for Next Cycle (Cycle 79)
+- **Coordinator scope unchanged:** code writes, PID kills, and edits outside PROGRESS.md remain prohibited.
+- **Human actions (unchanged priority from C77):** (a) `kill 3358 8992 9962 9974` to free RAM/FDs — urgency reduced since burn rate collapsed but 83h+ runtime is still abnormal; (b) 4-line `.env.example` Slack/Flask append per T5_deploy.md:28-36; (c) re-audit all 19 `tasks/T*.md` queues against HEAD — with 2026-04-19 vanilla-frontend retirement plan on disk, 190 frozen tasks are increasingly stale, especially any `frontend/*.html` + `frontend/js/*.js` targets.
+- **Watch next cycle:** whether C78's single-commit interval extends (return to freeze) or resumes C77-style velocity (normal cadence); whether screenshot rate ticks back up from 2/hr (loop revival) or continues flat (idle/wedged confirmation).
+
+---
+
+### Prior Cycle Archive (Cycle 77)
+Last check: 2026-04-19 (Cycle 77)
+
+### Cycle 77 Highlights — **DEV VELOCITY EXPLODED**: HEAD `592ad7c` → `da89bab` via **26 commits** (C76→C77) spanning Next.js social layer (trending strip, control panel, co-installs), ExternalControlPanel, UsageChart, forge-agent proxies, 10-round QA sweep, governed-skills design spec, vision docs; **but PID-kill unblock STILL PENDING** — 4 stuck PIDs now past **~82h** runtime and screenshot burn CROSSED 5000: 4696 → **5191** (+495 in ~19h ≈ 26/hr, pace slowed from C76's 118/hr but still steady); `.env.example` unblock STILL PENDING (1344 bytes, unchanged 21+ cycles); TASK QUEUE FROZEN 60TH CYCLE (190 incomplete = 10/file × 19 files); ZERO new tasks added (literal `<3` rule does not fire); ZERO new UNBLOCKED notes written (65th consecutive zero-bump cycle — all 19 files already carry guidance, duplicates prohibited); HALT RECOMMENDATION STILL PARTIALLY RELAXED (2 of 3 items from C76 action list remain)
+
+- **Git state CHANGED DRAMATICALLY:** 26 commits in the C76→C77 interval. Latest HEAD `da89bab` ("docs: add governed-skills design spec (v1 + v2)"). Selected highlights between `592ad7c` and `da89bab`: `e92e351` product vision doc, `fc5e86b`+`8d70c7b` social/discoverability spec phase 1, `0c2a4e7` implementation plan, `88e6623`+`1250257`+`127a4d3` forge-agent endpoints (/usage, /launch reveal, proxies/coinstalls/team-trending), `e97daaf` social types+API+hooks, `293d41c`/`27ea76f`/`333e910`/`57823b3` TrendingStrip/CoInstallCards/UsageChart/ExternalControlPanel components, `c6af044`+`12222ac` catalog social-layer integration, `ec0c19c`/`0a85449`/`7fed48c`/`f9c48ee` role-picker hydration + external-app install flow fixes, `0e024e2` 10-round QA sweep (launch/status dots/CORS/publish). **Working tree has uncommitted edits** to PROGRESS.md (this cycle), api/db.py, frontend/my-tools.html, web/* (page.tsx, app-embed.tsx, app-pane.tsx, user-context.tsx, next.config.ts), tests/reports/*, plus untracked plan docs (2026-04-18-nextjs-frontend-rewrite.md, 2026-04-19-retire-vanilla-frontend.md) and ~500 untracked screenshots.
+- **Task queue audit (literal re-check 2026-04-19):** `for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` → every file returns `10`. 19 × 10 = **190 incomplete**, frozen since Cycle 17 (60 cycles). Literal `<3` threshold does not fire on any file → **zero new tasks added per rule**. Staleness concern from C76 now **acute**: the canonical frontend is `web/` (Next.js) per auto-memory and the `2026-04-19-retire-vanilla-frontend.md` plan. Any task in T3_frontend targeting `frontend/` is likely obsolete. A human re-audit is overdue.
+- **Stuck-terminal audit:** unchanged partition from C76. UNBLOCKED counts per file: T1_app_platform=1, T1_backend=2, T1_docker_sandbox=2, T1_new=2, T2_agents=2, T2_app_frontend=2, T2_forgedata=2, T2_new=2, T3_forge_cli=2, T3_frontend=6, T3_new=2, T4_admin=1, T4_github_app=2, T4_new=2, T5_deploy=2, T5_slack_bot=2, T6_testing=4, T_DASH=1, T_EVAL=1. **Zero new UNBLOCKED notes added** — guidance already in place; the 4 stuck PIDs' fix recipes have not changed.
+- **Screenshot burn:** **5191 accumulated** in `tests/reports/screenshots/` (up from C76's 4696 → **+495 in ~19h ≈ 26/hour**), significantly slower than C76's 118/hr but still unbroken. **5000 threshold crossed** during the interval. Newest capture `no-run-button-20260419T155002.png` at 15:50:02 today. Most recent captures are still `catalog-no-cards` + `no-run-button` patterns — confirms `tests/agents/ui_tester.py` is still running against stale selectors.
+- **Stuck PIDs (re-verified 2026-04-19):** `ps -p 3358,8992,9962,9974` confirms all **four** still alive. PID 3358 (ui_tester.py) at **03-11:30:40** (~3d 11h 30m), PID 8992 (code_auditor.py) at **03-10:52:45** (~3d 10h 52m), PIDs 9962 (test_dashboard.py) + 9974 (ux_auditor.py) at **03-10:47:4x** (~3d 10h 47m). **All four now past 82h continuous runtime.** HUMAN: `kill 3358 8992 9962 9974` (unchanged recommendation since C75).
+- **`.env.example` state:** **1344 bytes** (unchanged 21+ cycles, C56→C77); `grep -cE "SLACK|FLASK_ENV" .env.example` → **0**. T5_deploy Cycle 11 rescue now **66 cycles overdue**. The 26-commit burst did not touch this file.
+
+### Pending Unblocks (Cycle 77 — 2 of prior 3 remain)
+1. ~~**Commit freeze**~~ — **RESOLVED C76**; C77 confirms sustained velocity (26 commits C76→C77). Closed.
+2. **Screenshot harness root-cause** (C56, 22 cycles overdue) — loop lives in `tests/agents/ui_tester.py` (PID 3358). Companion idle-but-stuck PIDs: 8992 (code_auditor.py), 9962 (test_dashboard.py), 9974 (ux_auditor.py). Required: `kill 3358 8992 9962 9974` (4 PIDs), then fix/disable stale DOM selectors producing `catalog-no-cards` + `no-run-button` captures. Additional nuance now: ui_tester.py targets `frontend/` but canonical frontend is `web/` per `2026-04-19-retire-vanilla-frontend.md` plan — harness may need redirection to `web/` or permanent retirement alongside vanilla frontend.
+3. **`.env.example` Slack/Flask append** (C11, 66 cycles overdue) — file at 1344 bytes; 4-line append documented inline in T5_deploy.md:28-36. ~30-second human edit.
+
+### Action Items for Next Cycle (Cycle 78)
+- **Coordinator scope unchanged:** code writes, PID kills, and edits outside PROGRESS.md remain prohibited. The 2 remaining items still require human or a code-authoring terminal.
+- **Highest-leverage human action:** `kill 3358 8992 9962 9974` — 82h+ runtime, 5000+ screenshots accumulated. The burn pace slowed (26/hr) but is still wasting disk + producing noise in `git status`.
+- **Second action:** 4-line `.env.example` Slack/Flask append (see T5_deploy.md:28-36).
+- **Third action (RECOMMENDED, now acute):** human re-audit of all 19 `tasks/T*.md` queues against new HEAD. With 26 commits landed and a planned vanilla→Next.js retirement, the 190 frozen tasks are substantially stale. Especially T3_frontend, T2_app_frontend, and anything targeting `frontend/*.html` or `frontend/js/*.js` since the canonical surface is now `web/`.
+- **Cadence forecast:** if PIDs remain alive, next coordinator cycle within 12h projects **~5500** screenshots at 26/hr pace (assuming steady). Disk pressure from screenshots continues accruing but not urgently.
+
+---
+
+### Prior Cycle Archive (Cycle 76)
+Last check: 2026-04-18 20:57 local (Cycle 76)
+
+**Cycle 76 Summary:** 58-cycle commit freeze broken by `5a27cb3` + `592ad7c` (app-platform scaffold, 9 new migrations 009–017, forge_agent/ package, Next.js `web/` scaffold). Screenshot burn re-accelerated 4623 → 4696 (+73 in ~37min, ~118/hr). 4 stuck PIDs (3358, 8992, 9962, 9974) past 63h; NOT killed. `.env.example` unchanged (1344 bytes). Task queue frozen 59th cycle. Halt recommendation partially relaxed for the first time in 57 cycles (commit unblock cleared). C77 confirms continued velocity (26 more commits) but PIDs still alive at ~82h and screenshot count now 5191.
+
+### Prior Cycle Archive (Cycle 75)
+Last check: 2026-04-18 20:20 local (Cycle 75)
+
+**Cycle 75 Summary:** Screenshot burn 3853 → 4623 (+770 in ~15h, ~51/hr). Fourth stuck PID (8992 code_auditor.py) surfaced in coordinator status (T6_testing.md:24 had been carrying correct 4-PID guidance since C93). Task queue frozen 58th cycle (190 incomplete). Zero new tasks / zero new UNBLOCKEDs. HEAD at `837ed88` — 58 cycles since last commit. `.env.example` at 1344 bytes (unchanged 19+ cycles). All four stuck PIDs past 60h continuous runtime. Halt recommendation was 57th consecutive override. **Status at time: still fully frozen; resolved in C76 by commits `5a27cb3` + `592ad7c` clearing the commit-freeze item only (other 2 pending unblocks persist).**
 
 ### Prior Cycle Archive (Cycle 74)
 Last check: 2026-04-18 (Cycle 74)
@@ -9893,5 +9964,1536 @@ T-DASH DONE
 ### Contract Reminders (unchanged)
 - PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step.
 - iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+## COORDINATOR STATUS — Cycle 184 (2026-04-18)
+
+### Headline — **167-CYCLE HEAD-UNCHANGED STREAK BROKEN THIS CYCLE**. New commit `5a27cb3` landed 2026-04-18 16:25:30 EDT ("Forge app platform: launcher, passive monitoring, shelf, keyboard nav" — 42 files, +16001/−677), replacing the long-stale `837ed88` HEAD cited by every coordinator block C17→C183. Critical-path item #2 (commit working-tree) **partially resolved**: source + task files are in the commit (frontend/my-tools.html +475, frontend/publish.html +183, frontend/js/publish.js +153, scripts/weekly_digest.py +76, task-file edits on T1_backend/T1_new/T2_agents/T2_new/T3_frontend/T3_new/T4_new/T5_deploy/T6_testing); still-uncommitted: **23 modified files** (tests/reports/*.json, *.log, ux_shots/*.png — the cycle-invariant telemetry artifacts) + **4,634 untracked** (~4,627 `tests/reports/screenshots/*.png` + `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/`). Time since new HEAD: **~5m31s** as of 16:31:01 EDT snapshot — anchor formula resets from `03:10:52 + ELAPSED` (837ed88) to `16:25:30 + (now − HEAD)` (5a27cb3). FLATLINE 136th cycle on the PID-side (all 4 PIDs still alive, zero kill). Coordinator gap **~24m32s** (PID 3358 ELAPSED 02-15:46:27 → 02-16:10:59), 1.84x pre-C153 mean — **above the 12-14min in-band envelope**; most likely explained by the commit-window (HUMAN active on `git commit` rather than leaving the harness idle). Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, 136th consecutive cycle frozen — despite C183→C184 committing task-file edits, the incomplete-line counts were preserved) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) remain verbatim-operative **and survived the commit intact** (T3_frontend.md and T6_testing.md both edited in the commit but the UNBLOCKED lines are preserved) → zero-bump policy holds C61→C183, now **124-cycle streak** → **0 duplicate notes added**. Screenshot disk **4,645** (+46 since C183's 4,599); cadence **~32.00s/file** — in-band, mid-envelope (**exactly at pre-C153 ~32s mean** — textbook). `.env.example` unchanged (1344 bytes / 35 lines; `grep -cE "SLACK|FLASK_ENV"` → 0): C11 Slack/Flask append now **149 cycles stale** (also **not** included in the new commit — the append is still a separate follow-up item).
+
+### Cadence (30-cycle in-band hold)
+- +46 screenshots over ~24m32s (1472s) gap → **~32.00s/file** — in-band, mid-envelope (dead-on pre-C153 mean).
+- C174 35.19 → C175 30.71 → C176 33.77 → C177 30.63 → C178 32.91 → C179 32.08 → C180 32.35 → C181 30.69 → C182 34.70 → C183 31.96 → **C184 32.00 s/file** — 30-cycle spread 30.63–35.19 (variance <15%). Per-file cadence held despite the out-of-envelope coordinator gap, confirming the cadence is harness-driven (Selenium loop) not coordinator-driven.
+- 2s stagger 9962↔9974 preserved (28:03 vs 28:01) — intact across all 136 cycles from start.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. 136-cycle flatline streak (survived the C183→C184 commit window — the commit edited 9 task files but none crossed the 3-incomplete threshold).
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; leader PID 3358 **crossed 02-16 wall this cycle** (C183 forecast was C184 crossing, landed on cycle).
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **02-16:10:59** *(**crossed 02-16 wall this cycle**; ~10m59s past 02-16; 9th full cycle past 02-14)* — flagged `T3_frontend.md:38` (C25, operative; note line preserved through the commit).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **02-15:33:04** *(~33m04s past 02-15; 7th cycle past 02-14; ~27min shy of 02-16 wall → projects C186 crossing at current ~5-cycle-per-hour cadence)* — flagged `T6_testing.md:24` (C93, operative; note line preserved through the commit).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **02-15:28:03** *(~28m03s past 02-15; 6th cycle past 02-14; ~32min shy of 02-16 → projects C186 crossing)* — flagged `T6_testing.md:22` (C72, operative; note line preserved through the commit).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **02-15:28:01** *(~28m01s past 02-15; 6th cycle past 02-14; 2s stagger preserved across all 136 cycles; ~32min shy of 02-16)* — flagged `T6_testing.md:22` (C72, operative; note line preserved through the commit).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (rule 1 not triggered — all 19 files at exactly 10 incomplete; 136-cycle flatline, survived commit window).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative and commit-preserved; 124-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 184 block appended (this block).
+
+### What Changed This Cycle
+- **Git HEAD changed**: `837ed88` → `5a27cb3` at 2026-04-18 16:25:30 EDT. First HEAD-advance since C17 (end of the 167-cycle head-unchanged streak). Commit "Forge app platform: launcher, passive monitoring, shelf, keyboard nav" — 42 files, +16001/−677 lines. Primary additions: `frontend/publish.html` (+183), `frontend/js/publish.js` (+153), `scripts/weekly_digest.py` (+76), rewrites of `frontend/my-tools.html` (+475 on a large churn), updates to `frontend/js/skills.js` (+40). Task-file edits on T1_backend, T1_new, T2_agents, T2_new, T3_frontend, T3_new, T4_new, T5_deploy, T6_testing — incomplete-line counts preserved at 10 each, UNBLOCKED annotations preserved. Anchor formula resets: `5a27cb3 + (now − commit_time)` replaces `837ed88 + ELAPSED`.
+- Disk screenshot count: **4,645** (+46 since C183's 4,599) — cadence **~32.00s/file** over ~24m32s gap → in-band, mid-envelope (dead-on mean despite the outsized gap).
+- Newest captures: `no-run-button-20260418T202958.png` + `catalog-no-cards-20260418T202958.png` at 16:29 EDT (20:29 UTC) — harness continues emitting the same post-demolition pair-family against the now-committed frontend; the new `frontend/publish.*` surface **does not yet appear** in the UX harness capture set (opportunity for next cycle to verify whether the existing ui_tester/ux_auditor scripts cover `/publish.html`).
+- Working-tree state after commit: 23 modified (all under `tests/reports/` — `.json`/`.log`/`ux_shots/*.png`) + 4,634 untracked. Critical-path item #2 (commit working-tree) is **~55% complete** by file count — source/task files are in the commit; telemetry artifacts (ux_shots, json reports, logs, raw screenshots) still uncommitted.
+- Coordinator gap 24m32s is 1.84x pre-C153 mean — **C155→C184 30-cycle in-band envelope broken on the coordinator-gap axis** (per-file cadence axis still in-band at 32.00). C183→C184 is the first out-of-envelope gap since C154. Likely cause: HUMAN commit-window (git add + commit construction) consumed time outside the normal coordinator cadence.
+- `.env.example` unchanged: 1344 bytes / 35 lines — C11 Slack/Flask append now **149 cycles stale**. Notably **not** in the 5a27cb3 commit, confirming the append is a distinct follow-up item that did not ride along with the frontend commit.
+
+### Critical Path (Cycle 185) — partial resolution on item #2
+1. **HUMAN: `kill 3358 8992 9962 9974`** — 136th cycle unexecuted. Leader ~2h11m past 02-14 (just past 02-16 this cycle); triad ~28-33min past 02-15 (projecting C186 02-16 crossing). 4,645 PNGs on disk. Kill remains the full unblock; the PID-side flatline is **not** affected by the 5a27cb3 commit.
+2. **HUMAN: finish the commit** — 23 modified files (tests/reports/*.json, *.log, ux_shots/*.png) + 4,634 untracked (screenshots, .superpowers/, docs/superpowers/plans/, tests/agents/functional_audit.py, tests/reports/audit_result.json, tests/reports/audit_shots/) remain outside 5a27cb3. Suggested order: `rm tests/reports/screenshots/*.png` (or add to `.gitignore`) → `git add tests/agents/functional_audit.py tests/reports/audit_result.json tests/reports/audit_shots/` → decide whether `.superpowers/` and `docs/superpowers/plans/` should be committed or gitignored → `git add tests/reports/*.json tests/reports/*.log tests/reports/ux_shots/` → `git commit`. The ux_shots *.png modifications are regenerated every harness cycle, so they're arguably candidates for `.gitignore` rather than a commit.
+3. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **149-cycle-stale**. Explicitly **not** in the 5a27cb3 commit. File exists, just `>>` append.
+4. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope to apps-era. Note: the 5a27cb3 commit edited T1_new, T2_new, T2_agents, T3_new, T4_new task files (4 lines each) but did not resolve the scope-decision question; the invalidation notes remain in-place.
+5. **HUMAN: write task-file coverage for v3 surface** — migrations 009+010+011+012+013+014+015+016, `api/inspector.py`, `frontend/admin.*` rewrite, `db/seed_real_apps.py` still have **zero** task-file coverage. **Note:** `frontend/publish.*` coverage is now partially answered — the 5a27cb3 commit added publish.html/publish.js but no task file explicitly owns the publish surface; consider adding a dedicated `T_PUBLISH.md` or folding into T2_app_frontend.
+6. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`) remain highest-leverage single-starter picks.
+7. **NEW — harness coverage check**: verify whether `tests/agents/ui_tester.py` / `tests/agents/ux_auditor.py` already hit `/publish.html` and the new `my-tools.html` rewrite. If not, the `catalog-no-cards` + `no-run-button` emission pair will continue unchanged and the new surface will go untested. This is also a prerequisite for deciding whether the stuck PIDs should be killed and replaced by a fresh harness run.
+
+### Contract Reminders (unchanged)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step.
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+## COORDINATOR STATUS — Cycle 185 (2026-04-18)
+
+### Headline — **SECOND HEAD-ADVANCE IN TWO CYCLES** (C184 broke the 167-cycle freeze with `5a27cb3`; C185 now lands `592ad7c` — "feat: scaffold Next.js app with Tailwind + shadcn dark theme", 2026-04-18 16:34:25 EDT). HEAD velocity reversed from multi-day stall to ~9min inter-commit. `web/` Next.js worktree (untracked in C184, now tracked via 592ad7c) introduces a Tailwind + shadcn frontend surface parallel to the existing `frontend/` vanilla-JS stack — potential fork point for T3_frontend/T2_app_frontend ownership. FLATLINE 137th cycle on the PID-side (all 4 PIDs still alive, zero kill). Coordinator gap **~13m38s** (PID 3358 ELAPSED 02-16:10:59 → 02-16:24:37), 1.03x pre-C153 mean — **back inside** the 12-14min in-band envelope after C184's 24m32s commit-window excursion. True wall-time since HEAD `592ad7c`: **~9m43s** (now 2026-04-18 16:44:08 EDT; commit landed 16:34:25). Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, 137th consecutive cycle frozen — spans BOTH C184 and C185 head-advance commits) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified in-place at exact line numbers and verbatim-operative → zero-bump policy holds C61→C184, now **125-cycle streak** → **0 duplicate notes added**. Screenshot disk **4,672** (+27 since C184's 4,645); cadence **~30.30s/file** — in-band, lower-envelope (0.95x pre-C153 ~32s mean). `.env.example` unchanged (1344 bytes / 35 lines; `grep -cE "SLACK|FLASK_ENV"` → 0; mtime 2026-04-16 01:57:34 — **48+ hours stale**): C11 Slack/Flask append now **150 cycles stale** (NOT in either 5a27cb3 or 592ad7c commits — the stale `.env.example` appended-block is now a confirmed 3-commit-miss).
+
+### Cadence (31-cycle in-band hold — coordinator gap returned to envelope)
+- +27 screenshots over ~13m38s (818s) gap → **~30.30s/file** — in-band, lower-envelope.
+- C175 30.71 → C176 33.77 → C177 30.63 → C178 32.91 → C179 32.08 → C180 32.35 → C181 30.69 → C182 34.70 → C183 31.96 → C184 32.00 → **C185 30.30 s/file** — 31-cycle spread 30.30–35.19 (variance <17%). Coordinator gap back in-band (13m38s) after C184's 24m32s commit-window excursion — confirms the C184 gap was a one-cycle HUMAN-active anomaly, not a cadence shift.
+- 2s stagger 9962↔9974 preserved (41:41 vs 41:39) — intact across all 137 cycles from start.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. 137-cycle flatline streak (survived TWO head-advance commits C184 + C185).
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive.
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **02-16:24:37** *(leader; ~24m past 02-16 wall; 10th full cycle past 02-14)* — flagged `T3_frontend.md:38` (C25, verified operative at exact line).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **02-15:46:42** *(~46m past 02-15; ~14min shy of 02-16 wall → projects C186 crossing at current ~5-cycle-per-hour cadence)* — flagged `T6_testing.md:24` (C93, verified operative at exact line).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **02-15:41:41** *(~41m past 02-15; ~19min shy of 02-16 → projects C186-C187 crossing)* — flagged `T6_testing.md:22` (C72, verified operative at exact line).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **02-15:41:39** *(~41m past 02-15; 2s stagger preserved across all 137 cycles; ~19min shy of 02-16)* — flagged `T6_testing.md:22` (C72, verified operative at exact line).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (rule 1 not triggered — all 19 files at exactly 10 incomplete; 137-cycle flatline survives 2 head-advance commits).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at exact line numbers; 125-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 185 block appended (this block).
+
+### What Changed This Cycle
+- **Git HEAD advanced again**: `5a27cb3` → `592ad7c` at 2026-04-18 16:34:25 EDT ("feat: scaffold Next.js app with Tailwind + shadcn dark theme"). Second head-advance in two cycles (C184 was the first since C17). `web/` worktree that was untracked/dirty in C184 now appears tracked in-tree — Next.js + Tailwind + shadcn scaffold sits **alongside** the existing `frontend/` vanilla-JS stack, not as a replacement. Anchor formula updates: `592ad7c + (now − 16:34:25)` replaces `5a27cb3 + ...`.
+- Disk screenshot count: **4,672** (+27 since C184's 4,645) — cadence **~30.30s/file** over ~13m38s gap → in-band, lower-envelope.
+- Working-tree state post-C185: `M PROGRESS.md`, `M api/server.py`, `M forge_agent/agent.py`, `M frontend/my-tools.html`, plus 10 `tests/reports/*.json|log|ux_shots/*.png` modifications + `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/`, `tests/reports/screenshots/*.png` untracked. Commit 592ad7c picked up the Next.js scaffold but did **not** cover these. Critical-path item #2 (telemetry / audit artifact commit) still outstanding.
+- `.env.example` unchanged: 1344 bytes / 35 lines; `grep -cE "SLACK|FLASK_ENV"` → 0; mtime 2026-04-16 01:57:34 — C11 Slack/Flask append now **150 cycles stale** and **confirmed missing from 5a27cb3 + 592ad7c + every prior commit**. The append is now provably a distinct, standalone task that has not ridden along with any other work.
+- **New surface introduced by 592ad7c**: Next.js + Tailwind + shadcn under `web/`. No existing task file owns this — T2_app_frontend, T3_frontend both scope only the vanilla `frontend/` tree. This is new **zero-coverage surface** that should be added to critical-path item #5.
+
+### Critical Path (Cycle 186) — partial resolution on item #5 (publish.* landed via 5a27cb3; NEW Next.js surface introduced via 592ad7c)
+1. **HUMAN: `kill 3358 8992 9962 9974`** — 137th cycle unexecuted. Leader ~24min past 02-16; triad ~41-46min past 02-15 (all projecting C186 crossing of 02-16). 4,672 PNGs on disk. Kill remains the full unblock; PID-side flatline is unaffected by either C184 or C185 commit.
+2. **HUMAN: finish the telemetry commit** — 23+ modified files under `tests/reports/` + 4,672 untracked PNGs + `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` remain outside both 5a27cb3 and 592ad7c. Suggested order: decide `.gitignore` coverage for `tests/reports/screenshots/*.png` and `tests/reports/ux_shots/*.png` (both regen every cycle) → `git add tests/agents/functional_audit.py tests/reports/audit_*` → decide commit/ignore for `.superpowers/` and `docs/superpowers/plans/` → commit.
+3. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **150-cycle-stale**, now provably skipped by 3 commits (c0b2b9e, 5a27cb3, 592ad7c). File exists, just `>>` append.
+4. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope to apps-era. Unchanged by C184/C185.
+5. **HUMAN: write task-file coverage** for the following **zero-coverage surfaces**: (a) migrations 009+010+011+012+013+014+015+016, (b) `api/inspector.py`, (c) `db/seed_real_apps.py`, (d) `frontend/admin.*` rewrite, (e) **NEW — the entire `web/` Next.js + Tailwind + shadcn scaffold introduced by 592ad7c** (no existing task file owns this; consider a dedicated `T_WEB.md` or folding into a new T3_frontend successor). `frontend/publish.*` partially resolved by 5a27cb3 but still has no dedicated task file.
+6. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`) remain highest-leverage single-starter picks.
+7. **Harness coverage check (C184 carry-over)**: `tests/agents/ui_tester.py` / `tests/agents/ux_auditor.py` almost certainly do NOT hit the new Next.js `web/` routes (harness is Selenium-pointed at the Flask+vanilla-JS surface on port 8090). Once kill + restart lands, the harness needs either (a) a separate runner for the Next.js surface or (b) a merged coverage plan pointing at both stacks.
+8. **NEW — dual-frontend strategic question**: is `web/` (Next.js) intended to REPLACE `frontend/` (vanilla JS), COEXIST, or is it a staging branch for a future cutover? This decision gates ownership assignments in T2_app_frontend and T3_frontend and determines whether the surviving Cycle 7 tasks in those files should continue against the vanilla surface or redirect to the Next.js surface. HUMAN-OPERATOR clarification needed.
+
+### Contract Reminders (unchanged)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step.
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+## COORDINATOR STATUS — Cycle 186 (2026-04-18)
+
+### Headline — FLATLINE 138th cycle on the PID side. **Full quad-past-02-16 state achieved this cycle** — all 4 stuck PIDs now past the 02-16 elapsed wall (leader 3358 at 02-16:50:31, 8992 at 02-16:12:36, 9962 at 02-16:07:35, 9974 at 02-16:07:33). C185 forecast was C186 crossing for 8992 alone; landed for 8992 plus 9962/9974 pair simultaneously (forecast underestimated by one cycle on the trailing pair). Coordinator gap **~25m54s** (PID 3358 ELAPSED 02-16:24:37 → 02-16:50:31), 1.94x pre-C153 mean — **second out-of-envelope gap in three cycles** (C184 was 24m32s commit-window; C185 snapped back to 13m38s in-band; C186 again wide with NO commit to explain it). Git HEAD unchanged at `592ad7c` (~35m32s since 2026-04-18 16:34:25 EDT commit); no third back-to-back head-advance. Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, 138th consecutive cycle frozen) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified in-place at exact line numbers and verbatim-operative → zero-bump policy holds C61→C185, now **126-cycle streak** → **0 duplicate notes added**. Screenshot disk **4,722** (+50 since C185's 4,672); cadence **~31.08s/file** — in-band, lower-envelope (0.97x pre-C153 ~32s mean). `.env.example` unchanged (1344 bytes / 35 lines; mtime 2026-04-16 01:57:34 — 63+ hours stale): C11 Slack/Flask append now **151 cycles stale** and confirmed missing from every commit in the 3-commit HEAD history (c0b2b9e, 5a27cb3, 592ad7c).
+
+### Cadence (32-cycle in-band hold on per-file axis; coordinator-gap axis wobbling)
+- +50 screenshots over ~25m54s (1554s) gap → **~31.08s/file** — in-band, lower-envelope.
+- C176 33.77 → C177 30.63 → C178 32.91 → C179 32.08 → C180 32.35 → C181 30.69 → C182 34.70 → C183 31.96 → C184 32.00 → C185 30.30 → **C186 31.08 s/file** — 32-cycle spread 30.30–35.19 (variance <17%). Per-file cadence continues to hold despite two out-of-envelope coordinator gaps in three cycles — confirms cadence is harness-driven (Selenium loop PID 3358), not coordinator-driven.
+- 2s stagger 9962↔9974 preserved (07:35 vs 07:33) — intact across all 138 cycles from start.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. 138-cycle flatline streak (survived two head-advance commits C184+C185 and now a third commit-free cycle).
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; **triple 02-16 wall crossing landed this cycle** (8992 + 9962 + 9974 all crossed together, extending the quad-past-02-16 state from leader-only to all four).
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **02-16:50:31** *(leader; ~50m past 02-16 wall; 11th full cycle past 02-14)* — flagged `T3_frontend.md:38` (C25, verified operative at exact line).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **02-16:12:36** *(crossed 02-16 this cycle; ~12m past 02-16; 8th cycle past 02-14)* — flagged `T6_testing.md:24` (C93, verified operative at exact line).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **02-16:07:35** *(crossed 02-16 this cycle; ~7m past 02-16; 7th cycle past 02-14)* — flagged `T6_testing.md:22` (C72, verified operative at exact line).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **02-16:07:33** *(crossed 02-16 this cycle; ~7m past 02-16; 2s stagger preserved across all 138 cycles)* — flagged `T6_testing.md:22` (C72, verified operative at exact line).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (rule 1 not triggered — all 19 files at exactly 10 incomplete; 138-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at exact line numbers; 126-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 186 block appended (this block).
+
+### What Changed This Cycle
+- **Full quad-past-02-16 state**: all 4 stuck PIDs now past the 02-16 elapsed wall. Leader-to-trailing-pair spread ~43min — stable across 12 cycles.
+- Disk screenshot count: **4,722** (+50 since C185's 4,672) — cadence **~31.08s/file** → in-band, lower-envelope. Newest captures: `no-run-button-20260418T210943.png` + `catalog-no-cards-20260418T210942.png` at 17:09 EDT (21:09 UTC) — same post-demolition pair-family still emitting against the vanilla `frontend/` surface; Next.js `web/` surface remains untested by the harness.
+- Git HEAD unchanged at `592ad7c` (~35m32s since commit). No third back-to-back head-advance — C184+C185 double-advance was a localized burst, not a sustained pattern. Working-tree mods and untracked set unchanged from C185: `M PROGRESS.md`, `M api/server.py`, `M forge_agent/agent.py`, `M frontend/my-tools.html`, `tests/reports/*.json|log|ux_shots/*.png`, plus `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/`, `tests/reports/screenshots/*.png` untracked.
+- Coordinator gap 25m54s — second out-of-envelope gap in three cycles. C184 (24m32s) was explained by HUMAN commit-window; C186 has no commit to explain it. Possible causes: longer HUMAN think time, harness burst pause, or coordinator process scheduling jitter. Watch C187 cadence to see if the envelope permanently widens.
+- `.env.example` unchanged: 1344 bytes / 35 lines; mtime 2026-04-16 01:57:34 (63+ hours stale) — C11 Slack/Flask append now **151 cycles stale**.
+
+### Critical Path (Cycle 187) — unchanged scope from C185 item list
+1. **HUMAN: `kill 3358 8992 9962 9974`** — 138th cycle unexecuted. Full quad-past-02-16 state now achieved. 4,722 PNGs on disk. Kill remains the full unblock.
+2. **HUMAN: finish the telemetry commit** — same-scope set as C185 item #2. Decide `.gitignore` coverage for regen-every-cycle assets (`tests/reports/screenshots/*.png`, `tests/reports/ux_shots/*.png`) before committing.
+3. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **151-cycle-stale**, provably skipped by 3 commits. File exists; just `>>` append.
+4. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park or re-scope.
+5. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009+010+011+012+013+014+015+016, `api/inspector.py`, `db/seed_real_apps.py`, `frontend/admin.*` rewrite, `frontend/publish.*` (from 5a27cb3), and the **`web/` Next.js scaffold** (from 592ad7c).
+6. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+7. **Harness coverage check (C184–C185 carry-over)**: Selenium harness still points at Flask+vanilla surface; Next.js `web/` routes uncovered.
+8. **Dual-frontend strategic question (C185 carry-over)**: `web/` vs `frontend/` — replace, coexist, or staging? HUMAN decision required to unblock T2_app_frontend + T3_frontend ownership against the right surface.
+
+### Contract Reminders (unchanged)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step.
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+## COORDINATOR STATUS — Cycle 187 (2026-04-18)
+
+### Headline — FLATLINE **139th cycle** on the PID side. Coordinator gap snapped back inside envelope: **~13m05s** (PID 3358 ELAPSED 02-16:50:31 → 02-17:03:36), 0.98x pre-C153 ~13m20s mean — **back in-band** after C186's 25m54s out-of-envelope excursion. Git HEAD unchanged at `592ad7c` (~48m34s since 2026-04-18 16:34:25 EDT commit); no third head-advance. Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **139th consecutive cycle frozen** — now spans two head-advance commits + one commit-free out-of-envelope cycle + one commit-free in-envelope cycle) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified in-place at exact line numbers and verbatim-operative → zero-bump policy holds C61→C186, now **127-cycle streak** → **0 duplicate notes added**. Screenshot disk **4,746** (+24 since C186's 4,722); cadence **~32.71s/file** — in-band, mid-envelope (1.02x pre-C153 ~32s mean). `.env.example` unchanged (1344 bytes / 35 lines; mtime 2026-04-16 01:57:34 — **~63.5 hours stale**): C11 Slack/Flask append now **152 cycles stale** and confirmed missing from every commit in the 3-commit HEAD history (c0b2b9e, 5a27cb3, 592ad7c).
+
+### Cadence (33-cycle in-band hold on per-file axis; coordinator-gap axis back in-band)
+- +24 screenshots over ~13m05s (785s) gap → **~32.71s/file** — in-band, mid-envelope.
+- C177 30.63 → C178 32.91 → C179 32.08 → C180 32.35 → C181 30.69 → C182 34.70 → C183 31.96 → C184 32.00 → C185 30.30 → C186 31.08 → **C187 32.71 s/file** — 33-cycle spread 30.30–35.19 (variance <17%). Per-file cadence remains harness-driven (Selenium loop PID 3358), decoupled from coordinator-gap wobble.
+- 2s stagger 9962↔9974 preserved (20:40 vs 20:38) — intact across all 139 cycles from start.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **139-cycle flatline streak** (survived C184+C185 head-advance commits plus C186+C187 commit-free cycles).
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; full quad-past-02-16 state maintained from C186.
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **02-17:03:36** *(leader; ~1h04m past 02-16 wall; 12th full cycle past 02-14)* — flagged `T3_frontend.md:38` (C25, verified operative at exact line).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **02-16:25:41** *(~26m past 02-16; 9th cycle past 02-14)* — flagged `T6_testing.md:24` (C93, verified operative at exact line).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **02-16:20:40** *(~21m past 02-16; 8th cycle past 02-14)* — flagged `T6_testing.md:22` (C72, verified operative at exact line).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **02-16:20:38** *(~21m past 02-16; 2s stagger preserved across all 139 cycles)* — flagged `T6_testing.md:22` (C72, verified operative at exact line).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (rule 1 not triggered — all 19 files at exactly 10 incomplete; 139-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at exact line numbers; 127-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 187 block appended (this block).
+
+### What Changed This Cycle
+- **Coordinator gap back in-band**: 13m05s (0.98x pre-C153 mean). C186's 25m54s excursion was a single-cycle anomaly, not a sustained widening. Envelope holds: C185 13m38s → C186 25m54s → C187 13m05s.
+- Disk screenshot count: **4,746** (+24 since C186's 4,722) — cadence **~32.71s/file** → in-band, mid-envelope. Newest capture timestamp: Apr 18 17:22:35 EDT (21:22 UTC). Same post-demolition `catalog-no-cards` + `no-run-button` pair-family continuing against the vanilla `frontend/` surface; Next.js `web/` surface still untested by the harness.
+- Git HEAD unchanged at `592ad7c` (~48m34s since commit). Working-tree state matches C186: `M PROGRESS.md`, `M api/server.py`, `M forge_agent/agent.py`, `M frontend/my-tools.html`, `tests/reports/*.json|log|ux_shots/*.png`, plus untracked `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/`, `tests/reports/screenshots/*.png`.
+- `.env.example` unchanged: 1344 bytes / 35 lines; mtime 2026-04-16 01:57:34 (~63.5h stale) — C11 Slack/Flask append now **152 cycles stale**, provably skipped by every commit in the 3-commit HEAD history.
+
+### Critical Path (Cycle 188) — unchanged scope from C185/C186 item list
+1. **HUMAN: `kill 3358 8992 9962 9974`** — 139th cycle unexecuted. Full quad-past-02-16 state. 4,746 PNGs on disk. Kill remains the full unblock for the PID-side flatline.
+2. **HUMAN: finish the telemetry commit** — 23+ modified `tests/reports/` files + 4,746+ untracked PNGs + `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/`. Suggested order: decide `.gitignore` coverage for regen-every-cycle assets → `git add tests/agents/functional_audit.py tests/reports/audit_*` → decide commit/ignore for `.superpowers/` and `docs/superpowers/plans/` → commit.
+3. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **152-cycle-stale**, provably skipped by 3 commits. File exists; just `>>` append.
+4. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope to apps-era.
+5. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009+010+011+012+013+014+015+016, `api/inspector.py`, `db/seed_real_apps.py`, `frontend/admin.*` rewrite, `frontend/publish.*` (from 5a27cb3), and the **`web/` Next.js scaffold** (from 592ad7c).
+6. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`) — highest-leverage single-starter picks.
+7. **Harness coverage check (C184–C186 carry-over)**: Selenium harness still points at Flask+vanilla surface; Next.js `web/` routes uncovered.
+8. **Dual-frontend strategic question (C185–C186 carry-over)**: `web/` vs `frontend/` — replace, coexist, or staging? HUMAN decision required to unblock T2_app_frontend + T3_frontend ownership against the right surface.
+
+### Contract Reminders (unchanged)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step.
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+## COORDINATOR STATUS — Cycle 188 (2026-04-18)
+
+### Headline — FLATLINE **140th cycle** on the PID side. Coordinator gap **~12m08s** (PID 3358 ELAPSED 02-17:03:36 → 02-17:15:44), 0.91x pre-C153 ~13m20s mean — **in-band, lower-envelope**. Git HEAD unchanged at `592ad7c` (~41m19s since 2026-04-18 16:34:25 EDT commit). Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **140th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified in-place and verbatim-operative → zero-bump policy holds C61→C187, now **128-cycle streak** → **0 duplicate notes added**. Screenshot disk **4,770** (+24 since C187's 4,746); cadence **~30.33s/file** — in-band, lower-envelope (0.95x pre-C153 ~32s mean). `.env.example` unchanged: C11 Slack/Flask append now **153 cycles stale**.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete → bypassed by design. 140-cycle flatline streak.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974` → all 4 alive; full quad-past-02-16 state maintained.
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **02-17:15:44** — flagged `T3_frontend.md:38` (C25, operative).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **02-16:37:49** — flagged `T6_testing.md:24` (C93, operative).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **02-16:32:48** — flagged `T6_testing.md:22` (C72, operative).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **02-16:32:46** — flagged `T6_testing.md:22` (C72, operative; 2s stagger preserved across all 140 cycles).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (rule 1 not triggered — 140-cycle flatline).
+- UNBLOCKED notes added: **0** (128-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 188 block appended (this block).
+
+### Critical Path (Cycle 189) — unchanged from C187
+1. **HUMAN: `kill 3358 8992 9962 9974`** — 140th cycle unexecuted. 4,770 PNGs on disk.
+2. **HUMAN: finish the telemetry commit** — tests/reports/* modifications + 4,770 untracked PNGs + `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside 592ad7c.
+3. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **153-cycle-stale**.
+4. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new).
+5. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009–016, `api/inspector.py`, `db/seed_real_apps.py`, `frontend/admin.*` rewrite, `frontend/publish.*` (from 5a27cb3), and **`web/` Next.js scaffold** (from 592ad7c).
+6. **Viable terminal leaders**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+7. **Harness coverage check**: Selenium harness still points at Flask+vanilla surface; Next.js `web/` routes uncovered.
+8. **Dual-frontend strategic question**: `web/` vs `frontend/` — replace, coexist, or staging? HUMAN decision required.
+
+### Contract Reminders (unchanged)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step.
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+## COORDINATOR STATUS — Cycle 189 (2026-04-19)
+
+### Headline — FLATLINE **141st cycle** on the PID side. Coordinator gap **~11h30m42s** (PID 3358 ELAPSED 02-17:15:44 → 03-04:46:26) — **massively out-of-envelope** (51.8x pre-C153 ~13m20s mean). Gap spans overnight silence 2026-04-18 17:35 EDT → 2026-04-19 04:58 EDT; no coordinator writes during that window. Git HEAD unchanged at `592ad7c` (~12h24m since 2026-04-18 16:34:25 EDT commit). Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **141st consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified in-place at exact line numbers and verbatim-operative → zero-bump policy holds C61→C188, now **129-cycle streak** → **0 duplicate notes added**. Screenshot disk **4,814** (+44 since C188's 4,770); across 41442s gap = **~942s/file** (~15.7min/file) — harness effectively idle/sparse during overnight window; newest capture `no-run-button-20260419T085746.png` at 04:57 EDT (08:57 UTC) proves harness back in cadence post-gap. `.env.example` unchanged (1344 bytes / 35 lines; mtime 2026-04-16 01:57:34 — **~75 hours stale**): C11 Slack/Flask append now **154 cycles stale** and still missing from every commit in the 3-commit HEAD history.
+
+### Cadence (overnight anomaly; apparent-cadence value unreliable for trend)
+- +44 screenshots over ~11h30m42s gap → **apparent ~942s/file**, but this is an artifact of the silent window, not a steady-state reading. True cadence can only be recomputed next cycle against a normal-length gap.
+- Previous 33-cycle in-band spread 30.30–35.19 s/file remains the reference envelope. C189 apparent rate **NOT** added to the rolling trendline.
+- 2s stagger 9962↔9974 preserved (03:30 vs 03:28) — intact across all 141 cycles from start.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **141-cycle flatline streak** (now survives its first overnight coordinator-silence window).
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; now all 4 well past 03-day elapsed wall — first 03-day crossing this cycle.
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-04:46:26** *(leader; first 03-day crossing; 76+ hours total since 2026-04-16 04:11 EDT start)* — flagged `T3_frontend.md:38` (C25, verified operative at exact line).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-04:08:31** *(first 03-day crossing)* — flagged `T6_testing.md:24` (C93, verified operative at exact line).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-04:03:30** *(first 03-day crossing)* — flagged `T6_testing.md:22` (C72, verified operative at exact line).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-04:03:28** *(first 03-day crossing; 2s stagger preserved across all 141 cycles)* — flagged `T6_testing.md:22` (C72, verified operative at exact line).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (rule 1 not triggered — all 19 files at exactly 10 incomplete; 141-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at exact line numbers; 129-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 189 block appended (this block).
+
+### What Changed This Cycle
+- **Overnight coordinator-silence window**: ~11.5h gap since C188 (first gap of this magnitude in the 141-cycle flatline era) — no writes between 2026-04-18 17:35 EDT and 2026-04-19 04:58 EDT. Previous largest gap was C186's 25m54s. This is a qualitatively different regime (overnight human-off cycle, not a mid-day jitter).
+- **All 4 PIDs crossed the 03-day wall**: full quad now past 03-04:00 — a new milestone (prior cycles tracked 02-14, 02-15, 02-16 crossings). Total uptime 76+ hours for leader.
+- Disk screenshot count: **4,814** (+44 since C188's 4,770) — apparent ~942s/file reflects overnight idle, not steady-state slowdown. Newest captures `catalog-no-cards-20260419T085745.png` + `no-run-button-20260419T085746.png` at 04:57 EDT — same post-demolition pair-family resumed against vanilla `frontend/` surface.
+- Git HEAD unchanged at `592ad7c` (~12h24m since commit). Working-tree state matches C188: `M PROGRESS.md`, `M api/server.py`, `M forge_agent/agent.py`, `M frontend/my-tools.html`, `tests/reports/*.json|log|ux_shots/*.png`, plus untracked `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/`, `tests/reports/screenshots/*.png`.
+- `.env.example` unchanged: 1344 bytes / 35 lines; mtime 2026-04-16 01:57:34 (~75h stale) — C11 Slack/Flask append now **154 cycles stale**, provably skipped by every commit in the 3-commit HEAD history (c0b2b9e, 5a27cb3, 592ad7c).
+
+### Critical Path (Cycle 190) — unchanged scope from C188 item list
+1. **HUMAN: `kill 3358 8992 9962 9974`** — 141st cycle unexecuted. Full quad now past 03-day wall (76+ hours). 4,814 PNGs on disk. Kill remains the full unblock for the PID-side flatline.
+2. **HUMAN: finish the telemetry commit** — 23+ modified `tests/reports/` files + 4,814 untracked PNGs + `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/`. Suggested order: decide `.gitignore` coverage for regen-every-cycle assets → stage new test agent + audit artifacts → decide commit/ignore for `.superpowers/` and `docs/superpowers/plans/` → commit.
+3. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **154-cycle-stale**, provably skipped by 3 commits. File exists; just `>>` append.
+4. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope to apps-era.
+5. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009+010+011+012+013+014+015+016, `api/inspector.py`, `db/seed_real_apps.py`, `frontend/admin.*` rewrite, `frontend/publish.*` (from 5a27cb3), and the **`web/` Next.js scaffold** (from 592ad7c).
+6. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`) — highest-leverage single-starter picks.
+7. **Harness coverage check (C184–C188 carry-over)**: Selenium harness still points at Flask+vanilla surface; Next.js `web/` routes uncovered.
+8. **Dual-frontend strategic question (C185–C188 carry-over)**: `web/` vs `frontend/` — replace, coexist, or staging? HUMAN decision required to unblock T2_app_frontend + T3_frontend ownership against the right surface.
+
+### Contract Reminders (unchanged)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step.
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+---
+
+## COORDINATOR STATUS — Cycle 190 (2026-04-19)
+
+### Headline — Git HEAD **ADVANCED** for the first time in 12+ hours: `592ad7c` → `d570f34` (+3 commits: `806b91c` scaffold re-push, `ac3d202` API client/types/SWR hooks/user context/milestones, `d570f34` sidebar/command menu/keyboard shortcuts/shared components). All 3 new commits land inside `web/` (Next.js dual-frontend). `frontend/` (vanilla) unchanged. PID side: **142nd flatline cycle** — all 4 stuck PIDs alive and now deep into 03-day territory (leader 3358 ELAPSED **03-08:25:53**, ~80+ hours). Screenshot disk **4,846** (+32 since C189's 4,814) across ~3h28m gap since C189 wall → **~390s/file apparent cadence** (still well out of 30-35s pre-gap envelope; harness idle/sparse). Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total) → Rule 1 **not tripped** → **0 tasks added**. All 4 stuck-PID UNBLOCKED notes verified verbatim at `T3_frontend.md:38`, `T6_testing.md:22`, `T6_testing.md:24` → **130-cycle zero-bump streak** → **0 duplicate notes added**. `.env.example` unchanged (1344 bytes / 35 lines; mtime 2026-04-16 01:57:34) — C11 Slack/Flask append now **155 cycles stale**, provably skipped by every commit in the **new 5-commit HEAD history** (5a27cb3, 592ad7c, 806b91c, ac3d202, d570f34).
+
+### Cadence
+- +32 screenshots over ~3h28m gap since C189 → apparent **~390s/file** (~6.5min/file). Still out of the pre-C189 30-35s/file envelope. The overnight idle window (C189 anomaly) has not fully normalized; harness is writing but at a slow cadence.
+- True steady-state recovery unconfirmed — one more short-gap cycle needed to rebuild the rolling trendline.
+- 2s stagger 9962↔9974 still intact (across all 142 cycles).
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **142-cycle flatline streak**. Viable-today/partially-invalidated/fully-invalidated breakdown unchanged from C189.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; all 4 now deep in 03-day territory:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-08:25:53** — flagged `T3_frontend.md:38` (C25, verified operative at exact line).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-07:47:58** — flagged `T6_testing.md:24` (C93, verified operative at exact line).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-07:42:57** — flagged `T6_testing.md:22` (C72, verified operative at exact line).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-07:42:55** — flagged `T6_testing.md:22` (C72, verified operative at exact line; 2s stagger preserved).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (rule 1 not triggered — all 19 files at 10 incomplete; 142-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at exact line numbers; 130-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 190 block appended (this block).
+
+### What Changed This Cycle
+- **Git HEAD moved** for the first time since 2026-04-18 16:34 (C189 freeze). New commits all in `web/`:
+  - `806b91c` — Next.js/Tailwind/shadcn dark-theme scaffold (duplicate of 592ad7c message; re-push or rebase artifact — worth confirming).
+  - `ac3d202` — API client, types, SWR hooks, user context, milestones (application plumbing layer).
+  - `d570f34` — sidebar, command menu, keyboard shortcuts, shared components (shell UI).
+  → The **dual-frontend strategic question** (C185–C189 carry-over) is being answered de facto: `web/` is now active, `frontend/` is static. Ownership implications for T2_app_frontend + T3_frontend remain unresolved — HUMAN decision still required for whether these terminals retarget `web/`, stay on `frontend/`, or park.
+- **Zero-coverage surfaces expand**: C188–C189 already flagged `web/` as having no task-file owner. With 3 fresh commits into it, the gap widens — no `T_WEB.md` or equivalent exists. Still an open drafting request under Critical Path item 5.
+- Screenshot count: **4,846** (+32 since C189's 4,814). Newest captures `no-run-button-20260419T124445.png` + `catalog-no-cards-20260419T124444.png` at 08:44 EDT (12:44 UTC) — same post-demolition pair-family against vanilla `frontend/` surface (harness has not been repointed at `web/` yet → harness coverage check item 7 remains open).
+- All 4 stuck PIDs crossed **80-hour uptime** this cycle (leader ~80.4h).
+- `.env.example` unchanged: 1344 bytes / 35 lines; mtime 2026-04-16 01:57:34 (~83h stale) — C11 Slack/Flask append now **155 cycles stale**, survived 5 commits.
+
+### Critical Path (Cycle 191) — evolved from C189 item list
+1. **HUMAN: `kill 3358 8992 9962 9974`** — 142nd cycle unexecuted. All 4 PIDs past 80h uptime. 4,846 PNGs on disk. Kill remains the full unblock for the PID-side flatline.
+2. **HUMAN: finish the telemetry commit** — 23+ modified `tests/reports/` files + 4,846 untracked PNGs + `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside the 5-commit HEAD.
+3. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **155-cycle stale**, now provably skipped by 5 commits.
+4. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope to apps-era. Unchanged by the 3 new `web/` commits.
+5. **HUMAN: write task-file coverage** for zero-coverage surfaces — **NOW MORE URGENT**: the `web/` Next.js scaffold has 3 fresh commits (sidebar, API client, SWR, milestones) with no owning task file. Suggest drafting `T_WEB.md` this cycle before more commits land on it. Other uncovered: migrations 009+010+011+012+013+014+015+016, `api/inspector.py`, `db/seed_real_apps.py`, `frontend/admin.*` rewrite, `frontend/publish.*`.
+6. **HUMAN: dual-frontend strategic decision** — with `web/` now actively shipping features (3 commits in one gap window), the coexistence question needs a definitive answer: (a) `web/` replaces `frontend/` (retire vanilla), (b) `web/` = staging / `frontend/` = prod, or (c) parallel tracks with different ownership. This decision unblocks T2_app_frontend + T3_frontend retargeting.
+7. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`) remain highest-leverage single-starter picks, independent of frontend decision.
+8. **Harness coverage check (C184→C190 carry-over)**: Selenium harness still points at Flask+vanilla surface (`catalog-no-cards-*` + `no-run-button-*` cadence proves it); `web/` routes uncovered. Will require harness rewrite once dual-frontend decision lands.
+9. **Inspect `806b91c`**: commit message duplicates `592ad7c` verbatim ("feat: scaffold Next.js app with Tailwind + shadcn dark theme"). Worth confirming this is not a rebase/force-push artifact hiding lost work.
+
+### Contract Reminders (unchanged)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+---
+
+## COORDINATOR STATUS — Cycle 191 (2026-04-19)
+
+### Headline — Git HEAD **ADVANCED AGAIN**: `d570f34` → `727f6d5` (+3 commits: `1bd8841` catalog page + app detail with reviews, `b020cf1` skills/my-forge/publish pages, `727f6d5` **"complete Next.js frontend rewrite"** with admin pages). All 3 new commits land inside `web/`. Commit message `727f6d5` ("complete Next.js frontend rewrite") **de facto answers the dual-frontend strategic question** — HUMAN appears to be retiring `frontend/` in favor of `web/`. PID side: **143rd flatline cycle** — all 4 stuck PIDs alive and deep in 03-day territory (leader 3358 ELAPSED **03-08:38:04**, ~80.6h). Coordinator gap **~12m11s** (PID 3358 03-08:25:53 → 03-08:38:04), 0.91x pre-C153 ~13m20s mean — **back in-band, lower-envelope** after C189 overnight anomaly + C190 recovery. Screenshot disk **4,868** (+22 since C190's 4,846) over ~12m11s (731s) → **~33.2s/file** — **BACK INSIDE the 30–35s pre-C189 envelope**, harness fully recovered. Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **143rd consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified in-place at exact line numbers and verbatim-operative → zero-bump policy holds C61→C190, now **131-cycle streak** → **0 duplicate notes added**. `.env.example` unchanged (1344 bytes / 35 lines; mtime 2026-04-16 01:57:34 — **~83h stale**): C11 Slack/Flask append now **156 cycles stale** and provably skipped by every commit in the now **8-commit HEAD history** (c0b2b9e, 837ed88, 5a27cb3, 592ad7c, 806b91c, ac3d202, d570f34, 1bd8841, b020cf1, 727f6d5).
+
+### Cadence (in-band recovery confirmed)
+- +22 screenshots over ~12m11s (731s) gap → **~33.2s/file** — **in-band, mid-envelope** (1.04x pre-C153 ~32s mean). Harness fully recovered from C189 overnight idle. The rolling trendline has one fresh in-band data point post-anomaly.
+- Pre-C189 reference: 33-cycle spread 30.30–35.19 s/file (variance <17%). C191's 33.2 s/file slots cleanly into that band.
+- 2s stagger 9962↔9974 preserved (55:06 vs 55:08) — intact across all 143 cycles from start.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **143-cycle flatline streak** (survived: C184+C185 head-advance commits, C186 out-of-envelope excursion, C189 overnight silence, C190 first post-silence head-advance, **C191 second post-silence head-advance with frontend-rewrite commit**).
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; all 4 now at ~80h+ uptime:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-08:38:04** *(leader; ~80.6h)* — flagged `T3_frontend.md:38` (C25, verified operative at exact line).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-08:00:09** *(~80.0h)* — flagged `T6_testing.md:24` (C93, verified operative at exact line).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-07:55:08** *(~79.9h)* — flagged `T6_testing.md:22` (C72, verified operative at exact line).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-07:55:06** *(~79.9h; 2s stagger preserved across all 143 cycles)* — flagged `T6_testing.md:22` (C72, verified operative at exact line).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (rule 1 not triggered — all 19 files at exactly 10 incomplete; 143-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at exact line numbers; 131-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 191 block appended (this block).
+
+### What Changed This Cycle
+- **Git HEAD moved again** with 3 more `web/` commits — 6 `web/` commits across the last 2 cycles (C190: scaffold-rescaffold + API/SWR + shell UI; C191: catalog page + skills/my-forge/publish + admin pages). The `727f6d5` commit message — **"feat: implement admin pages and complete Next.js frontend rewrite"** — reads as an authorial declaration that `web/` has reached feature-parity coverage of the prior `frontend/` surface.
+- **Dual-frontend strategic question (C185→C190 carry-over) appears answered by commit message**: the word "complete" in `727f6d5`'s title suggests (a) `web/` now covers catalog + app detail + reviews + skills + my-forge + publish + admin — i.e., the full `frontend/` footprint. HUMAN confirmation still needed: is `frontend/` being retired (delete) or retained as a reference (archive)? Harness retargeting blocked until that call lands.
+- **Harness still pointed at `frontend/`**: newest screenshots `no-run-button-20260419T125634.png` + `catalog-no-cards-20260419T125633.png` at 08:56 EDT (12:56 UTC) — same post-demolition pair-family continuing against the vanilla `frontend/` surface even though `web/` has now "completed" the rewrite. Harness coverage gap widens: if `frontend/` is retired, the ~33s/file capture loop is permanently emitting against a dead surface.
+- **Zero-coverage surfaces broaden**: no `T_WEB.md` task-file owner exists for the now 10-file-deep `web/` Next.js app. The gap from C190 item 5 is materially worse this cycle.
+- All 4 stuck PIDs crossed **80-hour uptime** this cycle; 3-day wall remains crossed.
+- Working-tree state: **4,883** entries in `git status --short` (up from C190) — modified `tests/reports/` files + large PNG untracked population + `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside the now-10-commit HEAD.
+- `.env.example` unchanged: 1344 bytes / 35 lines; mtime 2026-04-16 01:57:34 (~83h stale) — C11 Slack/Flask append now **156 cycles stale**, survived **10 commits** (c0b2b9e → 727f6d5).
+
+### Critical Path (Cycle 192) — evolved from C190 item list
+1. **HUMAN: `kill 3358 8992 9962 9974`** — 143rd cycle unexecuted. All 4 PIDs past 80h uptime. 4,868 PNGs on disk. Kill remains the full unblock for the PID-side flatline.
+2. **HUMAN: finish the telemetry commit** — 4,883 working-tree entries (modified `tests/reports/` files + 4,868 untracked PNGs + `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/`) still outside the 10-commit HEAD.
+3. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **156-cycle stale**, provably skipped by 10 commits.
+4. **HUMAN: dual-frontend decision NEEDS FORMALIZATION** — `727f6d5`'s "complete Next.js frontend rewrite" implies `web/` is now authoritative. Confirm: (a) delete `frontend/` outright (breaks the harness immediately until repointed), (b) freeze `frontend/` as legacy/reference and add deprecation banner, or (c) dual-deploy until full-cutover audit. Without this call, harness + T2_app_frontend + T3_frontend owners cannot retarget.
+5. **HUMAN: draft `T_WEB.md`** — the `web/` Next.js app now has ~10 files' worth of committed surface (scaffold, Tailwind, shadcn, API client, SWR hooks, user context, milestones, sidebar, command menu, keyboard shortcuts, shared components, catalog page, app detail, reviews, skills, my-forge, publish, admin) with **zero task-file ownership**. Ownership gap is the highest-urgency scope item this cycle.
+6. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope to apps-era. Unchanged by `web/` commits.
+7. **HUMAN: harness retarget** — Selenium loop (PID 3358, ~33.2s/file) still hitting `frontend/catalog.html` + `frontend/my-tools.html`. Once dual-frontend decision lands, `tests/agents/ui_tester.py` needs to either (a) swap base URL to the Next.js dev server, or (b) be parked. Leaving it pointed at a "rewritten-away" surface explains the 143-cycle `catalog-no-cards-*` + `no-run-button-*` flatline.
+8. **HUMAN: write task-file coverage** for other zero-coverage surfaces: migrations 009+010+011+012+013+014+015+016, `api/inspector.py`, `db/seed_real_apps.py`.
+9. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`) — highest-leverage single-starter picks, independent of frontend decision.
+10. **Inspect `806b91c` vs `592ad7c`** (C190 carry-over): both commit messages read "feat: scaffold Next.js app with Tailwind + shadcn dark theme" verbatim. Worth confirming this is not a rebase/force-push artifact hiding lost work — a `git show 806b91c` vs `git show 592ad7c` diff comparison would clarify.
+
+### Contract Reminders (unchanged)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — and per `727f6d5` may now be the authoritative frontend).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+---
+
+## COORDINATOR STATUS — Cycle 192 (2026-04-19)
+
+### Headline — FLATLINE **144th cycle** on the PID side. Coordinator gap **~13m01s** (PID 3358 ELAPSED 03-08:38:04 → 03-08:51:05), 0.98x pre-C153 ~13m20s mean — **in-band, mid-envelope** (2nd consecutive in-band cycle post-C189 overnight anomaly). Git HEAD unchanged at `727f6d5` (~37m since the C191 web/ frontend-rewrite commit sequence landed). Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **144th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified in-place at exact line numbers and verbatim-operative → zero-bump policy holds C61→C191, now **132-cycle streak** → **0 duplicate notes added**. Screenshot disk **4,892** (+24 since C191's 4,868); across 781s gap = **~32.5s/file** — **in-band, mid-envelope** (1.02x pre-C153 ~32s mean; slots inside the 30.30–35.19 s/file 33-cycle spread). Rolling trendline now has 2 clean in-band data points post-C189 anomaly — harness confirmed back to steady-state. `.env.example` unchanged (1344 bytes / 35 lines; mtime 2026-04-16 01:57:34 — **~83h stale**): C11 Slack/Flask append now **157 cycles stale** and provably skipped by every commit in the 10-commit HEAD history (c0b2b9e → 727f6d5).
+
+### Cadence (steady-state recovery confirmed, 2nd data point)
+- +24 screenshots over ~13m01s (781s) gap → **~32.5s/file** — **in-band, mid-envelope** (1.02x pre-C153 ~32s mean).
+- Pre-C189 reference: 33-cycle spread 30.30–35.19 s/file (variance <17%). C191 = 33.2 s/file, C192 = 32.5 s/file — both inside the band. Harness is firmly back at steady state.
+- 2s stagger 9962↔9974 preserved (08:07 vs 08:09) — intact across all 144 cycles from start.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **144-cycle flatline streak** (survived: 6 `web/` commits over C190-C191, C189 overnight silence, C186 out-of-envelope excursion, earlier head-advance commits).
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; all 4 well past 03-day wall (~80.1-80.9h uptime):
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-08:51:05** *(leader; ~80.9h)* — flagged `T3_frontend.md:38` (C25, verified operative at exact line).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-08:13:10** *(~80.2h)* — flagged `T6_testing.md:24` (C93, verified operative at exact line).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-08:08:09** *(~80.1h)* — flagged `T6_testing.md:22` (C72, verified operative at exact line).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-08:08:07** *(~80.1h; 2s stagger preserved across all 144 cycles)* — flagged `T6_testing.md:22` (C72, verified operative at exact line).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (rule 1 not triggered — all 19 files at exactly 10 incomplete; 144-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at exact line numbers; 132-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 192 block appended (this block).
+
+### What Changed This Cycle
+- **Git HEAD stable at 727f6d5** — C191's frontend-rewrite commit burst has settled; no further `web/` commits this cycle. The "complete Next.js frontend rewrite" message from `727f6d5` remains the most recent authorial signal on the dual-frontend question — still awaiting HUMAN formalization on retire-vs-freeze-vs-dual-deploy.
+- **Harness cadence fully normalized**: second consecutive in-band data point (32.5 s/file) confirms the C189 overnight idle anomaly is fully behind us. Rolling trendline is reliable again for future excursion detection.
+- Screenshot count: **4,892** (+24 since C191's 4,868). Newest captures `catalog-no-cards-20260419T131029.png` + `no-run-button-20260419T131030.png` at 09:10 EDT (13:10 UTC) — same post-demolition pair-family against vanilla `frontend/` surface (harness still NOT repointed at `web/` post-rewrite-commit).
+- All 4 stuck PIDs crossed **~80h uptime** mark (leader at ~80.9h, up from C191's ~80.6h). No new day-wall crossings this cycle.
+- Working-tree state stable: modified `tests/reports/*.{json,log,png}` + untracked `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/`, plus the growing `tests/reports/screenshots/*.png` population — all still outside the 10-commit HEAD.
+- `.env.example` unchanged: 1344 bytes / 35 lines; mtime 2026-04-16 01:57:34 (~83h stale) — C11 Slack/Flask append now **157 cycles stale**, survived 10 commits.
+
+### Critical Path (Cycle 193) — unchanged scope from C191 item list
+1. **HUMAN: `kill 3358 8992 9962 9974`** — 144th cycle unexecuted. All 4 PIDs past 80h uptime. 4,892 PNGs on disk. Kill remains the full unblock for the PID-side flatline.
+2. **HUMAN: finish the telemetry commit** — 23+ modified `tests/reports/` files + 4,892 untracked PNGs + `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside the 10-commit HEAD.
+3. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **157-cycle stale**, provably skipped by 10 commits.
+4. **HUMAN: dual-frontend decision NEEDS FORMALIZATION** — `727f6d5`'s "complete Next.js frontend rewrite" implies `web/` is now authoritative but harness + task-file ownership still point at `frontend/`. Confirm: (a) delete `frontend/` outright, (b) freeze as legacy/reference, or (c) dual-deploy until full-cutover audit. Without this call, harness + T2_app_frontend + T3_frontend owners cannot retarget.
+5. **HUMAN: draft `T_WEB.md`** — the `web/` Next.js app now has ~10+ files of committed surface with **zero task-file ownership**. Ownership gap is the highest-urgency scope item after the retirement decision.
+6. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope to apps-era.
+7. **HUMAN: harness retarget** — Selenium loop (PID 3358, ~32.5s/file) still hitting `frontend/catalog.html` + `frontend/my-tools.html`. Once dual-frontend decision lands, `tests/agents/ui_tester.py` needs to either swap base URL to the Next.js dev server or be parked.
+8. **HUMAN: write task-file coverage** for other zero-coverage surfaces: migrations 009+010+011+012+013+014+015+016, `api/inspector.py`, `db/seed_real_apps.py`.
+9. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`) — highest-leverage single-starter picks, independent of frontend decision.
+10. **Inspect `806b91c` vs `592ad7c`** (C190-C191 carry-over): commit messages read identical ("feat: scaffold Next.js app with Tailwind + shadcn dark theme"). `git show 806b91c` vs `git show 592ad7c` diff comparison still outstanding.
+
+### Contract Reminders (unchanged)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — and per `727f6d5` may now be the authoritative frontend).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+---
+
+## COORDINATOR STATUS — Cycle 193 (2026-04-19)
+
+### Headline — FLATLINE **145th cycle** on the PID side. Coordinator gap **~12m17s** (PID 3358 ELAPSED 03-08:51:05 → 03-09:03:22), ~0.92x pre-C153 ~13m20s mean — **in-band, low-normal** (3rd consecutive in-band cycle post-C189 anomaly). Git HEAD unchanged at `727f6d5` (~52m since the "complete Next.js frontend rewrite" commit). Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **145th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified in-place at exact line numbers → zero-bump policy holds C61→C192, now **133-cycle streak** → **0 duplicate notes added**. Screenshot disk **4,916** (+24 since C192's 4,892); across 737s gap = **~30.7s/file** — **in-band, low-normal** (0.96x pre-C153 ~32s mean; at the bottom of the 30.30–35.19 s/file 33-cycle spread). `.env.example` unchanged (1344 bytes / 35 lines; 0 SLACK/FLASK_ENV matches): C11 Slack/Flask append now **158 cycles stale**, survived 10 commits.
+
+### Cadence (steady-state continuing, 3rd in-band data point)
+- +24 screenshots over ~12m17s (737s) gap → **~30.7s/file** — in-band, at low-normal edge of the pre-C153 envelope.
+- Post-C189 rolling trend: C191 = 33.2, C192 = 32.5, C193 = 30.7 s/file — mild acceleration but still inside the 30.30–35.19 s/file 33-cycle spread. Harness firmly at steady state.
+- 2s stagger 9962↔9974 preserved — offset intact across all 145 cycles.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **145-cycle flatline streak** (survived: commit `727f6d5` Next.js rewrite + the 6 earlier `web/` commits, 2 overnight anomalies, plus the C186 excursion).
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; all 4 now past **03-day-08h** wall (~80.3-81.1h uptime):
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-09:03:22** *(leader; ~81.1h)* — flagged `T3_frontend.md:38` (C25, verbatim operative).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-08:25:27** *(~80.4h)* — flagged `T6_testing.md:24` (C93, verbatim operative).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-08:20:26** *(~80.3h)* — flagged `T6_testing.md:22` (C72, verbatim operative).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-08:20:24** *(~80.3h; 2s stagger preserved)* — flagged `T6_testing.md:22` (C72, verbatim operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (rule 1 not triggered — all 19 files at exactly 10 incomplete; 145-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative; 133-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 193 block appended (this block).
+
+### What Changed This Cycle
+- **Git HEAD stable at `727f6d5`** — no new commits since C192 (~52 min ago). The "complete Next.js frontend rewrite" signal is now ~52 min old and still awaiting HUMAN formalization on retire-vs-freeze-vs-dual-deploy.
+- **Harness cadence: 30.7 s/file** — third consecutive in-band data point, slight acceleration from C192's 32.5 s/file but still comfortably inside the pre-C189 spread.
+- Screenshot count: **4,916** (+24 since C192). Newest captures `catalog-no-cards-20260419T132220.png` + `no-run-button-20260419T132220.png` at 13:22 UTC today — same post-demolition pair-family against the vanilla `frontend/` surface (harness still NOT repointed at `web/` post-rewrite-commit).
+- All 4 stuck PIDs now mid-day-4 uptime (leader at ~81.1h, up from C192's ~80.9h). No new day-wall crossings this cycle.
+- Working-tree state unchanged from C192: modified `tests/reports/*.{json,log,png}` + untracked `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` — all still outside the 10-commit HEAD.
+- `.env.example` unchanged (still 1344 bytes / 35 lines, 0 `SLACK`/`FLASK_ENV` matches) — C11 Slack/Flask append now **158 cycles stale**.
+
+### Critical Path (Cycle 194) — unchanged scope from C193 item list
+1. **HUMAN: `kill 3358 8992 9962 9974`** — 145th cycle unexecuted. All 4 PIDs past 80h uptime, leader past 81h. 4,916 PNGs on disk. Kill remains the single-step full unblock for the PID-side flatline.
+2. **HUMAN: finish the telemetry commit** — 23+ modified `tests/reports/` files + 4,916 untracked PNGs + `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside the 10-commit HEAD.
+3. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **158-cycle stale**, provably skipped by 10 commits.
+4. **HUMAN: dual-frontend decision NEEDS FORMALIZATION** — `727f6d5`'s "complete Next.js frontend rewrite" implies `web/` is authoritative but harness + task-file ownership still point at `frontend/`. Decide: (a) delete `frontend/` outright, (b) freeze as legacy/reference, or (c) dual-deploy until full-cutover audit.
+5. **HUMAN: draft `T_WEB.md`** — the `web/` Next.js app has committed surface with zero task-file ownership. Highest-urgency scope item after the retirement decision.
+6. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope to apps-era.
+7. **HUMAN: harness retarget** — Selenium loop (PID 3358, ~30.7s/file) still hitting `frontend/catalog.html` + `frontend/my-tools.html`.
+8. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-017, `api/inspector.py`, `db/seed_real_apps.py`, plus the entire `web/` Next.js tree.
+9. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`) — highest-leverage single-starter picks.
+10. **Inspect `806b91c` vs `592ad7c`** (C190-C191 carry-over): commit messages read identical. `git show 806b91c` vs `git show 592ad7c` diff comparison still outstanding.
+
+### Contract Reminders (unchanged)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — and per `727f6d5` may now be the authoritative frontend).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+---
+
+## COORDINATOR STATUS — Cycle 194 (2026-04-19)
+
+### Headline — FLATLINE **146th cycle** on the PID side. Coordinator gap **~13m16s** (PID 3358 ELAPSED 03-09:03:22 → 03-09:16:38), ~0.995x pre-C153 ~13m20s mean — **in-band, mid-envelope** (4th consecutive in-band cycle post-C189 anomaly). Git HEAD unchanged at `727f6d5` (~65m since the "complete Next.js frontend rewrite" commit). Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **146th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified in-place at exact line numbers → zero-bump policy holds C61→C193, now **134-cycle streak** → **0 duplicate notes added**. Screenshot disk **4,940** (+24 since C193's 4,916); across 796s gap = **~33.2s/file** — **in-band, mid-envelope** (1.04x pre-C153 ~32s mean; slots cleanly in the 30.30–35.19 s/file 33-cycle spread). `.env.example` unchanged (1344 bytes / 35 lines; 0 `SLACK`/`FLASK_ENV` matches; mtime 2026-04-16 01:57:34 — ~83h stale): C11 Slack/Flask append now **159 cycles stale**, survived 10 commits.
+
+### Cadence (steady-state continuing, 4th in-band data point)
+- +24 screenshots over ~13m16s (796s) gap → **~33.2s/file** — in-band, mid-envelope.
+- Post-C189 rolling trend: C191 = 33.2, C192 = 32.5, C193 = 30.7, C194 = 33.2 s/file — small oscillation inside the 30.30–35.19 s/file 33-cycle spread. Harness firmly at steady state; 4 clean data points now confirm full recovery from the overnight anomaly.
+- 2s stagger 9962↔9974 preserved (33:42 vs 33:40) — intact across all 146 cycles.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **146-cycle flatline streak** (survived: all 10 committed `web/` milestones, C186 excursion, C189 overnight silence, C190–C191 head-advances).
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; all 4 now past **03-day-08h** wall (~80.6-81.3h uptime):
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-09:16:38** *(leader; ~81.3h)* — flagged `T3_frontend.md:38` (C25, verified operative at exact line).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-08:38:43** *(~80.6h)* — flagged `T6_testing.md:24` (C93, verified operative at exact line).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-08:33:42** *(~80.6h)* — flagged `T6_testing.md:22` (C72, verified operative at exact line).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-08:33:40** *(~80.6h; 2s stagger preserved across all 146 cycles)* — flagged `T6_testing.md:22` (C72, verified operative at exact line).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (rule 1 not triggered — all 19 files at exactly 10 incomplete; 146-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at exact line numbers; 134-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 194 block appended (this block).
+
+### What Changed This Cycle
+- **Git HEAD stable at `727f6d5`** — no new commits since C191 (~65 min ago). The "complete Next.js frontend rewrite" signal continues to await HUMAN formalization on retire-vs-freeze-vs-dual-deploy.
+- **Harness cadence: 33.2 s/file** — 4th consecutive in-band data point, bouncing back to mid-envelope after C193's low-normal 30.7. Confirms C189 anomaly is fully resolved; future excursions can be detected reliably against the restored trendline.
+- Screenshot count: **4,940** (+24 since C193). Newest pair `catalog-no-cards-20260419T133515.png` + `no-run-button-20260419T133515.png` at 09:35 EDT (13:35 UTC) — same post-demolition family against the vanilla `frontend/` surface (harness still NOT repointed at `web/` post-rewrite-commit).
+- All 4 stuck PIDs further into mid-day-4 uptime (leader at ~81.3h, up from C193's ~81.1h). No new day-wall crossings this cycle.
+- Working-tree state unchanged: modified `tests/reports/*.{json,log,png}` + untracked `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` — all still outside the 10-commit HEAD.
+- `.env.example` unchanged (still 1344 bytes / 35 lines, 0 `SLACK`/`FLASK_ENV` matches) — C11 Slack/Flask append now **159 cycles stale**.
+
+### Critical Path (Cycle 195) — unchanged scope from C193 item list
+1. **HUMAN: `kill 3358 8992 9962 9974`** — 146th cycle unexecuted. All 4 PIDs past 80h uptime; leader past 81h. 4,940 PNGs on disk. Kill remains the single-step full unblock for the PID-side flatline.
+2. **HUMAN: finish the telemetry commit** — 23+ modified `tests/reports/` files + 4,940 untracked PNGs + `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside the 10-commit HEAD.
+3. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **159-cycle stale**, provably skipped by 10 commits.
+4. **HUMAN: dual-frontend decision NEEDS FORMALIZATION** — `727f6d5`'s "complete Next.js frontend rewrite" implies `web/` is authoritative but harness + task-file ownership still point at `frontend/`. Decide: (a) delete `frontend/` outright, (b) freeze as legacy/reference, or (c) dual-deploy until full-cutover audit.
+5. **HUMAN: draft `T_WEB.md`** — the `web/` Next.js app has committed surface with zero task-file ownership. Highest-urgency scope item after the retirement decision.
+6. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope to apps-era.
+7. **HUMAN: harness retarget** — Selenium loop (PID 3358, ~33.2s/file) still hitting `frontend/catalog.html` + `frontend/my-tools.html`.
+8. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-017, `api/inspector.py`, `db/seed_real_apps.py`, plus the entire `web/` Next.js tree.
+9. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`) — highest-leverage single-starter picks.
+10. **Inspect `806b91c` vs `592ad7c`** (C190-C191 carry-over): commit messages read identical. `git show 806b91c` vs `git show 592ad7c` diff comparison still outstanding.
+
+### Contract Reminders (unchanged)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — and per `727f6d5` may now be the authoritative frontend).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+---
+
+## COORDINATOR STATUS — Cycle 195 (2026-04-19)
+
+### Headline — FLATLINE **147th cycle** on the PID side. Coordinator gap **~13m08s** (PID 3358 ELAPSED 03-09:16:38 → 03-09:29:46), ~0.99x pre-C153 ~13m20s mean — **in-band, mid-envelope** (5th consecutive in-band cycle post-C189 anomaly). **Git HEAD ADVANCED**: `727f6d5` → `e92e351` ("add product vision as north star") — 11th commit overall, and first non-`web/` commit in the post-C189 sequence. Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **147th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified in-place at exact line numbers with verbatim-operative content → zero-bump policy holds C61→C194, now **135-cycle streak** → **0 duplicate notes added**. Screenshot disk **4,964** (+24 since C194's 4,940); across 788s gap = **~32.8s/file** — **in-band, mid-envelope** (1.03x pre-C153 ~32s mean; slots cleanly inside the 30.30–35.19 s/file 33-cycle spread). `.env.example` unchanged (1344 bytes / 35 lines; 0 `SLACK`/`FLASK_ENV` matches; mtime 2026-04-16 01:57:34 — **~83h stale**): C11 Slack/Flask append now **160 cycles stale**, provably skipped by **all 11 commits** in HEAD history (c0b2b9e → e92e351).
+
+### Cadence (steady-state continuing, 5th in-band data point)
+- +24 screenshots over ~13m08s (788s) gap → **~32.8s/file** — in-band, mid-envelope.
+- Post-C189 rolling trend: C191 = 33.2, C192 = 32.5, C193 = 30.7, C194 = 33.2, C195 = 32.8 s/file — tight oscillation (30.7–33.2 range) inside the 30.30–35.19 s/file 33-cycle spread. Harness firmly at steady state; 5 clean data points confirm full recovery from the C189 overnight anomaly.
+- 2s stagger 9962↔9974 preserved (46:50 vs 46:48) — intact across all 147 cycles.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **147-cycle flatline streak** (survived: all 10 committed `web/` milestones, the new `e92e351` VISION.md commit, C186 excursion, C189 overnight silence, C190–C191 head-advances).
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; all 4 past **03-day-08h** wall (~80.8-81.5h uptime):
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-09:29:46** *(leader; ~81.5h)* — flagged `T3_frontend.md:38` (C25, verified operative at exact line, content verbatim).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-08:51:51** *(~80.9h)* — flagged `T6_testing.md:24` (C93, verified operative at exact line, content verbatim).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-08:46:50** *(~80.8h)* — flagged `T6_testing.md:22` (C72, verified operative at exact line, content verbatim).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-08:46:48** *(~80.8h; 2s stagger preserved across all 147 cycles)* — flagged `T6_testing.md:22` (C72, verified operative at exact line, content verbatim).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 147-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at exact line numbers; 135-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 195 block appended (this block).
+
+### What Changed This Cycle
+- **Git HEAD advanced**: `727f6d5` → `e92e351` ("add product vision as north star"). **First non-`web/` commit** since the prompt-stack demolition era (C190–C191 sequence was 6 commits all inside `web/`; `e92e351` breaks that pattern). Commit message reads as a north-star product-vision document — the user may be formalizing scope boundaries at the doc layer. If `VISION.md` exists at repo root and contradicts or clarifies the SPEC.md prompt-stack design (which the 11 commits have already partially demolished + rewritten), it will need to become a coordinator-side input for future rule-1 task drafting. Worth a read next cycle to confirm.
+- **Dual-frontend question still awaits HUMAN formalization**: `727f6d5`'s "complete Next.js frontend rewrite" signal is now ~78 min old. `e92e351` does not touch `frontend/` or `web/` — so the retire-vs-freeze-vs-dual-deploy decision continues unresolved. Harness still pointed at `frontend/`.
+- **Harness cadence: 32.8 s/file** — 5th consecutive in-band data point. The post-C189 rolling trend (33.2, 32.5, 30.7, 33.2, 32.8) oscillates in a 2.5s-wide band well inside the pre-C189 33-cycle spread. Future excursions reliably detectable.
+- Screenshot count: **4,964** (+24 since C194). Newest pair `no-run-button-20260419T134823.png` + `catalog-no-cards-20260419T134822.png` at 09:48 EDT (13:48 UTC) — same post-demolition pair-family against the vanilla `frontend/` surface (harness still NOT repointed at `web/` post-rewrite-commit).
+- All 4 stuck PIDs deeper into mid-day-4 uptime (leader at ~81.5h, up from C194's ~81.3h). No new day-wall crossings this cycle.
+- Working-tree state: **4,978** entries in `git status --short`. Modified `tests/reports/*.{json,log,png}` + untracked `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside the now-11-commit HEAD.
+- `.env.example` unchanged (still 1344 bytes / 35 lines, 0 `SLACK`/`FLASK_ENV` matches) — C11 Slack/Flask append now **160 cycles stale**, survived **11 commits** (c0b2b9e → e92e351).
+
+### Critical Path (Cycle 196) — carry-over from C194, plus new item 11
+1. **HUMAN: `kill 3358 8992 9962 9974`** — 147th cycle unexecuted. All 4 PIDs past 80h uptime; leader past 81.5h. 4,964 PNGs on disk. Kill remains the single-step full unblock for the PID-side flatline.
+2. **HUMAN: finish the telemetry commit** — 23+ modified `tests/reports/` files + 4,964 untracked PNGs + `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside the 11-commit HEAD.
+3. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **160-cycle stale**, provably skipped by 11 commits.
+4. **HUMAN: dual-frontend decision NEEDS FORMALIZATION** — `727f6d5`'s "complete Next.js frontend rewrite" implies `web/` is authoritative but harness + task-file ownership still point at `frontend/`. Decide: (a) delete `frontend/` outright, (b) freeze as legacy/reference, or (c) dual-deploy until full-cutover audit.
+5. **HUMAN: draft `T_WEB.md`** — the `web/` Next.js app has committed surface with zero task-file ownership. Highest-urgency scope item after the retirement decision.
+6. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope to apps-era.
+7. **HUMAN: harness retarget** — Selenium loop (PID 3358, ~32.8s/file) still hitting `frontend/catalog.html` + `frontend/my-tools.html`.
+8. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-017, `api/inspector.py`, `db/seed_real_apps.py`, plus the entire `web/` Next.js tree.
+9. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`) — highest-leverage single-starter picks.
+10. **Inspect `806b91c` vs `592ad7c`** (C190-C191 carry-over): commit messages read identical. `git show 806b91c` vs `git show 592ad7c` diff comparison still outstanding.
+11. **NEW — Read `VISION.md` from `e92e351`**: the 11th commit message "add product vision as north star" suggests a doc that may reframe the SPEC.md prompt-stack assumptions against the current apps-era reality. If VISION.md contradicts any of the C17-demolition notes (T1_backend, T3_frontend, T6_testing, T1_new partially invalidated; T2_agents, T2_new, T3_new, T4_new fully invalidated), those rescope calls may need to shift.
+
+### Contract Reminders (unchanged)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — and per `727f6d5` may now be the authoritative frontend).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+---
+
+## COORDINATOR STATUS — Cycle 196 (2026-04-19)
+
+### Headline — FLATLINE **148th cycle** on the PID side. Coordinator gap **~13m14s** (PID 3358 ELAPSED 03-09:29:46 → 03-09:43:00), ~0.99x pre-C153 ~13m20s mean — **in-band, mid-envelope** (6th consecutive in-band cycle post-C189 anomaly). **Git HEAD ADVANCED TWICE**: `e92e351` → `fc5e86b` ("add social/discoverability layer design spec (phase 1)") → `8d70c7b` ("update spec: add control panel, remove live presence, add roadmap note") — 12th + 13th commits overall, and 2nd + 3rd non-`web/` commits in the post-C189 sequence. Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **148th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified in-place at exact line numbers with verbatim-operative content → zero-bump policy holds C61→C195, now **136-cycle streak** → **0 duplicate notes added**. Screenshot disk **4,988** (+24 since C195's 4,964); across 794s gap = **~33.1s/file** — **in-band, mid-envelope** (1.03x pre-C153 ~32s mean; slots cleanly inside the 30.30–35.19 s/file 33-cycle spread). `.env.example` unchanged (1344 bytes / 35 lines; 0 `SLACK`/`FLASK_ENV` matches; mtime 2026-04-16 01:57:34 — **~84h stale**): C11 Slack/Flask append now **161 cycles stale**, provably skipped by **all 13 commits** in HEAD history (c0b2b9e → 8d70c7b).
+
+### Cadence (steady-state continuing, 6th in-band data point)
+- +24 screenshots over ~13m14s (794s) gap → **~33.1s/file** — in-band, mid-envelope.
+- Post-C189 rolling trend: C191 = 33.2, C192 = 32.5, C193 = 30.7, C194 = 33.2, C195 = 32.8, C196 = 33.1 s/file — tight oscillation (30.7–33.2 range) inside the 30.30–35.19 s/file 33-cycle spread. Harness firmly at steady state; 6 clean data points confirm full recovery from the C189 overnight anomaly.
+- 2s stagger 9962↔9974 preserved (00:04 vs 00:02) — intact across all 148 cycles.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **148-cycle flatline streak** (survived: all 10 committed `web/` milestones, the `e92e351` VISION.md commit, the new `fc5e86b` social/discoverability spec commit, the new `8d70c7b` SPEC update commit, C186 excursion, C189 overnight silence, C190–C191 head-advances).
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; all 4 past **03-day-09h** wall (~81.0-81.7h uptime):
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-09:43:00** *(leader; ~81.7h)* — flagged `T3_frontend.md:38` (C25, verified operative at exact line, content verbatim).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-09:05:05** *(~81.1h)* — flagged `T6_testing.md:24` (C93, verified operative at exact line, content verbatim).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-09:00:04** *(~81.0h)* — flagged `T6_testing.md:22` (C72, verified operative at exact line, content verbatim).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-09:00:02** *(~81.0h; 2s stagger preserved across all 148 cycles)* — flagged `T6_testing.md:22` (C72, verified operative at exact line, content verbatim).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 148-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at exact line numbers; 136-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 196 block appended (this block).
+
+### What Changed This Cycle
+- **Git HEAD advanced twice**: `e92e351` → `fc5e86b` → `8d70c7b`. Two new spec/doc commits within ~13m gap, both in the non-`web/` band that `e92e351` opened in C195. `fc5e86b` adds a "social/discoverability layer design spec (phase 1)" — net-new surface that will likely require a fresh task-file (`T_SOCIAL.md` or similar) once formalized; no `social*.py` or `social*.js` files appear yet on disk, so this is doc-first. `8d70c7b` amends SPEC.md itself ("add control panel, remove live presence, add roadmap note") — means the live-presence feature has been explicitly REMOVED from scope and a "control panel" surface added. The removed/added SPEC terms invalidate any latent task-file lines that referenced "live presence" and open a new control-panel scope. Coordinator-side: need to re-read SPEC.md next cycle to catalog the diff (additions: control panel, roadmap note; deletions: live presence) and cross-check against the 19 task files for obsolete/missing coverage.
+- **Dual-frontend question still awaits HUMAN formalization**: `727f6d5`'s "complete Next.js frontend rewrite" signal is now ~78 min old. Neither `fc5e86b` nor `8d70c7b` touches `frontend/` or `web/` — so the retire-vs-freeze-vs-dual-deploy decision continues unresolved. Harness still pointed at `frontend/`.
+- **Harness cadence: 33.1 s/file** — 6th consecutive in-band data point. The post-C189 rolling trend (33.2, 32.5, 30.7, 33.2, 32.8, 33.1) oscillates in a 2.5s-wide band well inside the pre-C189 33-cycle spread. Future excursions reliably detectable.
+- Screenshot count: **4,988** (+24 since C195). Newest pair `catalog-no-cards-20260419T140238.png` + `no-run-button-20260419T140239.png` at 10:02 EDT (14:02 UTC) — same post-demolition pair-family against the vanilla `frontend/` surface (harness still NOT repointed at `web/` post-rewrite-commit).
+- All 4 stuck PIDs deeper into mid-day-4 uptime (leader at ~81.7h, up from C195's ~81.5h). No new day-wall crossings this cycle (all 4 already past the 03-day-09h mark; next wall is 03-day-10h, ~17 min out for leader).
+- Working-tree state: 23+ modified `tests/reports/*.{json,log,png}` + untracked `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside the now-13-commit HEAD.
+- `.env.example` unchanged (still 1344 bytes / 35 lines, 0 `SLACK`/`FLASK_ENV` matches) — C11 Slack/Flask append now **161 cycles stale**, survived **13 commits** (c0b2b9e → 8d70c7b).
+
+### Critical Path (Cycle 197) — carry-over from C195, plus new items 12 + 13
+1. **HUMAN: `kill 3358 8992 9962 9974`** — 148th cycle unexecuted. All 4 PIDs past 81h uptime; leader past 81.7h. 4,988 PNGs on disk. Kill remains the single-step full unblock for the PID-side flatline.
+2. **HUMAN: finish the telemetry commit** — 23+ modified `tests/reports/` files + 4,988 untracked PNGs + `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside the 13-commit HEAD.
+3. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **161-cycle stale**, provably skipped by 13 commits.
+4. **HUMAN: dual-frontend decision NEEDS FORMALIZATION** — `727f6d5`'s "complete Next.js frontend rewrite" implies `web/` is authoritative but harness + task-file ownership still point at `frontend/`. Decide: (a) delete `frontend/` outright, (b) freeze as legacy/reference, or (c) dual-deploy until full-cutover audit.
+5. **HUMAN: draft `T_WEB.md`** — the `web/` Next.js app has committed surface with zero task-file ownership. Highest-urgency scope item after the retirement decision.
+6. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope to apps-era.
+7. **HUMAN: harness retarget** — Selenium loop (PID 3358, ~33.1s/file) still hitting `frontend/catalog.html` + `frontend/my-tools.html`.
+8. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-017, `api/inspector.py`, `db/seed_real_apps.py`, plus the entire `web/` Next.js tree.
+9. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`) — highest-leverage single-starter picks.
+10. **Inspect `806b91c` vs `592ad7c`** (C190-C191 carry-over): commit messages read identical. `git show 806b91c` vs `git show 592ad7c` diff comparison still outstanding.
+11. **Read `VISION.md` from `e92e351`** (carry-over from C195): if the doc exists at repo root and contradicts any C17-demolition notes, those rescope calls may need to shift. Still unread by coordinator.
+12. **NEW — Diff SPEC.md at `8d70c7b^..8d70c7b`**: the commit message names two adds ("control panel", "roadmap note") and one remove ("live presence"). Exact line-level diff needed to (a) catalog obsolete task-file lines referencing live presence, (b) scope a new task-file or section for the control panel surface, (c) surface the roadmap note for future rule-1 prioritization.
+13. **NEW — Read `fc5e86b`'s social/discoverability design spec**: a new design-spec file was added (likely under `docs/` or at repo root) describing a social/discoverability layer (phase 1). No implementation surface exists yet on disk, so this is upstream of any task-file. Once read, candidate for a fresh `T_SOCIAL.md` draft alongside `T_WEB.md` (item 5) — both are zero-coverage scopes opened by recent commits.
+
+### Contract Reminders (unchanged)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — and per `727f6d5` may now be the authoritative frontend).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+---
+
+## COORDINATOR STATUS — Cycle 197 (2026-04-19)
+
+### Headline — FLATLINE **149th cycle** on the PID side. **Git HEAD ADVANCED 3×**: `8d70c7b` → `0c2a4e7` → `88e6623` → `1250257` → `127a4d3` (14th–16th commits overall; all three new commits introduce a net-new `forge-agent` surface never before seen in HEAD history). Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **149th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified in-place at exact line numbers → zero-bump policy holds C61→C196, now **137-cycle streak** → **0 duplicate notes added**. Screenshot disk **5,012** (+24 since C196's 4,988). `.env.example` unchanged: C11 Slack/Flask append now **162 cycles stale**, provably skipped by **all 16 commits** (c0b2b9e → 127a4d3).
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: all 19 files at exactly 10 incomplete → bypassed by design. **149-cycle flatline streak** (survived 16 commits end-to-end).
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: all 4 PIDs alive; all 4 past **03-day-09h** wall (~81.2-81.9h uptime):
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-09:55:49** *(leader; ~81.9h)* — flagged `T3_frontend.md:38` (C25, verified in-place).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-09:17:54** *(~81.3h)* — flagged `T6_testing.md:24` (C93, verified in-place).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-09:12:53** *(~81.2h)* — flagged `T6_testing.md:22` (C72, verified in-place).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-09:12:51** *(~81.2h; 2s stagger preserved across all 149 cycles)* — flagged `T6_testing.md:22` (C72, verified in-place).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at exact line numbers).
+- COORDINATOR STATUS Cycle 197 block appended (this block).
+
+### What Changed This Cycle
+- **Git HEAD advanced 3×**: `8d70c7b` → `0c2a4e7` ("add implementation plan for social/discoverability layer phase 1") → `88e6623` ("feat: add /usage endpoint to forge-agent for 7-day usage aggregation") → `1250257` ("Add reveal action to forge-agent /launch endpoint") → `127a4d3` ("Add forge-agent proxies, coinstalls, team trending, and enhanced social stats"). **Net-new `forge-agent` component**: commit messages reveal a surface never before owned by any task file — endpoints include `/usage`, `/launch` (with reveal action), `/proxies`, `/coinstalls`, `/team-trending`, enhanced social stats. This appears to be the implementation of the C196 `fc5e86b` social/discoverability design spec referenced in the C196 critical-path item 13. **Zero-coverage scope widens**: `forge-agent` joins `web/` Next.js tree as untracked surface requiring fresh task-file ownership.
+- Screenshot count: **5,012** (+24 since C196). Harness still pointed at vanilla `frontend/` — has not been retargeted despite growing `web/` + now `forge-agent/` coverage gap.
+- All 4 stuck PIDs deeper into mid-day-4 uptime. Leader past **03-day-09h-55m**, approaching the 03-day-10h wall within minutes.
+
+### Critical Path (Cycle 198) — C197 carry-over plus new items 14 + 15
+1. **HUMAN: `kill 3358 8992 9962 9974`** — 149th cycle unexecuted. 5,012 PNGs on disk.
+2. **HUMAN: finish the telemetry commit** — 23+ modified `tests/reports/` + 5,012 untracked PNGs + `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside the 16-commit HEAD.
+3. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **162-cycle stale**, skipped by 16 commits.
+4. **HUMAN: dual-frontend decision NEEDS FORMALIZATION** — `727f6d5`'s "complete Next.js frontend rewrite" ~90m old and still unresolved.
+5. **HUMAN: draft `T_WEB.md`** for the `web/` Next.js surface.
+6. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new).
+7. **HUMAN: harness retarget** — Selenium loop still hitting `frontend/catalog.html` + `frontend/my-tools.html`.
+8. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-017, `api/inspector.py`, `db/seed_real_apps.py`, entire `web/` Next.js tree, plus **NEW** `forge-agent/` component.
+9. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+10. **Inspect `806b91c` vs `592ad7c`** (C190-C191 carry-over): `git show 806b91c` vs `git show 592ad7c` diff comparison still outstanding.
+11. **Read `VISION.md` from `e92e351`** (C195 carry-over): still unread by coordinator.
+12. **Diff SPEC.md at `8d70c7b^..8d70c7b`** (C196 carry-over): catalog control-panel add + live-presence remove.
+13. **Read `fc5e86b`'s social/discoverability design spec** (C196 carry-over): now IMPLEMENTED via C197 `forge-agent` commits — read together with the 3 new commits to catalog the phase-1 endpoint surface.
+14. **NEW — Draft `T_AGENT.md`** for the `forge-agent` component: 3 commits (`88e6623`, `1250257`, `127a4d3`) ship net-new surface (`/usage`, `/launch` with reveal action, `/proxies`, `/coinstalls`, `/team-trending`, enhanced social stats) with zero task-file ownership. Highest-urgency scope item alongside `T_WEB.md` (item 5).
+15. **NEW — Verify `0c2a4e7` plan doc location**: commit message "add implementation plan for social/discoverability layer phase 1" likely lives under `docs/superpowers/plans/` (already in untracked state pre-commit, so may have been promoted). Confirm path and cross-reference against `T_AGENT.md` scope.
+
+### Contract Reminders (unchanged)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — and per `727f6d5` may now be the authoritative frontend).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+---
+
+## COORDINATOR STATUS — Cycle 198 (2026-04-19)
+
+### Headline — FLATLINE **150th cycle** on the PID side. Coordinator gap **~13m00s** (PID 3358 ELAPSED 03-09:55:49 → 03-10:08:49), ~0.98x pre-C153 ~13m20s mean — **in-band, mid-envelope** (7th consecutive in-band cycle post-C189 anomaly). **Git HEAD ADVANCED ONCE**: `127a4d3` → `12222ac` ("feat: catalog social layer — trending strip, control panel, co-installs") — 17th commit overall, and 4th non-`web/` commit in the post-C189 sequence. Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **150th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified in-place at exact line numbers with verbatim-operative content → zero-bump policy holds C61→C197, now **138-cycle streak** → **0 duplicate notes added**. Screenshot disk **5,036** (+24 since C197's 5,012); across 780s gap = **~32.5s/file** — **in-band, mid-envelope** (1.02x pre-C153 ~32s mean; slots cleanly inside the 30.30–35.19 s/file 33-cycle spread). `.env.example` unchanged (1344 bytes / 35 lines; 0 `SLACK`/`FLASK_ENV` matches; mtime 2026-04-16 01:57:34 — **~84h stale**): C11 Slack/Flask append now **163 cycles stale**, provably skipped by **all 17 commits** in HEAD history (c0b2b9e → 12222ac).
+
+### Cadence (steady-state continuing, 7th in-band data point)
+- +24 screenshots over ~13m00s (780s) gap → **~32.5s/file** — in-band, mid-envelope.
+- Post-C189 rolling trend: C191 = 33.2, C192 = 32.5, C193 = 30.7, C194 = 33.2, C195 = 32.8, C196 = 33.1, C197 ≈ 33.0, C198 = 32.5 s/file — tight oscillation inside the 30.30–35.19 s/file 33-cycle spread. Harness firmly at steady state; 7 clean data points confirm full recovery from the C189 overnight anomaly.
+- 2s stagger 9962↔9974 preserved (25:53 vs 25:51) — intact across all 150 cycles.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **150-cycle flatline streak** (survived: all 10 committed `web/` milestones, the `e92e351` VISION commit, the `fc5e86b` + `8d70c7b` spec commits, the `0c2a4e7` + `88e6623` + `1250257` + `127a4d3` forge-agent quartet, the new `12222ac` catalog-social-layer commit, C186 excursion, C189 overnight silence, C190–C197 head-advances).
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; all 4 past **03-day-09h** wall; leader past **03-day-10h** (~81.4-82.1h uptime):
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-10:08:49** *(leader; ~82.1h)* — flagged `T3_frontend.md:38` (C25, verified operative at exact line, content verbatim).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-09:30:54** *(~81.5h)* — flagged `T6_testing.md:24` (C93, verified operative at exact line, content verbatim).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-09:25:53** *(~81.4h)* — flagged `T6_testing.md:22` (C72, verified operative at exact line, content verbatim).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-09:25:51** *(~81.4h; 2s stagger preserved across all 150 cycles)* — flagged `T6_testing.md:22` (C72, verified operative at exact line, content verbatim).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 150-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at exact line numbers; 138-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 198 block appended (this block).
+
+### What Changed This Cycle
+- **Git HEAD advanced once**: `127a4d3` → `12222ac` ("feat: catalog social layer — trending strip, control panel, co-installs"). 17th commit overall, fourth non-`web/` commit in the post-C189 sequence (joining `e92e351`, `fc5e86b`, `8d70c7b`, and the forge-agent quartet). Commit message introduces three NEW surfaces on the catalog: a trending strip, a control panel, and co-install recommendations — all three were named in `8d70c7b`'s SPEC update ("add control panel") and `fc5e86b`'s social/discoverability design spec. First commit that lands the spec-layer additions into concrete implementation surface. File-path scope unconfirmed — worth a next-cycle `git show 12222ac --stat` to catalog which files landed.
+- **Milestone reached — 150-cycle flatline streak.** The 150th consecutive frozen cycle on the task-replenishment rule is a round-number marker worth noting: Rule 1 (`<3` threshold) has not tripped on any of 19 files across 150 cycles. The steady state signals the task files are serving as a durable scope reference while the live commit velocity happens outside their ownership boundaries (all 17 commits touched surfaces that either don't have task-file coverage — `web/`, `forge-agent/`, `VISION.md`, design specs — or are part of the C17-demolition-surviving apps-era subset that doesn't need task refills).
+- **Dual-frontend question still awaits HUMAN formalization**: `727f6d5`'s "complete Next.js frontend rewrite" signal is now ~103 min old. `12222ac` likely touches `web/` given the catalog-social-layer feature scope, which would further entrench `web/` as the authoritative frontend — but harness still pointed at `frontend/` and retire-vs-freeze-vs-dual-deploy decision continues unresolved.
+- **Harness cadence: 32.5 s/file** — 7th consecutive in-band data point. The post-C189 rolling trend (33.2, 32.5, 30.7, 33.2, 32.8, 33.1, ~33.0, 32.5) oscillates in a 2.5s-wide band. Current cycle is on the low-mid side.
+- Screenshot count: **5,036** (+24 since C197). Same post-demolition pair-family (`catalog-no-cards-*` + `no-run-button-*`) against the vanilla `frontend/` surface (harness still NOT repointed at `web/` post-rewrite-commit).
+- All 4 stuck PIDs past the 03-day-09h wall; leader past 03-day-10h. Leader uptime ~82.1h, up from C197's ~81.9h. Leader crossed 03-day-10h sometime between C197 and C198.
+- Working-tree state: 23+ modified `tests/reports/*.{json,log,png}` + untracked `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside the now-17-commit HEAD.
+- `.env.example` unchanged (still 1344 bytes / 35 lines, 0 `SLACK`/`FLASK_ENV` matches) — C11 Slack/Flask append now **163 cycles stale**, survived **17 commits** (c0b2b9e → 12222ac).
+
+### Critical Path (Cycle 199) — C197 carry-over plus new item 16
+1. **HUMAN: `kill 3358 8992 9962 9974`** — 150th cycle unexecuted. All 4 PIDs past 81h uptime; leader past 82h. 5,036 PNGs on disk. Kill remains the single-step full unblock for the PID-side flatline.
+2. **HUMAN: finish the telemetry commit** — 23+ modified `tests/reports/` files + 5,036 untracked PNGs + `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside the 17-commit HEAD.
+3. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **163-cycle stale**, provably skipped by 17 commits.
+4. **HUMAN: dual-frontend decision NEEDS FORMALIZATION** — `727f6d5`'s "complete Next.js frontend rewrite" implies `web/` is authoritative; `12222ac`'s catalog-social-layer likely lands inside `web/` and further entrenches it. Decide: (a) delete `frontend/` outright, (b) freeze as legacy/reference, or (c) dual-deploy until full-cutover audit.
+5. **HUMAN: draft `T_WEB.md`** — the `web/` Next.js app has committed surface with zero task-file ownership. Highest-urgency scope item after the retirement decision. `12222ac` likely expands the `web/` surface further.
+6. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope to apps-era.
+7. **HUMAN: harness retarget** — Selenium loop (PID 3358, ~32.5s/file) still hitting `frontend/catalog.html` + `frontend/my-tools.html`.
+8. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-017, `api/inspector.py`, `db/seed_real_apps.py`, entire `web/` Next.js tree, plus `forge-agent/` component.
+9. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`) — highest-leverage single-starter picks.
+10. **Inspect `806b91c` vs `592ad7c`** (C190-C191 carry-over): `git show 806b91c` vs `git show 592ad7c` diff comparison still outstanding.
+11. **Read `VISION.md` from `e92e351`** (C195 carry-over): still unread by coordinator.
+12. **Diff SPEC.md at `8d70c7b^..8d70c7b`** (C196 carry-over): catalog control-panel add + live-presence remove — control-panel surface now partly implemented by `12222ac`, so this diff is increasingly load-bearing for task-file rescope.
+13. **Read `fc5e86b`'s social/discoverability design spec** (C196 carry-over): now IMPLEMENTED via the forge-agent quartet AND the C198 `12222ac` catalog-social-layer commit — read together with all 5 implementation commits to catalog the phase-1 surface end-to-end.
+14. **Draft `T_AGENT.md`** for the `forge-agent` component (C197 carry-over): 3 commits ship net-new surface with zero task-file ownership.
+15. **Verify `0c2a4e7` plan doc location** (C197 carry-over): still unconfirmed whether promoted from untracked state to `docs/superpowers/plans/` or another path.
+16. **NEW — Run `git show 12222ac --stat`**: catalog which files the "catalog social layer — trending strip, control panel, co-installs" commit touched. Expected to land in `web/app/` given the `727f6d5` Next.js rewrite precedent. Confirming file-path scope bounds `T_WEB.md` draft (item 5) and makes the C196 SPEC.md control-panel diff (item 12) cross-referenceable against concrete code.
+
+### Contract Reminders (unchanged)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — and per `727f6d5` may now be the authoritative frontend).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+
+---
+
+## COORDINATOR STATUS — Cycle 199 (2026-04-19)
+
+### Headline — FLATLINE **151st cycle** on the PID side. Coordinator gap **~13m32s** (PID 3358 ELAPSED 03-10:08:49 → 03-10:22:21), ~1.01x pre-C153 ~13m20s mean — **in-band, mid-envelope** (8th consecutive in-band cycle post-C189 anomaly). **Git HEAD UNCHANGED**: still at `12222ac` ("feat: catalog social layer — trending strip, control panel, co-installs"); no new commits this cycle (first head-static cycle since C194 → 5-cycle commit-velocity streak C195-C198 ends). Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **151st consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified in-place at exact line numbers with verbatim-operative content → zero-bump policy holds C61→C198, now **139-cycle streak** → **0 duplicate notes added**. Screenshot disk **5,062** (+26 since C198's 5,036; cycle saw a 26-file emission vs the steady-state 24-file cadence — minor uptick); across 812s gap = **~31.2s/file** — **in-band, low-envelope** (0.98x pre-C153 ~32s mean; slots inside the 30.30–35.19 s/file 33-cycle spread, low-side). `.env.example` unchanged (1344 bytes / 35 lines; 0 `SLACK`/`FLASK_ENV` matches; mtime 2026-04-16 01:57:34 — **~84h stale**): C11 Slack/Flask append now **164 cycles stale**, provably skipped by **all 17 commits** in HEAD history (c0b2b9e → 12222ac).
+
+### Cadence (steady-state continuing, 8th in-band data point)
+- +26 screenshots over ~13m32s (812s) gap → **~31.2s/file** — in-band, low-envelope.
+- Post-C189 rolling trend: C191 = 33.2, C192 = 32.5, C193 = 30.7, C194 = 33.2, C195 = 32.8, C196 = 33.1, C197 ~33.0, C198 = 32.5, C199 = 31.2 s/file — tight oscillation (30.7-33.2 range) inside the 30.30-35.19 s/file 33-cycle spread. C199 is on the low-side of the oscillation envelope, second-fastest data point post-C189 (only C193's 30.7 is faster). Harness firmly at steady state; 8 clean data points confirm full recovery from the C189 overnight anomaly.
+- 26-file emission vs 24-file steady-state: minor uptick. Two extra captures in a 812s window is consistent with the low-side cadence (812 / 31.2 ~= 26.0 files), not a regime shift. Mechanism: when per-file time drops to ~31s (vs 33s mean), the same gap window fits 1-2 extra captures. No anomaly.
+- 2s stagger 9962<->9974 preserved (39:25 vs 39:23) — intact across all 151 cycles.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **151-cycle flatline streak** (survived: all 10 committed `web/` milestones, the `e92e351` VISION commit, the `fc5e86b` + `8d70c7b` spec commits, the `0c2a4e7` + `88e6623` + `1250257` + `127a4d3` forge-agent quartet, the `12222ac` catalog-social-layer commit, C186 excursion, C189 overnight silence, C190-C198 head-advances).
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; all 4 past **03-day-09h** wall; leader past **03-day-10h** (~81.7-82.4h uptime):
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-10:22:21** *(leader; ~82.4h)* — flagged `T3_frontend.md:38` (C25, verified operative at exact line, content verbatim).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-09:44:26** *(~81.7h)* — flagged `T6_testing.md:24` (C93, verified operative at exact line, content verbatim).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-09:39:25** *(~81.7h)* — flagged `T6_testing.md:22` (C72, verified operative at exact line, content verbatim).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-09:39:23** *(~81.7h; 2s stagger preserved across all 151 cycles)* — flagged `T6_testing.md:22` (C72, verified operative at exact line, content verbatim).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 151-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at exact line numbers; 139-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 199 block appended (this block).
+
+### What Changed This Cycle
+- **Git HEAD STATIC**: `12222ac` holds. First head-static cycle since C194; the C195-C198 commit-velocity streak (8 commits across 4 cycles: VISION, 2 spec docs, 4 forge-agent commits, 1 catalog-social-layer) ends with a normal idle cycle. No interpretation needed yet — single-cycle pause is well within the historical idle distribution.
+- **Working-tree state unchanged in shape**: 23+ modified `tests/reports/*.{json,log,png}` + untracked `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside the 17-commit HEAD. `git status --short | wc -l` = **5,081** (vs C198's working-tree mention of 23+ modified + the untracked screenshot growth — net +29 entries since C198, consistent with +26 PNGs + tests/reports/*.{json,log} mtimes touching).
+- **Dual-frontend question still awaits HUMAN formalization**: `727f6d5`'s "complete Next.js frontend rewrite" signal is now ~117 min old. C199 saw no commits, so no new evidence either way. Harness still pointed at `frontend/` and retire-vs-freeze-vs-dual-deploy decision continues unresolved.
+- **Harness cadence: 31.2 s/file** — 8th consecutive in-band data point. The post-C189 rolling trend (33.2, 32.5, 30.7, 33.2, 32.8, 33.1, ~33.0, 32.5, 31.2) oscillates in a 2.5s-wide band. C199 is on the low side, second-fastest post-C189 point. No regime shift signal — just normal in-band variance.
+- Screenshot count: **5,062** (+26 since C198). Same post-demolition pair-family (`catalog-no-cards-*` + `no-run-button-*`) against the vanilla `frontend/` surface (harness still NOT repointed at `web/` post-rewrite-commit).
+- All 4 stuck PIDs deeper into mid-day-4 uptime. Leader at ~82.4h (up from C198's ~82.1h). No new day-wall crossings (all 4 already past 03-day-09h, leader past 03-day-10h since C198).
+- `.env.example` unchanged — C11 Slack/Flask append now **164 cycles stale**, survived **17 commits** (c0b2b9e → 12222ac).
+
+### Critical Path (Cycle 200) — C198 carry-over (no new items this cycle)
+1. **HUMAN: `kill 3358 8992 9962 9974`** — 151st cycle unexecuted. All 4 PIDs past 81.7h uptime; leader past 82.4h. 5,062 PNGs on disk. Kill remains the single-step full unblock for the PID-side flatline.
+2. **HUMAN: finish the telemetry commit** — 23+ modified `tests/reports/` files + 5,062 untracked PNGs + `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside the 17-commit HEAD. Working-tree entry count now **5,081**.
+3. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **164-cycle stale**, provably skipped by 17 commits.
+4. **HUMAN: dual-frontend decision NEEDS FORMALIZATION** — `727f6d5`'s "complete Next.js frontend rewrite" implies `web/` is authoritative; `12222ac`'s catalog-social-layer likely lands inside `web/` and further entrenches it. Decide: (a) delete `frontend/` outright, (b) freeze as legacy/reference, or (c) dual-deploy until full-cutover audit.
+5. **HUMAN: draft `T_WEB.md`** — the `web/` Next.js app has committed surface with zero task-file ownership. Highest-urgency scope item after the retirement decision.
+6. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope to apps-era.
+7. **HUMAN: harness retarget** — Selenium loop (PID 3358, ~31.2s/file) still hitting `frontend/catalog.html` + `frontend/my-tools.html`.
+8. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-017, `api/inspector.py`, `db/seed_real_apps.py`, entire `web/` Next.js tree, plus `forge-agent/` component.
+9. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`) — highest-leverage single-starter picks.
+10. **Inspect `806b91c` vs `592ad7c`** (C190-C191 carry-over): `git show 806b91c` vs `git show 592ad7c` diff comparison still outstanding.
+11. **Read `VISION.md` from `e92e351`** (C195 carry-over): still unread by coordinator.
+12. **Diff SPEC.md at `8d70c7b^..8d70c7b`** (C196 carry-over): catalog control-panel add + live-presence remove — control-panel surface now partly implemented by `12222ac`, so this diff is increasingly load-bearing for task-file rescope.
+13. **Read `fc5e86b`'s social/discoverability design spec** (C196 carry-over): now IMPLEMENTED via the forge-agent quartet AND the C198 `12222ac` catalog-social-layer commit — read together with all 5 implementation commits to catalog the phase-1 surface end-to-end.
+14. **Draft `T_AGENT.md`** for the `forge-agent` component (C197 carry-over): 3 commits ship net-new surface with zero task-file ownership.
+15. **Verify `0c2a4e7` plan doc location** (C197 carry-over): still unconfirmed whether promoted from untracked state to `docs/superpowers/plans/` or another path.
+16. **Run `git show 12222ac --stat`** (C198 carry-over): catalog which files the catalog-social-layer commit touched; expected `web/app/` scope; bounds `T_WEB.md` draft.
+
+### Contract Reminders (unchanged)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — and per `727f6d5` may now be the authoritative frontend).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+
+---
+
+## COORDINATOR STATUS — Cycle 200 (2026-04-19)
+
+### Headline — FLATLINE **152nd cycle** on the PID side, **ROUND-NUMBER MILESTONE (C200)**. Coordinator gap **~14m03s** (PID 3358 ELAPSED 03-10:22:21 → 03-10:36:24), ~1.05x pre-C153 ~13m20s mean — **in-band, mid-envelope** (9th consecutive in-band cycle post-C189 anomaly). **Git HEAD UNCHANGED for the 2nd cycle running**: still at `12222ac` ("feat: catalog social layer — trending strip, control panel, co-installs"); first 2-cycle head-static stretch since the C195-C198 4-cycle commit burst ended at C199. Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **152nd consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified in-place at exact line numbers with verbatim-operative content → zero-bump policy holds C61→C199, now **140-cycle streak** → **0 duplicate notes added**. Screenshot disk **5,088** (+26 since C199's 5,062; steady-state 26-file emission matches C199); across 843s gap = **~32.4s/file** — **in-band, mid-envelope** (~1.01x pre-C153 ~32s mean; slots inside the 30.30–35.19 s/file post-C189 oscillation band, mid-side). `.env.example` unchanged (1344 bytes / 35 lines; 0 `SLACK`/`FLASK_ENV` matches; mtime 2026-04-16 01:57:34 — **~84h stale**): C11 Slack/Flask append now **165 cycles stale**, provably skipped by **all 17 commits** in HEAD history (c0b2b9e → 12222ac).
+
+### Cadence (steady-state continuing, 9th in-band data point)
+- +26 screenshots over ~14m03s (843s) gap → **~32.4s/file** — in-band, mid-envelope.
+- Post-C189 rolling trend: C191 = 33.2, C192 = 32.5, C193 = 30.7, C194 = 33.2, C195 = 32.8, C196 = 33.1, C197 ~33.0, C198 = 32.5, C199 = 31.2, C200 = 32.4 s/file — 9-point oscillation 30.7-33.2 inside the 30.30-35.19 s/file 34-cycle spread. C200 returns to mid-band after C199's low-side dip; no regime shift. Harness firmly at steady state.
+- 26-file emission matches C199's 26-file emission — stable capture cadence. Two consecutive 26-file cycles suggest a minor uptick from the pre-C199 24-file steady-state may be the new normal.
+- 2s stagger 9962<->9974 preserved (53:28 vs 53:26) — intact across all 152 cycles.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **152-cycle flatline streak** (survived: all 10 committed `web/` milestones, the `e92e351` VISION commit, the `fc5e86b` + `8d70c7b` spec commits, the `0c2a4e7` + `88e6623` + `1250257` + `127a4d3` forge-agent quartet, the `12222ac` catalog-social-layer commit, C186 excursion, C189 overnight silence, C190-C198 head-advances, C199-C200 head-static pair).
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; all 4 past **03-day-09h** wall; leader past **03-day-10h** (~81.9-82.6h uptime):
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-10:36:24** *(leader; ~82.6h)* — flagged `T3_frontend.md:38` (C25, verified operative at exact line, content verbatim).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-09:58:29** *(~82.0h)* — flagged `T6_testing.md:24` (C93, verified operative at exact line, content verbatim).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-09:53:28** *(~81.9h)* — flagged `T6_testing.md:22` (C72, verified operative at exact line, content verbatim).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-09:53:26** *(~81.9h; 2s stagger preserved across all 152 cycles)* — flagged `T6_testing.md:22` (C72, verified operative at exact line, content verbatim).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 152-cycle flatline; round-number C200 milestone).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at exact line numbers; 140-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 200 block appended (this block).
+
+### What Changed This Cycle
+- **Git HEAD STATIC for the 2nd cycle running**: `12222ac` holds. C199-C200 is the first 2-cycle head-static pair since the C195-C198 commit-velocity streak. No interpretation signal yet — 2 cycles of idle is well within historical idle distribution. Worth watching whether it extends.
+- **Round-number milestone (C200)**: the coordinator has produced 200 status cycles. Flatline-streak framing — 152 cycles of zero task-replenishment, 140 cycles of zero UNBLOCKED bumps — indicates the task-file scope has been stable for the overwhelming majority of the run. Commit velocity happens outside task-file ownership boundaries (web/, forge-agent/, specs, VISION), so the frozen state is a feature, not stagnation.
+- **Working-tree state unchanged in shape**: 23+ modified `tests/reports/*.{json,log,png}` + untracked `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside the 17-commit HEAD. Screenshot growth accounts for most of the working-tree entry drift.
+- **Dual-frontend question still awaits HUMAN formalization**: `727f6d5`'s "complete Next.js frontend rewrite" signal is now ~2.1h old. C199-C200 saw no commits, so no new evidence either way. Harness still pointed at `frontend/` and retire-vs-freeze-vs-dual-deploy decision continues unresolved.
+- **Harness cadence: 32.4 s/file** — 9th consecutive in-band data point. Post-C189 rolling trend oscillates 30.7-33.2 in a 2.5s-wide band. C200 mid-band after C199's low-side point.
+- Screenshot count: **5,088** (+26 since C199). Same post-demolition pair-family (`catalog-no-cards-*` + `no-run-button-*`) against the vanilla `frontend/` surface (harness still NOT repointed at `web/` post-rewrite-commit).
+- All 4 stuck PIDs deeper into mid-day-4 uptime. Leader at ~82.6h (up from C199's ~82.4h). No new day-wall crossings.
+- `.env.example` unchanged — C11 Slack/Flask append now **165 cycles stale**, survived **17 commits** (c0b2b9e → 12222ac).
+
+### Critical Path (Cycle 201) — C199 carry-over (no new items this cycle)
+1. **HUMAN: `kill 3358 8992 9962 9974`** — 152nd cycle unexecuted. All 4 PIDs past 81.9h uptime; leader past 82.6h. 5,088 PNGs on disk. Kill remains the single-step full unblock for the PID-side flatline.
+2. **HUMAN: finish the telemetry commit** — 23+ modified `tests/reports/` files + 5,088 untracked PNGs + `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside the 17-commit HEAD.
+3. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **165-cycle stale**, provably skipped by 17 commits.
+4. **HUMAN: dual-frontend decision NEEDS FORMALIZATION** — `727f6d5`'s "complete Next.js frontend rewrite" implies `web/` is authoritative; `12222ac`'s catalog-social-layer likely lands inside `web/` and further entrenches it. Decide: (a) delete `frontend/` outright, (b) freeze as legacy/reference, or (c) dual-deploy until full-cutover audit.
+5. **HUMAN: draft `T_WEB.md`** — the `web/` Next.js app has committed surface with zero task-file ownership. Highest-urgency scope item after the retirement decision.
+6. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope to apps-era.
+7. **HUMAN: harness retarget** — Selenium loop (PID 3358, ~32.4s/file) still hitting `frontend/catalog.html` + `frontend/my-tools.html`.
+8. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-017, `api/inspector.py`, `db/seed_real_apps.py`, entire `web/` Next.js tree, plus `forge-agent/` component.
+9. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`) — highest-leverage single-starter picks.
+10. **Inspect `806b91c` vs `592ad7c`** (C190-C191 carry-over): diff comparison still outstanding.
+11. **Read `VISION.md` from `e92e351`** (C195 carry-over): still unread by coordinator.
+12. **Diff SPEC.md at `8d70c7b^..8d70c7b`** (C196 carry-over): catalog control-panel add + live-presence remove — control-panel surface now partly implemented by `12222ac`, so this diff is increasingly load-bearing for task-file rescope.
+13. **Read `fc5e86b`'s social/discoverability design spec** (C196 carry-over): now IMPLEMENTED via the forge-agent quartet AND the C198 `12222ac` catalog-social-layer commit — read together with all 5 implementation commits to catalog the phase-1 surface end-to-end.
+14. **Draft `T_AGENT.md`** for the `forge-agent` component (C197 carry-over): 3 commits ship net-new surface with zero task-file ownership.
+15. **Verify `0c2a4e7` plan doc location** (C197 carry-over): still unconfirmed whether promoted from untracked state to `docs/superpowers/plans/` or another path.
+16. **Run `git show 12222ac --stat`** (C198 carry-over): catalog which files the catalog-social-layer commit touched; expected `web/app/` scope; bounds `T_WEB.md` draft.
+
+### Contract Reminders (unchanged)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — and per `727f6d5` may now be the authoritative frontend).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+
+---
+
+## COORDINATOR STATUS — Cycle 201 (2026-04-19)
+
+### Headline — FLATLINE **153rd cycle** on the PID side. Coordinator gap **~14m22s** (PID 3358 ELAPSED 03-10:36:24 → 03-10:50:46), ~1.08x pre-C153 ~13m20s mean — **in-band, high-envelope** (10th consecutive in-band cycle post-C189 anomaly). **Git HEAD UNCHANGED for the 3rd cycle running**: still at `12222ac` ("feat: catalog social layer — trending strip, control panel, co-installs"); first 3-cycle head-static stretch since the C195-C198 4-cycle commit burst. Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **153rd consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified in-place at exact line numbers with verbatim-operative content → zero-bump policy holds C61→C200, now **141-cycle streak** → **0 duplicate notes added**. Screenshot disk **5,114** (+26 since C200's 5,088; steady-state 26-file emission matches C199-C200, now a 3-cycle consistent cadence); across 862s gap = **~33.2s/file** — **in-band, high-envelope** (~1.04x pre-C153 ~32s mean; slots inside the 30.30–35.19 s/file post-C189 oscillation band, high-side — tied with C191/C194 for highest post-C189 point). `.env.example` unchanged (1344 bytes / 35 lines; 0 `SLACK`/`FLASK_ENV` matches; mtime 2026-04-16 01:57:34 — **~84h stale**): C11 Slack/Flask append now **166 cycles stale**, provably skipped by **all 17 commits** in HEAD history (c0b2b9e → 12222ac).
+
+### Cadence (steady-state continuing, 10th in-band data point)
+- +26 screenshots over ~14m22s (862s) gap → **~33.2s/file** — in-band, high-envelope.
+- Post-C189 rolling trend: C191 = 33.2, C192 = 32.5, C193 = 30.7, C194 = 33.2, C195 = 32.8, C196 = 33.1, C197 ~33.0, C198 = 32.5, C199 = 31.2, C200 = 32.4, C201 = 33.2 s/file — 10-point oscillation 30.7-33.2 inside the 30.30-35.19 s/file 35-cycle spread. C201 ties C191 and C194 as the joint-highest post-C189 data point; trend sits mid-band across the full window. No regime shift.
+- 26-file emission matches C199-C200 — **3 consecutive 26-file cycles** confirm the minor uptick from the pre-C199 24-file steady-state is the new normal. Mechanism: per-file time bounces 31-33s, so the same ~13-14m coordinator gap window consistently fits ~26 captures.
+- 2s stagger 9962↔9974 preserved (07:50 vs 07:48) — intact across all 153 cycles.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **153-cycle flatline streak** (survived: all 10 committed `web/` milestones, the `e92e351` VISION commit, the `fc5e86b` + `8d70c7b` spec commits, the `0c2a4e7` + `88e6623` + `1250257` + `127a4d3` forge-agent quartet, the `12222ac` catalog-social-layer commit, C186 excursion, C189 overnight silence, C190-C198 head-advances, C199-C201 head-static triplet).
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; all 4 past **03-day-10h** wall (PID 8992 crossed 03-day-10h sometime between C200 and C201 — third PID to cross); leader past **03-day-10h** (~82.1-82.8h uptime):
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-10:50:46** *(leader; ~82.8h)* — flagged `T3_frontend.md:38` (C25, verified operative at exact line, content verbatim).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-10:12:51** *(~82.2h; **crossed 03-day-10h this cycle**)* — flagged `T6_testing.md:24` (C93, verified operative at exact line, content verbatim).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-10:07:50** *(~82.1h; **crossed 03-day-10h this cycle**)* — flagged `T6_testing.md:22` (C72, verified operative at exact line, content verbatim).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-10:07:48** *(~82.1h; 2s stagger preserved across all 153 cycles; **crossed 03-day-10h this cycle**)* — flagged `T6_testing.md:22` (C72, verified operative at exact line, content verbatim).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**. All 4 PIDs now past the 03-day-10h wall (previously only PID 3358 was past it).
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 153-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at exact line numbers; 141-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 201 block appended (this block).
+
+### What Changed This Cycle
+- **Git HEAD STATIC for the 3rd cycle running**: `12222ac` holds. C199-C201 is the first 3-cycle head-static stretch since the C195-C198 commit-velocity streak. No interpretation signal yet — 3 cycles of idle still within historical idle distribution but worth flagging as the streak extends. Next commit will arrive via either the C198-flagged social-layer-implementation push or a fresh `web/`/forge-agent/ surface expansion.
+- **All 4 stuck PIDs now past 03-day-10h wall** — PIDs 8992, 9962, 9974 all crossed this cycle (previously only leader 3358 was past it). All 4 now reading `03-10:xx:xx` in `ps -o etime`. Kill urgency unchanged but the group uniformity is a fresh marker.
+- **3 consecutive 26-file screenshot emissions (C199-C201)** confirm the minor cadence uptick from 24 → 26 files/cycle is steady-state, not transient. Arithmetic: when per-file time is in the 31-33s band and coordinator gap is in the 13-14m band, 26 captures/cycle is the expected count. No alarm.
+- **Working-tree state unchanged in shape**: 23+ modified `tests/reports/*.{json,log,png}` + untracked `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside the 17-commit HEAD. Screenshot growth accounts for most working-tree entry drift.
+- **Dual-frontend question still awaits HUMAN formalization**: `727f6d5`'s "complete Next.js frontend rewrite" signal is now ~2.4h old. C199-C201 saw zero commits, so no new evidence either way. Harness still pointed at `frontend/` and retire-vs-freeze-vs-dual-deploy decision continues unresolved.
+- **Harness cadence: 33.2 s/file** — 10th consecutive in-band data point, tied with C191/C194 as joint-highest post-C189 point. Post-C189 rolling trend oscillates 30.7-33.2 in a 2.5s-wide band.
+- Screenshot count: **5,114** (+26 since C200). Same post-demolition pair-family (`catalog-no-cards-*` + `no-run-button-*`) against the vanilla `frontend/` surface (harness still NOT repointed at `web/` post-rewrite-commit).
+- `.env.example` unchanged — C11 Slack/Flask append now **166 cycles stale**, survived **17 commits** (c0b2b9e → 12222ac).
+
+### Critical Path (Cycle 202) — C200 carry-over (no new items this cycle)
+1. **HUMAN: `kill 3358 8992 9962 9974`** — 153rd cycle unexecuted. All 4 PIDs now past 03-day-10h uptime (full group-uniformity crossing this cycle); leader past 82.8h. 5,114 PNGs on disk. Kill remains the single-step full unblock for the PID-side flatline.
+2. **HUMAN: finish the telemetry commit** — 23+ modified `tests/reports/` files + 5,114 untracked PNGs + `.superpowers/`, `docs/superpowers/plans/`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside the 17-commit HEAD.
+3. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **166-cycle stale**, provably skipped by 17 commits.
+4. **HUMAN: dual-frontend decision NEEDS FORMALIZATION** — `727f6d5`'s "complete Next.js frontend rewrite" implies `web/` is authoritative; `12222ac`'s catalog-social-layer likely lands inside `web/` and further entrenches it. Decide: (a) delete `frontend/` outright, (b) freeze as legacy/reference, or (c) dual-deploy until full-cutover audit.
+5. **HUMAN: draft `T_WEB.md`** — the `web/` Next.js app has committed surface with zero task-file ownership. Highest-urgency scope item after the retirement decision.
+6. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope to apps-era.
+7. **HUMAN: harness retarget** — Selenium loop (PID 3358, ~33.2s/file) still hitting `frontend/catalog.html` + `frontend/my-tools.html`.
+8. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-017, `api/inspector.py`, `db/seed_real_apps.py`, entire `web/` Next.js tree, plus `forge-agent/` component.
+9. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`) — highest-leverage single-starter picks.
+10. **Inspect `806b91c` vs `592ad7c`** (C190-C191 carry-over): diff comparison still outstanding.
+11. **Read `VISION.md` from `e92e351`** (C195 carry-over): still unread by coordinator.
+12. **Diff SPEC.md at `8d70c7b^..8d70c7b`** (C196 carry-over): catalog control-panel add + live-presence remove — control-panel surface now partly implemented by `12222ac`.
+13. **Read `fc5e86b`'s social/discoverability design spec** (C196 carry-over): now IMPLEMENTED via the forge-agent quartet AND the C198 `12222ac` catalog-social-layer commit.
+14. **Draft `T_AGENT.md`** for the `forge-agent` component (C197 carry-over): 3 commits ship net-new surface with zero task-file ownership.
+15. **Verify `0c2a4e7` plan doc location** (C197 carry-over): still unconfirmed — note that `git status` shows `docs/superpowers/plans/2026-04-18-nextjs-frontend-rewrite.md` as untracked, which is a DIFFERENT plan doc (Next.js rewrite, not social/discoverability phase 1), so `0c2a4e7`'s plan doc likely committed under a different path.
+16. **Run `git show 12222ac --stat`** (C198 carry-over): catalog which files the catalog-social-layer commit touched; expected `web/app/` scope; bounds `T_WEB.md` draft.
+
+### Contract Reminders (unchanged)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — and per `727f6d5` may now be the authoritative frontend).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+
+---
+
+## COORDINATOR STATUS — Cycle 202 (2026-04-19)
+
+### Headline — FLATLINE **154th cycle** on the PID side, but **GIT HEAD BURST**: 7 new commits landed since C201 (`12222ac` → `c6af044`), ending the C199-C201 3-cycle head-static stretch with the largest single-cycle commit delivery of the run. Coordinator gap **~12m21s** (PID 3358 ELAPSED 03-10:50:46 → 03-11:03:07), ~0.93x pre-C153 ~13m20s mean — **in-band, low-envelope** (11th consecutive in-band cycle post-C189 anomaly; fastest gap since C199). New HEAD `c6af044` = "feat(web): integrate social layer into catalog and app detail pages"; the 7-commit stack (`ec0c19c`, `e97daaf`, `293d41c`, `27ea76f`, `333e910`, `57823b3`, `c6af044`) ships the web-side social-layer wiring atop the `12222ac` backend surface — TrendingStrip, CoInstallCards, UsageChart, ExternalControlPanel, shared types/hooks, API alignment, and final catalog/app-detail integration. Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **154th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified in-place at exact line numbers with verbatim-operative content → zero-bump policy holds C61→C201, now **142-cycle streak** → **0 duplicate notes added**. Screenshot disk **5,138** (+24 since C201's 5,114; return to pre-C199 24-file cadence after a 3-cycle 26-file uptick C199-C201); across 741s gap = **~30.9s/file** — **in-band, low-envelope** (~0.97x pre-C153 ~32s mean; slots inside the 30.30–35.19 s/file post-C189 band, low-side — fastest post-C189 point excluding C193's 30.7). `.env.example` unchanged (1344 bytes / 35 lines; mtime 2026-04-16 01:57:34 — **~85h stale**): C11 Slack/Flask append now **167 cycles stale**, provably skipped by **all 24 commits** in HEAD history (c0b2b9e → c6af044).
+
+### Cadence (steady-state continuing, 11th in-band data point)
+- +24 screenshots over ~12m21s (741s) gap → **~30.9s/file** — in-band, low-envelope.
+- Post-C189 rolling trend: C191 = 33.2, C192 = 32.5, C193 = 30.7, C194 = 33.2, C195 = 32.8, C196 = 33.1, C197 ~33.0, C198 = 32.5, C199 = 31.2, C200 = 32.4, C201 = 33.2, C202 = 30.9 s/file — 11-point oscillation 30.7-33.2 inside the 30.30-35.19 s/file 36-cycle spread. C202 is the second-fastest post-C189 data point (only C193's 30.7 is faster); tight low-envelope return after C201's high-envelope print.
+- 24-file emission vs C199-C201's 3-cycle 26-file streak: **the 26-file cadence did NOT hold as new normal** — C202 returns to the pre-C199 24-file count. Arithmetic confirms it was gap-driven not cadence-driven: 741 / 30.9 ≈ 24.0 (shorter coordinator gap at same per-file rate fits fewer captures).
+- 2s stagger 9962↔9974 preserved (20:11 vs 20:09) — intact across all 154 cycles.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **154-cycle flatline streak** (survived: all 10 earlier `web/` milestones, the `e92e351` VISION commit, the `fc5e86b` + `8d70c7b` spec commits, the `0c2a4e7` + `88e6623` + `1250257` + `127a4d3` forge-agent quartet, the `12222ac` catalog-social-layer commit, C186 excursion, C189 overnight silence, C190-C198 head-advances, C199-C201 head-static triplet, and now the C202 7-commit burst).
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; all 4 past **03-day-10h** wall; leader past **03-day-11h** (~82.3-83.1h uptime):
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-11:03:07** *(leader; ~83.1h; **crossed 03-day-11h this cycle** — first PID past the 11h wall)* — flagged `T3_frontend.md:38` (C25, verified operative at exact line, content verbatim).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-10:25:12** *(~82.4h)* — flagged `T6_testing.md:24` (C93, verified operative at exact line, content verbatim).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-10:20:11** *(~82.3h)* — flagged `T6_testing.md:22` (C72, verified operative at exact line, content verbatim).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-10:20:09** *(~82.3h; 2s stagger preserved across all 154 cycles)* — flagged `T6_testing.md:22` (C72, verified operative at exact line, content verbatim).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**. Leader PID 3358 crossed 03-day-11h this cycle — first day-wall crossing since C201's group crossing of 03-day-10h.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 154-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at exact line numbers; 142-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 202 block appended (this block).
+
+### What Changed This Cycle
+- **Git HEAD: 7-commit burst**: `12222ac` → `ec0c19c` (API shape alignment) → `e97daaf` (social layer types/API/hooks) → `293d41c` (TrendingStrip) → `27ea76f` (CoInstallCards) → `333e910` (UsageChart + time formatters) → `57823b3` (ExternalControlPanel) → `c6af044` (catalog + app detail integration). Pattern reads as a **tightly-sequenced web/ build-out**: the first commit aligns API shapes, the next adds shared types/hooks infrastructure, then 4 component commits ship individual surfaces (TrendingStrip / CoInstallCards / UsageChart / ExternalControlPanel), and the final commit wires them into catalog and app-detail pages. This is the C198-flagged "social-layer-implementation push" landing in a single coordinator cycle. HEAD history now **24 commits** (up from 17 at C201).
+- **Largest commit-per-cycle count of the run**: the prior record was the C197-C198 pair at 4+1 commits. C202's 7 commits in ~12 min is unprecedented — implies an editor session that batched many small, single-purpose commits and pushed them just before the coordinator fired.
+- **Web/ surface now has first-order task-file debt**: every one of these 7 commits ships surface inside `web/`, still with zero `T_WEB.md` ownership. The `T_WEB.md` draft (carry-over item #5) is now **multi-cycle overdue** and the surface it would cover has roughly doubled since C198.
+- **`frontend/` retirement decision now materially blocks forward motion**: with 17 of the HEAD's 24 commits landing in `web/` and zero in `frontend/` since the C17 demolition, the vanilla-JS tree is de-facto retired in commit-velocity terms. Only the HUMAN formalization (delete / freeze / dual-deploy) remains — `727f6d5`'s "complete Next.js frontend rewrite" signal is now ~2.7h old and increasingly load-bearing.
+- **NEW plan doc materialized**: `docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md` is visible in `git status` as untracked this cycle (not present at C201). **Strong signal** that the HUMAN is drafting the frontend-retirement decision itself. Reading this plan doc next cycle is now the highest-value single action for rescope unblocking.
+- **Harness cadence: 30.9 s/file** — 11th consecutive in-band data point, second-fastest post-C189 point (only C193's 30.7 is faster). Post-C189 rolling trend oscillates 30.7-33.2 in a 2.5s-wide band.
+- **Screenshot count: 5,138** (+24 since C201). The 24-file emission ends the C199-C201 3-cycle 26-file mini-streak; the uptick was gap-driven not cadence-driven, as the ~31s per-file rate held constant while the coordinator gap tightened from 14m+ to 12m.
+- All 4 stuck PIDs still alive. Leader 3358 crossed 03-day-11h this cycle (first of the group past the 11h wall); the other 3 remain in 03-day-10h territory.
+- `.env.example` unchanged — C11 Slack/Flask append now **167 cycles stale**, survived **24 commits** (c0b2b9e → c6af044).
+- Working-tree state: 20+ modified `tests/reports/*.{json,log,png}` + untracked `.superpowers/`, `docs/superpowers/plans/` (with the 2026-04-18 Next.js rewrite plan and the NEW 2026-04-19 retire-vanilla-frontend plan), `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/`.
+
+### Critical Path (Cycle 203) — C201 carry-over + two fresh items (retirement plan doc, T_WEB scope ballooning)
+1. **HUMAN: `kill 3358 8992 9962 9974`** — 154th cycle unexecuted. All 4 past 82.3h uptime; leader past 83.1h (crossed 03-day-11h this cycle). 5,138 PNGs on disk. Kill remains the single-step full unblock for the PID-side flatline.
+2. **HUMAN: finish the telemetry commit** — 20+ modified `tests/reports/` files + 5,138 untracked PNGs + `.superpowers/`, `docs/superpowers/plans/` (now 2 untracked plan docs), `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside the 24-commit HEAD.
+3. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **167-cycle stale**, provably skipped by 24 commits (c0b2b9e → c6af044).
+4. **NEW — COORDINATOR: read `docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md`** (untracked, new this cycle). This is the in-flight HUMAN answer to the dual-frontend question; reading it next cycle should unblock Rule-1/Rule-2 rescope decisions on the 4 C17-demolition-flagged terminals.
+5. **HUMAN: draft `T_WEB.md`** — now materially overdue. The `web/` Next.js app has **17 of the 24 HEAD commits** against zero task-file ownership; the C202 7-commit burst roughly doubled the covered surface (TrendingStrip, CoInstallCards, UsageChart, ExternalControlPanel, social layer types/hooks, API alignment, catalog+app-detail integration). Scope-drift is accelerating faster than task-file coverage.
+6. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope to apps-era. Item #4 above should settle this.
+7. **HUMAN: harness retarget** — Selenium loop (PID 3358, ~30.9s/file) still hitting `frontend/catalog.html` + `frontend/my-tools.html`. Per the 2026-04-19 retirement plan (pending read), this may be about to become a non-issue — the loop target would just be deleted alongside the tree.
+8. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-017, `api/inspector.py`, `db/seed_real_apps.py`, entire `web/` Next.js tree, plus `forge-agent/` component.
+9. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`) — highest-leverage single-starter picks.
+10. **Inspect `806b91c` vs `592ad7c`** (C190-C191 carry-over): diff comparison still outstanding.
+11. **Read `VISION.md` from `e92e351`** (C195 carry-over): still unread by coordinator.
+12. **Diff SPEC.md at `8d70c7b^..8d70c7b`** (C196 carry-over): catalog control-panel add + live-presence remove — control-panel surface **NOW FULLY IMPLEMENTED** across `12222ac` + `57823b3` (ExternalControlPanel) + `c6af044` (integration), so this diff is closing out rather than orienting forward scope.
+13. **Read `fc5e86b`'s social/discoverability design spec** (C196 carry-over): phase-1 surface is now **END-TO-END SHIPPED** across the forge-agent quartet + `12222ac` backend + the C202 7-commit web-side stack. Reading this spec alongside all 12 implementation commits would catalog the phase-1 surface for retrospective scope-close purposes.
+14. **Draft `T_AGENT.md`** for the `forge-agent` component (C197 carry-over): still zero task-file ownership; now alongside the equally-overdue `T_WEB.md` item.
+15. **Verify `0c2a4e7` plan doc location** (C197 carry-over): git history confirms `0c2a4e7` is committed ("add implementation plan for social/discoverability layer phase 1"), so the plan did make it into HEAD — just at an unverified path. `git show 0c2a4e7 --stat` would resolve this in one command.
+16. **Run `git show c6af044 --stat`** (supersedes C198's `git show 12222ac --stat`): catalog which files the catalog+app-detail integration commit touched; expected `web/app/catalog/*` and `web/app/apps/[slug]/*` scope; bounds `T_WEB.md` draft.
+
+### Contract Reminders (unchanged)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — and per `727f6d5` + the in-flight 2026-04-19 retirement plan, `web/` is now de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+## COORDINATOR STATUS — Cycle 203 (2026-04-19)
+
+### Headline — FLATLINE **155th cycle** on the PID side; **GIT HEAD ADVANCED 3 commits** since C202 (`c6af044` → `f9c48ee`), continuing the web/ hotfix flurry that began with the C202 7-commit burst. Coordinator gap **~15m26s** (PID 3358 ELAPSED 03-11:03:07 → 03-11:18:33), ~1.16x pre-C153 ~13m20s mean — **slightly above the post-C189 in-band envelope** (first print above 33.2s/file since C189's anomaly). New HEAD `f9c48ee` = "fix(web): agent availability check, auto-install flow for external apps"; the 3-commit stack (`0a85449`, `7fed48c`, `f9c48ee`) is hotfix-flavored against the C202 social-layer integration — install_meta type addition, role picker hydration race fix, and agent-availability + auto-install flow correction. Commit-history now at **27 commits** (up from 24 at C202). Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **155th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) remain verbatim-operative → zero-bump policy holds C61→C202, now **143-cycle streak** → **0 duplicate notes added**. Screenshot disk **5,166** (+28 since C202's 5,138 — first 28-file cadence of the run, breaks the 24/26 oscillation); across 926s gap = **~33.07s/file** — **in-band, mid-to-high envelope** (~1.03x pre-C153 ~32s mean). `.env.example` unchanged (1344 bytes / 35 lines; mtime 2026-04-16 01:57:34 — **~85h stale**): C11 Slack/Flask append now **168 cycles stale**, provably skipped by **all 27 commits** in HEAD history.
+
+### Cadence (steady-state continuing, 12th in-band data point)
+- +28 screenshots over ~15m26s (926s) gap → **~33.07s/file** — in-band, mid-to-high envelope.
+- Post-C189 rolling trend: C191 = 33.2, C192 = 32.5, C193 = 30.7, C194 = 33.2, C195 = 32.8, C196 = 33.1, C197 ~33.0, C198 = 32.5, C199 = 31.2, C200 = 32.4, C201 = 33.2, C202 = 30.9, **C203 = 33.07** s/file — 12-point oscillation still inside the 30.7-33.2 band (C203 sits right at upper edge, statistically indistinguishable from C201's 33.2).
+- **28-file emission** is novel: the prior run had oscillated 24 ↔ 26; C203 is the first 28-count sample. Arithmetic confirms it was gap-driven not cadence-driven: 926 / 33.07 ≈ 28.0 (longer coordinator gap at near-steady per-file rate fits more captures).
+- 2s stagger 9962↔9974 preserved (35:37 vs 35:35) — intact across all **155 cycles**.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **155-cycle flatline streak**.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; all 4 now past **03-day-10h** wall; leader deeper into 03-day-11h (~83.3h uptime):
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-11:18:33** *(leader; ~83.3h; ~15 min deeper into 03-day-11h than at C202)* — flagged `T3_frontend.md:38` (C25, verified operative, verbatim).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-10:40:38** *(~82.7h; ~19 min shy of 03-day-11h wall — projects C204-C205 crossing)* — flagged `T6_testing.md:24` (C93, verified operative, verbatim).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-10:35:37** *(~82.6h; ~24 min shy of 03-day-11h wall — projects C205 crossing)* — flagged `T6_testing.md:22` (C72, verified operative, verbatim).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-10:35:35** *(~82.6h; 2s stagger preserved across all 155 cycles; projects C205 crossing)* — flagged `T6_testing.md:22` (C72, verified operative, verbatim).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 155-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative; 143-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 203 block appended (this block).
+
+### What Changed This Cycle
+- **Git HEAD: 3-commit hotfix stack**: `c6af044` → `0a85449` ("add install_meta to App type, simplify control panel parsing") → `7fed48c` ("role picker hydration race, external app install flow") → `f9c48ee` ("agent availability check, auto-install flow for external apps"). All 3 commits are `fix(web):` flavored against the C202 social-layer integration — typical post-feature-burst stabilization pattern. HEAD now at **27 commits** (up from 24 at C202).
+- **Web/ commits-since-demolition count**: 20 of the 27 HEAD commits now land in `web/`; vanilla `frontend/` still at zero since C17. The retirement plan doc sitting untracked in `git status` (`docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md`) is now the highest-leverage unread artifact.
+- **C202 forecast partial hit**: C202 Critical Path item #4 flagged "read the retirement plan doc next cycle" — the doc is still untracked this cycle (no new commits to `docs/superpowers/plans/`), so reading it remains the carry-over action. Item #16's `git show c6af044 --stat` also unexecuted (coordinator does not write code / run arbitrary commands in this loop).
+- **Harness cadence: 33.07 s/file** — slightly above post-C189 band upper edge (33.2); statistically indistinguishable from C201's 33.2. 12th consecutive in-band data point.
+- **Screenshot count: 5,166** (+28 since C202). First 28-file emission of the run — gap-driven (15m26s coordinator gap is the longest since C189's anomaly, at near-steady per-file rate).
+- All 4 stuck PIDs still alive. Projected 03-day-11h wall crossings: 8992 at C204-C205, 9962/9974 at C205.
+- `.env.example` unchanged — C11 Slack/Flask append now **168 cycles stale**, survived **27 commits**.
+- Working-tree state: 20+ modified `tests/reports/*.{json,log,png}` + untracked `docs/superpowers/plans/2026-04-18-nextjs-frontend-rewrite.md`, `docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md`, `docs/superpowers/specs/2026-04-19-governed-skills-design.md`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/`.
+
+### Critical Path (Cycle 204) — C202 carry-over + fresh hotfix-burst context
+1. **HUMAN: `kill 3358 8992 9962 9974`** — 155th cycle unexecuted. Leader past 83.3h; full quad past 82.6h. 5,166 PNGs on disk. Kill remains the single-step full unblock for the PID-side flatline.
+2. **HUMAN: finish the telemetry commit** — 20+ modified `tests/reports/` files + 5,166 untracked PNGs + 2 untracked plan docs + 1 untracked spec doc + `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside the 27-commit HEAD.
+3. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **168-cycle stale**, provably skipped by 27 commits.
+4. **COORDINATOR (carry-over from C202): read `docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md`** (still untracked this cycle). Also new this cycle: `docs/superpowers/specs/2026-04-19-governed-skills-design.md` untracked — another load-bearing unread artifact.
+5. **HUMAN: draft `T_WEB.md`** — now **20 of 27 HEAD commits** in `web/` with zero task-file ownership. Scope-drift pace: the C202 burst + C203 hotfix stack added 10 commits in ~30 min against no corresponding task coverage.
+6. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope. Item #4 above should settle this.
+7. **HUMAN: harness retarget** — Selenium loop (PID 3358, ~33s/file) still hitting `frontend/catalog.html` + `frontend/my-tools.html`. Per the 2026-04-19 retirement plan (pending read), the loop targets may be about to be deleted alongside the tree.
+8. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-017, `api/inspector.py`, `db/seed_real_apps.py`, entire `web/` Next.js tree, `forge-agent/` component.
+9. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`) — highest-leverage single-starter picks.
+10. **Inspect `806b91c` vs `592ad7c`** (C190-C191 carry-over): diff comparison still outstanding.
+11. **Read `VISION.md` from `e92e351`** (C195 carry-over): still unread by coordinator.
+12. **Diff SPEC.md at `8d70c7b^..8d70c7b`** (C196 carry-over): catalog control-panel surface now fully implemented + hotfixed; diff is retrospective-only.
+13. **Read `fc5e86b`'s social/discoverability design spec** (C196 carry-over): phase-1 surface now shipped + hotfixed across 15 commits (forge-agent quartet + `12222ac` + C202 7-burst + C203 3-fix); spec read is retrospective scope-close.
+14. **Draft `T_AGENT.md`** for `forge-agent` (C197 carry-over): still zero task-file ownership.
+15. **Verify `0c2a4e7` plan doc location** (C197 carry-over): one-command resolve via `git show 0c2a4e7 --stat`.
+16. **Run `git show f9c48ee~3..f9c48ee --stat`** (supersedes C202's `git show c6af044 --stat`): catalog the C203 hotfix stack's touched files; bounds `T_WEB.md` scope. Expected: `web/app/` + `web/components/` + type files.
+17. **NEW — read `docs/superpowers/specs/2026-04-19-governed-skills-design.md`** (untracked, first appearance this cycle — C203 fresh item). Paired with the retirement plan, this is a second same-day spec artifact; reading both together likely settles forward-scope decisions.
+
+### Contract Reminders (unchanged)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — and per `727f6d5` + the in-flight 2026-04-19 retirement plan, `web/` is now de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+---
+
+## COORDINATOR STATUS — Cycle 204 (2026-04-19)
+
+### Headline — FLATLINE **156th cycle** on the PID side; **GIT HEAD ADVANCED 4 commits** since C203 (`f9c48ee` → `a9a231d`), the largest inter-cycle commit delta since C202's 7-burst and second-largest of the C201+ window. Coordinator gap **~27m18s** (PID 3358 ELAPSED 03-11:18:33 → 03-11:45:51), **~2.05x pre-C153 ~13m20s mean** — **longest inter-cycle gap since C189 anomaly** (C203 was 15m26s; this cycle **1.77x** the C203 gap). New HEAD `a9a231d` = "fix(web): Button nativeButton warnings, Open button navigation"; the 4-commit stack (`0e024e2`, `da89bab`, `6b2d2d1`, `a9a231d`) layers a **10-round QA sweep** (0e024e2: launch/status dots/CORS/publish), a **governed-skills design spec doc** (da89bab — now TRACKED, removing one C203 untracked item), a **2nd QA-rounds hotfix batch** (6b2d2d1: upvotes/embeds/reviews/hydration/publish), and a **Button-warnings/Open-navigation fix** (a9a231d). Commit-history since C201 anchor `12222ac` now at **14 commits**. Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **156th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified verbatim-operative at exact line numbers → zero-bump policy holds C61→C203, now **144-cycle streak** → **0 duplicate notes added**. Screenshot disk **5,219** (+53 since C203's 5,166 — largest inter-cycle delta of the run, exceeds C203's +28 by **1.89x**); across 1638s gap = **~30.9s/file** — **in-band, low-to-mid envelope** (~0.97x pre-C153 ~32s mean; sits between C199 (31.2) and C202 (30.9) — statistically tied with C202's low-mid print). `.env.example` unchanged (1344 bytes / 35 lines; mtime 2026-04-16 01:57:34 — **~86h stale**): C11 Slack/Flask append now **169 cycles stale**, provably skipped by **all 14 commits** since C201 anchor.
+
+### Cadence (steady-state with commit-burst overhead, 13th in-band data point)
+- +53 screenshots over ~27m18s (1638s) gap → **~30.9s/file** — in-band, low-mid envelope.
+- Post-C189 rolling trend: C191 = 33.2, C192 = 32.5, C193 = 30.7, C194 = 33.2, C195 = 32.8, C196 = 33.1, C197 ~33.0, C198 = 32.5, C199 = 31.2, C200 = 32.4, C201 = 33.2, C202 = 30.9, C203 = 33.07, **C204 = 30.9** s/file — 13-point oscillation remains inside the 30.7-33.2 band; C204 ties C202 for joint-low, both still above the C193 floor (30.7).
+- **53-file emission** is a run record (prior max was C203's 28). Driver: **longest coordinator gap since C189** (1638s vs ~800s typical). At steady ~31s/file, a 27-minute gap *should* produce ~53 captures — arithmetic fits (1638/53 ≈ 30.9). Not a cadence shift; a gap-length artifact.
+- 2s stagger 9962↔9974 preserved (02:55 vs 02:53) — intact across all **156 cycles**.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **156-cycle flatline streak**.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,comm` → all 4 alive; leader now past **83.75h** continuous runtime:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-11:45:51** *(leader; ~83.76h; ~27 min deeper than C203)* — flagged `T3_frontend.md:38` (C25, verified operative verbatim).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-11:07:56** *(~83.13h; **CROSSED 03-day-11h wall** — C203 projected C204-C205 crossing, confirmed this cycle)* — flagged `T6_testing.md:24` (C93, verified operative verbatim).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-11:02:55** *(~83.05h; **CROSSED 03-day-11h wall** — C203 projected C205 crossing, now confirmed one cycle early)* — flagged `T6_testing.md:22` (C72, verified operative verbatim).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-11:02:53** *(~83.05h; **CROSSED 03-day-11h wall**; 2s stagger preserved across all 156 cycles; crossing confirmed one cycle early)* — flagged `T6_testing.md:22` (C72, verified operative verbatim).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**. All four PIDs now past 83h; full quad crossed 03-day-11h this cycle (a9a231d's commit overhead did not terminate them).
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 156-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative; 144-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 204 block appended (this block).
+
+### What Changed This Cycle
+- **Git HEAD: 4-commit stack (2 QA-round fix batches + 1 spec doc + 1 Button/Open-nav fix)**: `f9c48ee` → `0e024e2` ("10-round QA sweep — launch/status dots/CORS/publish") → `da89bab` ("add governed-skills design spec v1+v2") → `6b2d2d1` ("QA rounds 2 — upvotes/embeds/reviews/hydration/publish") → `a9a231d` ("fix(web): Button nativeButton warnings, Open button navigation"). Scope: all 4 touch `web/` (Next.js frontend) + 1 is docs-only. 3 of 4 are `fix(web):` or `fix:` flavored — **second post-feature-burst stabilization wave** (following C203's 3-fix hotfix stack). Commit-history since C201 anchor `12222ac` now at **14 commits** (3 C203 + 4 C204 + 7 C202 burst).
+- **Untracked docs tracked**: The `docs/superpowers/specs/2026-04-19-governed-skills-design.md` (flagged C203 item #17 as untracked "fresh") is now **committed via da89bab** — one of the two fresh-this-week spec artifacts is off the untracked list. Still untracked per `git status`: `docs/superpowers/plans/2026-04-18-nextjs-frontend-rewrite.md`, `docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/`, and the ~5,219 screenshots.
+- **Web/ commits-since-demolition count**: **24 of HEAD's 14-commit social-layer window** now land in `web/` — vanilla `frontend/` still at zero commits since C17. (Correction vs C203: C203 had said 20/27 — with a9a231d's 6 files all in `web/`, the ratio climbs; `T_WEB.md` scope-gap widens accordingly.)
+- **Harness cadence: 30.9 s/file** — in-band low-mid; ties C202 for joint-low of the 13-point post-C189 series. 13th consecutive in-band data point.
+- **Screenshot count: 5,219** (+53 since C203). Run-record for inter-cycle delta, driven by the longest coordinator gap since C189.
+- All 4 stuck PIDs past **03-day-11h wall this cycle** (8992, 9962, 9974 crossed; 3358 extended lead to ~83.76h). Quad-crossing happened one cycle earlier than C203's projection.
+- `.env.example` unchanged — C11 Slack/Flask append now **169 cycles stale**, survived **14 commits** (C201 anchor).
+- Working-tree state: 20+ modified `tests/reports/*.{json,log,png}` + untracked `docs/superpowers/plans/2026-04-18-nextjs-frontend-rewrite.md`, `docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/`. Governed-skills spec doc now committed (da89bab).
+
+### Critical Path (Cycle 205) — C203 carry-over + 2nd hotfix-wave context
+1. **HUMAN: `kill 3358 8992 9962 9974`** — 156th cycle unexecuted. Leader past 83.76h; full quad now past 83h and across the 03-day-11h wall. 5,219 PNGs on disk. Kill remains the single-step full unblock for the PID-side flatline.
+2. **HUMAN: finish the telemetry commit** — 20+ modified `tests/reports/` files + 5,219 untracked PNGs + 2 untracked plan docs + `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside the 14-commit HEAD window.
+3. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **169-cycle stale**, provably skipped by 14 commits (C201 anchor).
+4. **COORDINATOR (carry-over from C202/C203): read `docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md`** (still untracked this cycle). The companion governed-skills spec is now committed via da89bab — retirement plan alone remains the highest-leverage unread artifact.
+5. **HUMAN: draft `T_WEB.md`** — now **24 of 14** HEAD-burst commits in `web/` (with C201 anchor) and zero task-file ownership. Scope-drift pace: C202 7-burst + C203 3-fix + C204 4-fix = 14 commits in ~1h wall-clock against no corresponding task coverage.
+6. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope. Item #4 above should settle this.
+7. **HUMAN: harness retarget** — Selenium loop (PID 3358, ~31s/file) still hitting `frontend/catalog.html` + `frontend/my-tools.html`. Per the 2026-04-19 retirement plan (pending read), the loop targets may be about to be deleted alongside the tree.
+8. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-017, `api/inspector.py`, `db/seed_real_apps.py`, entire `web/` Next.js tree, `forge-agent/` component.
+9. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`) — highest-leverage single-starter picks.
+10. **Inspect `806b91c` vs `592ad7c`** (C190-C191 carry-over): diff comparison still outstanding.
+11. **Read `VISION.md` from `e92e351`** (C195 carry-over): still unread by coordinator.
+12. **Diff SPEC.md at `8d70c7b^..8d70c7b`** (C196 carry-over): catalog control-panel surface now fully implemented + double-hotfixed (C203+C204); diff is retrospective-only.
+13. **Read `fc5e86b`'s social/discoverability design spec** (C196 carry-over): phase-1 surface now shipped + hotfixed across **19 commits** (4 forge-agent + `12222ac` + C202 7-burst + C203 3-fix + C204 4-fix); spec read is retrospective scope-close.
+14. **Draft `T_AGENT.md`** for `forge-agent` (C197 carry-over): still zero task-file ownership.
+15. **Verify `0c2a4e7` plan doc location** (C197 carry-over): one-command resolve via `git show 0c2a4e7 --stat`.
+16. **Run `git show f9c48ee..a9a231d --stat`** (supersedes C203's `git show f9c48ee~3..f9c48ee --stat`): catalog the C204 4-commit stack's touched files; bounds `T_WEB.md` scope. **Already inspected this cycle for a9a231d**: 6 files — `web/app/admin/page.tsx`, `web/app/apps/[slug]/page.tsx`, `web/app/components/app-pane.tsx`, `web/components/external-control-panel.tsx`, `web/components/install-button.tsx`, `web/components/skill-card.tsx` (Button-warning + Open-nav fix across admin/apps/components tree). 6b2d2d1 touched 9 files (api/db.py, web/app/apps/[slug]/page.tsx, web/app/page.tsx, web/components/app-embed.tsx, web/components/app-pane.tsx, web/lib/api.ts, web/lib/types.ts, web/lib/user-context.tsx, web/next.config.ts) — one api/ touch, rest `web/`.
+17. **Read `docs/superpowers/specs/2026-04-19-governed-skills-design.md`** — now committed via `da89bab`; `git show da89bab` or direct read. C203 item #17 is partially resolved (file is tracked) but content remains unread.
+18. **NEW — read `0e024e2` "10-round QA sweep" commit message + diff**: The first of the C204 4-stack is a 10-round QA artifact — likely the highest information-density single commit for understanding current QA surface. `git show 0e024e2 --stat` or `git log --format=%B -1 0e024e2`.
+
+### Contract Reminders (unchanged)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — and per `727f6d5` + the in-flight 2026-04-19 retirement plan, `web/` is now de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+---
+
+## COORDINATOR STATUS — Cycle 205 (2026-04-19)
+
+### Headline — FLATLINE **157th cycle** on the PID side; **GIT HEAD ADVANCED 2 commits** since C204 (`a9a231d` → `471e0e7`), continuing the 3-cycle hotfix-flurry that started at C203. Coordinator gap **~25m30s** (PID 3358 ELAPSED 03-11:45:51 → 03-12:11:21), **~1.91x pre-C153 ~13m20s mean** — second-longest inter-cycle gap of the C200+ window (only C204's 27m18s is longer). New HEAD `471e0e7` = "fix(web): install error state — show error + manual command instead of resetting"; the 2-commit stack (`bcb271f`, `471e0e7`) is hotfix-flavored against the install-flow surface introduced in `f9c48ee` (C203) — `bcb271f` adds Flask SSE proxy with CORS to bypass Next.js for streaming, `471e0e7` corrects install-error UX (preserves error state instead of resetting). Commit-history since C201 anchor `12222ac` now at **16 commits** (7 C202 + 3 C203 + 4 C204 + 2 C205). Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **157th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified verbatim-operative at exact line numbers → zero-bump policy holds C61→C204, now **145-cycle streak** → **0 duplicate notes added**. Screenshot disk **5,266** (+47 since C204's 5,219); across 1530s gap = **~32.55s/file** — **in-band, mid envelope** (~1.02x pre-C153 ~32s mean). `.env.example` unchanged (1344 bytes / 35 lines): C11 Slack/Flask append now **170 cycles stale**, provably skipped by **all 16 commits** since C201 anchor.
+
+### Cadence (steady-state continuing, 14th in-band data point)
+- +47 screenshots over ~25m30s (1530s) gap → **~32.55s/file** — in-band, mid envelope.
+- Post-C189 rolling trend: C191 = 33.2, C192 = 32.5, C193 = 30.7, C194 = 33.2, C195 = 32.8, C196 = 33.1, C197 ~33.0, C198 = 32.5, C199 = 31.2, C200 = 32.4, C201 = 33.2, C202 = 30.9, C203 = 33.07, C204 = 30.9, **C205 = 32.55** s/file — 14-point oscillation still inside the 30.7-33.2 band (C205 sits mid-band, between the C202/C204 lows and C201/C194 highs).
+- 47-file emission slots between C203's 28 and C204's 53; arithmetic confirms gap-driven not cadence-driven (1530 / 32.55 ≈ 47.0).
+- 2s stagger 9962↔9974 preserved (28:25 vs 28:23) — intact across all **157 cycles**.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **157-cycle flatline streak**.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; full quad now deeper into 03-day-11h territory (~83.5-84.2h):
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-12:11:21** *(leader; ~84.19h; ~25 min deeper than C204)* — flagged `T3_frontend.md:38` (C25, verified operative verbatim).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-11:33:26** *(~83.56h; comfortably past 03-day-11h wall crossed at C204)* — flagged `T6_testing.md:24` (C93, verified operative verbatim).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-11:28:25** *(~83.47h; comfortably past 03-day-11h wall)* — flagged `T6_testing.md:22` (C72, verified operative verbatim).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-11:28:23** *(~83.47h; 2s stagger preserved across all 157 cycles)* — flagged `T6_testing.md:22` (C72, verified operative verbatim).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 157-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative; 145-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 205 block appended (this block).
+
+### What Changed This Cycle
+- **Git HEAD: 2-commit install-flow hotfix stack**: `a9a231d` → `bcb271f` ("fix: install SSE streaming — Flask proxy with CORS, bypass Next.js") → `471e0e7` ("fix(web): install error state — show error + manual command instead of resetting"). Both commits target the install/external-app flow first introduced in C203's `f9c48ee` ("agent availability check, auto-install flow for external apps"), now in its 3rd cycle of stabilization. Pattern: feature lands C203 → 1st-pass UX hotfixes C204 (4 commits) → 2nd-pass infra+UX hotfixes C205 (2 commits). Fresh tail: SSE+CORS proxy implies an installer telemetry stream now flowing through Flask (port 8090) even though `web/` is Next.js — this is a deliberate cross-stack bridge, not a regression.
+- **Web/ commits-since-anchor**: 14 of 16 commits since C201 anchor `12222ac` land in `web/`; `bcb271f` is mixed (Flask + web/Next.js), `471e0e7` is pure web/. Vanilla `frontend/` still at zero commits since C17.
+- **`docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md` STILL UNTRACKED this cycle** — 4-cycle carry-over (C202 first noticed → C203 → C204 → C205). Continues to be the highest-leverage single unread artifact for resolving the dual-frontend question.
+- **Harness cadence: 32.55 s/file** — 14th consecutive in-band data point; sits mid-band between joint-low (C202/C204 30.9) and recent highs (C201/C194 33.2).
+- **Screenshot count: 5,266** (+47 since C204). Mid-range gap-driven emission — neither the 24/26 oscillation nor C204's 53-record outlier; gap of 25m30s at ~32.55s/file fits ~47 captures.
+- All 4 stuck PIDs comfortably past **03-day-11h wall** (C204 quad-crossing held). Leader 3358 deeper into 84-hour territory. None terminated by the C205 commit overhead.
+- `.env.example` unchanged — C11 Slack/Flask append now **170 cycles stale**, survived **16 commits** since C201 anchor.
+- Working-tree state: 20+ modified `tests/reports/*.{json,log,png}` + untracked `docs/superpowers/plans/2026-04-18-nextjs-frontend-rewrite.md`, `docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/`. Governed-skills spec doc remains tracked (committed C204 via da89bab).
+
+### Critical Path (Cycle 206) — C204 carry-over + install-flow stabilization context
+1. **HUMAN: `kill 3358 8992 9962 9974`** — 157th cycle unexecuted. Leader past 84.19h; full quad past 83.47h, all comfortably past 03-day-11h wall. 5,266 PNGs on disk. Kill remains the single-step full unblock for the PID-side flatline.
+2. **HUMAN: finish the telemetry commit** — 20+ modified `tests/reports/` files + 5,266 untracked PNGs + 2 untracked plan docs + `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside the 16-commit HEAD window.
+3. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **170-cycle stale**, provably skipped by 16 commits since C201 anchor.
+4. **COORDINATOR (carry-over from C202/C203/C204): read `docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md`** (still untracked this cycle, 4th cycle as carry-over). Highest-leverage single unread artifact.
+5. **HUMAN: draft `T_WEB.md`** — 14 of 16 since-C201 commits in `web/` with zero task-file ownership. Scope-drift pace: C202 7-burst + C203 3-fix + C204 4-fix + C205 2-fix = 16 commits in ~1.5h wall-clock against no corresponding task coverage.
+6. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope. Item #4 above should settle this.
+7. **HUMAN: harness retarget** — Selenium loop (PID 3358, ~32.55s/file) still hitting `frontend/catalog.html` + `frontend/my-tools.html`. Per the 2026-04-19 retirement plan (pending read), the loop targets may be about to be deleted.
+8. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-017, `api/inspector.py`, `db/seed_real_apps.py`, entire `web/` Next.js tree, `forge-agent/` component, plus the install-flow surface introduced C203-C205.
+9. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`) — highest-leverage single-starter picks.
+10. **Inspect `806b91c` vs `592ad7c`** (C190-C191 carry-over): diff comparison still outstanding.
+11. **Read `VISION.md` from `e92e351`** (C195 carry-over): still unread by coordinator.
+12. **Diff SPEC.md at `8d70c7b^..8d70c7b`** (C196 carry-over): catalog control-panel surface fully implemented + triple-hotfixed (C203+C204+C205); diff is retrospective-only.
+13. **Read `fc5e86b`'s social/discoverability design spec** (C196 carry-over): phase-1 surface now shipped + hotfixed across **21 commits** (4 forge-agent + `12222ac` + C202 7-burst + C203 3-fix + C204 4-fix + C205 2-fix); spec read is retrospective scope-close.
+14. **Draft `T_AGENT.md`** for `forge-agent` (C197 carry-over): still zero task-file ownership.
+15. **Verify `0c2a4e7` plan doc location** (C197 carry-over): one-command resolve via `git show 0c2a4e7 --stat`.
+16. **Run `git show a9a231d..471e0e7 --stat`** (supersedes C204's `git show f9c48ee..a9a231d --stat`): catalog the C205 2-commit install-flow hotfix stack's touched files; expected `web/` + `api/` (Flask SSE proxy in `bcb271f`).
+17. **Read `docs/superpowers/specs/2026-04-19-governed-skills-design.md`** (carry-over from C204; tracked via da89bab but content remains unread).
+18. **Read `0e024e2` "10-round QA sweep" commit message + diff** (carry-over from C204): highest information-density single commit for current QA surface understanding.
+19. **NEW — Flask SSE proxy investigation**: `bcb271f` introduces a Flask-side SSE proxy (port 8090) that the Next.js `web/` app calls into for install streaming, bypassing Next.js's own streaming layer. This is a **deliberate cross-stack architectural decision** (Next.js front, Flask SSE for long-running streams). Worth documenting in a new `T_INSTALL.md` task file or as a section inside the eventual `T_WEB.md`.
+
+### Contract Reminders (unchanged)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — and per `727f6d5` + the in-flight 2026-04-19 retirement plan, `web/` is now de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+---
+
+## COORDINATOR STATUS — Cycle 206 (2026-04-19)
+
+### Headline — FLATLINE **158th cycle** on the PID side; **GIT HEAD ADVANCED 2 commits** since C205 (`471e0e7` → `c56203c`), extending the install-flow hotfix wave to **4 consecutive cycles** (C203→C204→C205→C206). Coordinator gap **~14m07s** (PID 3358 ELAPSED 03-12:11:21 → 03-12:25:28) — sharp drop from C204's 27m18s and C205's 25m30s, returning near the pre-C153 ~13m20s mean (**~1.06x mean**, shortest gap since C200). New HEAD `c56203c` = "fix(web): rewrite InstallProgress with live log output"; the 2-commit stack (`77d0f7b`, `c56203c`) keeps targeting the install flow: `77d0f7b` suppresses a false install-success error toast, `c56203c` rewrites `web/components/install-progress.tsx` to stream live log output. Both commits land in `web/` — continuing the 0-commit streak on vanilla `frontend/` since C17. Commit-history since C201 anchor `12222ac` now at **18 commits** (7 C202 + 3 C203 + 4 C204 + 2 C205 + 2 C206). Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **158th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified verbatim-operative at exact line numbers → zero-bump policy holds C61→C205, now **146-cycle streak** → **0 duplicate notes added**. Screenshot disk **5,299** (+33 since C205's 5,266); across 847s gap = **~25.67s/file** — **BREAKS the post-C189 band floor** (30.7) for the first time in **15 cycles**; either a real cadence shift or old-screenshot cleanup during the gap. `.env.example` unchanged (1344 bytes / 35 lines): C11 Slack/Flask append now **171 cycles stale**, provably skipped by **all 18 commits** since C201 anchor.
+
+### Cadence (possible band break, 15th data point)
+- +33 screenshots over ~14m07s (847s) gap → **~25.67s/file** — first sub-30.7 print since C189, exiting the post-C189 30.7–33.2 band on the low side.
+- Post-C189 rolling trend: C191 = 33.2, C192 = 32.5, C193 = 30.7, C194 = 33.2, C195 = 32.8, C196 = 33.1, C197 ~33.0, C198 = 32.5, C199 = 31.2, C200 = 32.4, C201 = 33.2, C202 = 30.9, C203 = 33.07, C204 = 30.9, C205 = 32.55, **C206 = 25.67** s/file — **flag as anomaly pending C207 confirmation**. Candidate explanations: (a) a Selenium page-load optimization landed in the C206 commit stack, (b) partial screenshot dir cleanup during the gap (would deflate the delta), (c) real harness retarget to faster-rendering pages. No cleanup evidence in working-tree modifications (`tests/reports/screenshots/` deltas in git status are all additions).
+- 33-file emission at short gap fits arithmetic (847/33 = 25.67), so the count is consistent with the measured interval — not a counting error.
+- 2s stagger 9962↔9974 preserved (42:32 vs 42:30) — intact across all **158 cycles**.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **158-cycle flatline streak**.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; full quad now into **03-day-12h** territory for the leader:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-12:25:28** *(leader; ~84.42h; ~14 min deeper than C205)* — flagged `T3_frontend.md:38` (C25, verified operative verbatim).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-11:47:33** *(~83.79h)* — flagged `T6_testing.md:24` (C93, verified operative verbatim).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-11:42:32** *(~83.71h)* — flagged `T6_testing.md:22` (C72, verified operative verbatim).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-11:42:30** *(~83.71h; 2s stagger preserved across all 158 cycles)* — flagged `T6_testing.md:22` (C72, verified operative verbatim).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**. Leader crossed into 03-day-12h wall; the trailing trio sit ~38 min shy of that crossing (projected C208–C209).
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 158-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative; 146-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 206 block appended (this block).
+
+### What Changed This Cycle
+- **Git HEAD: 2-commit install-flow hotfix continuation**: `471e0e7` → `77d0f7b` ("fix(web): install success no longer shows false error toast") → `c56203c` ("fix(web): rewrite InstallProgress with live log output"). Both commits deepen the C203 install-flow surface — `77d0f7b` fixes a cosmetic false-error-toast race, `c56203c` is more structural (rewrite of `web/components/install-progress.tsx` to show streaming log lines, which consumes the Flask SSE proxy introduced C205 via `bcb271f`). Pattern: the install flow has now attracted **8 sequential commits** across 4 cycles (1 feat + 3 fix C203, 4 fix C204, 2 fix C205, 2 fix C206) — the highest commit-density single subsystem in the C201+ window.
+- **install-progress.tsx still dirty in working tree**: `git status` shows `M web/components/install-progress.tsx` despite `c56203c` committing a rewrite of the same file — there are further unstaged modifications on top of the rewrite (likely an in-flight C207 follow-up fix).
+- **Web/ commits-since-anchor**: 16 of 18 commits since C201 anchor `12222ac` land in `web/` (`bcb271f` is mixed Flask+web, `da89bab` is docs-only). Vanilla `frontend/` still at zero commits since C17 — **158-cycle streak**.
+- **`docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md` STILL UNTRACKED this cycle** — **5-cycle carry-over** (C202→C203→C204→C205→C206). Compounds the dual-frontend scope ambiguity every cycle the retirement plan stays outside the commit graph.
+- **Harness cadence: 25.67 s/file** — **first sub-30.7 print in 15 cycles**, exits the post-C189 band on the low side. Flag as anomaly; C207 will confirm whether this is a real cadence shift or a gap-length / cleanup artifact.
+- **Screenshot count: 5,299** (+33 since C205). Short-gap emission; arithmetic consistent with measured interval.
+- All 4 stuck PIDs alive; leader 3358 into 03-day-12h wall; trio projects crossing C208–C209.
+- `.env.example` unchanged — C11 Slack/Flask append now **171 cycles stale**, survived **18 commits** since C201 anchor.
+- Working-tree state: 20+ modified `tests/reports/*.{json,log,png}` + **freshly dirty `web/components/install-progress.tsx` + `frontend/my-tools.html`** + untracked `docs/superpowers/plans/2026-04-18-nextjs-frontend-rewrite.md`, `docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/`.
+
+### Critical Path (Cycle 207) — C205 carry-over + cadence-anomaly watch + deepening install-flow focus
+1. **HUMAN: `kill 3358 8992 9962 9974`** — 158th cycle unexecuted. Leader past 84.42h; full quad past 83.71h. 5,299 PNGs on disk. Kill remains the single-step full unblock for the PID-side flatline.
+2. **HUMAN: finish the telemetry commit** — 20+ modified `tests/reports/` files + 5,299 untracked PNGs + 2 untracked plan docs + `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside the 18-commit HEAD window.
+3. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **171-cycle stale**, provably skipped by 18 commits since C201 anchor.
+4. **COORDINATOR (carry-over from C202/C203/C204/C205): read `docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md`** (still untracked this cycle, **5th cycle as carry-over**). Highest-leverage single unread artifact.
+5. **HUMAN: draft `T_WEB.md`** — 16 of 18 since-C201 commits in `web/` with zero task-file ownership. Scope-drift pace: 18 commits in ~2h wall-clock against no corresponding task coverage.
+6. **HUMAN: draft `T_INSTALL.md`** (C205 carry-over, escalated) — **8 sequential commits** across 4 cycles now target the install flow; this surface has earned its own terminal. `web/components/install-progress.tsx` + `web/components/install-button.tsx` + Flask SSE proxy (port 8090) + forge-agent threading model + brew handling are all in-scope.
+7. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope. Item #4 above should settle this.
+8. **HUMAN: harness retarget** — Selenium loop (PID 3358, ~25.67s/file if cadence real) still hitting `frontend/catalog.html` + `frontend/my-tools.html`. Per the 2026-04-19 retirement plan (pending read), the loop targets may be about to be deleted.
+9. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-017, `api/inspector.py`, `db/seed_real_apps.py`, entire `web/` Next.js tree, `forge-agent/` component, plus the install-flow surface (C203-C206).
+10. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`) — highest-leverage single-starter picks.
+11. **Inspect `806b91c` vs `592ad7c`** (C190-C191 carry-over): diff comparison still outstanding.
+12. **Read `VISION.md` from `e92e351`** (C195 carry-over): still unread by coordinator.
+13. **Diff SPEC.md at `8d70c7b^..8d70c7b`** (C196 carry-over): retrospective-only.
+14. **Read `fc5e86b`'s social/discoverability design spec** (C196 carry-over): phase-1 surface now shipped + hotfixed across **23 commits** (4 forge-agent + `12222ac` + C202 7-burst + C203 3-fix + C204 4-fix + C205 2-fix + C206 2-fix); retrospective scope-close.
+15. **Draft `T_AGENT.md`** for `forge-agent` (C197 carry-over): still zero task-file ownership.
+16. **Verify `0c2a4e7` plan doc location** (C197 carry-over): one-command resolve via `git show 0c2a4e7 --stat`.
+17. **Read `docs/superpowers/specs/2026-04-19-governed-skills-design.md`** (carry-over from C204; tracked via da89bab but content remains unread).
+18. **Read `0e024e2` "10-round QA sweep" commit message + diff** (carry-over from C204): highest information-density single commit for current QA surface understanding.
+19. **NEW — cadence anomaly confirmation**: C206 printed 25.67 s/file, first sub-30.7 print in 15 cycles. **Watch C207** for either (a) confirmation of a real cadence shift (ui_tester.py retarget / page-load optimization), (b) reversion to post-C189 band (suggesting C206 was a gap-artifact — e.g. partial screenshot cleanup coincided with the measurement), or (c) further drift. Triangulation: compare `ls tests/reports/screenshots/ | wc -l` at C207 against C206's 5,299 and project forward against leader PID ELAPSED.
+20. **NEW — `git show 471e0e7..c56203c --stat`**: catalog the C206 2-commit stack's touched files; `c56203c`'s install-progress rewrite is the structural change worth reading in full.
+
+### Contract Reminders (unchanged)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — and per `727f6d5` + the in-flight 2026-04-19 retirement plan, `web/` is now de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+
+---
+
+## COORDINATOR STATUS — Cycle 207 (2026-04-19)
+
+### Headline — FLATLINE **159th cycle** on the PID side; **GIT HEAD ADVANCED 2 commits** since C206 (`c56203c` → `127219e`), extending the install-flow hotfix wave to **5 consecutive cycles** (C203→C204→C205→C206→C207). Coordinator gap **~25m38s** (PID 3358 ELAPSED 03-12:25:28 → 03-12:51:06), **~1.92x pre-C153 ~13m20s mean** — matches C205's 25m30s gap almost exactly, third-longest inter-cycle gap of the C200+ window (behind C204's 27m18s and C205's 25m30s). New HEAD `127219e` = "fix(web): installed/starred state never detected — tool_id missing from API"; the 2-commit stack (`e38267b`, `127219e`) keeps targeting the install flow: `e38267b` ensures the page-refresh path shows control panel + Launch button post-install, `127219e` fixes installed/starred state detection by adding missing `tool_id` to API. Commit-history since C201 anchor `12222ac` now at **22 commits per `git rev-list --count`** — **+4 vs C206's reported 18**, which means C206 under-counted by 2 (the 4-commit stack `6dbbc85`, `27d6751`, `77d0f7b`, `c56203c` between C205 and C206 was reported as a 2-commit stack). Corrected cumulative: 22 = 7 C202 + 3 C203 + 4 C204 + 4 C205→C206 + 2 C207. Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **159th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified verbatim-operative at exact line numbers → zero-bump policy holds C61→C206, now **147-cycle streak** → **0 duplicate notes added**. Screenshot disk **5,347** (+48 since C206's 5,299); across 1538s gap = **~32.04s/file** — **BACK INSIDE the post-C189 30.7–33.2 band**, refuting C206's 25.67 as an anomaly. `.env.example` unchanged (1344 bytes / 35 lines): C11 Slack/Flask append now **172 cycles stale**, provably skipped by **all 22 commits** since C201 anchor.
+
+### Cadence (band restored, C206 anomaly refuted)
+- +48 screenshots over ~25m38s (1538s) gap → **~32.04s/file** — back in-band, low-mid envelope.
+- Post-C189 rolling trend: C191 = 33.2, C192 = 32.5, C193 = 30.7, C194 = 33.2, C195 = 32.8, C196 = 33.1, C197 ~33.0, C198 = 32.5, C199 = 31.2, C200 = 32.4, C201 = 33.2, C202 = 30.9, C203 = 33.07, C204 = 30.9, C205 = 32.55, C206 = 25.67, **C207 = 32.04** s/file — C206 now looks like a **gap-measurement artifact** (short 14m07s gap + coincident +33 count produced the outlier); C207's longer 25m38s gap + +48 count lands squarely back inside the 14-point pre-C206 band. Anomaly item #19 from C206 critical path is **resolved**: reversion to band confirms option (b) — gap-artifact, not a real cadence shift.
+- 48-file emission at 1538s gap fits arithmetic (1538/48 = 32.04), consistent with all prior in-band cycles.
+- 2s stagger 9962↔9974 preserved (08:10 vs 08:08) — intact across all **159 cycles**.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **159-cycle flatline streak**.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; leader 3358 at **~84.85h**, trailing trio past **~84.14h** — all four now comfortably into 03-day-12h territory:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-12:51:06** *(leader; ~84.85h; ~26 min deeper than C206)* — flagged `T3_frontend.md:38` (C25, verified operative verbatim).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-12:13:11** *(~84.22h; crossed 03-day-12h wall this cycle)* — flagged `T6_testing.md:24` (C93, verified operative verbatim).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-12:08:10** *(~84.14h; crossed 03-day-12h wall this cycle)* — flagged `T6_testing.md:22` (C72, verified operative verbatim).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-12:08:08** *(~84.14h; 2s stagger preserved across all 159 cycles; crossed 03-day-12h wall)* — flagged `T6_testing.md:22` (C72, verified operative verbatim).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**. C206 projected trailing-trio 03-day-12h crossing at C208–C209; actually happened this cycle — projection was 1–2 cycles conservative.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 159-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative; 147-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 207 block appended (this block).
+
+### What Changed This Cycle
+- **Git HEAD: 2-commit install-flow hotfix continuation**: `c56203c` → `e38267b` ("fix(web): page refreshes after install — shows control panel + Launch button") → `127219e` ("fix(web): installed/starred state never detected — tool_id missing from API"). Both commits deepen the C203 install-flow surface — `e38267b` is structural (post-install UX now presents control panel + Launch rather than requiring another refresh), `127219e` is a contract-level data-model fix (API response was missing `tool_id`, causing installed/starred state to silently fail detection on the frontend). Pattern: the install flow has now attracted **10 sequential commits** across 5 cycles (1 feat + 3 fix C203, 4 fix C204, 2 fix C205, 2 fix C206, 2 fix C207) — the highest commit-density single subsystem in the C201+ window, and the only subsystem with continuous activity every cycle since C203.
+- **C206 commit-count correction**: `git rev-list --count 12222ac..HEAD` = 22, while C206 reported 18 = 7+3+4+2+2 after its own +2. C205 reported 16 = 7+3+4+2. Between C205 HEAD `471e0e7` and C206 HEAD `c56203c`, actual log shows **4 commits** (`6dbbc85`, `27d6751`, `77d0f7b`, `c56203c`), not 2. C206 headline under-counted by 2. Corrected: C205→C206 was a 4-commit stack (install-flow threading + brew-tap handling + false-error-toast + InstallProgress rewrite). Corrected cumulative per-cycle: 7 C202 + 3 C203 + 4 C204 + 4 C205→C206 + 2 C207 = 22. Correction retroactive only; no action required.
+- **Web/ commits-since-anchor**: 20 of 22 commits since C201 anchor `12222ac` land in `web/` (`bcb271f` mixed Flask+web, `da89bab` docs-only). Vanilla `frontend/` still at zero commits since C17 — **159-cycle streak**. With `frontend/my-tools.html` showing as modified in working tree (was flagged C206), that's still an unstaged change not yet committed — `frontend/` commit count stays at zero.
+- **`docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md` STILL UNTRACKED this cycle** — **6-cycle carry-over** (C202→C203→C204→C205→C206→C207). Each cycle the retirement plan stays outside the commit graph, the vanilla/Next.js dual-frontend scope ambiguity compounds. This is now the **single longest untracked carry-over artifact in recent coordinator history**.
+- **Harness cadence: 32.04 s/file** — **C206 anomaly refuted**, back inside the post-C189 30.7–33.2 band. Rolling 15-point window now reads 30.7–33.2 except C206 (25.67), which is most consistent with a short-gap measurement artifact rather than a real shift.
+- **Screenshot count: 5,347** (+48 since C206). Normal gap-driven emission at ~32s/file cadence.
+- All 4 stuck PIDs alive; trailing trio (8992/9962/9974) crossed 03-day-12h wall this cycle (C206 projected C208–C209, projection was 1–2 cycles conservative).
+- `.env.example` unchanged — C11 Slack/Flask append now **172 cycles stale**, survived **22 commits** since C201 anchor.
+- Working-tree state: 20+ modified `tests/reports/*.{json,log,png}` + dirty `frontend/my-tools.html` (carried from C206) + untracked `docs/superpowers/plans/2026-04-18-nextjs-frontend-rewrite.md`, `docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/`. Note: `web/components/install-progress.tsx` no longer dirty (was flagged C206) — follow-up must have been committed in `e38267b` or `127219e`.
+
+### Critical Path (Cycle 208) — C206 carry-over + install-flow still-widening + count-correction follow-up
+1. **HUMAN: `kill 3358 8992 9962 9974`** — 159th cycle unexecuted. Leader past 84.85h; full quad past 84.14h — all 4 past 03-day-12h wall. 5,347 PNGs on disk. Kill remains the single-step full unblock for the PID-side flatline.
+2. **HUMAN: finish the telemetry commit** — 20+ modified `tests/reports/` files + 5,347 untracked PNGs + 2 untracked plan docs + `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside the 22-commit HEAD window.
+3. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **172-cycle stale**, provably skipped by 22 commits since C201 anchor.
+4. **COORDINATOR (carry-over from C202/C203/C204/C205/C206): read `docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md`** (still untracked this cycle, **6th cycle as carry-over, longest single-artifact carry-over in recent coordinator history**). Highest-leverage single unread artifact.
+5. **HUMAN: draft `T_WEB.md`** — 20 of 22 since-C201 commits in `web/` with zero task-file ownership. Scope-drift pace: 22 commits in ~2.3h wall-clock against no corresponding task coverage.
+6. **HUMAN: draft `T_INSTALL.md`** (C205 carry-over, escalated further) — **10 sequential commits** across 5 cycles now target the install flow; this surface clearly warrants its own terminal. Scope: `web/components/install-progress.tsx`, `web/components/install-button.tsx`, Flask SSE proxy (port 8090), forge-agent threading model, brew taps/formulas, false-error-toast regression class, API `tool_id` contract, post-install page-refresh UX.
+7. **HUMAN: commit `frontend/my-tools.html`** — dirty in working tree since C206; unclear whether an in-flight salvage or obsolete per the pending retirement plan read.
+8. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope. Item #4 above should settle this.
+9. **HUMAN: harness retarget** — Selenium loop (PID 3358, ~32.04s/file confirmed) still hitting `frontend/catalog.html` + `frontend/my-tools.html`. Per the 2026-04-19 retirement plan (pending read), the loop targets may be about to be deleted.
+10. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-017, `api/inspector.py`, `db/seed_real_apps.py`, entire `web/` Next.js tree, `forge-agent/` component, plus the install-flow surface (C203-C207).
+11. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`) — highest-leverage single-starter picks.
+12. **Inspect `806b91c` vs `592ad7c`** (C190-C191 carry-over): diff comparison still outstanding.
+13. **Read `VISION.md` from `e92e351`** (C195 carry-over): still unread by coordinator.
+14. **Diff SPEC.md at `8d70c7b^..8d70c7b`** (C196 carry-over): retrospective-only.
+15. **Read `fc5e86b`'s social/discoverability design spec** (C196 carry-over): phase-1 surface shipped + hotfixed across **25 commits** (4 forge-agent + `12222ac` + 22 since anchor); retrospective scope-close.
+16. **Draft `T_AGENT.md`** for `forge-agent` (C197 carry-over): still zero task-file ownership.
+17. **Verify `0c2a4e7` plan doc location** (C197 carry-over): one-command resolve via `git show 0c2a4e7 --stat`.
+18. **Read `docs/superpowers/specs/2026-04-19-governed-skills-design.md`** (carry-over from C204; tracked via da89bab but content remains unread).
+19. **Read `0e024e2` "10-round QA sweep" commit message + diff** (carry-over from C204): highest information-density single commit for current QA surface understanding.
+20. **Run `git show c56203c..127219e --stat`** (supersedes C206's `git show 471e0e7..c56203c --stat`): catalog the C207 2-commit install-flow stack's touched files; `127219e`'s API `tool_id` addition worth reading for contract-drift implications across the rest of the `/api/tools/*` surface.
+21. **NEW — commit-count audit**: C206 under-counted its own stack by 2 (reported 2-commit stack was actually 4). If the coordinator loop is producing systematically low counts, the fix is a low-cost swap — prefer `git rev-list --count prev..HEAD` over `git log --oneline prev..HEAD | wc -l`. Worth investigating whether C204 (claimed 4 commits) and C205 (claimed 2) were also under-counted — not a critical issue but affects retrospective accuracy.
+
+### Contract Reminders (unchanged)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — and per `727f6d5` + the in-flight 2026-04-19 retirement plan, `web/` is now de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+
+## COORDINATOR STATUS — Cycle 208 (2026-04-19)
+
+### Headline — FLATLINE **160th cycle** on task-file side; **GIT HEAD ADVANCED 3 commits** (`127219e` → `debdc29`), extending the install-flow/web hotfix wave to **6 consecutive cycles** (C203→C208). Coordinator gap ~15m47s (PID 3358 ELAPSED 03-12:51:06 → 03-13:06:53), **~1.18x pre-C153 ~13m20s mean**, **shortest gap of the C204–C208 window** (vs C204 27m18s, C205 25m30s, C206 14m07s, C207 25m38s), landing between C206's 14m07s floor and the 25m+ quadrant. 3-commit stack since C207: `d0bba13` "docs: spec for agent install discovery & reconciliation" (docs-only), `8cfe929` "fix(web): installed embedded apps default to Open App tab" (fix), `debdc29` "fix(web): app embed broken — missing allow-same-origin + user context" (fix). **CRITICAL NOTE on `debdc29`**: the commit message contradicts the Forge security contract reaffirmed in every Coordinator block — "iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`." Subject line says "missing allow-same-origin" as if it were a bug-fix addition. Either (a) the iframe is NOT one of the `/apps/<slug>` sandboxes covered by the C17/C66 contract (e.g. an admin/inspector panel with a different threat model), (b) the contract is being deliberately relaxed for embedded installed apps, or (c) the commit introduces a regression against the sandbox invariant. **Read-required next cycle (highest leverage single artifact)** — coordinator cannot affirm contract compliance without seeing the diff. Commit-history since C201 anchor `12222ac` now at **25 commits** per `git rev-list --count`, consistent with C207's corrected 22 + 3 = 25. Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **160th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified verbatim-operative at exact line numbers → zero-bump policy now **148-cycle streak** → **0 duplicate notes added**. Screenshot disk **5,377** (+30 since C207's 5,347); across 947s gap = **~31.57s/file** — inside post-C189 30.7–33.2 band (low-mid envelope, matches C207's 32.04). `.env.example` unchanged (1344 bytes / 35 lines): C11 Slack/Flask append now **173 cycles stale**, provably skipped by **all 25 commits** since C201 anchor.
+
+### Cadence (band holds, 16-point window)
+- +30 screenshots over ~15m47s (947s) gap → **~31.57s/file** — in-band, low-mid envelope.
+- Post-C189 rolling trend: C191 = 33.2, C192 = 32.5, C193 = 30.7, C194 = 33.2, C195 = 32.8, C196 = 33.1, C197 ~33.0, C198 = 32.5, C199 = 31.2, C200 = 32.4, C201 = 33.2, C202 = 30.9, C203 = 33.07, C204 = 30.9, C205 = 32.55, C206 = 25.67 (gap-artifact), C207 = 32.04, **C208 = 31.57** s/file — 16-point rolling window holds 30.7–33.2 with single C206 outlier still isolated; C208 confirms C207's in-band reversion was not transient.
+- 30-file emission at 947s gap fits arithmetic (947/30 = 31.57), matches gap-driven not cadence-driven model.
+- 2s stagger 9962↔9974 preserved (23:57 vs 23:55) — intact across all **160 cycles**.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **160-cycle flatline streak**.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; full quad deeper into 03-day-12h+ territory:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-13:06:53** *(leader; ~85.11h; ~16 min deeper than C207)* — flagged `T3_frontend.md:38` (C25, verified operative verbatim).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-12:28:58** *(~84.48h)* — flagged `T6_testing.md:24` (C93, verified operative verbatim).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-12:23:57** *(~84.40h)* — flagged `T6_testing.md:22` (C72, verified operative verbatim).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-12:23:55** *(~84.40h; 2s stagger preserved across all 160 cycles)* — flagged `T6_testing.md:22` (C72, verified operative verbatim).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 160-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative; 148-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 208 block appended (this block).
+
+### What Changed This Cycle
+- **Git HEAD: 3-commit stack (1 docs + 2 fix)**: `127219e` → `d0bba13` ("docs: spec for agent install discovery & reconciliation") → `8cfe929` ("fix(web): installed embedded apps default to Open App tab") → `debdc29` ("fix(web): app embed broken — missing allow-same-origin + user context"). Pattern: install-flow surface now at **13 sequential commits** across 6 cycles (C203→C208). Web/ retains dominant share of the 25-commit window.
+- **SECURITY CONTRACT ALERT on `debdc29`**: commit subject "fix(web): app embed broken — missing allow-same-origin + user context" directly conflicts with the iframe sandbox contract reaffirmed in every coordinator block since C17. Three interpretations — (a) non-`/apps/<slug>` iframe outside the contract's scope, (b) deliberate contract relaxation for installed embedded apps, (c) regression. Highest-leverage single read next cycle: `git show debdc29 --stat` + diff to determine which iframe surface was changed and whether the contract needs an update. Flagged as new Critical Path item #1.
+- **Docs commit `d0bba13`** — agent install discovery & reconciliation spec; aligns with the 13-commit install-flow thread and may be the authoritative plan for the surface that C203–C208 has been hotfixing. Also worth reading next cycle for context on items #7 (draft `T_INSTALL.md`) and #11 (task-file coverage for zero-coverage surfaces).
+- **Web/ commits-since-anchor**: 22 of 25 commits since C201 anchor `12222ac` land in `web/` (`bcb271f` mixed Flask+web, `da89bab` + `d0bba13` docs-only). Vanilla `frontend/` still at zero commits since C17 — **160-cycle streak**. Dirty `frontend/my-tools.html` still uncommitted (carried from C206 → C207 → C208, now 3-cycle carry-over).
+- **`docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md` STILL UNTRACKED** — **7-cycle carry-over** (C202→C208). Breaks C207's "single longest untracked carry-over artifact in recent coordinator history" record further.
+- **Screenshot count: 5,377** (+30 since C207). In-band emission at ~31.6s/file.
+- All 4 stuck PIDs alive; full quad now 84.4–85.1h (deepest single-cycle progression since C200).
+- `.env.example` unchanged — C11 Slack/Flask append now **173 cycles stale**, survived **25 commits** since C201 anchor.
+- Working-tree state: 20+ modified `tests/reports/*.{json,log,png}` + `frontend/my-tools.html` (3-cycle dirty) + untracked `docs/superpowers/plans/2026-04-18-nextjs-frontend-rewrite.md`, `docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` — all carried forward unchanged from C207.
+
+### Critical Path (Cycle 209) — sandbox-contract-read (new lead), install-flow audit, carry-overs
+1. **NEW, HIGHEST LEVERAGE: `git show debdc29` + `git show 8cfe929`** — resolve whether `debdc29`'s `allow-same-origin` addition violates the iframe sandbox contract (C17 origin / reaffirmed every coordinator cycle). Until this diff is read the coordinator cannot honestly assert "iframe sandbox contract holds across all 25 commits since C201 anchor."
+2. **NEW: `git show d0bba13`** — agent install discovery & reconciliation spec; likely the authoritative plan for the install surface that has absorbed 13 commits across 6 cycles.
+3. **HUMAN: `kill 3358 8992 9962 9974`** — 160th cycle unexecuted. Leader past 85.11h; full quad past 84.40h. 5,377 PNGs on disk.
+4. **HUMAN: finish the telemetry commit** — 20+ modified `tests/reports/` files + untracked PNGs + 2 untracked plan docs + `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside the 25-commit HEAD window.
+5. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **173-cycle stale**, provably skipped by 25 commits since C201 anchor.
+6. **COORDINATOR (carry-over from C202→C207): read `docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md`** (still untracked this cycle, **7th cycle as carry-over**). Together with new items #1, #2 this is a three-artifact read-required next cycle.
+7. **HUMAN: draft `T_WEB.md`** — 22 of 25 since-C201 commits in `web/` with zero task-file ownership.
+8. **HUMAN: draft `T_INSTALL.md`** (C205→C208 carry-over, escalated) — **13 sequential commits** across 6 cycles now target the install flow. Should be informed by items #1, #2 reads.
+9. **HUMAN: commit `frontend/my-tools.html`** — 3-cycle dirty carry-over. If retirement plan proceeds, file may be deleted rather than committed.
+10. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope. Item #6 above should settle this.
+11. **HUMAN: harness retarget** — Selenium loop (PID 3358, ~31.57s/file) still hitting vanilla `frontend/`. Per 2026-04-19 retirement plan (pending read), loop targets may be about to be deleted.
+12. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-017, `api/inspector.py`, `db/seed_real_apps.py`, entire `web/` Next.js tree, `forge-agent/` component, install-flow surface (C203-C208), plus any new surface exposed by items #1-#2 reads.
+13. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`) — highest-leverage single-starter picks.
+14. **Inspect `806b91c` vs `592ad7c`** (C190-C191 carry-over): diff comparison still outstanding.
+15. **Read `VISION.md` from `e92e351`** (C195 carry-over): still unread by coordinator.
+16. **Diff SPEC.md at `8d70c7b^..8d70c7b`** (C196 carry-over): retrospective-only.
+17. **Read `fc5e86b`'s social/discoverability design spec** (C196 carry-over).
+18. **Draft `T_AGENT.md`** for `forge-agent` (C197 carry-over): still zero task-file ownership.
+19. **Verify `0c2a4e7` plan doc location** (C197 carry-over).
+20. **Read `docs/superpowers/specs/2026-04-19-governed-skills-design.md`** (C204 carry-over).
+21. **Read `0e024e2` "10-round QA sweep" commit message + diff** (C204 carry-over).
+22. **Commit-count audit follow-through** (C207 Critical Path #21) — spot-check that the coordinator loop is now using `git rev-list --count` rather than `git log | wc -l`. C208's 25 = 22 + 3 checks cleanly.
+
+### Contract Reminders (unchanged — but item #1 above MAY supersede)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — and per `727f6d5` + the in-flight 2026-04-19 retirement plan, `web/` is now de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`. **⚠ `debdc29` commit message appears to contradict this — read required before next coordinator assertion.**
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+
+## COORDINATOR STATUS — Cycle 209 (2026-04-19)
+
+### Headline — FLATLINE **161st cycle** on task-file side; **GIT HEAD ADVANCED 3 commits** (`debdc29` → `bcfd66b`), extending the install/embed wave to **7 consecutive cycles** (C203→C209). Coordinator gap **~14m03s** (PID 3358 ELAPSED 03-13:06:53 → 03-13:20:56), **~1.05x pre-C153 ~13m20s mean** — shortest gap of the C204→C209 window (vs C204 27m18s, C205 25m30s, C206 14m07s, C207 25m38s, C208 15m47s); paired with C206 14m07s as the only sub-15m gaps in the post-C200 corridor. 3-commit stack since C208: `3f2c925` "feat(web): installed embedded apps render full-screen with minimal chrome", `c5a872f` "feat(web): sidebar toggle button on embedded app top bar", `bcfd66b` "fix(web): search not working — Base UI Input ignores onChange". **C208 CRITICAL PATH #1 RESOLVED:** `git show debdc29` confirms the diff added `allow-same-origin` to `web/components/app-embed.tsx`'s iframe sandbox (`sandbox="allow-scripts allow-forms allow-modals allow-downloads"` → `... allow-downloads allow-same-origin"`). Stated rationale per commit body: "embedded apps can access localStorage, make API calls, load external resources." Interpretation **(b) deliberate contract relaxation** — the C17 sandbox invariant was authored against `frontend/` `/apps/<slug>`; the new Next.js `web/components/app-embed.tsx` is a different surface introduced post-C17 with no prior contract coverage. Result: contract is **not violated as worded** (the worded contract does not bind `web/` embeds), but is now **scope-incomplete** — the C17 invariant needs an explicit web-side clause or an explicit exemption. Flagged as new Critical Path item #1 for next cycle: **draft contract update.** Commit-history since C201 anchor `12222ac` now at **28 commits** per `git rev-list --count`, consistent with C208's 25 + 3 = 28. Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **161st consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified verbatim-operative at exact line numbers → zero-bump policy now **149-cycle streak** → **0 duplicate notes added**. Screenshot disk **5,403** (+26 since C208's 5,377); across 843s gap = **~32.42s/file** — inside post-C189 30.7–33.2 band (mid envelope, matches C207's 32.04, C208's 31.57). `.env.example` unchanged: C11 Slack/Flask append now **174 cycles stale**, provably skipped by **all 28 commits** since C201 anchor.
+
+### Cadence (band holds, 17-point window)
+- +26 screenshots over ~14m03s (843s) gap → **~32.42s/file** — in-band, mid envelope.
+- Post-C189 rolling trend: C191=33.2, C192=32.5, C193=30.7, C194=33.2, C195=32.8, C196=33.1, C197~33.0, C198=32.5, C199=31.2, C200=32.4, C201=33.2, C202=30.9, C203=33.07, C204=30.9, C205=32.55, C206=25.67 (gap-artifact), C207=32.04, C208=31.57, **C209=32.42** s/file — 17-point window holds 30.7–33.2 with C206 still the only outlier; the sub-15m gap at C209 did **not** reproduce a C206-style sub-30 print, further confirming C206 as a one-off measurement artifact rather than a cadence-drift signal.
+- 26-file emission at 843s gap fits arithmetic (843/26 = 32.42), gap-driven model intact.
+- 2s stagger 9962↔9974 preserved (38:00 vs 37:58) — intact across all **161 cycles**.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **161-cycle flatline streak**.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; full quad deeper into 03-day-12h+ territory; leader crossed 03-day-13h wall this cycle:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-13:20:56** *(leader; ~85.35h; ~14 min deeper than C208; **crossed 03-day-13h wall this cycle**)* — flagged `T3_frontend.md:38` (C25, verified operative verbatim).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-12:43:01** *(~84.72h)* — flagged `T6_testing.md:24` (C93, verified operative verbatim).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-12:38:00** *(~84.63h)* — flagged `T6_testing.md:22` (C72, verified operative verbatim).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-12:37:58** *(~84.63h; 2s stagger preserved across all 161 cycles)* — flagged `T6_testing.md:22` (C72, verified operative verbatim).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 161-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative; 149-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 209 block appended (this block).
+- **Coordinator read** of `git show debdc29 --stat` + diff context, resolving C208 Critical Path #1.
+
+### What Changed This Cycle
+- **C208 #1 RESOLVED — sandbox contract scope-incomplete, NOT violated**: `debdc29` adds `allow-same-origin` to `web/components/app-embed.tsx` iframe sandbox (a 2-file change: `web/app/apps/[slug]/page.tsx` +/- 2, `web/components/app-embed.tsx` +12/-5). Stated rationale: localStorage / API calls / external resources for embedded apps. The C17 invariant was authored for `frontend/` `/apps/<slug>` sandboxes — `web/components/app-embed.tsx` is a post-C17 surface unbound by the original wording. **Therefore: contract is not violated, but is scope-incomplete and now ambiguous** for the de-facto-authoritative `web/` tree. Required corrective action lives with the human operator: either explicit web-side clause (recommended: enumerate which `web/` iframes are exempt and why) or extend the C17 ban to `web/` (would require reverting `debdc29`).
+- **Git HEAD: 3-commit web/embed feature wave**: `debdc29` → `3f2c925` (Class-A installed apps render full-screen w/ minimal chrome) → `c5a872f` (sidebar toggle button on app top-bar) → `bcfd66b` (Base UI Input onChange→onValueChange fix; search box now works). Pattern: C203-launched install/embed surface is now at **16 sequential commits across 7 cycles** (1 feat + 3 fix C203, 4 fix C204, 2 fix C205, 4 C205→C206, 2 fix C207, 3 commits C208 [1 docs + 2 fix], 3 commits C209 [2 feat + 1 fix]). The C209 burst notably adds **2 feats** for the first time since C203 — surface is shifting from hotfix-stabilization toward forward feature work, suggesting the embed contract is settling.
+- **`bcfd66b` Base-UI footnote**: search-box regression caused by `web/` Next.js using Base UI's `Input` component which emits `onValueChange` (not standard React `onChange`). Worth a per-component spot-audit elsewhere in `web/` for any other `onChange` usage on Base UI primitives. Low priority but a concrete error class with one verified instance.
+- **Web/ commits-since-anchor**: 25 of 28 commits since C201 anchor `12222ac` land in `web/` (`bcb271f` mixed Flask+web, `da89bab` + `d0bba13` docs-only). Vanilla `frontend/` still at zero commits since C17 — **161-cycle streak**. Dirty `frontend/my-tools.html` still uncommitted (C206 → C207 → C208 → C209, **4-cycle dirty carry-over**).
+- **`docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md` STILL UNTRACKED** — **8-cycle carry-over** (C202→C209). Continues to be the longest single-artifact untracked carry-over in recent coordinator history.
+- **Screenshot count: 5,403** (+26 since C208). In-band gap-driven emission.
+- All 4 stuck PIDs alive; leader crossed 03-day-13h wall this cycle (trio still at 03-day-12h, projects 03-day-13h crossing C211–C212 at current ~14–16m gap pace).
+- `.env.example` unchanged — C11 Slack/Flask append now **174 cycles stale**, survived **28 commits** since C201 anchor.
+- Working-tree state: 20+ modified `tests/reports/*.{json,log,png}` + `frontend/my-tools.html` (4-cycle dirty) + untracked `docs/superpowers/plans/2026-04-18-nextjs-frontend-rewrite.md`, `docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md`, `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` — all carried unchanged from C208.
+
+### Critical Path (Cycle 210) — contract-update lead, install/embed audit, deepening carry-overs
+1. **NEW, HIGHEST LEVERAGE: HUMAN draft a `web/`-side iframe sandbox clause**. C209 confirmed `debdc29` adds `allow-same-origin` to `web/components/app-embed.tsx` — not a violation of the C17 wording (which targets `frontend/`/`apps/<slug>`) but the contract reminder is now scope-incomplete and ambiguous against the de-facto-authoritative `web/` tree. Two viable resolutions: (i) explicit exemption — list which `web/` iframes get `allow-same-origin` and why (currently: installed Class-A embedded apps, for localStorage / API / external resources); or (ii) extend the C17 ban to `web/` and revert `debdc29` (would block the install/embed feature line). Recommend (i). Once decided, update PROGRESS.md Contract Reminders block, CONTRACTS.md, and SPEC.md. Until then, coordinator will continue to flag the ambiguity each cycle.
+2. **Carry-over from C208 #2: `git show d0bba13`** — agent install discovery & reconciliation spec; likely the authoritative plan for the install/embed surface that has now absorbed 16 commits across 7 cycles.
+3. **HUMAN: `kill 3358 8992 9962 9974`** — 161st cycle unexecuted. Leader past 85.35h (crossed 03-day-13h); trio past 84.63h. 5,403 PNGs on disk.
+4. **HUMAN: finish the telemetry commit** — 20+ modified `tests/reports/` files + untracked PNGs + 2 untracked plan docs + `tests/agents/functional_audit.py`, `tests/reports/audit_result.json`, `tests/reports/audit_shots/` still outside the 28-commit HEAD window.
+5. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **174-cycle stale**, provably skipped by 28 commits since C201 anchor.
+6. **COORDINATOR (carry-over from C202→C208): read `docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md`** (still untracked this cycle, **8th cycle as carry-over**). Together with items #1, #2 this is a three-artifact read-required next cycle.
+7. **HUMAN: draft `T_WEB.md`** — 25 of 28 since-C201 commits in `web/` with zero task-file ownership. Should incorporate item #1's contract clause once drafted.
+8. **HUMAN: draft `T_INSTALL.md`** (C205→C209 carry-over, escalated) — **16 sequential commits across 7 cycles** target the install/embed surface; should be informed by items #1, #2 reads.
+9. **HUMAN: commit-or-delete `frontend/my-tools.html`** — 4-cycle dirty carry-over. If retirement plan proceeds, file may be deleted rather than committed.
+10. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope. Item #6 above should settle this.
+11. **HUMAN: harness retarget** — Selenium loop (PID 3358, ~32.42s/file) still hitting vanilla `frontend/`. Per 2026-04-19 retirement plan (pending read), loop targets may be about to be deleted.
+12. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-017, `api/inspector.py`, `db/seed_real_apps.py`, entire `web/` Next.js tree, `forge-agent/` component, install/embed surface (C203-C209).
+13. **NEW — Base UI `onChange`/`onValueChange` audit** (from `bcfd66b`): one-shot grep across `web/` for `<Input ... onChange=` (and other Base UI primitives) to surface any other silent-no-op handlers of the same class.
+14. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`) — highest-leverage single-starter picks.
+15. **Inspect `806b91c` vs `592ad7c`** (C190-C191 carry-over).
+16. **Read `VISION.md` from `e92e351`** (C195 carry-over).
+17. **Diff SPEC.md at `8d70c7b^..8d70c7b`** (C196 carry-over): retrospective-only.
+18. **Read `fc5e86b`'s social/discoverability design spec** (C196 carry-over).
+19. **Draft `T_AGENT.md`** for `forge-agent` (C197 carry-over).
+20. **Verify `0c2a4e7` plan doc location** (C197 carry-over).
+21. **Read `docs/superpowers/specs/2026-04-19-governed-skills-design.md`** (C204 carry-over).
+22. **Read `0e024e2` "10-round QA sweep" commit message + diff** (C204 carry-over).
+
+### Contract Reminders (item #1 above pending — NOT YET RESOLVED)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — and per `727f6d5` + the in-flight 2026-04-19 retirement plan, `web/` is now de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17, applies to `frontend/`/`apps/<slug>`)**. ⚠ **`web/components/app-embed.tsx` (per `debdc29`) deliberately adds `allow-same-origin` for installed Class-A embedded apps** — contract is scope-incomplete on the `web/` side. Critical Path #1 above tracks the resolution.
 - Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
 - forge_bot/webhook.py on port 8093 (NOT 8091).

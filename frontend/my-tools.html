@@ -61,9 +61,10 @@
     .tile-tagline { font-size: 11px; color: #888; margin: 2px 0 0; }
     .tile-meta { font-size: 11px; color: #555; display: flex; gap: 10px; margin-top: auto; }
     .tile-status { display: flex; align-items: center; gap: 5px; font-size: 11px; margin-bottom: 2px; }
-    .status-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
-    .status-dot.running { background: #4caf50; box-shadow: 0 0 4px #4caf50; }
-    .status-dot.stopped { background: #555; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    .status-dot.running { background: #22c55e; box-shadow: 0 0 4px #22c55e; animation: pulse-dot 2s ease-in-out infinite; }
+    .status-dot.stopped { background: #444; }
+    @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
     .tile-actions { display: flex; gap: 6px; }
     .tile-actions button {
       padding: 6px 12px; border-radius: 5px; font-size: 11px;
@@ -192,15 +193,45 @@
       starred = st.items || [];
       skills = sk.skills || [];
       await loadRunningStatus();
+      // Auto-sync: if forge-agent knows about installed apps not on the shelf, add them
+      await syncAgentAppsToShelf();
       render();
+    }
+
+    async function syncAgentAppsToShelf() {
+      if (!agentAvailable) return;
+      const shelfSlugs = new Set(installed.map(i => i.slug));
+      const missing = Object.keys(runningApps).filter(s => !shelfSlugs.has(s));
+      if (!missing.length) return;
+      const h = authHeaders();
+      let added = false;
+      for (const slug of missing) {
+        try {
+          const tr = await fetch(`/api/tools/slug/${encodeURIComponent(slug)}`);
+          if (!tr.ok) continue;
+          const tool = await tr.json();
+          if (!tool.id) continue;
+          await fetch(`/api/me/items/${tool.id}`, {
+            method: 'POST',
+            headers: { ...h, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ installed: true }),
+          });
+          added = true;
+        } catch (e) { /* skip */ }
+      }
+      if (added) {
+        // Re-fetch shelf to include newly synced items
+        const sh = await fetch('/api/me/items', { headers: h }).then(r => r.json()).catch(() => ({}));
+        installed = sh.items || [];
+      }
     }
 
     async function loadRunningStatus() {
       try {
-        const r = await fetch('/api/forge-agent/running', { signal: AbortSignal.timeout(3000) });
+        const r = await fetch('/api/forge-agent/running', { signal: AbortSignal.timeout(8000) });
         if (r.ok) {
           const data = await r.json();
-          agentAvailable = !data.error;
+          agentAvailable = true;
           runningApps = {};
           (data.apps || []).forEach(a => { runningApps[a.slug] = a; });
         }
@@ -235,7 +266,7 @@
 
     function renderTabs() {
       const tabs = [
-        { key: 'installed', label: 'Installed', count: installed.length },
+        { key: 'installed', label: 'Installed', count: installed.length + Object.keys(runningApps).filter(s => !installed.some(i => i.slug === s)).length },
         { key: 'saved', label: 'Saved for later', count: starred.length },
         { key: 'skills', label: 'Skills', count: skills.length },
       ];
@@ -256,13 +287,29 @@
     }
 
     function renderInstalled() {
-      if (!installed.length) {
+      // Merge forge-agent apps that aren't on the web shelf
+      const shelfSlugs = new Set(installed.map(i => i.slug));
+      const merged = [...installed];
+      for (const [slug, info] of Object.entries(runningApps)) {
+        if (!shelfSlugs.has(slug)) {
+          merged.push({
+            slug,
+            name: info.name || slug,
+            icon: null,
+            tagline: '',
+            delivery: 'external',
+            open_count: 0,
+            _fromAgent: true,
+          });
+        }
+      }
+      if (!merged.length) {
         contentEl.innerHTML = '<div class="empty"><h2>Nothing installed yet</h2><p>Browse the catalog and install apps you want to use.</p><a href="/">Browse apps →</a></div>';
         return;
       }
       const grid = document.createElement('div');
       grid.className = 'grid';
-      installed.forEach(item => grid.appendChild(makeTile(item, 'installed')));
+      merged.forEach(item => grid.appendChild(makeTile(item, 'installed')));
       contentEl.innerHTML = '';
       contentEl.appendChild(grid);
     }
@@ -315,10 +362,10 @@
       const isRunning = rs && rs.running;
 
       let statusHTML = '';
-      if (isExt && agentAvailable && rs) {
-        statusHTML = `<div class="tile-status">
+      if (isExt) {
+        statusHTML = `<div class="tile-status" data-slug="${esc(slug)}">
           <span class="status-dot ${isRunning ? 'running' : 'stopped'}"></span>
-          <span style="color:${isRunning ? '#4caf50' : '#555'}">${isRunning ? 'Running' + (rs.uptime_sec ? ' · ' + formatUptime(rs.uptime_sec) : '') : 'Not running'}</span>
+          <span style="color:${isRunning ? '#4caf50' : '#555'}">${isRunning ? 'Running' + (rs && rs.uptime_sec ? ' · ' + formatUptime(rs.uptime_sec) : '') : 'Not running'}</span>
         </div>`;
       }
 

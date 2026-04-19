@@ -1,5 +1,6 @@
 data/
 logs/
+venv/
 .env
 __pycache__/
 *.pyc
@@ -7,3 +8,6 @@ __pycache__/
 static/instructions/
 .DS_Store
 .superpowers/
+tests/reports/screenshots/
+tests/reports/audit_shots/
+tests/reports/ux_shots/

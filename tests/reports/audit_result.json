@@ -1,0 +1,111 @@
+{
+  "passed": 21,
+  "failed": 0,
+  "findings": [
+    {
+      "area": "catalog loads",
+      "ok": true,
+      "detail": "title='Forge \u2014 Apps for your team'"
+    },
+    {
+      "area": "cards render",
+      "ok": true,
+      "detail": "10 cards"
+    },
+    {
+      "area": "social line rendered",
+      "ok": true,
+      "detail": "first='0 installs'"
+    },
+    {
+      "area": "no 'Run Tool' leftover",
+      "ok": true,
+      "detail": "clean"
+    },
+    {
+      "area": "no '+ Add to my Forge' long text",
+      "ok": true,
+      "detail": "tight"
+    },
+    {
+      "area": "add does NOT call window.prompt",
+      "ok": true,
+      "detail": "no app-level prompt \u2014 anonymous UUID worked"
+    },
+    {
+      "area": "button flipped to Added state",
+      "ok": true,
+      "detail": "label='\u2713 Added'"
+    },
+    {
+      "area": "preview overlay opens",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "area": "inspection badges render",
+      "ok": true,
+      "detail": "1 badges"
+    },
+    {
+      "area": "shelf shows the added item",
+      "ok": true,
+      "detail": "1 tiles on shelf"
+    },
+    {
+      "area": "identity card present",
+      "ok": true,
+      "detail": "anonymous card shown"
+    },
+    {
+      "area": "skills sidebar present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "area": "embedded pane opens",
+      "ok": true,
+      "detail": "iframe src=/apps/audit-smoke-test-4?user=7a56a64d-c53c-4eff-bc5c-676e3e67b4d2"
+    },
+    {
+      "area": "publish page loads 3 modes",
+      "ok": true,
+      "detail": "3 mode pills"
+    },
+    {
+      "area": "upload panel toggles",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "area": "github panel toggles",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "area": "publish paste-HTML succeeds",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "area": "skills page loads",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "area": "no horizontal scroll on mobile catalog",
+      "ok": true,
+      "detail": "scrollWidth=375, innerWidth=375"
+    },
+    {
+      "area": "no horizontal scroll on mobile shelf",
+      "ok": true,
+      "detail": "scrollWidth=375"
+    },
+    {
+      "area": "no console errors",
+      "ok": true,
+      "detail": "0 errors: []"
+    }
+  ]
+}
