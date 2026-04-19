@@ -36,7 +36,7 @@ export default function AppDetailPage({
   const autoInstall = searchParams.get("install") === "1";
 
   const { data: app, isLoading } = useApp(slug);
-  const { data: items } = useMyItems();
+  const { data: items, mutate: mutateItems } = useMyItems();
   const { data: stars } = useMyStars();
   const { data: reviews, mutate: mutateReviews } = useReviews(app?.id);
 
@@ -186,6 +186,7 @@ export default function AppDetailPage({
                 installCommand={app.install_command}
                 installMeta={app.install_meta}
                 autoInstall={autoInstall}
+                onInstalled={() => mutateItems()}
               />
             )}
 
