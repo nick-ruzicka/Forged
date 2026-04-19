@@ -217,6 +217,23 @@ def sample_run(db, sample_tool):
 
 
 @pytest.fixture
+def sample_skill(db):
+    """Insert and return an approved skill."""
+    with db.cursor() as cur:
+        cur.execute(
+            """INSERT INTO skills (title, description, prompt_text, category,
+                                   use_case, author_name, review_status)
+               VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING *""",
+            ("Test Skill", "desc", "Do X", "research", "research accounts", "A", "approved"),
+        )
+        result = cur.fetchone()
+        if isinstance(result, tuple):
+            cols = [d[0] for d in cur.description]
+            return dict(zip(cols, result))
+        return dict(result) if result else None
+
+
+@pytest.fixture
 def admin_headers():
     """Return the X-Admin-Key header dictionary."""
     return {"X-Admin-Key": os.environ.get("ADMIN_KEY", "test-admin-key")}

@@ -3,12 +3,12 @@ import pytest
 
 
 def test_list_skills_returns_200(client, db):
-    """GET /api/skills returns an array of skills."""
+    """GET /api/skills returns an array of approved skills."""
     with db.cursor() as cur:
         cur.execute(
-            """INSERT INTO skills (title, description, prompt_text, category, use_case, author_name)
-               VALUES (%s, %s, %s, %s, %s, %s)""",
-            ("Test Skill", "desc", "Do X", "research", "research accounts", "A"),
+            """INSERT INTO skills (title, description, prompt_text, category, use_case, author_name, review_status)
+               VALUES (%s, %s, %s, %s, %s, %s, %s)""",
+            ("Test Skill", "desc", "Do X", "research", "research accounts", "A", "approved"),
         )
     resp = client.get("/api/skills")
     if resp.status_code == 404:
@@ -32,6 +32,9 @@ def test_submit_skill_valid_returns_201(client):
     if resp.status_code in (404, 405):
         pytest.skip("POST /api/skills not implemented yet (T1)")
     assert resp.status_code == 201
+    data = resp.get_json()
+    assert data["status"] == "pending"
+    assert "skill_id" in data
 
 
 def test_submit_skill_invalid_returns_400(client):
