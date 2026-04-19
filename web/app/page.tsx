@@ -8,6 +8,7 @@ import { AppCard } from "@/components/app-card";
 import { CategoryPills } from "@/components/category-pills";
 import { EmptyState } from "@/components/empty-state";
 import { RolePicker } from "@/components/role-picker";
+import { TrendingStrip } from "@/components/trending-strip";
 import { useApps, useMyItems, useMyStars } from "@/lib/hooks";
 import { useUser } from "@/lib/user-context";
 
@@ -106,6 +107,9 @@ export default function CatalogPage() {
           onSelect={setActiveCategory}
         />
       )}
+
+      {/* Trending */}
+      <TrendingStrip />
 
       {/* Loading */}
       {isLoading && (

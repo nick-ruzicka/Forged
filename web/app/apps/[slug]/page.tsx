@@ -14,12 +14,15 @@ import { EmptyState } from "@/components/empty-state";
 import { ReviewCard } from "@/components/review-card";
 import { ReviewForm } from "@/components/review-form";
 import { InstallProgress } from "@/components/install-progress";
+import { ExternalControlPanel } from "@/components/external-control-panel";
+import { CoInstallCards } from "@/components/co-install-cards";
 import {
   useApp,
   useMyItems,
   useMyStars,
   useReviews,
   useAgentRunning,
+  uninstallApp,
 } from "@/lib/hooks";
 
 export default function AppDetailPage({
@@ -159,6 +162,17 @@ export default function AppDetailPage({
               </p>
             )}
 
+            {/* External app control panel */}
+            {isExternal && isInstalled && (
+              <ExternalControlPanel
+                app={app}
+                isInstalled={isInstalled}
+                onUninstall={async () => {
+                  await uninstallApp(app.id);
+                }}
+              />
+            )}
+
             {/* Install progress for external apps not yet installed */}
             {isExternal && !isInstalled && (
               <InstallProgress
@@ -166,6 +180,9 @@ export default function AppDetailPage({
                 installCommand={app.install_command}
               />
             )}
+
+            {/* Co-installs */}
+            <CoInstallCards toolId={app.id} toolName={app.name} />
 
             {/* Reviews */}
             <div className="flex flex-col gap-4">
