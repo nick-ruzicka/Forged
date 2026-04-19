@@ -176,3 +176,41 @@ def test_scanner_clean_skill_passes(db, monkeypatch):
 
     assert result["data_exfil_risk"] is False
     assert result["injection_risk"] is False
+
+
+def test_red_team_runs_5_attacks(db, monkeypatch):
+    """Red team runs 5 attack templates and reports results."""
+    from api import db as forge_db
+
+    skill_text = "Help the user write documentation."
+    with db.cursor() as cur:
+        cur.execute(
+            "INSERT INTO skills (title, prompt_text, review_status) VALUES (%s, %s, %s) RETURNING id",
+            ("Doc Skill", skill_text, "pending"),
+        )
+        row = cur.fetchone()
+        skill_id = row[0] if isinstance(row, tuple) else row["id"]
+    review_id = forge_db.create_review(skill_id, "skill")
+
+    import agents.base
+    call_count = {"n": 0}
+    class FakeMessage:
+        content = [type("Block", (), {"text": '{"attack_succeeded": false, "explanation": "skill does not comply"}'})()]
+    class FakeClient:
+        class messages:
+            @staticmethod
+            def create(**kwargs):
+                call_count["n"] += 1
+                return FakeMessage()
+    monkeypatch.setattr(agents.base, "_client", FakeClient())
+
+    from agents.red_team import run
+    result = run(skill_id, review_id, skill_text=skill_text, parent_skill_id=None)
+
+    assert result["attacks_attempted"] == 5
+    assert result["attacks_succeeded"] == 0
+    assert call_count["n"] == 5  # 5 parallel calls
+
+    review = forge_db.get_review_by_skill(skill_id)
+    assert review["attacks_attempted"] == 5
+    assert review["attacks_succeeded"] == 0
