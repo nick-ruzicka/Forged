@@ -1045,6 +1045,29 @@ def shelf_mark_installed(tool_id: int):
     return jsonify({"installed": row is not None, "version": version})
 
 
+@app.route("/api/me/items/<int:item_id>/hide", methods=["POST"])
+def shelf_hide_item(item_id: int):
+    """Hide a shelf row from My Forge. Idempotent. Scoped to the calling user."""
+    uid, email = _get_identity()
+    if not uid and not email:
+        return jsonify({"error": "user_id_or_email_required"}), 400
+    with db.get_db() as cur:
+        cur.execute(
+            """
+            UPDATE user_items
+            SET hidden = TRUE
+            WHERE id = %s
+              AND (user_id = %s OR (%s IS NOT NULL AND user_email = %s))
+            RETURNING id
+            """,
+            (item_id, uid, email, email),
+        )
+        row = cur.fetchone()
+    if not row:
+        return jsonify({"error": "not_found"}), 404
+    return jsonify({"hidden": True, "item_id": item_id})
+
+
 # -------------------- Install discovery (agent scan) --------------------
 
 def _reconcile_matches(user_id: str, payload: dict, cur) -> set:

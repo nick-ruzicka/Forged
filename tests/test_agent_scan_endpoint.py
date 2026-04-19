@@ -53,3 +53,52 @@ def test_scan_endpoint_round_trip_then_uninstall(client, db, sample_tool):
         cur.execute("SELECT installed_locally FROM user_items WHERE user_id=%s AND tool_id=%s",
                     (uid, sample_tool["id"]))
         assert cur.fetchone()[0] is False
+
+
+def test_hide_endpoint_marks_row_hidden(client, db, sample_tool):
+    uid = f"user-{uuid.uuid4().hex[:8]}"
+    with db.cursor() as cur:
+        cur.execute(
+            """INSERT INTO user_items (user_id, tool_id, installed_locally, source)
+               VALUES (%s, %s, TRUE, 'detected') RETURNING id""",
+            (uid, sample_tool["id"]),
+        )
+        ui_id = cur.fetchone()[0]
+
+    r = client.post(f"/api/me/items/{ui_id}/hide", headers={"X-Forge-User-Id": uid})
+    assert r.status_code == 200
+    assert r.get_json()["hidden"] is True
+
+    with db.cursor() as cur:
+        cur.execute("SELECT hidden FROM user_items WHERE id = %s", (ui_id,))
+        assert cur.fetchone()[0] is True
+
+
+def test_hide_endpoint_is_idempotent(client, db, sample_tool):
+    uid = f"user-{uuid.uuid4().hex[:8]}"
+    with db.cursor() as cur:
+        cur.execute(
+            """INSERT INTO user_items (user_id, tool_id, installed_locally, source, hidden)
+               VALUES (%s, %s, TRUE, 'detected', TRUE) RETURNING id""",
+            (uid, sample_tool["id"]),
+        )
+        ui_id = cur.fetchone()[0]
+
+    r = client.post(f"/api/me/items/{ui_id}/hide", headers={"X-Forge-User-Id": uid})
+    assert r.status_code == 200
+    assert r.get_json()["hidden"] is True
+
+
+def test_hide_endpoint_rejects_other_users(client, db, sample_tool):
+    owner = f"user-{uuid.uuid4().hex[:8]}"
+    intruder = f"user-{uuid.uuid4().hex[:8]}"
+    with db.cursor() as cur:
+        cur.execute(
+            """INSERT INTO user_items (user_id, tool_id, installed_locally, source)
+               VALUES (%s, %s, TRUE, 'detected') RETURNING id""",
+            (owner, sample_tool["id"]),
+        )
+        ui_id = cur.fetchone()[0]
+
+    r = client.post(f"/api/me/items/{ui_id}/hide", headers={"X-Forge-User-Id": intruder})
+    assert r.status_code == 404, "Other users must not be able to hide rows on someone else's shelf"
