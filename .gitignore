@@ -11,3 +11,6 @@ static/instructions/
 tests/reports/screenshots/
 tests/reports/audit_shots/
 tests/reports/ux_shots/
+
+# Worktrees (subagent-driven dev)
+.worktrees/
