@@ -91,9 +91,9 @@ export default function CatalogPage() {
       {/* Search */}
       <div className="relative">
         <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-text-muted" />
-        <Input
+        <input
           placeholder="Search apps..."
-          className="bg-surface pl-9"
+          className="h-8 w-full rounded-lg border border-input bg-surface pl-9 pr-2.5 text-sm text-foreground placeholder:text-muted-foreground outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
