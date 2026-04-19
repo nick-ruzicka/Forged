@@ -81,6 +81,8 @@ class Tool:
     # Demo data (migration 016)
     demo_data: Optional[str] = None  # JSON: {key: value} for preview mode
     preview_tip: Optional[str] = None
+    # Setup skill (onboarding agent)
+    setup_skill_id: Optional[int] = None
 
     # Backend-aware (migration 012)
     has_local_backend: bool = False

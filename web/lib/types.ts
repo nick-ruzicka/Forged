@@ -21,6 +21,7 @@ export interface App {
   open_count?: number;
   avg_rating?: number;
   role_tags?: string | string[];
+  setup_skill_id?: number;
   created_at?: string;
   deployed_at?: string;
 }

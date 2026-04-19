@@ -1,9 +1,9 @@
 "use client";
 
-import { use, useMemo } from "react";
+import { use, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { ExternalLink, PanelLeftClose, PanelLeft, Download, Star, Clock, Users } from "lucide-react";
+import { ExternalLink, PanelLeftClose, PanelLeft, Download, Star, Clock, Users, Sparkles, Copy, Check } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -290,6 +290,11 @@ export default function AppDetailPage({
                 />
               )}
 
+              {/* Setup skill — onboarding agent */}
+              {app.setup_skill_id && (
+                <SetupSkillCard skillId={app.setup_skill_id} appName={app.name} isInstalled={isInstalled} />
+              )}
+
               {/* About */}
               {app.description && (
                 <div className="flex flex-col gap-3">
@@ -466,6 +471,59 @@ export default function AppDetailPage({
           </div>
         </TabsContent>
       </Tabs>
+      </div>
+    </div>
+  );
+}
+
+function SetupSkillCard({ skillId, appName, isInstalled }: { skillId: number; appName: string; isInstalled: boolean }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    const cmd = `claude "Run the setup skill for ${appName} — read the skill at /skills/${skillId} and walk me through configuring the app"`;
+    await navigator.clipboard.writeText(cmd);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-primary/[0.06] to-primary/[0.02] p-6">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-primary/[0.06] to-transparent pointer-events-none" />
+      <div className="relative flex flex-col gap-4">
+        <div className="flex items-center gap-3">
+          <div className="flex size-10 items-center justify-center rounded-xl bg-primary/10 ring-1 ring-primary/20">
+            <Sparkles className="size-5 text-primary" />
+          </div>
+          <div className="flex flex-col gap-0.5">
+            <span className="text-[15px] font-semibold text-foreground">
+              {isInstalled ? `Set up ${appName} with AI` : `AI-assisted setup available`}
+            </span>
+            <span className="text-[13px] text-text-secondary">
+              {isInstalled
+                ? "A setup agent will configure this app for you — ask your preferences, write config files, verify everything works. Takes ~3 minutes."
+                : `Install ${appName} first, then use the setup agent to configure it for your workflow. No manual config editing needed.`}
+            </span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <Link
+            href={`/skills/${skillId}`}
+            className="flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-[13px] font-semibold text-primary-foreground shadow-[0_1px_2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] transition-all hover:brightness-110"
+          >
+            <Sparkles className="size-3.5" />
+            View Setup Skill
+          </Link>
+          {isInstalled && (
+            <button
+              onClick={handleCopy}
+              className="flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-[13px] font-medium text-text-secondary transition-colors hover:border-border-strong hover:text-foreground"
+            >
+              {copied ? <Check className="size-3.5 text-green-400" /> : <Copy className="size-3.5" />}
+              {copied ? "Copied!" : "Copy setup command"}
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
