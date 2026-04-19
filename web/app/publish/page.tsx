@@ -126,7 +126,7 @@ export default function PublishPage() {
           }
           html = await uploadFile.text();
         }
-        result = await submitApp({ ...metadata, description: html });
+        result = await submitApp({ ...metadata, html });
       }
 
       // Persist identity

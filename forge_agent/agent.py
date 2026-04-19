@@ -28,6 +28,7 @@ TOKEN_FILE = FORGE_DIR / "agent-token"
 AUDIT_LOG = FORGE_DIR / "audit.log"
 LOG_FILE = FORGE_DIR / "agent.log"
 ALLOWED_ORIGIN = os.environ.get("FORGE_ORIGIN", "http://localhost:8090")
+ALLOWED_ORIGINS = {ALLOWED_ORIGIN, "http://localhost:3000", "http://localhost:3002"}
 MAX_STARTS_PER_HOUR = 10
 
 # ── setup ──────────────────────────────────────────────────────
@@ -962,7 +963,9 @@ class AgentHandler(http.server.BaseHTTPRequestHandler):
         return True
 
     def _cors_headers(self):
-        self.send_header("Access-Control-Allow-Origin", ALLOWED_ORIGIN)
+        origin = self.headers.get("Origin", "")
+        allowed = origin if origin in ALLOWED_ORIGINS else ALLOWED_ORIGIN
+        self.send_header("Access-Control-Allow-Origin", allowed)
         self.send_header("Access-Control-Allow-Headers", "Content-Type, X-Forge-Token")
         self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 

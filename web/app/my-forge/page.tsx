@@ -10,8 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EmptyState } from "@/components/empty-state";
 import { AppPane } from "@/components/app-pane";
-import { useMyItems, useMyStars, useMySkills, useAgentAvailable, uninstallApp } from "@/lib/hooks";
-import { launchItem, removeStar } from "@/lib/api";
+import { useMyItems, useMyStars, useMySkills, useAgentAvailable, useRunningApps, uninstallApp } from "@/lib/hooks";
+import { launchItem, removeStar, launchApp } from "@/lib/api";
 import { useUser } from "@/lib/user-context";
 import type { UserItem, Star, Skill } from "@/lib/types";
 
@@ -20,7 +20,8 @@ export default function MyForgePage() {
   const { data: items, mutate: mutateItems } = useMyItems();
   const { data: stars, mutate: mutateStars } = useMyStars();
   const { data: skills } = useMySkills();
-  useAgentAvailable(true);
+  const { data: agentAvail } = useAgentAvailable(true);
+  const { data: runningData } = useRunningApps(agentAvail ?? false);
 
   // App pane state
   const [paneSlug, setPaneSlug] = useState<string | null>(null);
@@ -44,9 +45,12 @@ export default function MyForgePage() {
     [mutateItems],
   );
 
-  const handleLaunch = useCallback(async (toolId: number) => {
+  const handleLaunch = useCallback(async (toolId: number, slug: string, name: string) => {
     try {
-      await launchItem(toolId);
+      await Promise.all([
+        launchItem(toolId),
+        launchApp(slug, name),
+      ]);
     } catch {
       toast.error("Failed to launch");
     }
@@ -147,9 +151,10 @@ export default function MyForgePage() {
                 <InstalledTile
                   key={item.id}
                   item={item}
+                  isRunning={item.delivery === "external" && !!runningData?.apps.find(a => a.slug === item.slug && a.running)}
                   onOpen={() => {
-                    if (item.delivery === "external") {
-                      handleLaunch(item.tool_id);
+                    if (item.delivery === "external" && item.slug) {
+                      handleLaunch(item.tool_id, item.slug, item.name || item.slug);
                     } else if (item.slug) {
                       openPane(item.slug, item.name || item.slug);
                     }
@@ -222,16 +227,26 @@ export default function MyForgePage() {
 
 function InstalledTile({
   item,
+  isRunning,
   onOpen,
   onRemove,
 }: {
   item: UserItem;
+  isRunning?: boolean;
   onOpen: () => void;
   onRemove: () => void;
 }) {
   return (
     <div className="group flex items-center gap-3 rounded-xl border border-border bg-card p-3 transition-colors hover:border-border-strong">
-      <span className="text-2xl">{item.icon || "📦"}</span>
+      <div className="relative">
+        <span className="text-2xl">{item.icon || "📦"}</span>
+        {item.delivery === "external" && (
+          <span className={cn(
+            "absolute -right-0.5 -top-0.5 size-2 rounded-full",
+            isRunning ? "bg-green-500 shadow-[0_0_4px_theme(colors.green.500)]" : "bg-neutral-600"
+          )} />
+        )}
+      </div>
       <div className="flex min-w-0 flex-1 flex-col">
         <span className="truncate text-sm font-medium text-foreground">
           {item.name || item.slug}
@@ -251,11 +266,16 @@ function InstalledTile({
         </div>
       </div>
       <div className="flex items-center gap-1">
-        <Button variant="outline" size="xs" onClick={onOpen}>
+        <Button
+          variant="outline"
+          size="xs"
+          onClick={onOpen}
+          className={isRunning ? "border-green-500/30 text-green-500" : ""}
+        >
           {item.delivery === "external" ? (
             <>
               <ExternalLink data-icon="inline-start" />
-              Launch
+              {isRunning ? "Focus" : "Launch"}
             </>
           ) : (
             "Open"
