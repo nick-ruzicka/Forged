@@ -1147,6 +1147,32 @@ def reinspect_tool(tool_id: int):
 
 # -------------------- Skill subscriptions --------------------
 
+@app.route("/api/me/submissions", methods=["GET"])
+def list_my_submissions():
+    """Skills submitted by the current user. Shows all review states."""
+    uid, _ = _get_identity()
+    if not uid:
+        return jsonify({"error": "user_id_required"}), 400
+    # Get user name to match against author_name
+    with db.get_db() as cur:
+        cur.execute("SELECT name FROM users WHERE user_id = %s", (uid,))
+        row = cur.fetchone()
+        user_name = row.get("name") if row else None
+    if not user_name:
+        return jsonify({"submissions": [], "count": 0})
+    # Find skills authored by this user (all statuses)
+    with db.get_db() as cur:
+        cur.execute(
+            "SELECT * FROM skills WHERE author_name = %s ORDER BY created_at DESC",
+            (user_name,),
+        )
+        rows = [dict(r) for r in cur.fetchall()]
+    return jsonify({
+        "submissions": [Skill.from_row(r).to_dict() for r in rows],
+        "count": len(rows),
+    })
+
+
 @app.route("/api/me/skills", methods=["GET"])
 def list_skill_subs():
     uid, _ = _get_identity()

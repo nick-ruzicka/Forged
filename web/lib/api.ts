@@ -207,8 +207,8 @@ export function downloadSkillUrl(skillId: number): string {
 
 export function submitSkill(
   data: Partial<Skill>,
-): Promise<Skill> {
-  return api<Skill>("/skills", {
+): Promise<{ skill_id: number; status: string }> {
+  return api<{ skill_id: number; status: string }>("/skills", {
     method: "POST",
     body: JSON.stringify(data),
   });
@@ -218,6 +218,12 @@ export async function getMySkills(): Promise<Skill[]> {
   const res = await api<{ skills?: Skill[] } | Skill[]>("/me/skills");
   if (Array.isArray(res)) return res;
   return res.skills || [];
+}
+
+export async function getMySubmissions(): Promise<Skill[]> {
+  const res = await api<{ submissions?: Skill[] } | Skill[]>("/me/submissions");
+  if (Array.isArray(res)) return res;
+  return res.submissions || [];
 }
 
 export function subscribeSkill(skillId: number): Promise<void> {

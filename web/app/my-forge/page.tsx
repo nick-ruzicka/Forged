@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EmptyState } from "@/components/empty-state";
 import { AppPane } from "@/components/app-pane";
-import { useMyItems, useMyStars, useMySkills, useAgentAvailable, useRunningApps, uninstallApp } from "@/lib/hooks";
+import { useMyItems, useMyStars, useMySkills, useMySubmissions, useAgentAvailable, useRunningApps, uninstallApp } from "@/lib/hooks";
 import { launchItem, removeStar, launchApp } from "@/lib/api";
 import { useUser } from "@/lib/user-context";
 import type { UserItem, Star, Skill } from "@/lib/types";
@@ -20,6 +20,7 @@ export default function MyForgePage() {
   const { data: items, mutate: mutateItems } = useMyItems();
   const { data: stars, mutate: mutateStars } = useMyStars();
   const { data: skills } = useMySkills();
+  const { data: submissions } = useMySubmissions();
   const { data: agentAvail } = useAgentAvailable(true);
   const { data: runningData } = useRunningApps(agentAvail ?? false);
 
@@ -78,27 +79,31 @@ export default function MyForgePage() {
   }, [name, setIdentity]);
 
   return (
-    <div className="flex flex-col gap-6 p-6">
+    <div className="flex flex-col gap-8 p-6 md:p-8">
       {/* Header */}
-      <div className="flex flex-col gap-1">
-        <h1 className="text-2xl font-semibold text-foreground">My Forge</h1>
-        <p className="text-sm text-text-secondary">
+      <div className="flex flex-col gap-2">
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">My Forge</h1>
+        <p className="text-[15px] text-text-secondary">
           Your installed apps, saved items, and skills.
         </p>
       </div>
 
       {/* Identity row */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4">
+        <div className="flex size-10 items-center justify-center rounded-full bg-gradient-to-br from-primary/30 to-primary/10 text-sm font-semibold text-primary ring-1 ring-primary/20">
+          {(name || email || "U").slice(0, 2).toUpperCase()}
+        </div>
         {name || email ? (
-          <>
-            <span className="text-sm text-foreground">
-              {name || email}
-            </span>
+          <div className="flex flex-1 items-center justify-between">
+            <div className="flex flex-col">
+              {name && <span className="text-sm font-medium text-foreground">{name}</span>}
+              {email && <span className="text-xs text-text-muted">{email}</span>}
+            </div>
             <Button variant="ghost" size="xs" onClick={clearIdentity}>
               <LogOut data-icon="inline-start" />
               Sign out
             </Button>
-          </>
+          </div>
         ) : (
           <Button variant="outline" size="sm" onClick={handleSetEmail}>
             Set email
@@ -133,6 +138,14 @@ export default function MyForgePage() {
               </Badge>
             )}
           </TabsTrigger>
+          <TabsTrigger value="submissions">
+            Submissions
+            {submissions && submissions.length > 0 && (
+              <Badge variant="secondary" className="ml-1">
+                {submissions.length}
+              </Badge>
+            )}
+          </TabsTrigger>
         </TabsList>
 
         {/* Installed tab */}
@@ -146,7 +159,7 @@ export default function MyForgePage() {
               actionHref="/"
             />
           ) : (
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {items.map((item) => (
                 <InstalledTile
                   key={item.id}
@@ -177,7 +190,7 @@ export default function MyForgePage() {
               actionHref="/"
             />
           ) : (
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {stars.map((star) => (
                 <SavedTile
                   key={star.id}
@@ -200,9 +213,28 @@ export default function MyForgePage() {
               actionHref="/skills"
             />
           ) : (
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {skills.map((skill) => (
                 <SkillTile key={skill.id} skill={skill} />
+              ))}
+            </div>
+          )}
+        </TabsContent>
+
+        {/* Submissions tab */}
+        <TabsContent value="submissions">
+          {(!submissions || submissions.length === 0) ? (
+            <EmptyState
+              icon={<span className="text-3xl">📝</span>}
+              title="No submissions"
+              message="Submit a skill from the Skills page to see it here."
+              actionLabel="Browse Skills"
+              actionHref="/skills"
+            />
+          ) : (
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {submissions.map((skill) => (
+                <SubmissionTile key={skill.id} skill={skill} />
               ))}
             </div>
           )}
@@ -237,13 +269,15 @@ function InstalledTile({
   onRemove: () => void;
 }) {
   return (
-    <div className="group flex items-center gap-3 rounded-xl border border-border bg-card p-3 transition-colors hover:border-border-strong">
+    <div className="group flex items-center gap-3 rounded-2xl border border-border bg-card p-4 transition-all duration-150 hover:border-border-strong hover:shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
       <div className="relative">
-        <span className="text-2xl">{item.icon || "📦"}</span>
+        <div className="flex size-10 items-center justify-center rounded-xl bg-surface-2 text-xl ring-1 ring-border">
+          {item.icon || "📦"}
+        </div>
         {item.delivery === "external" && (
           <span className={cn(
-            "absolute -right-0.5 -top-0.5 size-2 rounded-full",
-            isRunning ? "bg-green-500 shadow-[0_0_4px_theme(colors.green.500)]" : "bg-neutral-600"
+            "absolute -right-0.5 -top-0.5 size-2.5 rounded-full ring-2 ring-card",
+            isRunning ? "bg-green-500 shadow-[0_0_6px_theme(colors.green.500)]" : "bg-neutral-600"
           )} />
         )}
       </div>
@@ -302,8 +336,10 @@ function SavedTile({
   onUnsave: () => void;
 }) {
   return (
-    <div className="group flex items-center gap-3 rounded-xl border border-border bg-card p-3 transition-colors hover:border-border-strong">
-      <span className="text-2xl">{star.icon || "📦"}</span>
+    <div className="group flex items-center gap-3 rounded-2xl border border-border bg-card p-4 transition-all duration-150 hover:border-border-strong hover:shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
+      <div className="flex size-10 items-center justify-center rounded-xl bg-surface-2 text-xl ring-1 ring-border">
+        {star.icon || "📦"}
+      </div>
       <div className="flex min-w-0 flex-1 flex-col">
         <Link
           href={star.slug ? `/apps/${star.slug}` : "#"}
@@ -330,10 +366,41 @@ function SavedTile({
   );
 }
 
+function SubmissionTile({ skill }: { skill: Skill }) {
+  const statusConfig: Record<string, { label: string; className: string }> = {
+    approved: { label: "Approved", className: "bg-green-500/10 text-green-500 ring-green-500/20" },
+    pending: { label: "Pending review", className: "bg-yellow-500/10 text-yellow-500 ring-yellow-500/20" },
+    needs_revision: { label: "Needs revision", className: "bg-orange-500/10 text-orange-500 ring-orange-500/20" },
+    blocked: { label: "Blocked", className: "bg-red-500/10 text-red-500 ring-red-500/20" },
+  };
+  const status = statusConfig[skill.review_status || "pending"] || statusConfig.pending;
+
+  return (
+    <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4">
+      <div className="flex size-10 items-center justify-center rounded-xl bg-surface-2 text-xl ring-1 ring-border">
+        📄
+      </div>
+      <div className="flex min-w-0 flex-1 flex-col">
+        <span className="truncate text-sm font-medium text-foreground">
+          {skill.title}
+        </span>
+        <div className="flex items-center gap-2 text-xs text-text-muted">
+          {skill.category && <span>{skill.category}</span>}
+          <Badge variant="outline" className={cn("text-[10px] ring-1", status.className)}>
+            {status.label}
+          </Badge>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function SkillTile({ skill }: { skill: Skill }) {
   return (
-    <div className="flex items-center gap-3 rounded-xl border border-border bg-card p-3">
-      <span className="text-2xl">📄</span>
+    <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4">
+      <div className="flex size-10 items-center justify-center rounded-xl bg-surface-2 text-xl ring-1 ring-border">
+        📄
+      </div>
       <div className="flex min-w-0 flex-1 flex-col">
         <span className="truncate text-sm font-medium text-foreground">
           {skill.title}

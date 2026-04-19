@@ -75,7 +75,9 @@ export function SubmitSkillDialog({
         source_url: sourceUrl.trim() || undefined,
         author_name: authorName.trim() || undefined,
       });
-      toast.success("Skill submitted successfully!");
+      toast.success("Skill submitted for review. You'll see it in My Forge \u2192 Submissions once approved.", {
+        duration: 5000,
+      });
       resetForm();
       onOpenChange(false);
       onSubmitted?.();

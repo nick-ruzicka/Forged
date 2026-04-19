@@ -37,6 +37,13 @@ export interface Skill {
   upvotes: number;
   copy_count: number;
   created_at?: string;
+  // Governance
+  review_status?: string;
+  review_id?: number;
+  version?: number;
+  blocked_reason?: string;
+  approved_at?: string;
+  blocked_at?: string;
 }
 
 export interface UserItem {

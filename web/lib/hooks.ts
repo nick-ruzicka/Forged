@@ -23,6 +23,7 @@ import {
   getMyItems,
   getMyStars,
   getMySkills,
+  getMySubmissions,
   getSkills,
   getClaudeRuns,
   getClaudeRunLog,
@@ -72,6 +73,10 @@ export function useMyStars() {
 
 export function useMySkills() {
   return useSWR<Skill[]>("/me/skills", getMySkills);
+}
+
+export function useMySubmissions() {
+  return useSWR<Skill[]>("/me/submissions", getMySubmissions);
 }
 
 // ---------------------------------------------------------------------------
