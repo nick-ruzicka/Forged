@@ -308,3 +308,98 @@ def test_qa_tester_computes_precision_and_consistency(db, monkeypatch):
 
     review = forge_db.get_review_by_skill(skill_id)
     assert review["qa_pass_rate"] is not None
+
+
+def test_synthesizer_approves_clean_skill(db, monkeypatch):
+    """Synthesizer recommends approve when all agents pass."""
+    from api import db as forge_db
+    import json
+
+    with db.cursor() as cur:
+        cur.execute(
+            "INSERT INTO skills (title, prompt_text, review_status, data_sensitivity) VALUES (%s, %s, %s, %s) RETURNING id",
+            ("Synth Skill", "prompt", "pending", "internal"),
+        )
+        row = cur.fetchone()
+        skill_id = row[0] if isinstance(row, tuple) else row["id"]
+    review_id = forge_db.create_review(skill_id, "skill")
+
+    import agents.base
+    class FakeMessage:
+        content = [type("Block", (), {"text": json.dumps({
+            "agent_recommendation": "approve",
+            "agent_confidence": 0.95,
+            "review_summary": "Skill passes all safety and quality checks.",
+            "issues": [],
+            "advisory_warnings": [],
+            "data_class_mismatch": False,
+        })})()]
+    class FakeClient:
+        class messages:
+            @staticmethod
+            def create(**kwargs):
+                return FakeMessage()
+    monkeypatch.setattr(agents.base, "_client", FakeClient())
+
+    from agents.synthesizer import run
+    all_results = {
+        "classifier": {"detected_category": "Development"},
+        "security_scanner": {"injection_risk": False, "data_exfil_risk": False},
+        "red_team": {"attacks_succeeded": 0, "attacks_attempted": 5},
+        "prompt_hardener": {"hardening_summary": "No changes needed"},
+        "qa_tester": {"qa_pass_rate": 0.95, "qa_issues": []},
+    }
+    result = run(skill_id, review_id, all_results=all_results,
+                 declared_data_sensitivity="internal")
+
+    assert result["agent_recommendation"] == "approve"
+    assert result["agent_confidence"] >= 0.9
+
+    review = forge_db.get_review_by_skill(skill_id)
+    assert review["agent_recommendation"] == "approve"
+    assert review["completed_at"] is not None
+
+
+def test_synthesizer_blocks_on_attack_success(db, monkeypatch):
+    """Synthesizer blocks when red team found successful attacks."""
+    from api import db as forge_db
+    import json
+
+    with db.cursor() as cur:
+        cur.execute(
+            "INSERT INTO skills (title, prompt_text, review_status) VALUES (%s, %s, %s) RETURNING id",
+            ("Unsafe Skill", "prompt", "pending"),
+        )
+        row = cur.fetchone()
+        skill_id = row[0] if isinstance(row, tuple) else row["id"]
+    review_id = forge_db.create_review(skill_id, "skill")
+
+    import agents.base
+    class FakeMessage:
+        content = [type("Block", (), {"text": json.dumps({
+            "agent_recommendation": "block",
+            "agent_confidence": 0.99,
+            "review_summary": "Red team found 2 successful attacks.",
+            "issues": [{"line_ref": "L1", "category": "prompt_injection_risk", "summary": "Vulnerable", "suggested_fix": "Add boundaries"}],
+            "advisory_warnings": [],
+            "data_class_mismatch": False,
+        })})()]
+    class FakeClient:
+        class messages:
+            @staticmethod
+            def create(**kwargs):
+                return FakeMessage()
+    monkeypatch.setattr(agents.base, "_client", FakeClient())
+
+    from agents.synthesizer import run
+    all_results = {
+        "classifier": {"detected_category": "Development"},
+        "security_scanner": {"injection_risk": True, "data_exfil_risk": False},
+        "red_team": {"attacks_succeeded": 2, "attacks_attempted": 5},
+        "prompt_hardener": {"hardening_summary": "Added boundaries"},
+        "qa_tester": {"qa_pass_rate": 0.8, "qa_issues": []},
+    }
+    result = run(skill_id, review_id, all_results=all_results,
+                 declared_data_sensitivity=None)
+
+    assert result["agent_recommendation"] == "block"
