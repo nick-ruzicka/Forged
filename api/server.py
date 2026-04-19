@@ -1553,7 +1553,17 @@ def submit_skill():
 
 @app.route("/api/skills/<int:skill_id>/review", methods=["GET"])
 def get_skill_review(skill_id):
-    """Return review status and feedback for a skill."""
+    """Return review status and feedback for a skill.
+
+    Surfaces admin override reasons (action + reason text) so the author
+    knows why their skill was blocked or needs revision. Per VISION.md §2:
+    "governance invisible when working, visible when not."
+
+    TODO: Gate detailed feedback to the skill's author only once skills
+    have an author_user_id column. Currently returns to any caller with
+    the skill_id, which is acceptable for v1 since skill_ids aren't
+    enumerable from the public catalog (pending skills are filtered out).
+    """
     skill = db.get_skill(skill_id)
     if not skill:
         return jsonify({"error": "not_found"}), 404
@@ -1576,6 +1586,21 @@ def get_skill_review(skill_id):
                 "confidence": review.get("agent_confidence"),
                 "summary": review.get("review_summary"),
             }
+
+    # Include admin actions (override reasons, blocks, etc.)
+    # This is the author-facing feedback: why was my skill blocked/revised?
+    admin_actions = db.list_skill_admin_actions(skill_id)
+    if admin_actions:
+        result["admin_actions"] = [
+            {
+                "action": a["action"],
+                "reason": a["reason"],
+                "from_status": a.get("from_status"),
+                "to_status": a.get("to_status"),
+                "created_at": a["created_at"].isoformat() if a.get("created_at") else None,
+            }
+            for a in admin_actions
+        ]
 
     # Include test cases
     result["test_cases"] = db.get_skill_test_cases(skill_id)

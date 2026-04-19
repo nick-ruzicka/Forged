@@ -339,3 +339,12 @@ def test_admin_override_skill(client, db):
     assert actions[0]["action"] == "override_approve"
     assert actions[0]["from_status"] == "needs_revision"
     assert actions[0]["to_status"] == "approved"
+
+    # Verify admin actions are surfaced in the review endpoint
+    review_resp = client.get(f"/api/skills/{skill_id}/review")
+    assert review_resp.status_code == 200
+    review_data = review_resp.get_json()
+    assert "admin_actions" in review_data
+    assert len(review_data["admin_actions"]) == 1
+    assert review_data["admin_actions"][0]["action"] == "override_approve"
+    assert review_data["admin_actions"][0]["reason"] == "Reviewed manually, this is safe and correct."
