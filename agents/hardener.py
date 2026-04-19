@@ -7,9 +7,7 @@ as feedback for the author, not auto-applied.
 """
 from __future__ import annotations
 
-import json
-
-from agents.base import SONNET, get_client, timed
+from agents.base import SONNET, get_client, parse_json_response, timed
 from api import db
 
 HARDENER_PROMPT = """You are a prompt security hardener for a developer tool marketplace.
@@ -46,7 +44,7 @@ def run(skill_id: int, review_id: int, *, skill_text: str,
         system=HARDENER_PROMPT,
     )
     text = resp.content[0].text
-    result = json.loads(text)
+    result = parse_json_response(text)
 
     db.update_agent_review(review_id,
         hardener_output=text,

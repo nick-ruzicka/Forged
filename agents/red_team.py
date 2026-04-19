@@ -9,7 +9,7 @@ from __future__ import annotations
 import json
 from concurrent.futures import ThreadPoolExecutor
 
-from agents.base import SONNET, get_client, timed
+from agents.base import SONNET, get_client, parse_json_response, timed
 from api import db
 
 ATTACK_TEMPLATES = [
@@ -64,8 +64,8 @@ def _run_single_attack(skill_text: str, attack: dict) -> dict:
     )
     text = resp.content[0].text
     try:
-        result = json.loads(text)
-    except json.JSONDecodeError:
+        result = parse_json_response(text)
+    except (json.JSONDecodeError, ValueError):
         result = {"attack_succeeded": False, "explanation": f"parse error: {text[:200]}"}
     result["attack_name"] = attack["name"]
     return result

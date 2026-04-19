@@ -6,9 +6,7 @@ the author's declared category and flags mismatches.
 """
 from __future__ import annotations
 
-import json
-
-from agents.base import HAIKU, get_client, timed
+from agents.base import HAIKU, get_client, parse_json_response, timed
 from api import db
 
 CLASSIFIER_PROMPT = """You are a skill classifier for a developer tool marketplace.
@@ -40,7 +38,7 @@ def run(skill_id: int, review_id: int, *, skill_text: str, declared_category: st
         system=CLASSIFIER_PROMPT,
     )
     text = resp.content[0].text
-    result = json.loads(text)
+    result = parse_json_response(text)
 
     db.update_agent_review(review_id,
         classifier_output=text,

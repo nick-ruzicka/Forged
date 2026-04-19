@@ -9,7 +9,7 @@ from __future__ import annotations
 import json
 import re
 
-from agents.base import HAIKU, get_client, timed
+from agents.base import HAIKU, get_client, parse_json_response, timed
 from api import db
 
 # Skill-specific security patterns
@@ -71,7 +71,7 @@ def run(skill_id: int, review_id: int, *, skill_text: str) -> dict:
         system=SCANNER_PROMPT,
     )
     text = resp.content[0].text
-    result = json.loads(text)
+    result = parse_json_response(text)
     result["regex_hits"] = regex_hits
 
     db.update_agent_review(review_id,

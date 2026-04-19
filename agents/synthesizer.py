@@ -10,7 +10,7 @@ from __future__ import annotations
 import json
 from datetime import datetime
 
-from agents.base import HAIKU, get_client, timed
+from agents.base import HAIKU, get_client, parse_json_response, timed
 from api import db
 
 SYNTHESIZER_PROMPT = """You are the final reviewer in a 6-agent security and quality pipeline for a developer tool marketplace.
@@ -67,8 +67,8 @@ def run(skill_id: int, review_id: int, *, all_results: dict,
     text = resp.content[0].text
 
     try:
-        result = json.loads(text)
-    except json.JSONDecodeError:
+        result = parse_json_response(text)
+    except (json.JSONDecodeError, ValueError):
         # Re-prompt once on parse failure
         resp2 = client.messages.create(
             model=HAIKU,
@@ -81,7 +81,7 @@ def run(skill_id: int, review_id: int, *, all_results: dict,
             system=SYNTHESIZER_PROMPT,
         )
         text = resp2.content[0].text
-        result = json.loads(text)
+        result = parse_json_response(text)
 
     db.update_agent_review(review_id,
         agent_recommendation=result.get("agent_recommendation", "needs_revision"),

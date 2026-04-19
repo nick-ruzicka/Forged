@@ -13,7 +13,7 @@ from __future__ import annotations
 import json
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from agents.base import SONNET, get_client, timed
+from agents.base import SONNET, get_client, parse_json_response, timed
 from api import db
 
 PRECISION_PROMPT = """You are evaluating whether a Claude Code skill would be correctly invoked for each prompt.
@@ -74,7 +74,7 @@ def _run_precision_batch(skill_desc: str, prompts: list, batch_idx: int) -> dict
         messages=[{"role": "user", "content": user_msg}],
         system=PRECISION_PROMPT.format(skill_desc=skill_desc),
     )
-    return json.loads(resp.content[0].text)
+    return parse_json_response(resp.content[0].text)
 
 
 def _run_consistency_output(skill_text: str, prompt: str, run_idx: int) -> str:
@@ -103,7 +103,7 @@ def run(skill_id: int, review_id: int, *, skill_text: str) -> dict:
             messages=[{"role": "user", "content": f"Skill text:\n\n{skill_text}"}],
             system="Generate 10 prompts that should trigger this skill and 10 that should not. Respond with JSON: {\"positive\": [...], \"negative\": [...]}",
         )
-        generated = json.loads(resp.content[0].text)
+        generated = parse_json_response(resp.content[0].text)
         test_cases = (
             [{"kind": "positive", "prompt": p} for p in generated.get("positive", [])] +
             [{"kind": "negative", "prompt": p} for p in generated.get("negative", [])]
@@ -131,7 +131,7 @@ def run(skill_id: int, review_id: int, *, skill_text: str) -> dict:
 
         # Workstream 3: Adversarial variant generation
         variant_future = executor.submit(
-            lambda: json.loads(client.messages.create(
+            lambda: parse_json_response(client.messages.create(
                 model=SONNET,
                 max_tokens=1500,
                 messages=[{"role": "user", "content": f"Skill text:\n\n{skill_text}"}],
@@ -172,7 +172,7 @@ def run(skill_id: int, review_id: int, *, skill_text: str) -> dict:
             messages=[{"role": "user", "content": f"Outputs to compare:\n\n{outputs_text}"}],
             system=CONSISTENCY_JUDGE_PROMPT,
         )
-        consistency_result = json.loads(judge_resp.content[0].text)
+        consistency_result = parse_json_response(judge_resp.content[0].text)
     else:
         consistency_result = {"avg_score": 0, "pct_above_4": 0}
 

@@ -9,7 +9,9 @@ Provides:
 """
 from __future__ import annotations
 
+import json
 import os
+import re
 from concurrent.futures import ThreadPoolExecutor, TimeoutError
 from datetime import datetime
 from functools import wraps
@@ -91,3 +93,17 @@ def with_timeout(fn, timeout_seconds, *args, **kwargs):
     with ThreadPoolExecutor(max_workers=1) as executor:
         future = executor.submit(fn, *args, **kwargs)
         return future.result(timeout=timeout_seconds)
+
+
+def parse_json_response(text: str) -> dict:
+    """Parse JSON from a Claude response, stripping markdown code fences.
+
+    Claude often wraps JSON in ```json ... ``` blocks. This handles that
+    plus leading/trailing whitespace.
+    """
+    cleaned = text.strip()
+    # Strip markdown code fences
+    cleaned = re.sub(r"^```(?:json)?\s*\n?", "", cleaned)
+    cleaned = re.sub(r"\n?```\s*$", "", cleaned)
+    cleaned = cleaned.strip()
+    return json.loads(cleaned)
