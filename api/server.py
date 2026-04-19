@@ -709,10 +709,52 @@ def proxy_running():
     try:
         import urllib.request as ur
         req = ur.Request("http://localhost:4242/running")
-        with ur.urlopen(req, timeout=5) as r:
+        with ur.urlopen(req, timeout=10) as r:
             return jsonify(json.loads(r.read()))
     except Exception as e:
-        return jsonify({"apps": [], "error": str(e)}), 502
+        return jsonify({"apps": []}), 200
+
+
+@app.route("/api/forge-agent/usage", methods=["GET"])
+def proxy_usage():
+    """Proxy usage stats request to forge-agent."""
+    slug = request.args.get("slug", "")
+    try:
+        import urllib.request as ur
+        req = ur.Request(f"http://localhost:4242/usage?slug={slug}")
+        with ur.urlopen(req, timeout=10) as r:
+            return jsonify(json.loads(r.read()))
+    except Exception:
+        return jsonify({"slug": slug, "sessions_7d": [], "total_sec_7d": 0,
+                        "session_count_7d": 0, "last_opened": None}), 200
+
+
+@app.route("/api/forge-agent/privacy", methods=["GET"])
+def proxy_privacy():
+    """Proxy privacy request to forge-agent."""
+    try:
+        import urllib.request as ur
+        req = ur.Request("http://localhost:4242/privacy")
+        with ur.urlopen(req, timeout=5) as r:
+            return jsonify(json.loads(r.read()))
+    except Exception:
+        return jsonify({"error": "forge-agent unavailable"}), 200
+
+
+@app.route("/api/forge-agent/updates", methods=["GET"])
+def proxy_updates():
+    """Proxy updates request to forge-agent."""
+    try:
+        import urllib.request as ur
+        slug = request.args.get("slug", "")
+        req = ur.Request(f"http://localhost:4242/updates")
+        with ur.urlopen(req, timeout=10) as r:
+            data = json.loads(r.read())
+            if slug:
+                data["updates"] = [u for u in data.get("updates", []) if u.get("slug") == slug]
+            return jsonify(data)
+    except Exception:
+        return jsonify({"updates": []}), 200
 
 
 @app.route("/api/forge-agent/uninstall", methods=["POST"])
@@ -1134,7 +1176,7 @@ def skills_sync_payload():
 
 @app.route("/api/tools/<int:tool_id>/social", methods=["GET"])
 def social_stats(tool_id: int):
-    """Per-tool social aggregates: total installs, team installs, avg rating."""
+    """Per-tool social aggregates: installs, team installs, role concentration, weekly."""
     uid, _ = _get_identity()
     user_team = None
     if uid:
@@ -1150,6 +1192,8 @@ def social_stats(tool_id: int):
         )
         total = cur.fetchone()["n"]
         team_n = 0
+        role_concentration = None
+        installs_this_week = 0
         if user_team:
             cur.execute(
                 """
@@ -1160,6 +1204,35 @@ def social_stats(tool_id: int):
                 (tool_id, user_team),
             )
             team_n = cur.fetchone()["n"]
+            # Role concentration: which role dominates installs for this tool on this team?
+            if team_n >= 2:
+                cur.execute(
+                    """
+                    SELECT u.role, COUNT(*) AS n FROM user_items ui
+                    JOIN users u ON u.user_id = ui.user_id
+                    WHERE ui.tool_id = %s AND u.team = %s AND u.role IS NOT NULL
+                    GROUP BY u.role ORDER BY n DESC LIMIT 1
+                    """,
+                    (tool_id, user_team),
+                )
+                top_role = cur.fetchone()
+                if top_role and top_role["n"] / team_n > 0.6:
+                    role_concentration = {
+                        "role": top_role["role"],
+                        "count": top_role["n"],
+                        "total": team_n,
+                    }
+            # Installs this week on team
+            cur.execute(
+                """
+                SELECT COUNT(*) AS n FROM user_items ui
+                JOIN users u ON u.user_id = ui.user_id
+                WHERE ui.tool_id = %s AND u.team = %s
+                  AND ui.added_at >= NOW() - INTERVAL '7 days'
+                """,
+                (tool_id, user_team),
+            )
+            installs_this_week = cur.fetchone()["n"]
         cur.execute(
             "SELECT AVG(rating)::float AS avg, COUNT(*) AS n FROM tool_reviews WHERE tool_id = %s",
             (tool_id,),
@@ -1172,6 +1245,128 @@ def social_stats(tool_id: int):
         "team": user_team,
         "avg_rating": ratings.get("avg"),
         "review_count": ratings.get("n") or 0,
+        "role_concentration": role_concentration,
+        "installs_this_week": installs_this_week,
+    })
+
+
+@app.route("/api/tools/<int:tool_id>/coinstalls", methods=["GET"])
+def tool_coinstalls(tool_id: int):
+    """Top 3 tools most frequently co-installed with this tool."""
+    uid, _ = _get_identity()
+    with db.get_db() as cur:
+        user_count = 0
+        if uid:
+            cur.execute("SELECT COUNT(*) AS n FROM user_items WHERE user_id = %s", (uid,))
+            user_count = cur.fetchone()["n"]
+
+        if user_count >= 5 and uid:
+            cur.execute("""
+                SELECT t.id, t.slug, t.name, t.icon, COUNT(*) as overlap
+                FROM user_items ui2
+                JOIN tools t ON t.id = ui2.tool_id
+                WHERE ui2.user_id IN (
+                    SELECT ui3.user_id FROM user_items ui3
+                    WHERE ui3.tool_id IN (
+                        SELECT tool_id FROM user_items WHERE user_id = %(uid)s
+                    )
+                    AND ui3.user_id != %(uid)s
+                    GROUP BY ui3.user_id
+                    HAVING COUNT(*) >= 2
+                )
+                AND ui2.tool_id != %(tool_id)s
+                AND t.status = 'approved'
+                GROUP BY t.id, t.slug, t.name, t.icon
+                ORDER BY overlap DESC
+                LIMIT 3
+            """, {"uid": uid, "tool_id": tool_id})
+        else:
+            cur.execute("""
+                SELECT t.id, t.slug, t.name, t.icon, COUNT(*) as overlap
+                FROM user_items ui2
+                JOIN tools t ON t.id = ui2.tool_id
+                WHERE ui2.user_id IN (
+                    SELECT user_id FROM user_items WHERE tool_id = %(tool_id)s
+                )
+                AND ui2.tool_id != %(tool_id)s
+                AND t.status = 'approved'
+                GROUP BY t.id, t.slug, t.name, t.icon
+                ORDER BY overlap DESC
+                LIMIT 3
+            """, {"tool_id": tool_id})
+
+        rows = [dict(r) for r in cur.fetchall()]
+    return jsonify({"tool_id": tool_id, "coinstalls": rows})
+
+
+@app.route("/api/team/trending", methods=["GET"])
+def team_trending():
+    """Role-aware trending + team popular tools for catalog discovery strip."""
+    uid, email = _get_identity()
+    if not uid:
+        return jsonify({"role_trending": [], "team_popular": [], "role": None, "team": None})
+
+    user_role = None
+    user_team = None
+    with db.get_db() as cur:
+        cur.execute("SELECT role, team FROM users WHERE user_id = %s", (uid,))
+        row = cur.fetchone()
+        if row:
+            user_role = row.get("role")
+            user_team = row.get("team")
+
+    role_trending = []
+    team_popular = []
+
+    with db.get_db() as cur:
+        if user_role:
+            cur.execute("""
+                SELECT t.id, t.slug, t.name, t.icon,
+                       COUNT(*) as installs_this_week
+                FROM user_items ui
+                JOIN users u ON u.user_id = ui.user_id
+                JOIN tools t ON t.id = ui.tool_id
+                WHERE u.role = %(role)s
+                  AND ui.added_at >= NOW() - INTERVAL '7 days'
+                  AND t.status = 'approved'
+                  AND ui.tool_id NOT IN (
+                      SELECT tool_id FROM user_items WHERE user_id = %(uid)s
+                  )
+                GROUP BY t.id, t.slug, t.name, t.icon
+                ORDER BY installs_this_week DESC
+                LIMIT 3
+            """, {"role": user_role, "uid": uid})
+            role_trending = [
+                {**dict(r), "reason": f"{r['installs_this_week']} {user_role}s installed this week"}
+                for r in cur.fetchall()
+            ]
+
+        if user_team:
+            cur.execute("""
+                SELECT t.id, t.slug, t.name, t.icon,
+                       COUNT(*) as team_installs
+                FROM user_items ui
+                JOIN users u ON u.user_id = ui.user_id
+                JOIN tools t ON t.id = ui.tool_id
+                WHERE u.team = %(team)s
+                  AND t.status = 'approved'
+                  AND ui.tool_id NOT IN (
+                      SELECT tool_id FROM user_items WHERE user_id = %(uid)s
+                  )
+                GROUP BY t.id, t.slug, t.name, t.icon
+                ORDER BY team_installs DESC
+                LIMIT 3
+            """, {"team": user_team, "uid": uid})
+            team_popular = [
+                {**dict(r), "reason": "popular on your team"}
+                for r in cur.fetchall()
+            ]
+
+    return jsonify({
+        "role_trending": role_trending,
+        "team_popular": team_popular,
+        "role": user_role,
+        "team": user_team,
     })
 
 
