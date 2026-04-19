@@ -236,7 +236,7 @@ export default function AppDetailPage({
               </div>
             )}
             <div className="h-[600px] overflow-hidden rounded-lg border border-border">
-              <AppEmbed slug={slug} />
+              <AppEmbed slug={slug} preview={!isInstalled} />
             </div>
           </div>
         </TabsContent>
