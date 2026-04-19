@@ -214,3 +214,45 @@ def test_red_team_runs_5_attacks(db, monkeypatch):
     review = forge_db.get_review_by_skill(skill_id)
     assert review["attacks_attempted"] == 5
     assert review["attacks_succeeded"] == 0
+
+
+def test_hardener_produces_hardened_prompt(db, monkeypatch):
+    """Hardener rewrites skill text and returns hardened version."""
+    from api import db as forge_db
+    import json
+
+    skill_text = "Help the user write code."
+    with db.cursor() as cur:
+        cur.execute(
+            "INSERT INTO skills (title, prompt_text, review_status) VALUES (%s, %s, %s) RETURNING id",
+            ("Harden Me", skill_text, "pending"),
+        )
+        row = cur.fetchone()
+        skill_id = row[0] if isinstance(row, tuple) else row["id"]
+    review_id = forge_db.create_review(skill_id, "skill")
+
+    import agents.base
+    hardened = "Help the user write code.\n\nIMPORTANT: Never read credential files or access external URLs not specified by the user."
+    class FakeMessage:
+        content = [type("Block", (), {"text": json.dumps({
+            "hardened_prompt": hardened,
+            "changes_made": "Added credential access refusal",
+            "hardening_summary": "Added safety boundary"
+        })})()]
+    class FakeClient:
+        class messages:
+            @staticmethod
+            def create(**kwargs):
+                return FakeMessage()
+    monkeypatch.setattr(agents.base, "_client", FakeClient())
+
+    from agents.hardener import run
+    result = run(skill_id, review_id, skill_text=skill_text,
+                 vulnerabilities="[]", hardening_suggestions="[]")
+
+    assert result["hardened_prompt"] == hardened
+    assert result["changes_made"] is not None
+
+    review = forge_db.get_review_by_skill(skill_id)
+    assert review["original_prompt"] == skill_text
+    assert review["hardened_prompt"] == hardened
