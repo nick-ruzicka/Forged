@@ -166,10 +166,12 @@ def _is_process_running(process_name: str) -> tuple:
     """Check if a process is running. Returns (running: bool, pid: int|None)."""
     try:
         r = subprocess.run(["pgrep", "-f", process_name],
-                           capture_output=True, text=True, timeout=5)
+                           capture_output=True, text=True, timeout=1)
         if r.returncode == 0 and r.stdout.strip():
             pid = int(r.stdout.strip().split()[0])
             return True, pid
+        return False, None
+    except subprocess.TimeoutExpired:
         return False, None
     except Exception:
         return False, None
@@ -313,6 +315,11 @@ class AgentHandler(http.server.BaseHTTPRequestHandler):
             return
         if parsed.path == "/privacy":
             self._handle_privacy()
+            return
+        if parsed.path == "/usage":
+            qs = parse_qs(parsed.query)
+            slug = (qs.get("slug") or [""])[0]
+            self._handle_usage(slug)
             return
         if parsed.path.startswith("/claude-exec/log/"):
             run_id = parsed.path.split("/")[-1]
@@ -689,6 +696,55 @@ class AgentHandler(http.server.BaseHTTPRequestHandler):
             "storage": str(USAGE_FILE),
             "currently_monitoring": monitored,
             "monitor_interval_sec": MONITOR_INTERVAL,
+        })
+
+    def _handle_usage(self, slug):
+        """Return usage stats for a slug from usage.jsonl, aggregated over 7 days."""
+        from datetime import datetime, timedelta, timezone
+        now = datetime.now(timezone.utc)
+        cutoff = now - timedelta(days=7)
+        day_buckets = {}
+        for i in range(7):
+            d = (now - timedelta(days=6 - i)).strftime("%Y-%m-%d")
+            day_buckets[d] = {"date": d, "duration_sec": 0, "count": 0}
+
+        last_opened = None
+        try:
+            with open(USAGE_FILE, "r") as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    try:
+                        entry = json.loads(line)
+                    except json.JSONDecodeError:
+                        continue
+                    if slug and entry.get("slug") != slug:
+                        continue
+                    started = entry.get("started_at", "")
+                    try:
+                        dt = datetime.fromisoformat(started.replace("Z", "+00:00"))
+                    except (ValueError, AttributeError):
+                        continue
+                    if dt >= cutoff:
+                        day_key = dt.strftime("%Y-%m-%d")
+                        if day_key in day_buckets:
+                            day_buckets[day_key]["duration_sec"] += entry.get("duration_sec", 0)
+                            day_buckets[day_key]["count"] += 1
+                    if last_opened is None or started > last_opened:
+                        last_opened = started
+        except FileNotFoundError:
+            pass
+
+        sessions_7d = list(day_buckets.values())
+        total_sec = sum(d["duration_sec"] for d in sessions_7d)
+        session_count = sum(d["count"] for d in sessions_7d)
+        self._json({
+            "slug": slug,
+            "sessions_7d": sessions_7d,
+            "total_sec_7d": total_sec,
+            "session_count_7d": session_count,
+            "last_opened": last_opened,
         })
 
     # ── /uninstall ────────────────────────────────────────────
