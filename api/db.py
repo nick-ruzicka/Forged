@@ -315,14 +315,26 @@ def count_runs_by_ip(ip: str, since_timestamp: float) -> int:
 
 # -------- Agent reviews --------
 
-def create_agent_review(tool_id: int) -> int:
+def create_review(target_id: int, target_type: str) -> int:
+    """Create an agent_reviews row for a tool or skill.
+    target_type must be 'tool' or 'skill'. The XOR constraint in the DB
+    enforces that exactly one of tool_id/skill_id is set.
+    """
+    if target_type not in ("tool", "skill"):
+        raise ValueError(f"target_type must be 'tool' or 'skill', got {target_type!r}")
+    col = "tool_id" if target_type == "tool" else "skill_id"
     with get_db() as cur:
         cur.execute(
-            "INSERT INTO agent_reviews (tool_id) VALUES (%s) RETURNING id",
-            (tool_id,),
+            f"INSERT INTO agent_reviews ({col}) VALUES (%s) RETURNING id",
+            (target_id,),
         )
         row = cur.fetchone()
         return row["id"]
+
+
+def create_agent_review(tool_id: int) -> int:
+    """Backward-compatible wrapper. Prefer create_review(id, 'tool')."""
+    return create_review(tool_id, "tool")
 
 
 def update_agent_review(review_id: int, **fields):
@@ -353,6 +365,17 @@ def get_agent_review_by_tool(tool_id: int):
         return dict(row) if row else None
 
 
+def get_review_by_skill(skill_id: int):
+    with get_db() as cur:
+        cur.execute(
+            "SELECT * FROM agent_reviews WHERE skill_id = %s "
+            "ORDER BY id DESC LIMIT 1",
+            (skill_id,),
+        )
+        row = cur.fetchone()
+        return dict(row) if row else None
+
+
 def get_underperforming_tools(min_flags: int = 2, max_rating: float = 3.0):
     with get_db() as cur:
         cur.execute(
@@ -367,9 +390,13 @@ def get_underperforming_tools(min_flags: int = 2, max_rating: float = 3.0):
 
 # -------- Skills --------
 
-def list_skills(category: str = None, search: str = None, sort: str = "upvotes"):
+def list_skills(category: str = None, search: str = None, sort: str = "upvotes",
+                review_status: str = "approved"):
     where = []
     params = []
+    if review_status:
+        where.append("review_status = %s")
+        params.append(review_status)
     if category and category != "All":
         where.append("category = %s")
         params.append(category)
@@ -430,3 +457,60 @@ def get_skill(skill_id: int):
         cur.execute("SELECT * FROM skills WHERE id = %s", (skill_id,))
         row = cur.fetchone()
         return dict(row) if row else None
+
+
+# -------- Skill test cases --------
+
+def insert_skill_test_cases(skill_id: int, cases: list):
+    """Insert author-supplied test cases for a skill.
+    cases: list of {"kind": "positive"|"negative", "prompt": str}
+    """
+    with get_db(dict_cursor=False) as cur:
+        for case in cases:
+            cur.execute(
+                "INSERT INTO skill_test_cases (skill_id, kind, prompt) VALUES (%s, %s, %s)",
+                (skill_id, case["kind"], case["prompt"]),
+            )
+
+
+def get_skill_test_cases(skill_id: int) -> list:
+    with get_db() as cur:
+        cur.execute(
+            "SELECT * FROM skill_test_cases WHERE skill_id = %s ORDER BY kind, id",
+            (skill_id,),
+        )
+        return [dict(r) for r in cur.fetchall()]
+
+
+# -------- Skill admin actions --------
+
+def insert_skill_admin_action(skill_id: int, action: str, reason: str,
+                               reviewer: str, from_status: str = None,
+                               to_status: str = None) -> int:
+    with get_db() as cur:
+        cur.execute(
+            """INSERT INTO skill_admin_actions
+               (skill_id, action, reason, reviewer, from_status, to_status)
+               VALUES (%s, %s, %s, %s, %s, %s) RETURNING id""",
+            (skill_id, action, reason, reviewer, from_status, to_status),
+        )
+        row = cur.fetchone()
+        return row["id"]
+
+
+def list_skill_admin_actions(skill_id: int) -> list:
+    with get_db() as cur:
+        cur.execute(
+            "SELECT * FROM skill_admin_actions WHERE skill_id = %s ORDER BY created_at DESC",
+            (skill_id,),
+        )
+        return [dict(r) for r in cur.fetchall()]
+
+
+def update_skill(skill_id: int, **fields):
+    if not fields:
+        return
+    sets = ", ".join(f"{k} = %s" for k in fields.keys())
+    values = list(fields.values()) + [skill_id]
+    with get_db(dict_cursor=False) as cur:
+        cur.execute(f"UPDATE skills SET {sets} WHERE id = %s", values)

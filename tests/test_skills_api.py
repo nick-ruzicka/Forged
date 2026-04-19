@@ -143,9 +143,9 @@ def test_submit_skill_accepts_source_url(client, db):
 def test_list_skills_sort_by_copies(client, db):
     with db.cursor() as cur:
         cur.execute(
-            """INSERT INTO skills (title, prompt_text, category, copy_count, upvotes)
-               VALUES ('Low Copies', 'p', 'Development', 1, 100),
-                      ('High Copies', 'p', 'Development', 999, 0) RETURNING id""",
+            """INSERT INTO skills (title, prompt_text, category, copy_count, upvotes, review_status)
+               VALUES ('Low Copies', 'p', 'Development', 1, 100, 'approved'),
+                      ('High Copies', 'p', 'Development', 999, 0, 'approved') RETURNING id""",
         )
     resp = client.get("/api/skills?sort=copies")
     if resp.status_code == 404:
@@ -154,3 +154,75 @@ def test_list_skills_sort_by_copies(client, db):
     items = (resp.get_json() or {}).get("skills", [])
     titles = [s["title"] for s in items]
     assert titles.index("High Copies") < titles.index("Low Copies")
+
+
+def test_create_review_for_skill(db):
+    """create_review('skill', id) creates an agent_reviews row with skill_id set."""
+    from api import db as forge_db
+    with db.cursor() as cur:
+        cur.execute(
+            "INSERT INTO skills (title, prompt_text, review_status) VALUES (%s, %s, %s) RETURNING id",
+            ("Review Target", "prompt", "pending"),
+        )
+        row = cur.fetchone()
+        skill_id = row[0] if isinstance(row, tuple) else row["id"]
+
+    review_id = forge_db.create_review(skill_id, "skill")
+    assert review_id is not None
+    assert isinstance(review_id, int)
+
+    review = forge_db.get_review_by_skill(skill_id)
+    assert review is not None
+    assert review["skill_id"] == skill_id
+    assert review["tool_id"] is None
+
+
+def test_create_review_for_tool(db, sample_tool):
+    """create_review('tool', id) creates an agent_reviews row with tool_id set — backward compat."""
+    from api import db as forge_db
+    review_id = forge_db.create_review(sample_tool["id"], "tool")
+    assert review_id is not None
+    review = forge_db.get_agent_review_by_tool(sample_tool["id"])
+    assert review is not None
+    assert review["tool_id"] == sample_tool["id"]
+
+
+def test_list_skills_default_filter_approved_only(client, db):
+    """GET /api/skills only returns approved skills by default."""
+    with db.cursor() as cur:
+        cur.execute(
+            "INSERT INTO skills (title, prompt_text, review_status) VALUES (%s, %s, %s)",
+            ("Approved Skill", "prompt", "approved"),
+        )
+        cur.execute(
+            "INSERT INTO skills (title, prompt_text, review_status) VALUES (%s, %s, %s)",
+            ("Pending Skill", "prompt", "pending"),
+        )
+    resp = client.get("/api/skills")
+    assert resp.status_code == 200
+    titles = [s["title"] for s in resp.get_json()["skills"]]
+    assert "Approved Skill" in titles
+    assert "Pending Skill" not in titles
+
+
+def test_insert_skill_test_cases(db):
+    """insert_skill_test_cases stores positive and negative examples."""
+    from api import db as forge_db
+    with db.cursor() as cur:
+        cur.execute(
+            "INSERT INTO skills (title, prompt_text, review_status) VALUES (%s, %s, %s) RETURNING id",
+            ("TC Skill", "prompt", "pending"),
+        )
+        row = cur.fetchone()
+        skill_id = row[0] if isinstance(row, tuple) else row["id"]
+
+    cases = [
+        {"kind": "positive", "prompt": "should trigger"},
+        {"kind": "negative", "prompt": "should not trigger"},
+    ]
+    forge_db.insert_skill_test_cases(skill_id, cases)
+
+    result = forge_db.get_skill_test_cases(skill_id)
+    assert len(result) == 2
+    kinds = {r["kind"] for r in result}
+    assert kinds == {"positive", "negative"}
