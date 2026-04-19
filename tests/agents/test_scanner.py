@@ -65,3 +65,58 @@ def test_scan_includes_nested_apps_at_depth_two(tmp_path):
 def test_scan_returns_empty_when_root_missing(tmp_path):
     missing = tmp_path / "does_not_exist"
     assert scanner._scan_applications(root=str(missing)) == []
+
+
+def test_brew_list_returns_lines(monkeypatch):
+    class FakeProc:
+        returncode = 0
+        stdout = "node\nraycast\n\nyarn\n"
+    monkeypatch.setattr(scanner.subprocess, "run", lambda *a, **k: FakeProc())
+    assert scanner._brew_list(cask=False) == ["node", "raycast", "yarn"]
+
+
+def test_brew_list_returns_empty_when_brew_missing(monkeypatch):
+    def boom(*a, **k):
+        raise FileNotFoundError("brew not in PATH")
+    monkeypatch.setattr(scanner.subprocess, "run", boom)
+    assert scanner._brew_list(cask=False) == []
+
+
+def test_brew_list_returns_empty_on_nonzero_exit(monkeypatch):
+    class FakeProc:
+        returncode = 1
+        stdout = ""
+    monkeypatch.setattr(scanner.subprocess, "run", lambda *a, **k: FakeProc())
+    assert scanner._brew_list(cask=True) == []
+
+
+def test_brew_list_casks_uses_cask_flag(monkeypatch):
+    seen_cmds: list[list[str]] = []
+
+    class FakeProc:
+        returncode = 0
+        stdout = "raycast\n"
+
+    def fake_run(cmd, **k):
+        seen_cmds.append(cmd)
+        return FakeProc()
+
+    monkeypatch.setattr(scanner.subprocess, "run", fake_run)
+    scanner._brew_list(cask=True)
+    assert seen_cmds[-1] == ["brew", "list", "--cask"]
+
+
+def test_scan_composes_apps_and_brew(monkeypatch, tmp_path):
+    _make_app(tmp_path, "Pluely", "com.pluely.Pluely", "Pluely")
+
+    class FakeProc:
+        returncode = 0
+        stdout = "node\n"
+
+    monkeypatch.setattr(scanner.subprocess, "run", lambda *a, **k: FakeProc())
+    monkeypatch.setattr(scanner, "DEFAULT_APPLICATIONS_ROOT", str(tmp_path))
+
+    payload = scanner.scan()
+    assert any(a["bundle_id"] == "com.pluely.Pluely" for a in payload["apps"])
+    assert payload["brew"] == ["node"]
+    assert payload["brew_casks"] == ["node"]  # same fake; just proves both calls

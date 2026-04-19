@@ -15,7 +15,7 @@ _APPLICATIONS_GLOB_DEPTH = 2  # /Applications/*.app and /Applications/*/Contents
 def scan() -> dict:
     """Return the full scan payload for POSTing to the backend."""
     return {
-        "apps": _scan_applications(),
+        "apps": _scan_applications(root=DEFAULT_APPLICATIONS_ROOT),
         "brew": _brew_list(cask=False),
         "brew_casks": _brew_list(cask=True),
     }
