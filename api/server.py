@@ -1685,6 +1685,107 @@ def download_skill(skill_id):
 
 # -------------------- Admin --------------------
 
+
+@app.route("/api/admin/stats", methods=["GET"])
+def admin_stats():
+    """Dashboard stats for the admin panel."""
+    unauthorized = _require_admin()
+    if unauthorized:
+        return unauthorized
+    with db.get_db() as cur:
+        cur.execute("SELECT count(*) as cnt FROM tools WHERE status = 'approved'")
+        apps_live = cur.fetchone()["cnt"]
+        cur.execute("SELECT count(*) as cnt FROM tools WHERE status = 'pending'")
+        apps_pending = cur.fetchone()["cnt"]
+        cur.execute("SELECT count(*) as cnt FROM skills")
+        skills_total = cur.fetchone()["cnt"]
+        cur.execute("SELECT count(*) as cnt FROM agent_reviews")
+        reviews_total = cur.fetchone()["cnt"]
+        cur.execute("SELECT count(*) as cnt FROM user_items")
+        installs_total = cur.fetchone()["cnt"]
+    return jsonify({
+        "apps_live": apps_live,
+        "apps_pending": apps_pending,
+        "skills_total": skills_total,
+        "reviews_total": reviews_total,
+        "installs_total": installs_total,
+    })
+
+
+@app.route("/api/admin/queue", methods=["GET"])
+def admin_queue():
+    """List pending tools awaiting review."""
+    unauthorized = _require_admin()
+    if unauthorized:
+        return unauthorized
+    with db.get_db() as cur:
+        cur.execute(
+            "SELECT * FROM tools WHERE status = 'pending' ORDER BY created_at DESC"
+        )
+        rows = [dict(r) for r in cur.fetchall()]
+    return jsonify({"tools": [_jsonify_tool(r) for r in rows]})
+
+
+@app.route("/api/admin/reviews", methods=["GET"])
+def admin_list_reviews():
+    """List all agent reviews for the admin panel."""
+    unauthorized = _require_admin()
+    if unauthorized:
+        return unauthorized
+    with db.get_db() as cur:
+        cur.execute(
+            """SELECT ar.*, t.name as tool_name, t.slug as tool_slug, t.icon as tool_icon
+               FROM agent_reviews ar
+               LEFT JOIN tools t ON t.id = ar.tool_id
+               ORDER BY ar.created_at DESC"""
+        )
+        rows = [dict(r) for r in cur.fetchall()]
+    # Serialize timestamps
+    for r in rows:
+        if r.get("created_at"):
+            r["created_at"] = r["created_at"].isoformat()
+    return jsonify({"reviews": rows})
+
+
+@app.route("/api/tools/<int:tool_id>/agent-review", methods=["GET"])
+def get_agent_review(tool_id):
+    """Get the agent review for a specific tool."""
+    with db.get_db() as cur:
+        cur.execute(
+            "SELECT * FROM agent_reviews WHERE tool_id = %s ORDER BY created_at DESC LIMIT 1",
+            (tool_id,),
+        )
+        row = cur.fetchone()
+    if not row:
+        return jsonify({"review": None})
+    r = dict(row)
+    if r.get("created_at"):
+        r["created_at"] = r["created_at"].isoformat()
+    return jsonify({"review": r})
+
+
+@app.route("/api/admin/tools/<int:tool_id>/approve", methods=["POST"])
+def admin_approve(tool_id):
+    """Approve a pending tool."""
+    unauthorized = _require_admin()
+    if unauthorized:
+        return unauthorized
+    db.update_tool(tool_id, status="approved")
+    return jsonify({"success": True, "tool_id": tool_id, "status": "approved"})
+
+
+@app.route("/api/admin/tools/<int:tool_id>/reject", methods=["POST"])
+def admin_reject(tool_id):
+    """Reject a pending tool."""
+    unauthorized = _require_admin()
+    if unauthorized:
+        return unauthorized
+    body = request.get_json(silent=True) or {}
+    reason = body.get("reason", "Rejected by admin")
+    db.update_tool(tool_id, status="rejected")
+    return jsonify({"success": True, "tool_id": tool_id, "status": "rejected", "reason": reason})
+
+
 @app.route("/api/admin/tools/<int:tool_id>/update-html", methods=["POST"])
 def admin_update_app_html(tool_id):
     """Trusted auto-redeploy path for approved app-type tools (GitHub webhook)."""

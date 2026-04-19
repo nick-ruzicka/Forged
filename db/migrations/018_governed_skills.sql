@@ -9,7 +9,7 @@
 -- 1. Extend skills with review state
 ALTER TABLE skills
   ADD COLUMN IF NOT EXISTS review_status     TEXT NOT NULL DEFAULT 'pending',
-  ADD COLUMN IF NOT EXISTS review_id         INTEGER REFERENCES agent_reviews(id),
+  ADD COLUMN IF NOT EXISTS review_id         INTEGER,
   ADD COLUMN IF NOT EXISTS version           INTEGER NOT NULL DEFAULT 1,
   ADD COLUMN IF NOT EXISTS parent_skill_id   INTEGER REFERENCES skills(id),
   ADD COLUMN IF NOT EXISTS data_sensitivity  TEXT,
@@ -19,43 +19,6 @@ ALTER TABLE skills
   ADD COLUMN IF NOT EXISTS blocked_at        TIMESTAMP;
 
 CREATE INDEX IF NOT EXISTS idx_skills_review_status ON skills(review_status);
-
--- 2. Make agent_reviews support both tools and skills (XOR)
-ALTER TABLE agent_reviews
-  ADD COLUMN IF NOT EXISTS skill_id INTEGER REFERENCES skills(id);
-
--- Make tool_id nullable (existing rows all have tool_id set, so this is safe)
-ALTER TABLE agent_reviews
-  ALTER COLUMN tool_id DROP NOT NULL;
-
--- XOR constraint: exactly one of tool_id or skill_id must be set.
--- Validate existing rows first — all have tool_id set, skill_id is NULL.
-DO $$
-DECLARE
-  bad_count INTEGER;
-BEGIN
-  SELECT COUNT(*) INTO bad_count
-  FROM agent_reviews
-  WHERE tool_id IS NULL AND skill_id IS NULL;
-  IF bad_count > 0 THEN
-    RAISE EXCEPTION 'Pre-migration check failed: % agent_reviews rows have neither tool_id nor skill_id', bad_count;
-  END IF;
-END $$;
-
--- Safe to add constraint now — but use NOT VALID + VALIDATE to avoid full table lock
--- on large tables. For our scale it's fine either way.
-DO $$
-BEGIN
-  IF NOT EXISTS (
-    SELECT 1 FROM pg_constraint WHERE conname = 'agent_reviews_target_check'
-  ) THEN
-    ALTER TABLE agent_reviews
-      ADD CONSTRAINT agent_reviews_target_check
-        CHECK ((tool_id IS NULL) <> (skill_id IS NULL));
-  END IF;
-END $$;
-
-CREATE INDEX IF NOT EXISTS idx_agent_reviews_skill_id ON agent_reviews(skill_id);
 
 -- 3. Skill test cases (author-supplied positive/negative examples)
 CREATE TABLE IF NOT EXISTS skill_test_cases (
