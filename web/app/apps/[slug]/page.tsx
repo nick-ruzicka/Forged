@@ -150,7 +150,7 @@ export default function AppDetailPage({
       </div>
 
       {/* Tabs */}
-      <Tabs defaultValue="overview">
+      <Tabs defaultValue={isInstalled && !isExternal ? "open" : "overview"}>
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="open">Open App</TabsTrigger>
