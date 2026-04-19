@@ -1484,7 +1484,16 @@ def resolve_token(access_token):
 def list_skills():
     category = request.args.get("category")
     search = request.args.get("search")
-    rows = db.list_skills(category=category, search=search)
+    # Admin can see all statuses; default is approved-only
+    include = request.args.get("include")
+    if include == "pending":
+        admin_check = _require_admin()
+        if admin_check:
+            return admin_check
+        review_status = None  # no filter — show all
+    else:
+        review_status = "approved"
+    rows = db.list_skills(category=category, search=search, review_status=review_status)
     return jsonify({
         "skills": [Skill.from_row(r).to_dict() for r in rows],
         "count": len(rows),
@@ -1509,9 +1518,69 @@ def submit_skill():
         "use_case": body.get("use_case") or "",
         "author_name": body.get("author_name") or "",
         "source_url": body.get("source_url") or "",
+        "review_status": "pending",
     }
+
+    # Handle data_sensitivity if provided
+    sensitivity = body.get("data_sensitivity")
+    if sensitivity and sensitivity in ("public", "internal", "confidential"):
+        data["data_sensitivity"] = sensitivity
+
     skill_id = db.insert_skill(data)
-    return jsonify({"id": skill_id, "status": "ok"}), 201
+
+    # Store author-supplied test cases if provided
+    test_cases_raw = body.get("test_cases")
+    if test_cases_raw and isinstance(test_cases_raw, dict):
+        cases = []
+        for prompt in (test_cases_raw.get("positive") or []):
+            cases.append({"kind": "positive", "prompt": prompt})
+        for prompt in (test_cases_raw.get("negative") or []):
+            cases.append({"kind": "negative", "prompt": prompt})
+        if cases:
+            db.insert_skill_test_cases(skill_id, cases)
+
+    # Enqueue the review pipeline
+    try:
+        from forge_sandbox.tasks import skill_review_pipeline
+        skill_review_pipeline.delay(skill_id)
+    except Exception as exc:
+        # Pipeline enqueue failed — skill stays pending, log the error.
+        # Fail-closed: skill remains in 'pending' until pipeline runs.
+        print(f"[server] skill_review_pipeline enqueue failed for skill {skill_id}: {exc}")
+
+    return jsonify({"skill_id": skill_id, "status": "pending"}), 201
+
+
+@app.route("/api/skills/<int:skill_id>/review", methods=["GET"])
+def get_skill_review(skill_id):
+    """Return review status and feedback for a skill."""
+    skill = db.get_skill(skill_id)
+    if not skill:
+        return jsonify({"error": "not_found"}), 404
+
+    result = {
+        "skill_id": skill_id,
+        "review_status": skill.get("review_status", "pending"),
+        "review_id": skill.get("review_id"),
+        "blocked_reason": skill.get("blocked_reason"),
+        "approved_at": skill["approved_at"].isoformat() if skill.get("approved_at") else None,
+        "blocked_at": skill["blocked_at"].isoformat() if skill.get("blocked_at") else None,
+    }
+
+    # Include review details if a review exists
+    if skill.get("review_id"):
+        review = db.get_review_by_skill(skill_id)
+        if review:
+            result["review"] = {
+                "recommendation": review.get("agent_recommendation"),
+                "confidence": review.get("agent_confidence"),
+                "summary": review.get("review_summary"),
+            }
+
+    # Include test cases
+    result["test_cases"] = db.get_skill_test_cases(skill_id)
+
+    return jsonify(result)
 
 
 @app.route("/api/skills/<int:skill_id>/upvote", methods=["POST"])
@@ -1646,6 +1715,79 @@ def admin_enable_container(tool_id):
     db.update_tool(tool_id, container_mode=True)
     return jsonify({"success": True, "tool_id": tool_id,
                     "image_tag": result.get("image_tag")})
+
+
+@app.route("/api/admin/skills/<int:skill_id>/override", methods=["POST"])
+def admin_override_skill(skill_id):
+    """Admin override: approve, block, retroactively block, or unblock a skill."""
+    unauthorized = _require_admin()
+    if unauthorized:
+        return unauthorized
+
+    skill = db.get_skill(skill_id)
+    if not skill:
+        return jsonify({"error": "not_found"}), 404
+
+    body = request.get_json(silent=True) or {}
+    action = body.get("action")
+    reason = (body.get("reason") or "").strip()
+
+    valid_actions = {"override_approve", "override_block", "retroactive_block", "unblock", "manual_rereview"}
+    if action not in valid_actions:
+        return jsonify({"error": "validation", "message": f"action must be one of {sorted(valid_actions)}"}), 400
+    if len(reason) < 20:
+        return jsonify({"error": "validation", "message": "reason must be at least 20 characters"}), 400
+
+    from_status = skill.get("review_status")
+
+    # Determine new status
+    status_map = {
+        "override_approve": "approved",
+        "override_block": "blocked",
+        "retroactive_block": "blocked",
+        "unblock": "approved",
+        "manual_rereview": "pending",
+    }
+    to_status = status_map[action]
+
+    # Update skill
+    update_fields = {"review_status": to_status}
+    if to_status == "approved":
+        from datetime import datetime as dt
+        update_fields["approved_at"] = dt.utcnow()
+        update_fields["blocked_reason"] = None
+        update_fields["blocked_at"] = None
+    elif to_status == "blocked":
+        from datetime import datetime as dt
+        update_fields["blocked_reason"] = f"{action}:{reason}"
+        update_fields["blocked_at"] = dt.utcnow()
+
+    db.update_skill(skill_id, **update_fields)
+
+    # Log the admin action
+    reviewer = request.headers.get("X-Admin-User", "admin")
+    db.insert_skill_admin_action(
+        skill_id=skill_id,
+        action=action,
+        reason=reason,
+        reviewer=reviewer,
+        from_status=from_status,
+        to_status=to_status,
+    )
+
+    # If manual_rereview, enqueue pipeline again
+    if action == "manual_rereview":
+        try:
+            from forge_sandbox.tasks import skill_review_pipeline
+            skill_review_pipeline.delay(skill_id)
+        except Exception as exc:
+            print(f"[server] re-review enqueue failed for skill {skill_id}: {exc}")
+
+    return jsonify({
+        "skill_id": skill_id,
+        "review_status": to_status,
+        "action": action,
+    })
 
 
 # -------------------- App upload (keep — used by forge CLI + GitHub bot) --------------------

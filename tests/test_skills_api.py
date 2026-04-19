@@ -132,7 +132,7 @@ def test_submit_skill_accepts_source_url(client, db):
     if resp.status_code in (404, 405):
         pytest.skip("POST /api/skills not implemented yet")
     assert resp.status_code == 201
-    skill_id = resp.get_json()["id"]
+    skill_id = resp.get_json()["skill_id"]
     with db.cursor() as cur:
         cur.execute("SELECT source_url FROM skills WHERE id = %s", (skill_id,))
         row = cur.fetchone()
@@ -254,3 +254,85 @@ def test_skill_review_pipeline_stub_approves(db):
     assert skill["review_status"] == "approved"
     assert skill["review_id"] is not None
     assert skill["approved_at"] is not None
+
+
+def test_submit_skill_returns_pending(client):
+    """POST /api/skills returns status=pending and enqueues review."""
+    body = {
+        "title": "New Governed Skill",
+        "prompt_text": "Do the thing",
+        "category": "research",
+        "author_name": "Tester",
+        "test_cases": {
+            "positive": ["should trigger on this"] * 10,
+            "negative": ["should not trigger on this"] * 10,
+        },
+    }
+    resp = client.post("/api/skills", json=body)
+    assert resp.status_code == 201
+    data = resp.get_json()
+    assert data["status"] == "pending"
+    assert "skill_id" in data
+
+
+def test_submit_skill_without_test_cases_still_works(client):
+    """POST /api/skills without test_cases still accepts (flagged as author_no_examples)."""
+    body = {
+        "title": "No Tests Skill",
+        "prompt_text": "Do the thing",
+        "category": "research",
+        "author_name": "Tester",
+    }
+    resp = client.post("/api/skills", json=body)
+    assert resp.status_code == 201
+    data = resp.get_json()
+    assert data["status"] == "pending"
+
+
+def test_get_skill_review_status(client, db):
+    """GET /api/skills/:id/review returns review status."""
+    with db.cursor() as cur:
+        cur.execute(
+            "INSERT INTO skills (title, prompt_text, review_status) VALUES (%s, %s, %s) RETURNING id",
+            ("Status Skill", "prompt", "approved"),
+        )
+        row = cur.fetchone()
+        skill_id = row[0] if isinstance(row, tuple) else row["id"]
+
+    resp = client.get(f"/api/skills/{skill_id}/review")
+    if resp.status_code == 404:
+        pytest.skip("review endpoint not implemented")
+    assert resp.status_code == 200
+    data = resp.get_json()
+    assert data["review_status"] == "approved"
+
+
+def test_admin_override_skill(client, db):
+    """POST /api/admin/skills/:id/override changes review_status and logs action."""
+    with db.cursor() as cur:
+        cur.execute(
+            "INSERT INTO skills (title, prompt_text, review_status) VALUES (%s, %s, %s) RETURNING id",
+            ("Override Me", "prompt", "needs_revision"),
+        )
+        row = cur.fetchone()
+        skill_id = row[0] if isinstance(row, tuple) else row["id"]
+
+    resp = client.post(
+        f"/api/admin/skills/{skill_id}/override",
+        json={
+            "action": "override_approve",
+            "reason": "Reviewed manually, this is safe and correct.",
+        },
+        headers={"X-Admin-Key": "test-admin-key"},
+    )
+    assert resp.status_code == 200
+    data = resp.get_json()
+    assert data["review_status"] == "approved"
+
+    # Verify audit log
+    from api import db as forge_db
+    actions = forge_db.list_skill_admin_actions(skill_id)
+    assert len(actions) == 1
+    assert actions[0]["action"] == "override_approve"
+    assert actions[0]["from_status"] == "needs_revision"
+    assert actions[0]["to_status"] == "approved"
