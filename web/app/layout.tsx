@@ -19,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} dark`} style={{ colorScheme: "dark" }} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} dark`} style={{ colorScheme: "dark" }} data-scroll-behavior="smooth" suppressHydrationWarning>
       <body className="font-sans antialiased">
         <Providers>{children}</Providers>
       </body>
