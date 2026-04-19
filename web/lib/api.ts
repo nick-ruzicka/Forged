@@ -91,19 +91,23 @@ export async function api<T>(
 }
 
 // ---------------------------------------------------------------------------
-// Apps
+// Apps — Flask serves GET /api/tools → {"tools": [...], "total": N}
 // ---------------------------------------------------------------------------
 
-export function getApps(params?: Record<string, string>): Promise<App[]> {
-  return api<App[]>("/apps", { params });
+export async function getApps(params?: Record<string, string>): Promise<App[]> {
+  const res = await api<{ tools?: App[]; data?: App[] } | App[]>("/tools", { params });
+  if (Array.isArray(res)) return res;
+  return res.tools || res.data || [];
 }
 
-export function getAppBySlug(slug: string): Promise<App> {
-  return api<App>(`/apps/${slug}`);
+export async function getAppBySlug(slug: string): Promise<App> {
+  return api<App>(`/tools/slug/${encodeURIComponent(slug)}`);
 }
 
-export function getAppReviews(toolId: number): Promise<Review[]> {
-  return api<Review[]>(`/apps/${toolId}/reviews`);
+export async function getAppReviews(toolId: number): Promise<Review[]> {
+  const res = await api<{ reviews?: Review[] } | Review[]>(`/tools/${toolId}/reviews`);
+  if (Array.isArray(res)) return res;
+  return res.reviews || [];
 }
 
 export function postReview(
@@ -111,30 +115,34 @@ export function postReview(
   rating: number,
   text: string,
 ): Promise<Review> {
-  return api<Review>(`/apps/${toolId}/reviews`, {
+  return api<Review>(`/tools/${toolId}/reviews`, {
     method: "POST",
     body: JSON.stringify({ rating, text }),
   });
 }
 
-export function getAppInspection(
+export async function getAppInspection(
   toolId: number,
 ): Promise<InspectionBadge[]> {
-  return api<InspectionBadge[]>(`/apps/${toolId}/inspect`);
+  const res = await api<{ badges?: InspectionBadge[] } | InspectionBadge[]>(`/tools/${toolId}/inspection`);
+  if (Array.isArray(res)) return res;
+  return res.badges || [];
 }
 
 // ---------------------------------------------------------------------------
-// User shelf
+// User shelf — Flask serves GET /api/me/items → {"items": [...]}
 // ---------------------------------------------------------------------------
 
-export function getMyItems(): Promise<UserItem[]> {
-  return api<UserItem[]>("/me/items");
+export async function getMyItems(): Promise<UserItem[]> {
+  const res = await api<{ items?: UserItem[] } | UserItem[]>("/me/items");
+  if (Array.isArray(res)) return res;
+  return res.items || [];
 }
 
 export function addItem(toolId: number): Promise<UserItem> {
-  return api<UserItem>("/me/items", {
+  return api<UserItem>(`/me/items/${toolId}`, {
     method: "POST",
-    body: JSON.stringify({ tool_id: toolId }),
+    body: JSON.stringify({}),
   });
 }
 
@@ -151,17 +159,19 @@ export function installItem(toolId: number): Promise<void> {
 }
 
 // ---------------------------------------------------------------------------
-// Stars
+// Stars — Flask serves GET /api/me/stars → {"items": [...]}
 // ---------------------------------------------------------------------------
 
-export function getMyStars(): Promise<Star[]> {
-  return api<Star[]>("/me/stars");
+export async function getMyStars(): Promise<Star[]> {
+  const res = await api<{ items?: Star[] } | Star[]>("/me/stars");
+  if (Array.isArray(res)) return res;
+  return res.items || [];
 }
 
 export function addStar(toolId: number): Promise<Star> {
-  return api<Star>("/me/stars", {
+  return api<Star>(`/me/stars/${toolId}`, {
     method: "POST",
-    body: JSON.stringify({ tool_id: toolId }),
+    body: JSON.stringify({}),
   });
 }
 
@@ -170,13 +180,15 @@ export function removeStar(toolId: number): Promise<void> {
 }
 
 // ---------------------------------------------------------------------------
-// Skills
+// Skills — Flask may return array or {"skills": [...]}
 // ---------------------------------------------------------------------------
 
-export function getSkills(
+export async function getSkills(
   params?: Record<string, string>,
 ): Promise<Skill[]> {
-  return api<Skill[]>("/skills", { params });
+  const res = await api<{ skills?: Skill[]; data?: Skill[] } | Skill[]>("/skills", { params });
+  if (Array.isArray(res)) return res;
+  return res.skills || res.data || [];
 }
 
 export function upvoteSkill(skillId: number): Promise<void> {
@@ -196,20 +208,22 @@ export function submitSkill(
   });
 }
 
-export function getMySkills(): Promise<Skill[]> {
-  return api<Skill[]>("/me/skills");
+export async function getMySkills(): Promise<Skill[]> {
+  const res = await api<{ skills?: Skill[] } | Skill[]>("/me/skills");
+  if (Array.isArray(res)) return res;
+  return res.skills || [];
 }
 
 export function subscribeSkill(skillId: number): Promise<void> {
-  return api<void>(`/skills/${skillId}/subscribe`, { method: "POST" });
+  return api<void>(`/me/skills/${skillId}`, { method: "POST", body: JSON.stringify({}) });
 }
 
 // ---------------------------------------------------------------------------
-// Submit
+// Submit — Flask serves POST /api/submit/app, POST /api/submit/from-github
 // ---------------------------------------------------------------------------
 
-export function submitApp(data: Partial<App>): Promise<App> {
-  return api<App>("/apps", {
+export function submitApp(data: Record<string, unknown>): Promise<App> {
+  return api<App>("/submit/app", {
     method: "POST",
     body: JSON.stringify(data),
   });
@@ -217,51 +231,58 @@ export function submitApp(data: Partial<App>): Promise<App> {
 
 export function submitFromGithub(
   url: string,
-  metadata?: Partial<App>,
+  metadata?: Record<string, string>,
 ): Promise<App> {
-  return api<App>("/apps/github", {
+  return api<App>("/submit/from-github", {
     method: "POST",
-    body: JSON.stringify({ url, ...metadata }),
+    body: JSON.stringify({ github_url: url, ...metadata }),
   });
 }
 
 // ---------------------------------------------------------------------------
-// Admin
+// Admin — Flask serves GET /api/admin/queue → {"tools": [...]}
 // ---------------------------------------------------------------------------
 
-export function getAdminQueue(): Promise<QueueItem[]> {
-  return api<QueueItem[]>("/admin/queue");
+export async function getAdminQueue(): Promise<QueueItem[]> {
+  const res = await api<{ tools?: QueueItem[] } | QueueItem[]>("/admin/queue");
+  if (Array.isArray(res)) return res;
+  return res.tools || [];
 }
 
-export function getAdminStats(): Promise<AdminStats> {
-  return api<AdminStats>("/admin/stats");
+export async function getAdminStats(): Promise<AdminStats> {
+  return api<AdminStats>("/admin/analytics");
 }
 
 export function approveApp(toolId: number): Promise<void> {
-  return api<void>(`/admin/queue/${toolId}/approve`, { method: "POST" });
+  return api<void>(`/admin/tools/${toolId}/approve`, {
+    method: "POST",
+    body: JSON.stringify({ reviewer: "admin" }),
+  });
 }
 
 export function rejectApp(toolId: number, reason: string): Promise<void> {
-  return api<void>(`/admin/queue/${toolId}/reject`, {
+  return api<void>(`/admin/tools/${toolId}/reject`, {
     method: "POST",
     body: JSON.stringify({ reason }),
   });
 }
 
 // ---------------------------------------------------------------------------
-// Claude
+// Claude — Flask serves GET /api/claude-runs → {"runs": [...]}
 // ---------------------------------------------------------------------------
 
-export function getClaudeRuns(): Promise<ClaudeRun[]> {
-  return api<ClaudeRun[]>("/claude/runs");
+export async function getClaudeRuns(): Promise<ClaudeRun[]> {
+  const res = await api<{ runs?: ClaudeRun[] } | ClaudeRun[]>("/claude-runs");
+  if (Array.isArray(res)) return res;
+  return res.runs || [];
 }
 
 export function getClaudeRunLog(runId: number): Promise<ClaudeRun> {
-  return api<ClaudeRun>(`/claude/runs/${runId}`);
+  return api<ClaudeRun>(`/claude-runs/${runId}/log`);
 }
 
 export function execClaude(prompt: string): Promise<ClaudeRun> {
-  return api<ClaudeRun>("/claude/exec", {
+  return api<ClaudeRun>("/claude-exec", {
     method: "POST",
     body: JSON.stringify({ prompt }),
   });
@@ -272,5 +293,5 @@ export function execClaude(prompt: string): Promise<ClaudeRun> {
 // ---------------------------------------------------------------------------
 
 export function getAgentRunning(): Promise<{ running: boolean }> {
-  return api<{ running: boolean }>("/agent/status");
+  return api<{ running: boolean }>("/forge-agent/running").catch(() => ({ running: false }));
 }

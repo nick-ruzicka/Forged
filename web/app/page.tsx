@@ -44,11 +44,11 @@ export default function CatalogPage() {
   const { data: stars } = useMyStars();
 
   const installedIds = useMemo(
-    () => new Set(items?.map((i) => i.tool_id)),
+    () => new Set((Array.isArray(items) ? items : []).map((i) => i.tool_id)),
     [items],
   );
   const starredIds = useMemo(
-    () => new Set(stars?.map((s) => s.tool_id)),
+    () => new Set((Array.isArray(stars) ? stars : []).map((s) => s.tool_id)),
     [stars],
   );
 

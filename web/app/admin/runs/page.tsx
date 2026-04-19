@@ -71,7 +71,7 @@ function RunsView() {
 
         {/* Scrollable run list */}
         <div className="flex-1 overflow-y-auto">
-          {runs?.map((run) => (
+          {(Array.isArray(runs) ? runs : []).map((run) => (
             <button
               key={run.id}
               type="button"

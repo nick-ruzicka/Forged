@@ -69,8 +69,9 @@ export function Sidebar({ onOpenCommandMenu }: SidebarProps) {
     setMobileOpen(false);
   }, [pathname]);
 
-  const installedApps = myItems
-    ?.sort((a, b) => {
+  const itemsArray = Array.isArray(myItems) ? myItems : [];
+  const installedApps = [...itemsArray]
+    .sort((a, b) => {
       const aTime = a.last_opened_at ? new Date(a.last_opened_at).getTime() : 0;
       const bTime = b.last_opened_at ? new Date(b.last_opened_at).getTime() : 0;
       return bTime - aTime;

@@ -28,7 +28,7 @@ export function EmptyState({
         <p className="text-sm text-text-secondary max-w-sm">{message}</p>
       </div>
       {actionLabel && actionHref && (
-        <Button variant="default" size="sm" render={<Link href={actionHref} />}>
+        <Button variant="default" size="sm" nativeButton={false} render={<Link href={actionHref} />}>
           {actionLabel}
         </Button>
       )}

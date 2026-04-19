@@ -88,13 +88,13 @@ export default function PublishPage() {
       return;
     }
 
-    const metadata: Partial<App> = {
+    const metadata: Record<string, string> = {
       name: appName.trim(),
       tagline: tagline.trim(),
       category,
       icon: icon.trim() || "\u229E",
-      description: description.trim() || undefined,
-      author_name: authorName.trim() || undefined,
+      description: description.trim() || "",
+      author_name: authorName.trim() || "",
       author_email: authorEmail.trim(),
     };
 
@@ -194,12 +194,12 @@ export default function PublishPage() {
             {published.slug && (
               <Button
                 variant="outline"
-                render={<Link href={`/apps/${published.slug}`} />}
+                nativeButton={false} render={<Link href={`/apps/${published.slug}`} />}
               >
                 Open it
               </Button>
             )}
-            <Button variant="outline" render={<Link href="/my-forge" />}>
+            <Button variant="outline" nativeButton={false} render={<Link href="/my-forge" />}>
               Go to My Forge
             </Button>
             <Button onClick={handlePublishAnother}>Publish another</Button>
