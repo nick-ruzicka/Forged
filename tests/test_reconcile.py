@@ -196,3 +196,72 @@ def test_reconcile_unknowns_preserves_hidden_flag(db, seeded_user):
         row = cur.fetchone()
     assert row[0] is True, "hidden flag must not be cleared by a re-detection"
     assert row[1] == "Foo Updated", "name should still refresh so un-hide shows current data"
+
+
+def test_reconcile_uninstalls_unmarks_matched_tool_no_longer_present(db, seeded_user, insert_tool):
+    from api import server
+
+    tool_id = insert_tool("pluely", app_bundle_id="com.pluely.Pluely")
+    # Detected previously
+    with db.cursor() as cur:
+        cur.execute(
+            """INSERT INTO user_items (user_id, tool_id, installed_locally, installed_at, source)
+               VALUES (%s, %s, TRUE, NOW(), 'detected')""",
+            (seeded_user, tool_id),
+        )
+    # Now scan no longer contains it
+    payload = {"apps": [], "brew": [], "brew_casks": []}
+    unmarked = server._reconcile_uninstalls(seeded_user, payload, set(), db.cursor())
+    assert unmarked >= 1
+
+    with db.cursor() as cur:
+        cur.execute(
+            "SELECT installed_locally, installed_at FROM user_items WHERE user_id=%s AND tool_id=%s",
+            (seeded_user, tool_id),
+        )
+        row = cur.fetchone()
+    assert row[0] is False
+    assert row[1] is None
+
+
+def test_reconcile_uninstalls_unmarks_unknown_app_no_longer_present(db, seeded_user):
+    from api import server
+
+    with db.cursor() as cur:
+        cur.execute(
+            """INSERT INTO user_items (user_id, tool_id, detected_bundle_id, detected_name,
+                                       source, installed_locally, installed_at)
+               VALUES (%s, NULL, 'com.gone.app', 'Gone', 'detected', TRUE, NOW())""",
+            (seeded_user,),
+        )
+    payload = {"apps": [], "brew": [], "brew_casks": []}
+    unmarked = server._reconcile_uninstalls(seeded_user, payload, set(), db.cursor())
+    assert unmarked >= 1
+
+    with db.cursor() as cur:
+        cur.execute(
+            "SELECT installed_locally FROM user_items WHERE user_id=%s AND detected_bundle_id=%s",
+            (seeded_user, "com.gone.app"),
+        )
+        assert cur.fetchone()[0] is False
+
+
+def test_reconcile_uninstalls_does_not_touch_manual_rows(db, seeded_user, insert_tool):
+    from api import server
+
+    tool_id = insert_tool("pluely", app_bundle_id="com.pluely.Pluely")
+    with db.cursor() as cur:
+        cur.execute(
+            """INSERT INTO user_items (user_id, tool_id, installed_locally, installed_at, source)
+               VALUES (%s, %s, TRUE, NOW(), 'manual')""",
+            (seeded_user, tool_id),
+        )
+    payload = {"apps": [], "brew": [], "brew_casks": []}
+    server._reconcile_uninstalls(seeded_user, payload, set(), db.cursor())
+
+    with db.cursor() as cur:
+        cur.execute(
+            "SELECT installed_locally FROM user_items WHERE user_id=%s AND tool_id=%s",
+            (seeded_user, tool_id),
+        )
+        assert cur.fetchone()[0] is True, "manual rows must never be auto-unmarked"

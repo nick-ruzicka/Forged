@@ -1151,6 +1151,59 @@ def _reconcile_unknowns(user_id: str, apps: list, matched_tool_ids: set, cur) ->
     return touched
 
 
+def _reconcile_uninstalls(user_id: str, payload: dict, matched_tool_ids: set, cur) -> int:
+    """Set installed_locally=FALSE for source='detected' rows missing from this scan.
+
+    - Matched rows (tool_id NOT NULL): keyed by app_bundle_id / install_meta lookup.
+    - Unknown rows (tool_id NULL): keyed by detected_bundle_id.
+    Manual-source rows are never touched.
+    """
+    seen_bundle_ids = {a["bundle_id"] for a in payload.get("apps", []) if a.get("bundle_id")}
+    seen_formulas = set(payload.get("brew", []))
+    seen_casks = set(payload.get("brew_casks", []))
+
+    # Pre-load currently-detected, currently-installed shelf rows for this user.
+    cur.execute(
+        """
+        SELECT ui.id, ui.tool_id, ui.detected_bundle_id,
+               t.app_bundle_id,
+               (t.install_meta::jsonb)->>'formula' AS formula,
+               (t.install_meta::jsonb)->>'cask' AS cask
+        FROM user_items ui
+        LEFT JOIN tools t ON t.id = ui.tool_id
+        WHERE ui.user_id = %s
+          AND ui.source = 'detected'
+          AND ui.installed_locally = TRUE
+        """,
+        (user_id,),
+    )
+    candidates = cur.fetchall()
+
+    to_unmark = []
+    for row in candidates:
+        ui_id, tool_id, det_bundle_id, app_bundle_id, formula, cask = row
+        if tool_id is None:
+            # Unknown row — key on detected_bundle_id.
+            if det_bundle_id and det_bundle_id not in seen_bundle_ids:
+                to_unmark.append(ui_id)
+        else:
+            # Matched row — present in scan if any of its match keys match.
+            present = (
+                (app_bundle_id and app_bundle_id in seen_bundle_ids)
+                or (formula and formula in seen_formulas)
+                or (cask and cask in seen_casks)
+            )
+            if not present:
+                to_unmark.append(ui_id)
+
+    if to_unmark:
+        cur.execute(
+            "UPDATE user_items SET installed_locally = FALSE, installed_at = NULL WHERE id = ANY(%s)",
+            (to_unmark,),
+        )
+    return len(to_unmark)
+
+
 # -------------------- Reviews --------------------
 
 @app.route("/api/tools/<int:tool_id>/reviews", methods=["GET"])
