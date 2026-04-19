@@ -8,6 +8,12 @@ import type {
   AdminStats,
   QueueItem,
   InspectionBadge,
+  CoInstall,
+  TrendingData,
+  SocialData,
+  UsageData,
+  RunningData,
+  PrivacyData,
 } from "./types";
 
 // ---------------------------------------------------------------------------
@@ -294,4 +300,58 @@ export function execClaude(prompt: string): Promise<ClaudeRun> {
 
 export function getAgentRunning(): Promise<{ running: boolean }> {
   return api<{ running: boolean }>("/forge-agent/running").catch(() => ({ running: false }));
+}
+
+// ---------------------------------------------------------------------------
+// Social / Discovery
+// ---------------------------------------------------------------------------
+
+export async function getCoInstalls(toolId: number): Promise<CoInstall[]> {
+  const res = await api<{ coinstalls?: CoInstall[] }>(`/tools/${toolId}/coinstalls`);
+  return res.coinstalls || [];
+}
+
+export async function getTrending(): Promise<TrendingData> {
+  return api<TrendingData>("/team/trending");
+}
+
+export async function getSocial(toolId: number): Promise<SocialData> {
+  return api<SocialData>(`/tools/${toolId}/social`);
+}
+
+// ---------------------------------------------------------------------------
+// Forge Agent
+// ---------------------------------------------------------------------------
+
+export async function getAgentUsage(slug: string): Promise<UsageData> {
+  return api<UsageData>("/forge-agent/usage", { params: { slug } });
+}
+
+export async function getAgentRunningApps(): Promise<RunningData> {
+  return api<RunningData>("/forge-agent/running").catch(() => ({ apps: [] }));
+}
+
+export async function getAgentPrivacy(): Promise<PrivacyData> {
+  return api<PrivacyData>("/forge-agent/privacy");
+}
+
+export async function launchApp(slug: string, name: string): Promise<void> {
+  await api("/forge-agent/launch", {
+    method: "POST",
+    body: JSON.stringify({ app_slug: slug, app_name: name }),
+  });
+}
+
+export async function revealApp(slug: string, name: string): Promise<void> {
+  await api("/forge-agent/launch", {
+    method: "POST",
+    body: JSON.stringify({ app_slug: slug, app_name: name, action: "reveal" }),
+  });
+}
+
+export async function uninstallAgent(slug: string): Promise<void> {
+  await api("/forge-agent/uninstall", {
+    method: "POST",
+    body: JSON.stringify({ slug }),
+  });
 }

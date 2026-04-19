@@ -10,6 +10,11 @@ import type {
   ClaudeRun,
   AdminStats,
   QueueItem,
+  CoInstall,
+  TrendingData,
+  SocialData,
+  UsageData,
+  RunningData,
 } from "./types";
 import {
   getApps,
@@ -28,6 +33,11 @@ import {
   removeItem,
   addStar,
   removeStar,
+  getCoInstalls,
+  getTrending,
+  getSocial,
+  getAgentUsage,
+  getAgentRunningApps,
 } from "./api";
 
 // ---------------------------------------------------------------------------
@@ -128,6 +138,43 @@ export function useAgentRunning(enabled: boolean) {
   return useSWR<{ running: boolean }>(
     enabled ? "/agent/status" : null,
     getAgentRunning,
+    { refreshInterval: 15000 },
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Social / Discovery
+// ---------------------------------------------------------------------------
+
+export function useCoInstalls(toolId: number | undefined) {
+  return useSWR<CoInstall[]>(
+    toolId != null ? ["/coinstalls", toolId] : null,
+    () => getCoInstalls(toolId!),
+  );
+}
+
+export function useTrending() {
+  return useSWR<TrendingData>("/team/trending", getTrending);
+}
+
+export function useSocial(toolId: number | undefined) {
+  return useSWR<SocialData>(
+    toolId != null ? ["/social", toolId] : null,
+    () => getSocial(toolId!),
+  );
+}
+
+export function useAgentUsage(slug: string | undefined) {
+  return useSWR<UsageData>(
+    slug ? ["/agent/usage", slug] : null,
+    () => getAgentUsage(slug!),
+  );
+}
+
+export function useRunningApps(enabled: boolean = true) {
+  return useSWR<RunningData>(
+    enabled ? "/agent/running-apps" : null,
+    getAgentRunningApps,
     { refreshInterval: 15000 },
   );
 }
