@@ -1111,6 +1111,46 @@ def _reconcile_matches(user_id: str, payload: dict, cur) -> set:
     return matched
 
 
+def _reconcile_unknowns(user_id: str, apps: list, matched_tool_ids: set, cur) -> int:
+    """Upsert user_items rows for apps that didn't match any catalog tool.
+
+    Identifies unknowns by bundle_id; preserves hidden=TRUE when re-detecting.
+    Returns the count of unknown rows touched.
+    """
+    # Build the set of bundle_ids that matched a catalog tool — those don't become unknowns.
+    if matched_tool_ids:
+        cur.execute(
+            "SELECT app_bundle_id FROM tools WHERE id = ANY(%s) AND app_bundle_id IS NOT NULL",
+            (list(matched_tool_ids),),
+        )
+        matched_bundle_ids = {r[0] for r in cur.fetchall()}
+    else:
+        matched_bundle_ids = set()
+
+    touched = 0
+    for app in apps:
+        bundle_id = app.get("bundle_id")
+        if not bundle_id or bundle_id in matched_bundle_ids:
+            continue
+        name = app.get("name") or bundle_id
+        cur.execute(
+            """
+            INSERT INTO user_items (user_id, tool_id, detected_bundle_id, detected_name,
+                                    source, installed_locally, installed_at, hidden)
+            VALUES (%s, NULL, %s, %s, 'detected', TRUE, NOW(), FALSE)
+            ON CONFLICT (user_id, detected_bundle_id) WHERE tool_id IS NULL AND detected_bundle_id IS NOT NULL
+            DO UPDATE SET
+                detected_name     = EXCLUDED.detected_name,
+                installed_locally = TRUE,
+                installed_at      = COALESCE(user_items.installed_at, NOW())
+                -- hidden is intentionally NOT touched here
+            """,
+            (user_id, bundle_id, name),
+        )
+        touched += 1
+    return touched
+
+
 # -------------------- Reviews --------------------
 
 @app.route("/api/tools/<int:tool_id>/reviews", methods=["GET"])

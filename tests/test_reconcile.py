@@ -125,3 +125,74 @@ def test_reconcile_matches_upgrades_manual_uninstalled_to_installed(db, seeded_u
         row = cur.fetchone()
         assert row[0] is True
         assert row[1] == "manual"
+
+
+def test_reconcile_unknowns_creates_row_for_unmatched_app(db, seeded_user, insert_tool):
+    from api import server
+
+    payload = {
+        "apps": [
+            {"bundle_id": "com.unknown.foo", "name": "Foo", "path": "/Applications/Foo.app"},
+        ],
+        "brew": [], "brew_casks": [],
+    }
+    server._reconcile_unknowns(seeded_user, payload["apps"], matched_tool_ids=set(), cur=db.cursor())
+
+    with db.cursor() as cur:
+        cur.execute(
+            """SELECT detected_name, source, installed_locally, hidden
+               FROM user_items
+               WHERE user_id = %s AND tool_id IS NULL AND detected_bundle_id = %s""",
+            (seeded_user, "com.unknown.foo"),
+        )
+        row = cur.fetchone()
+    assert row is not None
+    assert row[0] == "Foo"
+    assert row[1] == "detected"
+    assert row[2] is True
+    assert row[3] is False
+
+
+def test_reconcile_unknowns_skips_apps_that_matched(db, seeded_user, insert_tool):
+    from api import server
+
+    tool_id = insert_tool("pluely", app_bundle_id="com.pluely.Pluely")
+    payload = {
+        "apps": [{"bundle_id": "com.pluely.Pluely", "name": "Pluely", "path": "/x"}],
+        "brew": [], "brew_casks": [],
+    }
+    matched = server._reconcile_matches(seeded_user, payload, db.cursor())
+    server._reconcile_unknowns(seeded_user, payload["apps"], matched, db.cursor())
+
+    with db.cursor() as cur:
+        cur.execute(
+            "SELECT COUNT(*) FROM user_items WHERE user_id=%s AND tool_id IS NULL",
+            (seeded_user,),
+        )
+        assert cur.fetchone()[0] == 0  # No unknown row created — it matched a tool.
+
+
+def test_reconcile_unknowns_preserves_hidden_flag(db, seeded_user):
+    from api import server
+
+    with db.cursor() as cur:
+        cur.execute(
+            """
+            INSERT INTO user_items (user_id, tool_id, detected_bundle_id, detected_name,
+                                    source, installed_locally, hidden)
+            VALUES (%s, NULL, 'com.unknown.foo', 'Foo', 'detected', TRUE, TRUE)
+            """,
+            (seeded_user,),
+        )
+    payload = {"apps": [{"bundle_id": "com.unknown.foo", "name": "Foo Updated", "path": "/x"}],
+               "brew": [], "brew_casks": []}
+    server._reconcile_unknowns(seeded_user, payload["apps"], set(), db.cursor())
+
+    with db.cursor() as cur:
+        cur.execute(
+            "SELECT hidden, detected_name FROM user_items WHERE user_id=%s AND detected_bundle_id=%s",
+            (seeded_user, "com.unknown.foo"),
+        )
+        row = cur.fetchone()
+    assert row[0] is True, "hidden flag must not be cleared by a re-detection"
+    assert row[1] == "Foo Updated", "name should still refresh so un-hide shows current data"
