@@ -168,6 +168,7 @@ class Skill:
     approved_at: Optional[datetime] = None
     blocked_reason: Optional[str] = None
     blocked_at: Optional[datetime] = None
+    author_user_id: Optional[str] = None
 
     created_at: Optional[datetime] = None
 

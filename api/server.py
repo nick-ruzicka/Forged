@@ -1552,6 +1552,11 @@ def submit_skill():
     if sensitivity and sensitivity in ("public", "internal", "confidential"):
         data["data_sensitivity"] = sensitivity
 
+    # Set author identity for review endpoint gating
+    uid, _ = _get_identity()
+    if uid:
+        data["author_user_id"] = uid
+
     skill_id = db.insert_skill(data)
 
     # Store author-supplied test cases if provided
@@ -1581,18 +1586,23 @@ def submit_skill():
 def get_skill_review(skill_id):
     """Return review status and feedback for a skill.
 
-    Surfaces admin override reasons (action + reason text) so the author
-    knows why their skill was blocked or needs revision. Per VISION.md §2:
-    "governance invisible when working, visible when not."
+    Full details (admin_actions, blocked_reason, review summary, test cases)
+    are returned only to the skill's author or an admin. Other callers
+    get only {skill_id, review_status}.
 
-    TODO: Gate detailed feedback to the skill's author only once skills
-    have an author_user_id column. Currently returns to any caller with
-    the skill_id, which is acceptable for v1 since skill_ids aren't
-    enumerable from the public catalog (pending skills are filtered out).
+    Per VISION.md §2: "governance invisible when working, visible when not."
     """
     skill = db.get_skill(skill_id)
     if not skill:
         return jsonify({"error": "not_found"}), 404
+
+    # Check if caller is author or admin
+    uid, _ = _get_identity()
+    is_author = uid and skill.get("author_user_id") and uid == skill["author_user_id"]
+    is_admin = request.headers.get("X-Admin-Key") == ADMIN_KEY
+
+    if not is_author and not is_admin:
+        return jsonify({"skill_id": skill_id, "review_status": skill.get("review_status", "pending")})
 
     result = {
         "skill_id": skill_id,
@@ -1614,7 +1624,6 @@ def get_skill_review(skill_id):
             }
 
     # Include admin actions (override reasons, blocks, etc.)
-    # This is the author-facing feedback: why was my skill blocked/revised?
     admin_actions = db.list_skill_admin_actions(skill_id)
     if admin_actions:
         result["admin_actions"] = [
