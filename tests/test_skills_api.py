@@ -226,3 +226,31 @@ def test_insert_skill_test_cases(db):
     assert len(result) == 2
     kinds = {r["kind"] for r in result}
     assert kinds == {"positive", "negative"}
+
+
+def test_skill_review_pipeline_stub_approves(db):
+    """In stub mode, skill_review_pipeline auto-approves the skill."""
+    import os
+    os.environ["SKILL_REVIEW_MODE"] = "stub"
+    from api import db as forge_db
+
+    with db.cursor() as cur:
+        cur.execute(
+            "INSERT INTO skills (title, prompt_text, review_status) VALUES (%s, %s, %s) RETURNING id",
+            ("Pipeline Test", "prompt", "pending"),
+        )
+        row = cur.fetchone()
+        skill_id = row[0] if isinstance(row, tuple) else row["id"]
+
+    # Import and call the task function directly (not via Celery broker)
+    from forge_sandbox.tasks import skill_review_pipeline
+    result = skill_review_pipeline(skill_id)
+
+    assert result["review_status"] == "approved"
+    assert result["review_id"] is not None
+
+    # Verify DB state
+    skill = forge_db.get_skill(skill_id)
+    assert skill["review_status"] == "approved"
+    assert skill["review_id"] is not None
+    assert skill["approved_at"] is not None
