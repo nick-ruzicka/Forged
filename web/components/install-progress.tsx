@@ -29,6 +29,7 @@ export function InstallProgress({
   const [progress, setProgress] = useState(0);
   const [installing, setInstalling] = useState(false);
   const [done, setDone] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
   const handleInstall = useCallback(async () => {
@@ -86,8 +87,9 @@ export function InstallProgress({
               await installApp(toolId);
               onInstalled?.();
             } else if (evt.type === "error") {
-              setStatus(`Error: ${evt.message}`);
-              setInstalling(false);
+              setStatus(evt.message || "Install failed");
+              setError(evt.message || "Install failed");
+              setProgress(100);
             }
           } catch {
             // skip malformed events
@@ -110,24 +112,48 @@ export function InstallProgress({
     }
   }, [autoInstall, agentAvailable, installing, done, handleInstall]);
 
-  // Installing / done state
-  if (installing || done) {
+  // Installing / done / error state
+  if (installing || done || error) {
     return (
       <div className="flex flex-col gap-3 rounded-lg border border-border bg-card p-4">
         <div className="flex items-center gap-2">
           {done ? (
             <Check className="size-4 text-green-500" />
+          ) : error ? (
+            <span className="text-sm text-destructive">✕</span>
           ) : (
             <Loader2 className="size-4 animate-spin text-primary" />
           )}
-          <span className="text-sm text-foreground">{status}</span>
+          <span className={`text-sm ${error ? "text-destructive" : "text-foreground"}`}>{status}</span>
         </div>
         <div className="h-2 w-full overflow-hidden rounded-full bg-surface">
           <div
-            className={`h-full rounded-full transition-all duration-500 ${done ? "bg-green-500" : "bg-primary"}`}
+            className={`h-full rounded-full transition-all duration-500 ${done ? "bg-green-500" : error ? "bg-destructive" : "bg-primary"}`}
             style={{ width: `${progress}%` }}
           />
         </div>
+        {error && installCommand && (
+          <div className="mt-2 flex flex-col gap-2">
+            <span className="text-xs text-text-muted">Install manually instead:</span>
+            <div className="flex items-center gap-2">
+              <code className="flex-1 rounded bg-surface px-3 py-2 font-mono text-xs text-foreground whitespace-pre-wrap">
+                {installCommand}
+              </code>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={async () => {
+                  await navigator.clipboard.writeText(installCommand);
+                  setCopied(true);
+                  toast.success("Copied to clipboard");
+                  setTimeout(() => setCopied(false), 2000);
+                }}
+              >
+                {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
