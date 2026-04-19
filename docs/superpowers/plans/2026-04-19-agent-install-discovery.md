@@ -588,20 +588,17 @@ def test_scan_endpoint_caches_within_ttl(monkeypatch):
 
     handler = MagicMock()
     handler.headers = {"X-Forge-User-Id": "user-A"}
-    handler._json = lambda body, status=200: handler._json_args.append((body, status)) or None
     handler._json_args = []
+    handler._json = lambda body, status=200: handler._json_args.append((body, status)) or None
 
-    # First call hits backend
-    agent_mod.BaseHandler = type(handler)  # no-op; ensure import
-    bound = agent_mod.AgentHandler._handle_scan if hasattr(agent_mod, "AgentHandler") else None
-    # If the actual class name differs, this test will need to import the right symbol.
-    # In that case, replace the line below with: bound = agent_mod.<ActualClass>._handle_scan
-    assert bound is not None, "Locate the request handler class in forge_agent/agent.py and update this test"
+    # AgentHandler is at forge_agent/agent.py:286.
+    bound = agent_mod.AgentHandler._handle_scan
 
     bound(handler)
     assert len(backend_calls) == 1
     bound(handler)  # within TTL
     assert len(backend_calls) == 1, "Second call within TTL should hit cache"
+    assert handler._json_args[-1][0]["matched"] == 0
 ```
 
 > **Note for implementer:** If the handler class name in `agent.py` is not `AgentHandler`, update the import. Run `grep -n "class .*Handler" forge_agent/agent.py` to find it.
@@ -1608,6 +1605,8 @@ Run: `pytest tests/test_agent_scan_endpoint.py -v -k shelf_list`
 Expected: FAIL — `source` and `detected_bundle_id` not exposed.
 
 - [ ] **Step 3: Modify `shelf_list`**
+
+> **Semantic change:** the existing response shape returns `id` as the **catalog tool id** (`t.id`). The new shape returns `id` as the **shelf row id** (`user_items.id`) and exposes `tool_id` separately. The only consumers of `item.id` in `web/app/my-forge/page.tsx` are the `key={item.id}` prop and the fallback `item.tool_id ?? item.id` (which only runs the fallback when `tool_id` is null — i.e., unknown rows, which never trigger Launch/Remove). The new hide endpoint requires the shelf id, which is what we want. **No other consumers exist** (verified via grep across `web/`).
 
 Replace the body of `shelf_list` (currently `api/server.py:885-918`) with:
 
