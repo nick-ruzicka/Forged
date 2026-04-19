@@ -16,6 +16,8 @@ interface InstallProgressProps {
   onInstalled?: () => void;
 }
 
+type Phase = "idle" | "installing" | "done" | "error";
+
 export function InstallProgress({
   toolId,
   slug,
@@ -25,20 +27,28 @@ export function InstallProgress({
   autoInstall,
   onInstalled,
 }: InstallProgressProps) {
-  const [status, setStatus] = useState<string | null>(null);
+  const [phase, setPhase] = useState<Phase>("idle");
+  const [statusLine, setStatusLine] = useState("");
+  const [logLines, setLogLines] = useState<string[]>([]);
   const [progress, setProgress] = useState(0);
-  const [installing, setInstalling] = useState(false);
-  const [done, setDone] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const logRef = useRef<HTMLDivElement>(null);
+
+  const appendLog = useCallback((line: string) => {
+    setLogLines((prev) => [...prev, line]);
+    // Auto-scroll
+    setTimeout(() => {
+      if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
+    }, 50);
+  }, []);
 
   const handleInstall = useCallback(async () => {
-    setInstalling(true);
-    setStatus("Starting...");
+    setPhase("installing");
+    setStatusLine("Connecting to Forge Agent...");
+    setLogLines([]);
     setProgress(0);
 
     try {
-      // Build install body from install_meta or fallback to command
       let installBody: Record<string, unknown>;
       try {
         const meta = installMeta ? JSON.parse(installMeta) : null;
@@ -50,15 +60,24 @@ export function InstallProgress({
         installBody = { type: "command", command: installCommand, name: slug };
       }
 
-      // POST to Flask SSE install proxy (direct — Next.js proxy doesn't stream SSE)
       const r = await fetch("http://localhost:8090/api/forge-agent/install", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(installBody),
       });
 
+      if (!r.ok) {
+        setPhase("error");
+        setStatusLine(`Agent returned ${r.status}`);
+        return;
+      }
+
       const reader = r.body?.getReader();
-      if (!reader) throw new Error("no_stream");
+      if (!reader) {
+        setPhase("error");
+        setStatusLine("No response stream");
+        return;
+      }
 
       const decoder = new TextDecoder();
       let buf = "";
@@ -79,145 +98,173 @@ export function InstallProgress({
             try {
               const evt = JSON.parse(part.slice(6));
               lineCount++;
-              setStatus(evt.message || "Installing...");
-              setProgress(Math.min(5 + lineCount * 4, 95));
+              const msg = evt.message || "";
 
               if (evt.type === "installed") {
                 setProgress(100);
-                setStatus("Installed!");
-                setDone(true);
+                setStatusLine("Installed successfully!");
+                setPhase("done");
+                appendLog(`✓ ${msg}`);
                 succeeded = true;
               } else if (evt.type === "error") {
-                setStatus(evt.message || "Install failed");
-                setError(evt.message || "Install failed");
                 setProgress(100);
+                setStatusLine(msg || "Install failed");
+                setPhase("error");
+                appendLog(`✕ ${msg}`);
                 failed = true;
+              } else {
+                // progress, installing, pulling, etc.
+                setStatusLine(msg);
+                setProgress(Math.min(5 + lineCount * 3, 95));
+                if (msg) appendLog(msg);
               }
             } catch {
-              // skip malformed events
+              // skip malformed
             }
           }
         }
       } catch {
-        // Stream read error after install — ignore if already succeeded
+        // Stream ended — OK if already succeeded/failed
       }
 
-      // Post-stream: add to shelf if install succeeded
       if (succeeded) {
         try {
           await installApp(toolId);
           onInstalled?.();
         } catch {
-          // Shelf add failed but install itself worked
+          // shelf add failed, install still worked
         }
         return;
       }
       if (failed) return;
 
-      // Stream ended without installed or error event
-      setStatus(null);
-      setInstalling(false);
-    } catch (e) {
-      setStatus(null);
-      setInstalling(false);
-      toast.error("Forge Agent not available — use the manual install command below");
+      // Stream ended with no terminal event
+      setPhase("error");
+      setStatusLine("Install ended unexpectedly");
+    } catch {
+      setPhase("error");
+      setStatusLine("Could not connect to Forge Agent");
     }
-  }, [toolId, slug, installCommand, installMeta, onInstalled]);
+  }, [toolId, slug, installCommand, installMeta, onInstalled, appendLog]);
 
-  // Auto-install when agent is available and autoInstall is set
+  // Auto-install
   const autoTriggered = useRef(false);
   useEffect(() => {
-    if (autoInstall && agentAvailable && !autoTriggered.current && !installing && !done) {
+    if (
+      autoInstall &&
+      agentAvailable &&
+      !autoTriggered.current &&
+      phase === "idle"
+    ) {
       autoTriggered.current = true;
       handleInstall();
     }
-  }, [autoInstall, agentAvailable, installing, done, handleInstall]);
+  }, [autoInstall, agentAvailable, phase, handleInstall]);
 
-  // Installing / done / error state
-  if (installing || done || error) {
+  // --- Idle: show install button + manual command ---
+  if (phase === "idle") {
     return (
       <div className="flex flex-col gap-3 rounded-lg border border-border bg-card p-4">
-        <div className="flex items-center gap-2">
-          {done ? (
-            <Check className="size-4 text-green-500" />
-          ) : error ? (
-            <span className="text-sm text-destructive">✕</span>
-          ) : (
-            <Loader2 className="size-4 animate-spin text-primary" />
-          )}
-          <span className={`text-sm ${error ? "text-destructive" : "text-foreground"}`}>{status}</span>
-        </div>
-        <div className="h-2 w-full overflow-hidden rounded-full bg-surface">
-          <div
-            className={`h-full rounded-full transition-all duration-500 ${done ? "bg-green-500" : error ? "bg-destructive" : "bg-primary"}`}
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-        {error && installCommand && (
-          <div className="mt-2 flex flex-col gap-2">
-            <span className="text-xs text-text-muted">Install manually instead:</span>
-            <div className="flex items-center gap-2">
-              <code className="flex-1 rounded bg-surface px-3 py-2 font-mono text-xs text-foreground whitespace-pre-wrap">
-                {installCommand}
-              </code>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={async () => {
-                  await navigator.clipboard.writeText(installCommand);
-                  setCopied(true);
-                  toast.success("Copied to clipboard");
-                  setTimeout(() => setCopied(false), 2000);
-                }}
-              >
-                {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
-              </Button>
-            </div>
+        {agentAvailable && installCommand && (
+          <Button onClick={handleInstall} className="w-full">
+            <Download className="mr-2 size-4" />
+            Install {slug}
+          </Button>
+        )}
+        {installCommand && (
+          <div className="flex flex-col gap-2">
+            <span className="text-xs text-text-muted">
+              {agentAvailable ? "Or install manually:" : "Install command"}
+            </span>
+            <CopyBlock text={installCommand} copied={copied} onCopy={() => {
+              setCopied(true);
+              setTimeout(() => setCopied(false), 2000);
+            }} />
           </div>
         )}
       </div>
     );
   }
 
+  // --- Installing / Done / Error ---
   return (
     <div className="flex flex-col gap-3 rounded-lg border border-border bg-card p-4">
-      {/* Agent install button */}
-      {agentAvailable && installCommand && (
-        <Button onClick={handleInstall} className="w-full">
-          <Download className="mr-2 size-4" />
-          Install {slug}
-        </Button>
-      )}
+      {/* Status line */}
+      <div className="flex items-center gap-2">
+        {phase === "done" ? (
+          <Check className="size-4 shrink-0 text-green-500" />
+        ) : phase === "error" ? (
+          <span className="shrink-0 text-sm text-destructive">✕</span>
+        ) : (
+          <Loader2 className="size-4 shrink-0 animate-spin text-primary" />
+        )}
+        <span
+          className={`text-sm ${phase === "error" ? "text-destructive" : phase === "done" ? "text-green-500" : "text-foreground"}`}
+        >
+          {statusLine}
+        </span>
+      </div>
 
-      {/* Fallback: manual install command */}
-      {installCommand && (
-        <div className="flex flex-col gap-2">
-          <span className="text-xs text-text-muted">
-            {agentAvailable ? "Or install manually:" : "Install command"}
-          </span>
-          <div className="flex items-center gap-2">
-            <code className="flex-1 rounded bg-surface px-3 py-2 font-mono text-sm text-foreground">
-              {installCommand}
-            </code>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={async () => {
-                await navigator.clipboard.writeText(installCommand);
-                setCopied(true);
-                toast.success("Copied to clipboard");
-                setTimeout(() => setCopied(false), 2000);
-              }}
-            >
-              {copied ? (
-                <Check className="size-4" />
-              ) : (
-                <Copy className="size-4" />
-              )}
-            </Button>
-          </div>
+      {/* Progress bar */}
+      <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface">
+        <div
+          className={`h-full rounded-full transition-all duration-300 ${
+            phase === "done"
+              ? "bg-green-500"
+              : phase === "error"
+                ? "bg-destructive"
+                : "bg-primary"
+          }`}
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+
+      {/* Live log */}
+      {logLines.length > 0 && (
+        <div
+          ref={logRef}
+          className="max-h-36 overflow-y-auto rounded-md bg-black/30 px-3 py-2 font-mono text-[11px] leading-relaxed text-text-muted"
+        >
+          {logLines.map((line, i) => (
+            <div key={i}>{line}</div>
+          ))}
         </div>
       )}
+
+      {/* Error fallback */}
+      {phase === "error" && installCommand && (
+        <div className="mt-1 flex flex-col gap-2">
+          <span className="text-xs text-text-muted">
+            Install manually instead:
+          </span>
+          <CopyBlock text={installCommand} copied={copied} onCopy={() => {
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+          }} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function CopyBlock({ text, copied, onCopy }: { text: string; copied: boolean; onCopy: () => void }) {
+  return (
+    <div className="flex items-start gap-2">
+      <code className="flex-1 rounded bg-surface px-3 py-2 font-mono text-xs text-foreground whitespace-pre-wrap">
+        {text}
+      </code>
+      <Button
+        variant="ghost"
+        size="icon"
+        className="shrink-0 mt-1"
+        onClick={async () => {
+          await navigator.clipboard.writeText(text);
+          toast.success("Copied to clipboard");
+          onCopy();
+        }}
+      >
+        {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
+      </Button>
     </div>
   );
 }
