@@ -764,6 +764,30 @@ def proxy_running():
         return jsonify({"apps": []}), 200
 
 
+@app.route("/api/forge-agent/scan", methods=["GET"])
+def proxy_scan():
+    """Proxy a scan trigger to the local forge-agent.
+
+    Forwards X-Forge-User-Id / X-Forge-User-Email so the agent can attribute
+    the resulting POST /api/agent/scan to the correct user.
+    """
+    try:
+        import urllib.request as ur
+        token = open(os.path.expanduser("~/.forge/agent-token")).read().strip()
+        req = ur.Request(
+            "http://localhost:4242/scan",
+            headers={
+                "X-Forge-Token": token,
+                "X-Forge-User-Id": request.headers.get("X-Forge-User-Id", ""),
+                "X-Forge-User-Email": request.headers.get("X-Forge-User-Email", ""),
+            },
+        )
+        with ur.urlopen(req, timeout=20) as r:
+            return jsonify(json.loads(r.read()))
+    except Exception as e:
+        return jsonify({"error": str(e), "matched": 0, "detected": 0, "unmarked": 0}), 502
+
+
 @app.route("/api/forge-agent/usage", methods=["GET"])
 def proxy_usage():
     """Proxy usage stats request to forge-agent."""
