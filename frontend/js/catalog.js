@@ -33,6 +33,57 @@
     selectedId: null,
   };
 
+  let _runningPollTimer = null;
+  let _runningApps = {}; // slug -> {running, pid, uptime_sec}
+
+  function startRunningPoll(slug) {
+    stopRunningPoll();
+    pollRunning(slug);
+    _runningPollTimer = setInterval(() => pollRunning(slug), 15000);
+  }
+
+  function stopRunningPoll() {
+    if (_runningPollTimer) { clearInterval(_runningPollTimer); _runningPollTimer = null; }
+  }
+
+  async function pollRunning(slug) {
+    try {
+      const r = await fetch('/api/forge-agent/running', { signal: AbortSignal.timeout(8000) });
+      if (r.ok) {
+        const data = await r.json();
+        _runningApps = {};
+        (data.apps || []).forEach(a => { _runningApps[a.slug] = a; });
+        updateControlPanelStatus(slug);
+      }
+    } catch (e) {}
+  }
+
+  function updateControlPanelStatus(slug) {
+    const dot = document.getElementById('cp-status-dot');
+    const label = document.getElementById('cp-status-label');
+    const btn = document.getElementById('cp-primary-btn');
+    if (!dot || !label) return;
+    const rs = _runningApps[slug];
+    const running = rs && rs.running;
+    dot.className = 'cp-dot ' + (running ? 'running' : 'stopped');
+    if (running) {
+      const uptime = rs.uptime_sec ? formatUptime(rs.uptime_sec) : '';
+      label.innerHTML = `<span style="color:#22c55e;">Running${uptime ? ' · ' + uptime : ''}</span>`;
+      if (btn) { btn.textContent = 'Focus'; btn.dataset.action = 'focus'; }
+    } else {
+      label.innerHTML = '<span style="color:#555;">Not running</span>';
+      if (btn) { btn.textContent = 'Launch'; btn.dataset.action = 'launch'; }
+    }
+  }
+
+  function formatUptime(sec) {
+    if (!sec || sec < 60) return 'just now';
+    if (sec < 3600) return Math.floor(sec / 60) + 'm';
+    const h = Math.floor(sec / 3600);
+    const m = Math.floor((sec % 3600) / 60);
+    return h + 'h ' + m + 'm';
+  }
+
   const listEl = document.getElementById('list');
   const filtersEl = document.getElementById('filters');
   const searchEl = document.getElementById('search');
@@ -114,9 +165,9 @@
     const isSelected = state.selectedId === tool.id;
     const isExt = tool.delivery === 'external';
 
-    // Action label: external = "Install", embedded = "Open"
-    const actionLabel = isInstalled ? '✓' : (isExt ? 'Install' : 'Open');
-    const actionClass = isInstalled ? 'c-action done' : 'c-action';
+    // Action label: external installed = "Launch", external not installed = "Install", embedded = "Open"
+    const actionLabel = isInstalled ? (isExt ? 'Launch' : '✓') : (isExt ? 'Install' : 'Open');
+    const actionClass = isInstalled && !isExt ? 'c-action done' : 'c-action';
 
     const card = document.createElement('div');
     card.className = 'c-card' + (isSelected ? ' selected' : '');
@@ -191,11 +242,26 @@
       return;
     }
 
-    // External apps: load the detail view, then auto-trigger the detail Install button.
+    // External apps: if already installed, launch via forge-agent
+    if (state.installedSet.has(tool.id)) {
+      btn.disabled = true;
+      btn.textContent = 'Opening…';
+      fetch('/api/forge-agent/launch', {
+        method: 'POST',
+        headers: { ...authHeaders(), 'Content-Type': 'application/json' },
+        body: JSON.stringify({ app_slug: tool.slug, app_name: tool.name }),
+        signal: AbortSignal.timeout(5000),
+      }).then(() => {
+        btn.textContent = '● Running';
+      }).catch(() => {
+        btn.textContent = 'Launch';
+      }).finally(() => { btn.disabled = false; });
+      return;
+    }
+
+    // Not installed: load the detail view, then auto-trigger the detail Install button.
     // All progress rendering happens in the detail view — one code path.
     selectApp(tool);
-
-    if (state.installedSet.has(tool.id)) return;
 
     // Auto-click the detail Install button after a brief render delay
     setTimeout(() => {
@@ -208,13 +274,15 @@
     const barBtn = appBar.querySelector('.bar-install');
     if (!barBtn || parseInt(barBtn.dataset.id) !== tool.id) return;
     const inst = state.installedSet.has(tool.id);
-    barBtn.textContent = inst ? '✓ Installed' : (tool.delivery === 'external' ? 'Install' : 'Open');
+    const isExt = tool.delivery === 'external';
+    barBtn.textContent = inst ? (isExt ? '✓ Installed' : '✓ Installed') : (isExt ? 'Install' : 'Open');
     barBtn.classList.toggle('done', inst);
   }
 
   // ---- Right pane ----
 
   function selectApp(tool) {
+    stopRunningPoll();
     state.selectedId = tool.id;
     listEl.querySelectorAll('.c-card').forEach(c =>
       c.classList.toggle('selected', parseInt(c.dataset.id) === tool.id));
@@ -308,6 +376,33 @@
       }).catch(() => {});
       wrap.appendChild(social);
 
+      // Co-installs section
+      const coinstallWrap = document.createElement('div');
+      coinstallWrap.style.cssText = 'padding:0 16px 8px;';
+      fetch(`/api/tools/${tool.id}/coinstalls`, { headers: authHeaders() }).then(r => r.json()).then(data => {
+        if (!data.coinstalls || !data.coinstalls.length) return;
+        coinstallWrap.innerHTML = `
+          <div style="font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;">Also used by people who use ${esc(tool.name)}</div>
+          <div style="display:flex;gap:8px;margin-bottom:4px;">
+            ${data.coinstalls.map(ci => `
+              <div class="ci-card" data-slug="${esc(ci.slug)}" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:6px;padding:6px 10px;cursor:pointer;opacity:0.8;transition:opacity 0.15s;display:flex;align-items:center;gap:6px;">
+                <span style="font-size:14px;">${esc(ci.icon || '⊞')}</span>
+                <span style="font-size:11px;color:#ccc;">${esc(ci.name)}</span>
+              </div>
+            `).join('')}
+          </div>`;
+        coinstallWrap.querySelectorAll('.ci-card').forEach(card => {
+          card.addEventListener('mouseenter', () => { card.style.opacity = '1'; });
+          card.addEventListener('mouseleave', () => { card.style.opacity = '0.8'; });
+          card.addEventListener('click', () => {
+            const ciSlug = card.dataset.slug;
+            const ciTool = state.items.find(t => t.slug === ciSlug);
+            if (ciTool) selectApp(ciTool);
+          });
+        });
+      }).catch(() => {});
+      wrap.appendChild(coinstallWrap);
+
       // Iframe: preview mode if not installed + demo data exists
       const iframe = document.createElement('iframe');
       iframe.src = (showPreviewBanner) ? previewUrl : appUrl;
@@ -323,194 +418,298 @@
     }
   }
 
+  function renderUsageChart(sessions7d) {
+    if (!sessions7d || !sessions7d.length) return '';
+    const maxSec = Math.max(...sessions7d.map(d => d.duration_sec), 1);
+    const barW = 24, gap = 4, h = 48;
+    const totalW = sessions7d.length * (barW + gap) - gap;
+    const bars = sessions7d.map((d, i) => {
+      const barH = Math.max((d.duration_sec / maxSec) * h, d.duration_sec > 0 ? 3 : 0);
+      const x = i * (barW + gap);
+      const y = h - barH;
+      const fill = d.duration_sec > 0 ? '#0066FF' : '#1a1a1a';
+      const dayLabel = d.date.slice(5);
+      return `<rect x="${x}" y="${y}" width="${barW}" height="${barH}" rx="3" fill="${fill}" opacity="0.8"/>
+              <text x="${x + barW / 2}" y="${h + 14}" text-anchor="middle" fill="#555" font-size="9">${dayLabel}</text>`;
+    }).join('');
+    return `<svg width="${totalW}" height="${h + 18}" viewBox="0 0 ${totalW} ${h + 18}">${bars}</svg>`;
+  }
+
+  function formatDuration(sec) {
+    if (!sec || sec < 60) return '0m';
+    if (sec < 3600) return Math.floor(sec / 60) + 'm';
+    const h = Math.floor(sec / 3600);
+    const m = Math.floor((sec % 3600) / 60);
+    return h + 'h ' + (m ? m + 'm' : '');
+  }
+
+  function timeAgo(isoStr) {
+    if (!isoStr) return '';
+    const diff = (Date.now() - new Date(isoStr).getTime()) / 1000;
+    if (diff < 60) return 'just now';
+    if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+    if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+    return Math.floor(diff / 86400) + 'd ago';
+  }
+
   function renderExternalCombined(tool) {
-    const screenshots = parseScreenshots(tool.screenshots);
     const isInstalled = state.installedSet.has(tool.id);
-    const hasPreview = !!(tool.app_html);
-    const stars = tool.github_stars;
-    const license = tool.github_license;
+    const slug = tool.slug || '';
+
+    stopRunningPoll();
 
     const wrap = document.createElement('div');
-    wrap.style.cssText = 'position:absolute;inset:0;overflow-y:auto;';
+    wrap.style.cssText = 'position:absolute;inset:0;overflow-y:auto;padding:24px;';
 
-    const info = document.createElement('div');
-    info.style.cssText = 'padding:20px 24px;';
+    let installType = 'external';
+    try {
+      const meta = typeof tool.install_meta === 'string' ? JSON.parse(tool.install_meta) : tool.install_meta;
+      if (meta && meta.type) installType = meta.type;
+    } catch (e) {}
 
-    // Parse features from **bold** description lines
-    const desc = tool.description || '';
-    const featureLines = desc.split('\n').filter(l => l.trim().startsWith('**'));
-    let featuresHtml = '';
-    if (featureLines.length >= 2) {
-      featuresHtml = featureLines.map(line => {
-        const m = line.match(/\*\*(.+?)\*\*\s*[—–\-]\s*(.*)/);
-        if (m) return `<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;">
-          <span style="color:#0066FF;font-size:12px;flex-shrink:0;margin-top:3px;">◆</span>
-          <div><span style="font-size:13px;color:#f0f0f0;font-weight:600;">${esc(m[1])}</span>
-          <span style="font-size:13px;color:rgba(255,255,255,0.45);"> — ${esc(m[2])}</span></div></div>`;
-        return '';
-      }).join('');
-    } else {
-      featuresHtml = `<div style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6;white-space:pre-wrap;">${esc(desc)}</div>`;
-    }
-
-    // Install CTA
-    let installCta = '';
-    if (tool.install_command && !isInstalled) {
-      installCta = `<button id="detail-install-btn" style="background:#0066FF;color:white;border:none;padding:11px 0;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;width:100%;margin:14px 0 8px;">
-        Install ${esc(tool.name)}
-      </button>
-      <div id="install-status" style="display:none;">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-          <div id="install-spinner" style="width:14px;height:14px;border:2px solid #2a2a2a;border-top-color:#0066FF;border-radius:50%;animation:spin 0.8s linear infinite;"></div>
-          <div id="install-label" style="font-size:12px;color:#ccc;">Downloading...</div>
-        </div>
-        <div style="background:#1a1a1a;border-radius:3px;height:3px;overflow:hidden;">
-          <div id="install-bar" style="background:#0066FF;height:100%;width:0%;transition:width 0.3s;"></div>
-        </div>
-        <div id="install-progress" style="font-size:10px;color:#555;font-family:ui-monospace,monospace;max-height:60px;overflow-y:auto;margin-top:4px;"></div>
-      </div>
-      <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
-      <div id="agent-fallback" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid #222;">
-        <pre style="margin:0;color:#c3e88d;font-family:ui-monospace,monospace;font-size:11px;background:#0d0d0d;border:1px solid #222;border-radius:5px;padding:8px;cursor:pointer;user-select:all;white-space:pre-wrap;"
-             onclick="navigator.clipboard.writeText(this.innerText)">${esc(tool.install_command)}</pre>
-      </div>`;
-    } else if (isInstalled) {
-      installCta = `<div style="display:flex;align-items:center;gap:8px;margin:12px 0;padding:10px 14px;background:rgba(26,127,75,0.08);border:1px solid rgba(26,127,75,0.2);border-radius:8px;">
-        <span style="color:#1a7f4b;font-size:16px;">✓</span>
-        <span style="color:#1a7f4b;font-size:13px;font-weight:500;">Installed</span>
-      </div>`;
-    }
-
-    info.innerHTML = `
-      <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:14px;">
-        <div style="font-size:32px;width:56px;height:56px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:12px;flex-shrink:0;">${esc(tool.icon || '⊞')}</div>
+    wrap.innerHTML = `
+      <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:20px;">
+        <div style="font-size:28px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:12px;flex-shrink:0;">${esc(tool.icon || '⊞')}</div>
         <div style="flex:1;min-width:0;">
-          <h2 style="margin:0 0 3px;font-size:20px;font-weight:700;">${esc(tool.name)}</h2>
-          <p style="margin:0 0 6px;color:rgba(255,255,255,0.55);font-size:13px;">${esc(tool.tagline || '')}</p>
-          <div style="display:flex;gap:10px;align-items:center;font-size:11px;color:#888;flex-wrap:wrap;">
-            <span>by ${esc(tool.author_name || 'Unknown')}</span>
-            ${stars ? `<span>⭐ ${Number(stars).toLocaleString()}</span>` : ''}
-            ${license ? `<span style="background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:3px;font-size:10px;">${esc(license)}</span>` : ''}
-            ${tool.source_url ? `<a href="${esc(tool.source_url)}" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.35);text-decoration:none;">Source ↗</a>` : ''}
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <h2 style="margin:0;font-size:18px;font-weight:700;">${esc(tool.name)}</h2>
+            <span style="font-size:10px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.06);color:#888;text-transform:uppercase;letter-spacing:0.5px;">${esc(installType)}</span>
           </div>
+          <p style="margin:3px 0 0;color:rgba(255,255,255,0.5);font-size:13px;">${esc(tool.tagline || '')}</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span id="cp-status-dot" class="cp-dot stopped"></span>
+            <span id="cp-status-label" style="font-size:12px;"><span style="color:#555;">Checking...</span></span>
+          </div>
+          <button id="cp-primary-btn" data-action="${isInstalled ? 'launch' : 'install'}"
+            style="background:#0066FF;color:white;border:none;padding:7px 16px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;">
+            ${isInstalled ? 'Launch' : 'Install'}
+          </button>
         </div>
       </div>
-      <div id="detail-social" style="display:flex;gap:12px;font-size:11px;color:#888;margin-bottom:12px;"></div>
-      ${featuresHtml}
-      ${installCta}`;
 
-    wrap.appendChild(info);
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+        <div id="cp-usage-card" style="background:#141414;border:1px solid #2a2a2a;border-radius:10px;padding:16px;">
+          <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px;">Your usage</div>
+          <div id="cp-usage-content" style="color:#555;font-size:12px;">Loading...</div>
+        </div>
+        <div id="cp-team-card" style="background:#141414;border:1px solid #2a2a2a;border-radius:10px;padding:16px;">
+          <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px;">Team</div>
+          <div id="cp-team-content" style="color:#555;font-size:12px;">Loading...</div>
+          <!-- Future: add heartbeat system for live presence. See VISION.md social features roadmap. -->
+        </div>
+      </div>
 
-    // ── Preview iframe below the info ──
-    if (hasPreview) {
-      const previewLabel = document.createElement('div');
-      previewLabel.style.cssText = 'padding:8px 24px;font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.8px;border-top:1px solid #222;border-bottom:1px solid #1a1a1a;background:#111;';
-      previewLabel.textContent = 'Interactive preview';
-      wrap.appendChild(previewLabel);
+      <div id="cp-update-section"></div>
+      <div id="cp-coinstalls" style="margin-bottom:16px;"></div>
 
-      const iframe = document.createElement('iframe');
-      iframe.src = `/apps/${encodeURIComponent(tool.slug)}?user=${encodeURIComponent(getUserId())}&preview=true`;
-      iframe.sandbox = 'allow-scripts allow-forms allow-modals allow-downloads allow-same-origin';
-      iframe.style.cssText = 'width:100%;height:500px;border:none;';
-      wrap.appendChild(iframe);
+      <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
+        <button id="cp-reveal" style="background:#1a1a1a;border:1px solid #2a2a2a;color:#ccc;padding:7px 14px;border-radius:6px;font-size:11px;cursor:pointer;">Show in Finder</button>
+        ${tool.source_url ? `<a href="${esc(tool.source_url)}" target="_blank" rel="noopener" style="background:#1a1a1a;border:1px solid #2a2a2a;color:#ccc;padding:7px 14px;border-radius:6px;font-size:11px;cursor:pointer;text-decoration:none;">View source</a>` : ''}
+        <button id="cp-uninstall" style="background:#1a1a1a;border:1px solid #2a2a2a;color:#888;padding:7px 14px;border-radius:6px;font-size:11px;cursor:pointer;">Uninstall</button>
+      </div>
+
+      <details style="margin-bottom:20px;">
+        <summary style="font-size:11px;color:#888;cursor:pointer;text-transform:uppercase;letter-spacing:0.5px;">About</summary>
+        <div style="margin-top:10px;font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6;white-space:pre-wrap;">${esc(tool.description || 'No description available.')}</div>
+        <div style="margin-top:8px;font-size:11px;color:#555;">by ${esc(tool.author_name || 'Unknown')}</div>
+      </details>
+
+      <div style="font-size:11px;color:rgba(255,255,255,0.4);border-top:1px solid #1a1a1a;padding-top:12px;">
+        Forge monitors: process name only · Not tracked: window titles, URLs, keystrokes
+        <a href="#" id="cp-privacy-link" style="color:rgba(255,255,255,0.3);margin-left:6px;">Privacy details</a>
+      </div>
+    `;
+
+    if (!document.getElementById('cp-dot-style')) {
+      const style = document.createElement('style');
+      style.id = 'cp-dot-style';
+      style.textContent = '.cp-dot{width:8px;height:8px;border-radius:50%;display:inline-block}.cp-dot.running{background:#22c55e;box-shadow:0 0 4px #22c55e;animation:cp-pulse 2s ease-in-out infinite}.cp-dot.stopped{background:#444}@keyframes cp-pulse{0%,100%{opacity:1}50%{opacity:.5}}';
+      document.head.appendChild(style);
     }
 
     appPane.appendChild(wrap);
 
-    // ── Wire install button + agent check + social load ──
-    (async function() {
-      // Agent check
-      const fallback = wrap.querySelector('#agent-fallback');
-      try {
-        await fetch('http://localhost:4242/health', {signal: AbortSignal.timeout(2000)});
-        if (fallback) fallback.style.display = 'none';
-      } catch (e) {
-        if (fallback) fallback.style.display = 'block';
+    // Wire primary button
+    wrap.querySelector('#cp-primary-btn').addEventListener('click', async (e) => {
+      const btn = e.target;
+      const action = btn.dataset.action;
+      if (action === 'install') {
+        selectApp(tool);
+        return;
       }
-    })();
+      btn.disabled = true;
+      btn.textContent = 'Opening…';
+      try {
+        await fetch('/api/forge-agent/launch', {
+          method: 'POST',
+          headers: { ...authHeaders(), 'Content-Type': 'application/json' },
+          body: JSON.stringify({ app_slug: slug, app_name: tool.name }),
+          signal: AbortSignal.timeout(5000),
+        });
+        btn.textContent = '● Focus';
+        btn.style.background = 'rgba(34,197,94,0.15)';
+        btn.style.color = '#22c55e';
+        btn.style.border = '1px solid rgba(34,197,94,0.3)';
+      } catch (err) {
+        btn.textContent = 'Launch';
+      }
+      btn.disabled = false;
+    });
 
-    // Install button
-    const detailBtn = wrap.querySelector('#detail-install-btn');
-    if (detailBtn) {
-      detailBtn.addEventListener('click', async () => {
-        const fallback = wrap.querySelector('#agent-fallback');
-        detailBtn.disabled = true;
-        detailBtn.textContent = '⏳ Installing...';
-        const statusWrap = wrap.querySelector('#install-status');
-        const progress = wrap.querySelector('#install-progress');
-        const label = wrap.querySelector('#install-label');
-        const bar = wrap.querySelector('#install-bar');
-
+    // Wire Show in Finder
+    const revealBtn = wrap.querySelector('#cp-reveal');
+    if (revealBtn) {
+      revealBtn.addEventListener('click', async () => {
         try {
-          const healthR = await fetch('http://localhost:4242/health', {signal: AbortSignal.timeout(2000)});
-          if (!healthR.ok) throw new Error('agent_down');
           const tokenR = await fetch('/api/agent/token');
           const tokenD = await tokenR.json();
-          if (!tokenD.token) throw new Error('no_token');
-          if (statusWrap) statusWrap.style.display = 'block';
-          if (label) label.textContent = 'Starting...';
-
-          let installBody;
-          try {
-            const meta = typeof tool.install_meta === 'string' ? JSON.parse(tool.install_meta) : tool.install_meta;
-            installBody = (meta && meta.type) ? { ...meta, name: tool.slug } : { type: 'command', command: tool.install_command, name: tool.slug };
-          } catch (x) {
-            installBody = { type: 'command', command: tool.install_command, name: tool.slug };
-          }
-
-          const r = await fetch('http://localhost:4242/install', {
+          await fetch('http://localhost:4242/launch', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'X-Forge-Token': tokenD.token },
-            body: JSON.stringify(installBody),
+            body: JSON.stringify({ app_slug: slug, app_name: tool.name, action: 'reveal' }),
+            signal: AbortSignal.timeout(5000),
           });
-          const reader = r.body.getReader();
-          const decoder = new TextDecoder();
-          let buf = '', lineCount = 0;
-          while (true) {
-            const chunk = await reader.read();
-            if (chunk.done) break;
-            buf += decoder.decode(chunk.value, { stream: true });
-            const parts = buf.split('\n'); buf = parts.pop();
-            for (const part of parts) {
-              if (!part.startsWith('data: ')) continue;
-              try {
-                const evt = JSON.parse(part.slice(6)); lineCount++;
-                if (label) label.textContent = evt.message || 'Installing...';
-                if (bar) bar.style.width = Math.min(5 + lineCount * 4, 95) + '%';
-                if (progress && evt.message) { progress.textContent += evt.message + '\n'; progress.scrollTop = progress.scrollHeight; }
-                if (evt.type === 'installed') {
-                  if (bar) { bar.style.width = '100%'; bar.style.background = '#1a7f4b'; }
-                  detailBtn.textContent = '✓ Installed'; detailBtn.style.background = '#1a7f4b';
-                  await fetch('/api/me/items/' + tool.id, { method: 'POST', headers: { ...authHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({installed: true}) });
-                  state.installedSet.add(tool.id);
-                  const cardBtn = listEl.querySelector('[data-id="' + tool.id + '"][data-act="install"]');
-                  if (cardBtn) { cardBtn.textContent = '✓'; cardBtn.classList.add('done'); }
-                  updateBarInstallState(tool);
-                } else if (evt.type === 'error') {
-                  if (bar) bar.style.background = '#c62828';
-                  detailBtn.textContent = 'Install ' + esc(tool.name); detailBtn.disabled = false;
-                }
-              } catch (x) {}
-            }
-          }
+        } catch (e) {}
+      });
+    }
+
+    // Wire Uninstall
+    const uninstallBtn = wrap.querySelector('#cp-uninstall');
+    if (uninstallBtn) {
+      uninstallBtn.addEventListener('click', async () => {
+        if (!confirm(`Uninstall ${tool.name}?`)) return;
+        uninstallBtn.disabled = true;
+        uninstallBtn.textContent = 'Removing…';
+        try {
+          await fetch('/api/forge-agent/uninstall', {
+            method: 'POST',
+            headers: { ...authHeaders(), 'Content-Type': 'application/json' },
+            body: JSON.stringify({ slug }),
+            signal: AbortSignal.timeout(10000),
+          });
+          await fetch(`/api/me/items/${tool.id}`, { method: 'DELETE', headers: authHeaders() });
+          state.installedSet.delete(tool.id);
+          renderList();
+          uninstallBtn.textContent = 'Uninstalled';
         } catch (e) {
-          detailBtn.textContent = 'Install ' + esc(tool.name); detailBtn.disabled = false;
-          if (fallback) fallback.style.display = 'block';
-          if (statusWrap) statusWrap.style.display = 'none';
+          uninstallBtn.textContent = 'Uninstall';
+          uninstallBtn.disabled = false;
         }
       });
     }
 
-    // Social
-    fetch(`/api/tools/${tool.id}/social`, { headers: authHeaders() }).then(r => r.json()).then(s => {
-      const el = wrap.querySelector('#detail-social');
+    // Wire Privacy link
+    wrap.querySelector('#cp-privacy-link').addEventListener('click', async (e) => {
+      e.preventDefault();
+      try {
+        const r = await fetch('/api/forge-agent/privacy');
+        const data = await r.json();
+        const modal = document.createElement('div');
+        modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;';
+        modal.innerHTML = `<div style="background:#141414;border:1px solid #2a2a2a;border-radius:12px;max-width:500px;width:100%;padding:24px;max-height:80vh;overflow:auto;">
+          <h3 style="margin:0 0 12px;font-size:16px;">Privacy Details</h3>
+          <div style="font-size:12px;color:#ccc;line-height:1.6;">
+            <p><strong>Scope:</strong> ${esc(data.scope || '')}</p>
+            <p><strong>Method:</strong> ${esc(data.method || '')}</p>
+            <p><strong>Data collected:</strong></p>
+            <ul style="color:#888;margin:4px 0 12px;">${(data.data_collected || []).map(d => '<li>' + esc(d) + '</li>').join('')}</ul>
+            <p><strong>Data NOT collected:</strong></p>
+            <ul style="color:#888;margin:4px 0 12px;">${(data.data_not_collected || []).map(d => '<li>' + esc(d) + '</li>').join('')}</ul>
+            <p style="color:#555;">Storage: ${esc(data.storage || '')}</p>
+          </div>
+          <button onclick="this.closest('div[style*=fixed]').remove()" style="margin-top:12px;background:#1a1a1a;border:1px solid #2a2a2a;color:#ccc;padding:7px 16px;border-radius:6px;font-size:12px;cursor:pointer;">Close</button>
+        </div>`;
+        modal.addEventListener('click', (ev) => { if (ev.target === modal) modal.remove(); });
+        document.body.appendChild(modal);
+      } catch (err) {}
+    });
+
+    // Async: Load usage
+    fetch(`/api/forge-agent/usage?slug=${encodeURIComponent(slug)}`).then(r => r.json()).then(usage => {
+      const el = wrap.querySelector('#cp-usage-content');
       if (!el) return;
-      const parts = [];
-      if (s.team_install_count > 0) parts.push(`<span style="color:#0066FF;font-weight:600;">+${s.team_install_count} from your team</span>`);
-      parts.push(`${s.install_count || 0} installs`);
-      if (s.avg_rating) parts.push(`★ ${Number(s.avg_rating).toFixed(1)}`);
-      el.innerHTML = parts.join(' · ');
+      if (!usage.session_count_7d) {
+        el.innerHTML = '<span style="color:#555;">Not used yet — click Launch above</span>';
+        return;
+      }
+      const chart = renderUsageChart(usage.sessions_7d);
+      const lastOpened = usage.last_opened ? timeAgo(usage.last_opened) : 'unknown';
+      el.innerHTML = `${chart}<div style="margin-top:10px;font-size:12px;color:#aaa;">${formatDuration(usage.total_sec_7d)} this week · ${usage.session_count_7d} sessions · last opened ${lastOpened}</div>`;
+    }).catch(() => {
+      const el = wrap.querySelector('#cp-usage-content');
+      if (el) el.innerHTML = '<span style="color:#555;">Usage data unavailable</span>';
+    });
+
+    // Async: Load team/social
+    fetch(`/api/tools/${tool.id}/social`, { headers: authHeaders() }).then(r => r.json()).then(social => {
+      const el = wrap.querySelector('#cp-team-content');
+      if (!el) return;
+      if (!social.team_install_count) {
+        el.innerHTML = '<span style="color:#555;">Be the first on your team to use this</span>';
+        return;
+      }
+      let html = `<div style="font-size:14px;color:#e0e0e0;font-weight:500;margin-bottom:6px;">${social.team_install_count} teammate${social.team_install_count > 1 ? 's' : ''} installed this</div>`;
+      if (social.role_concentration) {
+        const rc = social.role_concentration;
+        html += `<div style="font-size:12px;color:#888;margin-bottom:4px;">Popular with ${esc(rc.role)}s — ${rc.count} of ${rc.total} installs from ${esc(rc.role)}s</div>`;
+      }
+      if (social.installs_this_week > 0) {
+        html += `<div style="font-size:12px;color:#888;">${social.installs_this_week} new install${social.installs_this_week > 1 ? 's' : ''} this week</div>`;
+      }
+      el.innerHTML = html;
+    }).catch(() => {
+      const el = wrap.querySelector('#cp-team-content');
+      if (el) el.innerHTML = '<span style="color:#555;">Team data unavailable</span>';
+    });
+
+    // Async: Load co-installs
+    fetch(`/api/tools/${tool.id}/coinstalls`, { headers: authHeaders() }).then(r => r.json()).then(data => {
+      const el = wrap.querySelector('#cp-coinstalls');
+      if (!el || !data.coinstalls || !data.coinstalls.length) return;
+      el.innerHTML = `
+        <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;">People who use ${esc(tool.name)} also use</div>
+        <div style="display:flex;gap:10px;">
+          ${data.coinstalls.map(ci => `
+            <div class="ci-card" data-slug="${esc(ci.slug)}" style="flex:1;background:#141414;border:1px solid #2a2a2a;border-radius:8px;padding:12px;cursor:pointer;opacity:0.8;transition:opacity 0.15s,border-color 0.15s;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                <span style="font-size:16px;">${esc(ci.icon || '⊞')}</span>
+                <span style="font-size:13px;font-weight:600;color:#f0f0f0;">${esc(ci.name)}</span>
+              </div>
+              <div style="font-size:10px;color:#555;">used by ${ci.overlap} others</div>
+            </div>
+          `).join('')}
+        </div>`;
+      el.querySelectorAll('.ci-card').forEach(card => {
+        card.addEventListener('mouseenter', () => { card.style.opacity = '1'; card.style.borderColor = '#0066FF'; });
+        card.addEventListener('mouseleave', () => { card.style.opacity = '0.8'; card.style.borderColor = '#2a2a2a'; });
+        card.addEventListener('click', () => {
+          const ciSlug = card.dataset.slug;
+          const ciTool = state.items.find(t => t.slug === ciSlug);
+          if (ciTool) selectApp(ciTool);
+        });
+      });
     }).catch(() => {});
+
+    // Async: Check updates
+    fetch('/api/forge-agent/running', { signal: AbortSignal.timeout(3000) }).then(r => r.json()).then(() => {
+      fetch(`/api/forge-agent/updates?slug=${encodeURIComponent(slug)}`, { signal: AbortSignal.timeout(5000) })
+        .then(r => r.ok ? r.json() : null)
+        .then(upd => {
+          if (!upd || !upd.updates || !upd.updates.length) return;
+          const update = upd.updates[0];
+          const section = wrap.querySelector('#cp-update-section');
+          if (!section) return;
+          section.innerHTML = `
+            <div style="background:#141414;border:1px solid #2a2a2a;border-left:3px solid #d97706;border-radius:10px;padding:16px;margin-bottom:16px;">
+              <div style="font-size:10px;color:#d97706;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Available update</div>
+              <div style="font-size:13px;color:#e0e0e0;">${esc(update.detail || 'A newer version is available')}</div>
+            </div>`;
+        }).catch(() => {});
+    }).catch(() => {});
+
+    if (isInstalled) startRunningPoll(slug);
   }
 
   function renderExternalDetail(tool) {
@@ -768,31 +967,56 @@
     try { return JSON.parse(raw); } catch (e) { return []; }
   }
 
-  // ---- Recommendations ----
+  // ---- Trending / Discovery ----
 
-  let recommendations = [];
+  let trendingData = { role_trending: [], team_popular: [] };
 
-  async function loadRecommendations() {
+  async function loadTrending() {
     try {
-      const r = await fetch('/api/me/recommended', { headers: authHeaders() });
-      const d = await r.json();
-      recommendations = d.items || [];
-    } catch (e) { recommendations = []; }
+      const r = await fetch('/api/team/trending', { headers: authHeaders() });
+      trendingData = await r.json();
+    } catch (e) {
+      trendingData = { role_trending: [], team_popular: [] };
+    }
   }
 
   function renderRecs() {
     const wrap = document.getElementById('recs');
     const list = document.getElementById('recs-list');
     if (!wrap || !list) return;
-    if (!recommendations.length) { wrap.style.display = 'none'; return; }
+
+    const hasRole = trendingData.role_trending.length > 0;
+    const hasTeam = trendingData.team_popular.length > 0;
+
+    if (!hasRole && !hasTeam) {
+      wrap.style.display = 'none';
+      return;
+    }
     wrap.style.display = '';
-    list.innerHTML = recommendations.map(r => `
-      <div class="rec-chip" data-slug="${esc(r.slug)}">
-        <span class="rec-icon">${esc(r.icon || '⊞')}</span>
-        <span class="rec-name">${esc(r.name)}</span>
-        <span class="rec-why">${esc(r.reason || '')}</span>
-      </div>
-    `).join('');
+
+    let html = '';
+    if (hasRole) {
+      html += `<div style="grid-column:1/-1;font-size:10px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1.2px;font-weight:500;">Trending with ${esc(trendingData.role || 'your role')}s this week</div>`;
+      html += trendingData.role_trending.map(r => `
+        <div class="rec-chip" data-slug="${esc(r.slug)}">
+          <span class="rec-icon">${esc(r.icon || '⊞')}</span>
+          <span class="rec-name">${esc(r.name)}</span>
+          <span class="rec-why">${esc(r.reason || '')}</span>
+        </div>
+      `).join('');
+    }
+    if (hasTeam) {
+      html += `<div style="grid-column:1/-1;font-size:10px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1.2px;font-weight:500;${hasRole ? 'margin-top:8px;' : ''}">Popular on your team</div>`;
+      html += trendingData.team_popular.map(r => `
+        <div class="rec-chip" data-slug="${esc(r.slug)}">
+          <span class="rec-icon">${esc(r.icon || '⊞')}</span>
+          <span class="rec-name">${esc(r.name)}</span>
+          <span class="rec-why">${esc(r.reason || '')}</span>
+        </div>
+      `).join('');
+    }
+
+    list.innerHTML = html;
     list.querySelectorAll('.rec-chip').forEach(chip => {
       chip.addEventListener('click', () => {
         const slug = chip.dataset.slug;
@@ -877,7 +1101,7 @@
   async function init() {
     getUserId();
     await checkOnboarding();
-    await Promise.all([loadItems(), loadUserState(), loadRecommendations()]);
+    await Promise.all([loadItems(), loadUserState(), loadTrending()]);
     renderAll();
 
     // Search
