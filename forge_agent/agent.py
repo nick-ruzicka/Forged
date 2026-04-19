@@ -558,27 +558,35 @@ class AgentHandler(http.server.BaseHTTPRequestHandler):
             return
 
         elif install_type == "command":
-            # Generic shell command — last resort, fully logged
+            # Restricted command execution — only allows known safe install patterns
             command = body.get("command", "")
             if not command:
                 self._sse_event("error", {"success": False, "message": "No command provided"})
                 self._sse_end()
                 return
-            audit.info("GENERIC_INSTALL %s", command[:200])
-            proc = subprocess.Popen(command, shell=True,
-                                    stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                                    text=True, bufsize=1)
-            for line in proc.stdout:
-                line = line.rstrip()
-                if line:
-                    self._sse_event("progress", {"message": line})
-            proc.wait()
-            if proc.returncode == 0:
-                self._sse_event("installed", {"success": True, "message": f"{name} installed"})
-            else:
+
+            # Allowlist: only permit known install tools, no shell metacharacters
+            ALLOWED_PREFIXES = ("brew install", "npm install", "pip install", "pipx install",
+                                "cargo install", "go install", "npx", "pip3 install")
+            BLOCKED_CHARS = set(";|&`$(){}\\'\"\n")
+            cmd_clean = command.strip()
+            is_allowed = any(cmd_clean.startswith(p) for p in ALLOWED_PREFIXES)
+            has_blocked = bool(BLOCKED_CHARS & set(cmd_clean))
+
+            if not is_allowed or has_blocked:
+                audit.warning("BLOCKED_INSTALL_CMD %s", cmd_clean[:200])
                 self._sse_event("error", {"success": False,
-                                          "message": f"Failed (exit {proc.returncode})"})
-            self._sse_end()
+                                          "message": "Command not in allowlist. Only brew/npm/pip/cargo/go install commands are permitted."})
+                self._sse_end()
+                return
+
+            audit.info("ALLOWED_INSTALL %s", cmd_clean[:200])
+            # Split into args list — no shell=True
+            cmd_parts = cmd_clean.split()
+            self._stream_process(cmd_parts, name, registry_entry={
+                "slug": slug, "name": name, "process_name": slug,
+                "install_type": "command", "command": cmd_clean,
+            })
             return
 
         else:
@@ -874,7 +882,7 @@ class AgentHandler(http.server.BaseHTTPRequestHandler):
         # Spawn claude subprocess
         try:
             proc = subprocess.Popen(
-                ["claude", "--dangerously-skip-permissions", "-p", prompt],
+                ["claude", "-p", prompt, "--allowedTools", "Read,Grep,Glob,WebSearch"],
                 cwd=resolved_dir,
                 stdout=open(log_path, "a"),
                 stderr=subprocess.STDOUT,

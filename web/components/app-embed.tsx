@@ -20,7 +20,7 @@ export function AppEmbed({ slug, preview, className }: AppEmbedProps) {
     <iframe
       src={`/embed/${slug}${qs ? `?${qs}` : ""}`}
       className={cn("h-full w-full border-0", className)}
-      sandbox="allow-scripts allow-forms allow-modals allow-downloads allow-same-origin"
+      sandbox="allow-scripts allow-forms allow-modals allow-downloads"
       title={`App: ${slug}`}
     />
   );
