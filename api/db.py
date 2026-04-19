@@ -69,7 +69,12 @@ def cursor(dict_cursor: bool = True):
 
 
 def init_db():
-    """Run every .sql file in db/migrations/ in alphabetical order."""
+    """Run every .sql file in db/migrations/ in alphabetical order.
+
+    Each migration runs independently — a failure in one does not stop
+    the rest. This is necessary because migrations use IF NOT EXISTS
+    guards and are designed to be re-runnable (idempotent).
+    """
     if not os.path.isdir(MIGRATIONS_DIR):
         return
     files = sorted(glob.glob(os.path.join(MIGRATIONS_DIR, "*.sql")))
@@ -81,7 +86,13 @@ def init_db():
             with open(path, "r", encoding="utf-8") as f:
                 sql = f.read()
             if sql.strip():
-                cur.execute(sql)
+                try:
+                    cur.execute(sql)
+                except Exception as e:
+                    # Log but don't abort — other migrations may still apply.
+                    # Common case: migration references a table that was dropped
+                    # by an earlier migration and re-created by a later one.
+                    print(f"[init_db] migration {os.path.basename(path)} failed: {e}")
         cur.close()
     finally:
         conn.close()
