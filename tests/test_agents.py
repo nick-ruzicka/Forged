@@ -403,3 +403,74 @@ def test_synthesizer_blocks_on_attack_success(db, monkeypatch):
                  declared_data_sensitivity=None)
 
     assert result["agent_recommendation"] == "block"
+
+
+def test_orchestrator_real_mode_calls_all_agents(db, monkeypatch):
+    """In real mode, the orchestrator calls all 6 agents and sets skill status."""
+    import os
+    os.environ["SKILL_REVIEW_MODE"] = "real"
+    from api import db as forge_db
+
+    skill_text = "Help the user write documentation."
+    with db.cursor() as cur:
+        cur.execute(
+            "INSERT INTO skills (title, prompt_text, review_status, category) VALUES (%s, %s, %s, %s) RETURNING id",
+            ("Orchestrator Test", skill_text, "pending", "Documents"),
+        )
+        row = cur.fetchone()
+        skill_id = row[0] if isinstance(row, tuple) else row["id"]
+
+    # Mock all agents
+    agents_called = []
+
+    def mock_agent(name, return_value):
+        def agent_fn(skill_id, review_id, **kwargs):
+            agents_called.append(name)
+            return return_value
+        return agent_fn
+
+    import agents.classifier
+    import agents.scanner
+    import agents.red_team
+    import agents.hardener
+    import agents.qa
+    import agents.synthesizer
+
+    monkeypatch.setattr(agents.classifier, "run", mock_agent("classifier", {
+        "detected_category": "Documents", "classification_confidence": 0.9
+    }))
+    monkeypatch.setattr(agents.scanner, "run", mock_agent("security_scanner", {
+        "injection_risk": False, "data_exfil_risk": False
+    }))
+    monkeypatch.setattr(agents.red_team, "run", mock_agent("red_team", {
+        "attacks_succeeded": 0, "attacks_attempted": 5,
+        "vulnerabilities": "[]", "hardening_suggestions": "[]"
+    }))
+    monkeypatch.setattr(agents.hardener, "run", mock_agent("prompt_hardener", {
+        "hardening_summary": "No changes"
+    }))
+    monkeypatch.setattr(agents.qa, "run", mock_agent("qa_tester", {
+        "qa_pass_rate": 0.95, "qa_issues": []
+    }))
+    monkeypatch.setattr(agents.synthesizer, "run", mock_agent("synthesizer", {
+        "agent_recommendation": "approve", "agent_confidence": 0.95,
+        "review_summary": "All clear"
+    }))
+
+    # Also mock with_timeout to just call the function directly
+    import agents.base
+    monkeypatch.setattr(agents.base, "with_timeout",
+                        lambda fn, timeout, *a, **kw: fn(*a, **kw))
+
+    from forge_sandbox.tasks import skill_review_pipeline
+    result = skill_review_pipeline(skill_id)
+
+    assert result["review_status"] == "approved"
+    assert set(agents_called) == {"classifier", "security_scanner", "red_team",
+                                   "prompt_hardener", "qa_tester", "synthesizer"}
+
+    skill = forge_db.get_skill(skill_id)
+    assert skill["review_status"] == "approved"
+    assert skill["approved_at"] is not None
+
+    os.environ["SKILL_REVIEW_MODE"] = "stub"  # reset

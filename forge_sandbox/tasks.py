@@ -67,9 +67,89 @@ def skill_review_pipeline(skill_id: int) -> dict:
         )
         return {"skill_id": skill_id, "review_id": review_id, "review_status": "approved"}
 
-    # mode == 'real' — Phase 2 wires this path
-    # classifier -> security_scanner -> red_team -> prompt_hardener -> qa_tester -> synthesizer
-    raise NotImplementedError(
-        f"Real review pipeline not yet implemented (SKILL_REVIEW_MODE={mode}). "
-        "Set SKILL_REVIEW_MODE=stub or implement Phase 2."
+    # mode == 'real' — run 6-agent pipeline
+    from agents.base import TIMEOUTS, with_timeout
+    from agents import classifier, scanner, red_team, hardener, qa, synthesizer
+
+    skill_text = skill.get("prompt_text") or ""
+    parent_skill_id = skill.get("parent_skill_id")
+    declared_sensitivity = skill.get("data_sensitivity")
+
+    results = {}
+
+    # 1. Classifier
+    results["classifier"] = with_timeout(
+        classifier.run, TIMEOUTS["classifier"],
+        skill_id, review_id, skill_text=skill_text,
+        declared_category=skill.get("category") or "",
     )
+
+    # 2. Security Scanner
+    results["security_scanner"] = with_timeout(
+        scanner.run, TIMEOUTS["security_scanner"],
+        skill_id, review_id, skill_text=skill_text,
+    )
+
+    # 3. Red Team
+    results["red_team"] = with_timeout(
+        red_team.run, TIMEOUTS["red_team"],
+        skill_id, review_id, skill_text=skill_text,
+        parent_skill_id=parent_skill_id,
+    )
+
+    # 4. Prompt Hardener (uses red team output)
+    rt = results.get("red_team", {})
+    results["prompt_hardener"] = with_timeout(
+        hardener.run, TIMEOUTS["prompt_hardener"],
+        skill_id, review_id, skill_text=skill_text,
+        vulnerabilities=rt.get("vulnerabilities", "[]"),
+        hardening_suggestions=rt.get("hardening_suggestions", "[]"),
+    )
+
+    # 5. QA Tester
+    results["qa_tester"] = with_timeout(
+        qa.run, TIMEOUTS["qa_tester"],
+        skill_id, review_id, skill_text=skill_text,
+    )
+
+    # 6. Synthesizer
+    results["synthesizer"] = with_timeout(
+        synthesizer.run, TIMEOUTS["synthesizer"],
+        skill_id, review_id, all_results=results,
+        declared_data_sensitivity=declared_sensitivity,
+    )
+
+    # Set final skill status
+    synth = results.get("synthesizer", {})
+    recommendation = synth.get("agent_recommendation", "needs_revision")
+
+    if synth.get("timed_out") or synth.get("error"):
+        # Synthesizer failed — fallback
+        recommendation = "needs_revision"
+        reason = "review pipeline incomplete — synthesizer unavailable"
+        db.update_skill(skill_id,
+            review_status="needs_revision",
+            review_id=review_id,
+            blocked_reason=reason,
+        )
+    elif recommendation == "approve":
+        db.update_skill(skill_id,
+            review_status="approved",
+            review_id=review_id,
+            approved_at=datetime.utcnow(),
+        )
+    elif recommendation == "block":
+        reason = synth.get("review_summary", "blocked by review pipeline")
+        db.update_skill(skill_id,
+            review_status="blocked",
+            review_id=review_id,
+            blocked_reason=reason,
+            blocked_at=datetime.utcnow(),
+        )
+    else:  # needs_revision
+        db.update_skill(skill_id,
+            review_status="needs_revision",
+            review_id=review_id,
+        )
+
+    return {"skill_id": skill_id, "review_id": review_id, "review_status": recommendation}
