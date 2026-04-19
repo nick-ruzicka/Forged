@@ -2023,6 +2023,22 @@ except Exception:
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8090))
     host = os.environ.get("HOST", "0.0.0.0")
+
+    # Governance pipeline mode check
+    _review_mode = os.environ.get("SKILL_REVIEW_MODE", "stub")
+    _env = os.environ.get("ENV", os.environ.get("FLASK_ENV", "development"))
+    if _review_mode == "stub":
+        import logging
+        _msg = (
+            "WARNING: Governance pipeline in stub mode — all skills auto-approved. "
+            "Set SKILL_REVIEW_MODE=real to enable the 6-agent review pipeline."
+        )
+        if _env == "production":
+            logging.warning(_msg)
+            print(f"[WARN] {_msg}")
+        else:
+            print(f"[info] {_msg} (expected in {_env})")
+
     try:
         db.init_db()
     except Exception as e:
