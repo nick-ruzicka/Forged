@@ -100,6 +100,16 @@ Three things compound over time:
    this app" to "my team can use it." If publish is slow, the
    catalog dies because no one contributes.
 
+## Roadmap — social features
+
+Ship async social signals first — install counts, trending, fork
+chains, co-install patterns, usage patterns. These work today with
+data that already exists.
+
+Live presence (who's using what right now) is a future feature that
+requires heartbeat infrastructure. When it ships, it slots in as an
+enhancement to the Team card, not a dependency for anything else.
+
 ## The 12-month bet
 
 By April 2027, Forge is the default way every 50-500 person

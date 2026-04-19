@@ -2,7 +2,7 @@
 
 **Date:** 2026-04-19
 **Vision alignment:** VISION.md principle #4 — "Social signals drive discovery, not taxonomies"
-**Scope:** Phase 1 only (co-installs + trending). Phase 2 (activity feed) and Phase 3 (fork lineage + publisher profiles) are deferred.
+**Scope:** Phase 1 (co-installs + trending + external app control panel). Phase 2 (activity feed) and Phase 3 (fork lineage + publisher profiles) are deferred.
 
 ## Problem
 
@@ -160,18 +160,91 @@ If both sections are empty (solo user, no role/team), show:
 
 The existing `/api/me/recommended` endpoint stays alive (used elsewhere) but the catalog index page stops calling it and calls `/api/team/trending` instead.
 
+### 2e. External app control panel (right pane)
+
+**What:** For external apps (delivery=external), the catalog right pane becomes a live control panel instead of a static info sheet.
+
+**Layout — top to bottom:**
+
+**Header row:**
+- App icon (48px) + name + tagline + install type pill (brew/dmg/external)
+- Live status: green dot "Running · 23 min" or gray dot "Not running"
+- Primary button: "Focus" (running) / "Launch" (installed) / "Install" (not installed)
+- Status polls `/api/forge-agent/running` every 15s while pane is visible; polling stops on navigate-away
+
+**Card 1 — "Your usage":**
+- 7-day bar chart (inline SVG, 7 bars, sparkline-style, no chart library)
+- Summary: "3h 15m this week · 8 sessions · last opened 42m ago"
+- Data from new endpoint `GET /api/forge-agent/usage?slug={slug}`
+- Empty state: "Not used yet — click Launch above"
+
+New endpoint on forge-agent — `GET /usage?slug=X`:
+```json
+{
+  "slug": "pluely",
+  "sessions_7d": [
+    {"date": "2026-04-13", "duration_sec": 3600, "count": 2},
+    {"date": "2026-04-14", "duration_sec": 0, "count": 0},
+    ...
+  ],
+  "total_sec_7d": 11700,
+  "session_count_7d": 8,
+  "last_opened": "2026-04-19T08:18:00Z"
+}
+```
+Implementation: read `~/.forge/usage.jsonl`, filter by slug, aggregate last 7 days.
+
+Proxy through Flask: `GET /api/forge-agent/usage?slug=X` → `http://localhost:4242/usage?slug=X`
+
+**Card 2 — "Team":**
+- Install count: "4 teammates installed this"
+- Role concentration (only if one role >60% of installs): "Popular with AEs — 3 of 4 installs from AEs"
+- Recent activity: "2 new installs this week" (from `user_items.added_at` timestamps)
+- Empty state: "Be the first on your team to use this"
+- Future: add heartbeat system for live presence. See VISION.md social features roadmap.
+
+Data from existing `GET /api/tools/{id}/social` endpoint, extended with:
+- `role_concentration`: `{role: "AE", count: 3, total: 4}` if dominant role >60%
+- `installs_this_week`: count of `user_items.added_at >= NOW() - INTERVAL '7 days'`
+
+**"Available update" section (conditional):**
+- Only rendered if `/api/forge-agent/updates` reports an update for this app
+- Shows: current version, new version, "Update" button
+- Gold/amber left border
+- Proxy: `GET /api/forge-agent/updates?slug=X`
+
+**"Quick actions" row:**
+- Show in Finder → POST `/api/forge-agent/launch` with `{app_slug, action: "reveal"}` (new action) → `open -R /Applications/{App}.app`
+- View source → `window.open(tool.source_url)` (already in data)
+- Uninstall → confirmation modal → POST `/api/forge-agent/uninstall`
+
+**"About" section (collapsed by default):**
+- Full description from tool metadata
+- Install date, install location (from `~/.forge/installed.json`)
+
+**Privacy footer:**
+- 11px, 40% opacity: "Forge monitors: process name only · Not tracked: window titles, URLs, keystrokes"
+- Click → modal showing `/api/forge-agent/privacy` response
+
 ## Files to modify
 
-### Backend (api/server.py)
-- Add `GET /api/tools/<int:tool_id>/coinstalls` handler (~30 lines)
-- Add `GET /api/team/trending` handler (~50 lines)
+### Backend — api/server.py
+- Add `GET /api/tools/<int:tool_id>/coinstalls` handler
+- Add `GET /api/team/trending` handler
+- Extend `GET /api/tools/<int:tool_id>/social` with `role_concentration` and `installs_this_week`
+- Add `GET /api/forge-agent/usage` proxy to forge-agent
 
-### Frontend (frontend/js/catalog.js)
-- Modify recommendation loading: replace `/api/me/recommended` call with `/api/team/trending`
-- Modify `renderRecs()` (or equivalent): render two labeled sections instead of one
-- Modify `renderExternalCombined()`: add co-install cards section after install CTA
-- Add `renderCoinstalls(toolId, container)` helper: fetches + renders 3 clickable cards
-- Also add co-install section to the embedded app detail view (same `selectApp` code path)
+### Backend — forge_agent/agent.py
+- Add `GET /usage?slug=X` handler: reads usage.jsonl, aggregates last 7 days per slug
+- Add "reveal" action to `/launch` endpoint: `open -R` instead of `open -a`
+
+### Frontend — frontend/js/catalog.js
+- Replace `renderExternalCombined()` with new control panel renderer
+- Replace recommendation strip: two labeled sections from `/api/team/trending`
+- Add co-install cards section to right pane (both external and embedded views)
+- Add usage chart rendering (inline SVG, 7 bars)
+- Add privacy modal
+- Add polling lifecycle: start on external app select, stop on navigate-away
 
 ### No migrations needed
 All required columns exist: `user_items.added_at`, `users.role`, `users.team`, `tools.role_tags`.
@@ -181,7 +254,7 @@ All required columns exist: `user_items.added_at`, `users.role`, `users.team`, `
 - Activity feed (Phase 2 — needs event logging table)
 - Fork lineage badges (Phase 3 — data model exists, UI doesn't)
 - Publisher profiles (Phase 3 — new page)
-- External app control panel in right pane (separate spec)
+- Live presence / "active now" (requires heartbeat infrastructure — see VISION.md roadmap)
 - Co-install cache/materialization (premature at current scale)
 
 ## Verification
@@ -194,3 +267,14 @@ All required columns exist: `user_items.added_at`, `users.role`, `users.team`, `
 6. Co-install cards show real overlap counts, not hardcoded
 7. Trending chips show real install counts from the DB
 8. If no team/role data: sections gracefully hide, no errors
+
+### Control panel verification
+
+9. Click Pluely in catalog. Right pane shows header with live status dot, usage card with 7-day bar chart, team card, quick actions, privacy footer
+10. Launch Pluely from the Focus/Launch button. Status flips green within 15s (next poll)
+11. Usage card shows session data from usage.jsonl (real data, not hardcoded)
+12. Team card shows install count and role concentration from DB
+13. Click "Show in Finder" → Finder opens to /Applications with Pluely highlighted
+14. Click "View source" → opens Pluely's GitHub in new tab
+15. Click privacy link → modal shows full scope from /privacy endpoint
+16. Quit Pluely → status flips gray on next poll
