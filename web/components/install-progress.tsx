@@ -63,39 +63,60 @@ export function InstallProgress({
       const decoder = new TextDecoder();
       let buf = "";
       let lineCount = 0;
+      let succeeded = false;
+      let failed = false;
 
-      while (true) {
-        const { done: streamDone, value } = await reader.read();
-        if (streamDone) break;
-        buf += decoder.decode(value, { stream: true });
-        const parts = buf.split("\n");
-        buf = parts.pop() || "";
+      try {
+        while (true) {
+          const { done: streamDone, value } = await reader.read();
+          if (streamDone) break;
+          buf += decoder.decode(value, { stream: true });
+          const parts = buf.split("\n");
+          buf = parts.pop() || "";
 
-        for (const part of parts) {
-          if (!part.startsWith("data: ")) continue;
-          try {
-            const evt = JSON.parse(part.slice(6));
-            lineCount++;
-            setStatus(evt.message || "Installing...");
-            setProgress(Math.min(5 + lineCount * 4, 95));
+          for (const part of parts) {
+            if (!part.startsWith("data: ")) continue;
+            try {
+              const evt = JSON.parse(part.slice(6));
+              lineCount++;
+              setStatus(evt.message || "Installing...");
+              setProgress(Math.min(5 + lineCount * 4, 95));
 
-            if (evt.type === "installed") {
-              setProgress(100);
-              setStatus("Installed!");
-              setDone(true);
-              // Add to shelf
-              await installApp(toolId);
-              onInstalled?.();
-            } else if (evt.type === "error") {
-              setStatus(evt.message || "Install failed");
-              setError(evt.message || "Install failed");
-              setProgress(100);
+              if (evt.type === "installed") {
+                setProgress(100);
+                setStatus("Installed!");
+                setDone(true);
+                succeeded = true;
+              } else if (evt.type === "error") {
+                setStatus(evt.message || "Install failed");
+                setError(evt.message || "Install failed");
+                setProgress(100);
+                failed = true;
+              }
+            } catch {
+              // skip malformed events
             }
-          } catch {
-            // skip malformed events
           }
         }
+      } catch {
+        // Stream read error after install — ignore if already succeeded
       }
+
+      // Post-stream: add to shelf if install succeeded
+      if (succeeded) {
+        try {
+          await installApp(toolId);
+          onInstalled?.();
+        } catch {
+          // Shelf add failed but install itself worked
+        }
+        return;
+      }
+      if (failed) return;
+
+      // Stream ended without installed or error event
+      setStatus(null);
+      setInstalling(false);
     } catch (e) {
       setStatus(null);
       setInstalling(false);
