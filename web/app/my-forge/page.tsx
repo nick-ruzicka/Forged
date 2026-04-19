@@ -2,7 +2,7 @@
 
 import { useCallback, useMemo, useState } from "react";
 import Link from "next/link";
-import { ExternalLink, LogOut, Trash2, X } from "lucide-react";
+import { ExternalLink, EyeOff, LogOut, RefreshCw, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -10,8 +10,9 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EmptyState } from "@/components/empty-state";
 import { AppPane } from "@/components/app-pane";
-import { useMyItems, useMyStars, useMySkills, useAgentAvailable, useRunningApps, uninstallApp } from "@/lib/hooks";
-import { launchItem, removeStar, launchApp } from "@/lib/api";
+import { useMyItems, useMyStars, useMySkills, useAgentAvailable, useRunningApps, uninstallApp, refreshInstalled } from "@/lib/hooks";
+import { launchItem, removeStar, launchApp, hideItem } from "@/lib/api";
+import { DetectedTile } from "@/components/detected-tile";
 import { useUser } from "@/lib/user-context";
 import type { UserItem, Star, Skill } from "@/lib/types";
 
@@ -68,6 +69,30 @@ export default function MyForgePage() {
     },
     [mutateStars],
   );
+
+  const [scanning, setScanning] = useState(false);
+
+  const handleRefresh = useCallback(async () => {
+    setScanning(true);
+    try {
+      const r = await refreshInstalled();
+      toast(`Scanned: ${r.matched} matched, ${r.detected} detected, ${r.unmarked} removed`);
+    } catch {
+      toast.error("Scan failed — is the agent running?");
+    } finally {
+      setScanning(false);
+    }
+  }, []);
+
+  const handleHide = useCallback(async (shelfId: number) => {
+    try {
+      await hideItem(shelfId);
+      toast("Hidden");
+      mutateItems();
+    } catch {
+      toast.error("Failed to hide");
+    }
+  }, [mutateItems]);
 
   const handleSetEmail = useCallback(() => {
     const newEmail = prompt("Enter your email:");
@@ -137,31 +162,46 @@ export default function MyForgePage() {
 
         {/* Installed tab */}
         <TabsContent value="installed">
+          <div className="mb-3 flex justify-end">
+            <Button variant="outline" size="sm" onClick={handleRefresh} disabled={scanning}>
+              <RefreshCw data-icon="inline-start" className={scanning ? "animate-spin" : undefined} />
+              {scanning ? "Scanning…" : "Refresh installed apps"}
+            </Button>
+          </div>
           {(!items || items.length === 0) ? (
             <EmptyState
               icon={<span className="text-3xl">📦</span>}
               title="No apps installed"
-              message="Browse the catalog and install your first app."
+              message="Browse the catalog and install your first app, or click Refresh to scan."
               actionLabel="Browse Apps"
               actionHref="/"
             />
           ) : (
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-              {items.map((item) => (
-                <InstalledTile
-                  key={item.id}
-                  item={item}
-                  isRunning={item.delivery === "external" && !!runningData?.apps.find(a => a.slug === item.slug && a.running)}
-                  onOpen={() => {
-                    if (item.delivery === "external" && item.slug) {
-                      handleLaunch(item.tool_id ?? item.id, item.slug, item.name || item.slug);
-                    } else if (item.slug) {
-                      openPane(item.slug, item.name || item.slug);
-                    }
-                  }}
-                  onRemove={() => handleRemoveItem(item.tool_id ?? item.id)}
-                />
-              ))}
+              {items.map((item) =>
+                item.tool_id == null ? (
+                  <DetectedTile
+                    key={`detected-${item.id}`}
+                    item={item}
+                    onHide={() => handleHide(item.id)}
+                  />
+                ) : (
+                  <InstalledTile
+                    key={item.id}
+                    item={item}
+                    isRunning={item.delivery === "external" && !!runningData?.apps.find(a => a.slug === item.slug && a.running)}
+                    onOpen={() => {
+                      if (item.delivery === "external" && item.slug) {
+                        handleLaunch(item.tool_id ?? item.id, item.slug, item.name || item.slug);
+                      } else if (item.slug) {
+                        openPane(item.slug, item.name || item.slug);
+                      }
+                    }}
+                    onRemove={() => handleRemoveItem(item.tool_id ?? item.id)}
+                    onHide={() => handleHide(item.id)}
+                  />
+                )
+              )}
             </div>
           )}
         </TabsContent>
@@ -230,11 +270,13 @@ function InstalledTile({
   isRunning,
   onOpen,
   onRemove,
+  onHide,
 }: {
   item: UserItem;
   isRunning?: boolean;
   onOpen: () => void;
   onRemove: () => void;
+  onHide: () => void;
 }) {
   return (
     <div className="group flex items-center gap-3 rounded-xl border border-border bg-card p-3 transition-colors hover:border-border-strong">
@@ -263,6 +305,11 @@ function InstalledTile({
               External
             </Badge>
           )}
+          {item.source === "detected" && (
+            <Badge variant="outline" className="text-[10px]">
+              Detected
+            </Badge>
+          )}
         </div>
       </div>
       <div className="flex items-center gap-1">
@@ -280,6 +327,15 @@ function InstalledTile({
           ) : (
             "Open"
           )}
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon-xs"
+          className="opacity-0 group-hover:opacity-100"
+          onClick={onHide}
+          aria-label="Hide"
+        >
+          <EyeOff />
         </Button>
         <Button
           variant="ghost"

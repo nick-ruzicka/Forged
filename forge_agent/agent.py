@@ -19,6 +19,7 @@ import subprocess
 import sys
 import time
 from urllib.parse import parse_qs, urlparse
+from forge_agent import scanner
 
 # ── config ─────────────────────────────────────────────────────
 PORT = 4242
@@ -130,6 +131,43 @@ _app_session_starts: dict = {}  # slug -> timestamp
 _app_launch_source: dict = {}  # slug -> source ('forge' | 'external')
 _pending_launches: dict = {}  # slug -> expires_at (time.time() + 5)
 _running_cache = {"data": [], "ts": 0}  # 15s cache
+# 30-second cache for /scan results — second call within 30s of last
+# successful scan returns the cached payload without re-scanning.
+_scan_cache: dict = {"ts": 0.0, "result": None}
+SCAN_CACHE_TTL_SEC = 30
+
+
+def _trigger_background_scan(user_id: str, user_email: str = "") -> None:
+    """Fire scan asynchronously; swallow all errors. Used for startup + post-install."""
+    import threading
+    import urllib.request as ur
+    from forge_agent import scanner as _scanner
+
+    if not user_id:
+        return  # No identity yet — caller will retry on next event.
+
+    def _worker():
+        try:
+            payload = _scanner.scan()
+            req = ur.Request(
+                f"{ALLOWED_ORIGIN.rstrip('/')}/api/agent/scan",
+                data=json.dumps(payload).encode(),
+                headers={
+                    "Content-Type": "application/json",
+                    "X-Forge-User-Id": user_id,
+                    "X-Forge-User-Email": user_email,
+                },
+                method="POST",
+            )
+            with ur.urlopen(req, timeout=15) as r:
+                _scan_cache["ts"] = time.time()
+                _scan_cache["result"] = json.loads(r.read())
+                audit.info("BG-SCAN ok")
+        except Exception as exc:
+            logging.warning("background scan failed: %s", str(exc)[:200])
+
+    t = threading.Thread(target=_worker, daemon=True)
+    t.start()
 MONITOR_INTERVAL = 30
 
 
@@ -161,6 +199,29 @@ def _register_app(entry: dict):
     entry["installed_at"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     apps.append(entry)
     _save_installed(apps)
+
+
+LAST_USER_FILE = FORGE_DIR / "last-user.json"
+
+
+def _remember_user(user_id: str, user_email: str = "") -> None:
+    """Cache the most recent user identity so startup can trigger a scan."""
+    if not user_id:
+        return
+    try:
+        LAST_USER_FILE.write_text(json.dumps({"user_id": user_id, "email": user_email}))
+    except OSError:
+        pass
+
+
+def _last_user() -> tuple:
+    if not LAST_USER_FILE.exists():
+        return "", ""
+    try:
+        d = json.loads(LAST_USER_FILE.read_text())
+        return d.get("user_id", ""), d.get("email", "")
+    except Exception:
+        return "", ""
 
 
 def _is_process_running(process_name: str) -> tuple:
@@ -310,6 +371,9 @@ class AgentHandler(http.server.BaseHTTPRequestHandler):
             return
         if parsed.path == "/running":
             self._handle_running()
+            return
+        if parsed.path == "/scan":
+            self._handle_scan()
             return
         if parsed.path == "/updates":
             self._handle_updates()
@@ -463,6 +527,10 @@ class AgentHandler(http.server.BaseHTTPRequestHandler):
             self._json({"error": "Rate limit: max 10 installs/hour"}, 429)
             return
 
+        user_id = self.headers.get("X-Forge-User-Id", "")
+        user_email = self.headers.get("X-Forge-User-Email", "")
+        _remember_user(user_id, user_email)
+
         install_type = body.get("type", "")
         name = str(body.get("name", "app"))[:50]
 
@@ -600,6 +668,11 @@ class AgentHandler(http.server.BaseHTTPRequestHandler):
             if proc.returncode == 0:
                 if registry_entry:
                     _register_app(registry_entry)
+                # Trigger a scan so the backend reconciles any sidecar installs
+                # (e.g., `brew install node` pulls in npm). Fire-and-forget; never
+                # block the install response on this.
+                _trigger_background_scan(self.headers.get("X-Forge-User-Id", ""),
+                                         self.headers.get("X-Forge-User-Email", ""))
                 self._sse_event("installed", {"success": True, "message": f"{name} installed successfully"})
             else:
                 self._sse_event("error", {"success": False,
@@ -685,6 +758,55 @@ class AgentHandler(http.server.BaseHTTPRequestHandler):
         _running_cache["data"] = results
         _running_cache["ts"] = now
         self._json({"apps": results})
+
+    # ── /scan ─────────────────────────────────────────────────
+
+    def _handle_scan(self):
+        """Run a local scan, POST results to backend, return aggregated counts.
+
+        Cached for 30s — repeat calls within the window return the prior result
+        without rescanning or re-POSTing.
+        """
+        import urllib.request as ur
+
+        now = time.time()
+        if (now - _scan_cache["ts"] < SCAN_CACHE_TTL_SEC) and _scan_cache["result"] is not None:
+            self._json(_scan_cache["result"])
+            return
+
+        payload = scanner.scan()
+
+        # Forward identity headers so the backend can attribute the scan to a user.
+        user_id = self.headers.get("X-Forge-User-Id", "")
+        user_email = self.headers.get("X-Forge-User-Email", "")
+        if not user_id:
+            self._json({"error": "user_id_required"}, 400)
+            return
+        _remember_user(user_id, user_email)
+
+        try:
+            req = ur.Request(
+                f"{ALLOWED_ORIGIN.rstrip('/')}/api/agent/scan",
+                data=json.dumps(payload).encode(),
+                headers={
+                    "Content-Type": "application/json",
+                    "X-Forge-User-Id": user_id,
+                    "X-Forge-User-Email": user_email,
+                },
+                method="POST",
+            )
+            with ur.urlopen(req, timeout=15) as r:
+                backend_resp = json.loads(r.read())
+        except Exception as exc:
+            audit.info("SCAN failed: %s", str(exc)[:200])
+            self._json({"error": str(exc)[:200]}, 502)
+            return
+
+        _scan_cache["ts"] = now
+        _scan_cache["result"] = backend_resp
+        audit.info("SCAN matched=%s detected=%s unmarked=%s",
+                   backend_resp.get("matched"), backend_resp.get("detected"), backend_resp.get("unmarked"))
+        self._json(backend_resp)
 
     # ── /updates ──────────────────────────────────────────────
 
@@ -1037,6 +1159,12 @@ if __name__ == "__main__":
     print(f"Token: {TOKEN[:8]}…")
     print(f"Audit: {AUDIT_LOG}")
     print(f"CORS: {ALLOWED_ORIGIN}")
+    # Fire a startup scan against the last-known user so /api/me/items
+    # is current the moment the user opens My Forge after a reboot.
+    _uid, _email = _last_user()
+    if _uid:
+        _trigger_background_scan(_uid, _email)
+
     try:
         from socketserver import ThreadingMixIn
         class ThreadedHTTPServer(ThreadingMixIn, http.server.HTTPServer):

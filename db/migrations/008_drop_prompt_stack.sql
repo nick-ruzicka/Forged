@@ -20,10 +20,16 @@ WHERE tool_id IN (SELECT id FROM tools WHERE app_type IS NULL OR app_type != 'ap
 DELETE FROM announcements
 WHERE tool_id IN (SELECT id FROM tools WHERE app_type IS NULL OR app_type != 'app');
 
--- 2c. Clean up forge_data_reads rows pointing to prompt tools (column is not FK-enforced,
---     but we don't want orphan audit rows either).
-UPDATE forge_data_reads SET tool_id = NULL
-WHERE tool_id IN (SELECT id FROM tools WHERE app_type IS NULL OR app_type != 'app');
+-- 2c. Clean up forge_data_reads rows pointing to prompt tools. Column is not
+--     FK-enforced. The table only exists in deployments where the prompt-era
+--     audit log was created — never in fresh test DBs — so guard with to_regclass.
+DO $$
+BEGIN
+  IF to_regclass('public.forge_data_reads') IS NOT NULL THEN
+    UPDATE forge_data_reads SET tool_id = NULL
+    WHERE tool_id IN (SELECT id FROM tools WHERE app_type IS NULL OR app_type != 'app');
+  END IF;
+END $$;
 
 -- 3. Delete prompt tool rows
 DELETE FROM tools WHERE app_type IS NULL OR app_type != 'app';

@@ -164,6 +164,23 @@ export function installItem(toolId: number): Promise<void> {
   return api<void>(`/me/items/${toolId}/install`, { method: "POST" });
 }
 
+export interface ScanResult {
+  matched: number;
+  detected: number;
+  unmarked: number;
+  error?: string;
+}
+
+// Trigger a local scan via the forge-agent. Backend reconciles + returns counts.
+export function scanInstalled(): Promise<ScanResult> {
+  return api<ScanResult>("/forge-agent/scan");
+}
+
+// Hide a shelf row (matched or unknown). Idempotent.
+export function hideItem(itemId: number): Promise<{ hidden: boolean }> {
+  return api<{ hidden: boolean }>(`/me/items/${itemId}/hide`, { method: "POST" });
+}
+
 // ---------------------------------------------------------------------------
 // Stars — Flask serves GET /api/me/stars → {"items": [...]}
 // ---------------------------------------------------------------------------

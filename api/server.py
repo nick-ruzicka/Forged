@@ -764,6 +764,30 @@ def proxy_running():
         return jsonify({"apps": []}), 200
 
 
+@app.route("/api/forge-agent/scan", methods=["GET"])
+def proxy_scan():
+    """Proxy a scan trigger to the local forge-agent.
+
+    Forwards X-Forge-User-Id / X-Forge-User-Email so the agent can attribute
+    the resulting POST /api/agent/scan to the correct user.
+    """
+    try:
+        import urllib.request as ur
+        token = open(os.path.expanduser("~/.forge/agent-token")).read().strip()
+        req = ur.Request(
+            "http://localhost:4242/scan",
+            headers={
+                "X-Forge-Token": token,
+                "X-Forge-User-Id": request.headers.get("X-Forge-User-Id", ""),
+                "X-Forge-User-Email": request.headers.get("X-Forge-User-Email", ""),
+            },
+        )
+        with ur.urlopen(req, timeout=20) as r:
+            return jsonify(json.loads(r.read()))
+    except Exception as e:
+        return jsonify({"error": str(e), "matched": 0, "detected": 0, "unmarked": 0}), 502
+
+
 @app.route("/api/forge-agent/usage", methods=["GET"])
 def proxy_usage():
     """Proxy usage stats request to forge-agent."""
@@ -884,9 +908,11 @@ def unstar_item(tool_id: int):
 
 @app.route("/api/me/items", methods=["GET"])
 def shelf_list():
-    """Return everything on a user's shelf, joined with the tool row.
+    """Return everything on a user's shelf. Includes detected unknown apps.
 
-    Accepts user_id (preferred) or email (back-compat).
+    Excludes rows where:
+      - hidden = TRUE
+      - tool_id IS NULL AND installed_locally = FALSE  (uninstalled unknowns)
     """
     uid, email = _get_identity()
     if not uid and not email:
@@ -894,26 +920,55 @@ def shelf_list():
     with db.get_db() as cur:
         cur.execute(
             """
-            SELECT t.*, ui.added_at, ui.installed_locally, ui.installed_at,
-                   ui.installed_version, ui.last_opened_at, ui.open_count
+            SELECT ui.id AS shelf_id, ui.tool_id, ui.added_at, ui.installed_locally,
+                   ui.installed_at, ui.installed_version, ui.last_opened_at, ui.open_count,
+                   ui.source AS ui_source, ui.hidden, ui.detected_bundle_id, ui.detected_name,
+                   t.*
             FROM user_items ui
-            JOIN tools t ON t.id = ui.tool_id
+            LEFT JOIN tools t ON t.id = ui.tool_id
             WHERE (ui.user_id = %s OR (%s IS NOT NULL AND ui.user_email = %s))
-              AND t.status = 'approved'
+              AND ui.hidden = FALSE
+              AND (
+                t.id IS NOT NULL AND t.status = 'approved'
+                OR (ui.tool_id IS NULL AND ui.installed_locally = TRUE)
+              )
             ORDER BY ui.last_opened_at DESC NULLS LAST, ui.added_at DESC
             """,
             (uid, email, email),
         )
         rows = [dict(r) for r in cur.fetchall()]
+
     items = []
     for r in rows:
+        if r.get("tool_id") is None:
+            # Unknown app row.
+            items.append({
+                "id": r["shelf_id"],
+                "tool_id": None,
+                "slug": None,
+                "name": r.get("detected_name"),
+                "icon": None,
+                "delivery": "external",
+                "detected_bundle_id": r.get("detected_bundle_id"),
+                "source": r.get("ui_source") or "detected",
+                "installed_locally": True,
+                "installed_at": r.get("installed_at").isoformat() if r.get("installed_at") else None,
+                "added_at": r.get("added_at").isoformat() if r.get("added_at") else None,
+                "open_count": r.get("open_count") or 0,
+            })
+            continue
+        # Catalog-matched row — preserve previous behaviour and add new fields.
         d = _jsonify_tool(r)
+        d["id"] = r["shelf_id"]
+        d["tool_id"] = r["tool_id"]
         d["added_at"] = r.get("added_at").isoformat() if r.get("added_at") else None
         d["installed_locally"] = r.get("installed_locally") or False
         d["installed_at"] = r.get("installed_at").isoformat() if r.get("installed_at") else None
         d["installed_version"] = r.get("installed_version")
         d["last_opened_at"] = r.get("last_opened_at").isoformat() if r.get("last_opened_at") else None
         d["open_count"] = r.get("open_count") or 0
+        d["source"] = r.get("ui_source") or "manual"
+        d["detected_bundle_id"] = None
         items.append(d)
     return jsonify({"items": items, "count": len(items)})
 
@@ -1043,6 +1098,225 @@ def shelf_mark_installed(tool_id: int):
         )
         row = cur.fetchone()
     return jsonify({"installed": row is not None, "version": version})
+
+
+@app.route("/api/me/items/<int:item_id>/hide", methods=["POST"])
+def shelf_hide_item(item_id: int):
+    """Hide a shelf row from My Forge. Idempotent. Scoped to the calling user."""
+    uid, email = _get_identity()
+    if not uid and not email:
+        return jsonify({"error": "user_id_or_email_required"}), 400
+    with db.get_db() as cur:
+        cur.execute(
+            """
+            UPDATE user_items
+            SET hidden = TRUE
+            WHERE id = %s
+              AND (user_id = %s OR (%s IS NOT NULL AND user_email = %s))
+            RETURNING id
+            """,
+            (item_id, uid, email, email),
+        )
+        row = cur.fetchone()
+    if not row:
+        return jsonify({"error": "not_found"}), 404
+    return jsonify({"hidden": True, "item_id": item_id})
+
+
+# -------------------- Install discovery (agent scan) --------------------
+
+def _reconcile_matches(user_id: str, payload: dict, cur) -> set:
+    """Three-pass match: bundle ID, brew formula, brew cask.
+
+    Upserts user_items rows with source='detected'. Manual-source rows that
+    are already installed_locally=TRUE keep source='manual'. Manual rows with
+    installed_locally=FALSE are upgraded to TRUE on detection (source stays
+    'manual'). Returns the set of matched tool ids for the caller's bookkeeping.
+    """
+    bundle_ids = [a["bundle_id"] for a in payload.get("apps", []) if a.get("bundle_id")]
+    formulas = list(payload.get("brew", []))
+    casks = list(payload.get("brew_casks", []))
+
+    matched = set()
+
+    if bundle_ids:
+        cur.execute(
+            "SELECT id FROM tools WHERE app_bundle_id = ANY(%s) AND status = 'approved'",
+            (bundle_ids,),
+        )
+        matched.update(r[0] for r in cur.fetchall())
+
+    if formulas:
+        cur.execute(
+            """
+            SELECT id FROM tools
+            WHERE status = 'approved'
+              AND install_meta IS NOT NULL
+              AND (install_meta::jsonb)->>'type' = 'brew'
+              AND (install_meta::jsonb)->>'formula' = ANY(%s)
+            """,
+            (formulas,),
+        )
+        matched.update(r[0] for r in cur.fetchall())
+
+    if casks:
+        cur.execute(
+            """
+            SELECT id FROM tools
+            WHERE status = 'approved'
+              AND install_meta IS NOT NULL
+              AND (install_meta::jsonb)->>'type' = 'brew'
+              AND (install_meta::jsonb)->>'cask' = ANY(%s)
+            """,
+            (casks,),
+        )
+        matched.update(r[0] for r in cur.fetchall())
+
+    for tool_id in matched:
+        cur.execute(
+            """
+            INSERT INTO user_items (user_id, tool_id, installed_locally, installed_at, source)
+            VALUES (%s, %s, TRUE, NOW(), 'detected')
+            ON CONFLICT (user_id, tool_id) WHERE user_id IS NOT NULL DO UPDATE
+              SET installed_locally = TRUE,
+                  installed_at = COALESCE(user_items.installed_at, NOW()),
+                  source = CASE WHEN user_items.source = 'manual'
+                                THEN 'manual' ELSE 'detected' END
+            """,
+            (user_id, tool_id),
+        )
+
+    return matched
+
+
+def _reconcile_unknowns(user_id: str, apps: list, matched_tool_ids: set, cur) -> int:
+    """Upsert user_items rows for apps that didn't match any catalog tool.
+
+    Identifies unknowns by bundle_id; preserves hidden=TRUE when re-detecting.
+    Returns the count of unknown rows touched.
+    """
+    # Build the set of bundle_ids that matched a catalog tool — those don't become unknowns.
+    if matched_tool_ids:
+        cur.execute(
+            "SELECT app_bundle_id FROM tools WHERE id = ANY(%s) AND app_bundle_id IS NOT NULL",
+            (list(matched_tool_ids),),
+        )
+        matched_bundle_ids = {r[0] for r in cur.fetchall()}
+    else:
+        matched_bundle_ids = set()
+
+    touched = 0
+    for app in apps:
+        bundle_id = app.get("bundle_id")
+        if not bundle_id or bundle_id in matched_bundle_ids:
+            continue
+        name = app.get("name") or bundle_id
+        cur.execute(
+            """
+            INSERT INTO user_items (user_id, tool_id, detected_bundle_id, detected_name,
+                                    source, installed_locally, installed_at, hidden)
+            VALUES (%s, NULL, %s, %s, 'detected', TRUE, NOW(), FALSE)
+            ON CONFLICT (user_id, detected_bundle_id) WHERE tool_id IS NULL AND detected_bundle_id IS NOT NULL
+            DO UPDATE SET
+                detected_name     = EXCLUDED.detected_name,
+                installed_locally = TRUE,
+                installed_at      = COALESCE(user_items.installed_at, NOW())
+                -- hidden is intentionally NOT touched here
+            """,
+            (user_id, bundle_id, name),
+        )
+        touched += 1
+    return touched
+
+
+def _reconcile_uninstalls(user_id: str, payload: dict, matched_tool_ids: set, cur) -> int:
+    """Set installed_locally=FALSE for source='detected' rows missing from this scan.
+
+    - Matched rows (tool_id NOT NULL): keyed by app_bundle_id / install_meta lookup.
+    - Unknown rows (tool_id NULL): keyed by detected_bundle_id.
+    Manual-source rows are never touched.
+    """
+    seen_bundle_ids = {a["bundle_id"] for a in payload.get("apps", []) if a.get("bundle_id")}
+    seen_formulas = set(payload.get("brew", []))
+    seen_casks = set(payload.get("brew_casks", []))
+
+    # Pre-load currently-detected, currently-installed shelf rows for this user.
+    cur.execute(
+        """
+        SELECT ui.id, ui.tool_id, ui.detected_bundle_id,
+               t.app_bundle_id,
+               (t.install_meta::jsonb)->>'formula' AS formula,
+               (t.install_meta::jsonb)->>'cask' AS cask
+        FROM user_items ui
+        LEFT JOIN tools t ON t.id = ui.tool_id
+        WHERE ui.user_id = %s
+          AND ui.source = 'detected'
+          AND ui.installed_locally = TRUE
+        """,
+        (user_id,),
+    )
+    candidates = cur.fetchall()
+
+    to_unmark = []
+    for row in candidates:
+        ui_id, tool_id, det_bundle_id, app_bundle_id, formula, cask = row
+        if tool_id is None:
+            # Unknown row — key on detected_bundle_id.
+            if det_bundle_id and det_bundle_id not in seen_bundle_ids:
+                to_unmark.append(ui_id)
+        else:
+            # Matched row — present in scan if any of its match keys match.
+            present = (
+                (app_bundle_id and app_bundle_id in seen_bundle_ids)
+                or (formula and formula in seen_formulas)
+                or (cask and cask in seen_casks)
+            )
+            if not present:
+                to_unmark.append(ui_id)
+
+    if to_unmark:
+        cur.execute(
+            "UPDATE user_items SET installed_locally = FALSE, installed_at = NULL WHERE id = ANY(%s)",
+            (to_unmark,),
+        )
+    return len(to_unmark)
+
+
+@app.route("/api/agent/scan", methods=["POST"])
+def agent_scan():
+    """Receive a scan payload from forge_agent and reconcile against this user's shelf.
+
+    Body shape:
+        {"apps": [{"bundle_id": str, "name": str, "path": str}, ...],
+         "brew": [str, ...],
+         "brew_casks": [str, ...]}
+    """
+    uid, _email = _get_identity()
+    if not uid:
+        return jsonify({"error": "user_id_required"}), 400
+
+    payload = request.get_json(silent=True) or {}
+    if not isinstance(payload.get("apps"), list):
+        return jsonify({"error": "apps_must_be_list"}), 400
+
+    with db.get_db(dict_cursor=False) as cur:
+        matched = _reconcile_matches(uid, payload, cur)
+        _reconcile_unknowns(uid, payload["apps"], matched, cur)
+        unmarked = _reconcile_uninstalls(uid, payload, matched, cur)
+
+        cur.execute(
+            """SELECT COUNT(*) FROM user_items
+               WHERE user_id = %s AND tool_id IS NULL
+                 AND installed_locally = TRUE AND hidden = FALSE""",
+            (uid,),
+        )
+        detected_count = cur.fetchone()[0]
+
+    return jsonify({
+        "matched":  len(matched),
+        "detected": detected_count,
+        "unmarked": unmarked,
+    })
 
 
 # -------------------- Reviews --------------------

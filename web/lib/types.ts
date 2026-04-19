@@ -40,9 +40,9 @@ export interface Skill {
 }
 
 export interface UserItem {
-  id: number;
-  tool_id: number;
-  slug?: string;
+  id: number;                 // user_items.id (shelf row id)
+  tool_id: number | null;     // null for unknown/detected apps
+  slug?: string | null;
   name?: string;
   tagline?: string;
   icon?: string;
@@ -52,6 +52,12 @@ export interface UserItem {
   open_count?: number;
   added_at?: string;
   last_opened_at?: string;
+  installed_locally?: boolean;
+  installed_at?: string | null;
+  installed_version?: string | null;
+  // New for install discovery:
+  source?: "manual" | "detected";
+  detected_bundle_id?: string | null;
 }
 
 export interface Star {

@@ -1,0 +1,13 @@
+# Slug → CFBundleIdentifier for catalog tools that ship as Mac .app bundles.
+# Add new entries inline as new external apps are added to the catalog.
+# Slugs must already exist in the `tools` table; the seed script is idempotent.
+#
+# To find a bundle ID for an installed app:
+#   plutil -p /Applications/<Name>.app/Contents/Info.plist | grep CFBundleIdentifier
+# or:
+#   mdls -name kMDItemCFBundleIdentifier "/Applications/<Name>.app"
+
+# Currently in the catalog (verified before merge):
+meetily: net.zackz.meetily
+# Add more here as the catalog grows. Pluely will be added in a separate one-off
+# (it's not yet a catalog tool — see spec rationale).
