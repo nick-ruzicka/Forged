@@ -37,11 +37,6 @@ export function InstallProgress({
     setProgress(0);
 
     try {
-      // Get agent token
-      const tokenRes = await fetch("/api/agent/token");
-      const tokenData = await tokenRes.json();
-      if (!tokenData.token) throw new Error("no_token");
-
       // Build install body from install_meta or fallback to command
       let installBody: Record<string, unknown>;
       try {
@@ -54,13 +49,10 @@ export function InstallProgress({
         installBody = { type: "command", command: installCommand, name: slug };
       }
 
-      // POST to forge-agent with SSE streaming
-      const r = await fetch("http://localhost:4242/install", {
+      // POST to Flask SSE install proxy (direct — Next.js proxy doesn't stream SSE)
+      const r = await fetch("http://localhost:8090/api/forge-agent/install", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Forge-Token": tokenData.token,
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(installBody),
       });
 

@@ -703,6 +703,55 @@ def proxy_launch():
         return jsonify({"error": str(e), "success": False}), 502
 
 
+@app.route("/api/forge-agent/install", methods=["POST", "OPTIONS"])
+def proxy_install():
+    """Proxy install request to forge-agent, streaming SSE response."""
+    from flask import Response
+    import http.client
+    # Handle CORS preflight
+    if request.method == "OPTIONS":
+        origin = request.headers.get("Origin", "")
+        cors_origin = origin if origin in ("http://localhost:3000", "http://localhost:3002", "http://localhost:8090") else "http://localhost:8090"
+        return Response("", headers={
+            "Access-Control-Allow-Origin": cors_origin,
+            "Access-Control-Allow-Methods": "POST, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type",
+        })
+    body = request.get_json(silent=True) or {}
+    try:
+        token = open(os.path.expanduser("~/.forge/agent-token")).read().strip()
+        data = json.dumps(body).encode()
+
+        def generate():
+            try:
+                conn = http.client.HTTPConnection("localhost", 4242, timeout=300)
+                conn.request("POST", "/install", body=data, headers={
+                    "X-Forge-Token": token,
+                    "Content-Type": "application/json",
+                })
+                resp = conn.getresponse()
+                while True:
+                    line = resp.readline()
+                    if not line:
+                        break
+                    yield line
+                conn.close()
+            except Exception as e:
+                yield f'event: error\ndata: {json.dumps({"type": "error", "message": str(e)})}\n\n'.encode()
+
+        origin = request.headers.get("Origin", "")
+        cors_origin = origin if origin in ("http://localhost:3000", "http://localhost:3002", "http://localhost:8090") else "http://localhost:8090"
+        return Response(generate(), mimetype="text/event-stream",
+                        headers={
+                            "Cache-Control": "no-cache",
+                            "Connection": "keep-alive",
+                            "Access-Control-Allow-Origin": cors_origin,
+                            "Access-Control-Allow-Headers": "Content-Type",
+                        })
+    except Exception as e:
+        return jsonify({"error": str(e), "success": False}), 502
+
+
 @app.route("/api/forge-agent/running", methods=["GET"])
 def proxy_running():
     """Proxy running status request to forge-agent."""
