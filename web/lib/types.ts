@@ -16,6 +16,7 @@ export interface App {
   app_type?: string;
   author_name?: string;
   author_email?: string;
+  install_meta?: string;
   install_count?: number;
   open_count?: number;
   avg_rating?: number;

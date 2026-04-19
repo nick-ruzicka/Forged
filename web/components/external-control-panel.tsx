@@ -37,12 +37,10 @@ export function ExternalControlPanel({
   // Parse install type
   let installType = "external";
   try {
-    const meta =
-      typeof app.install_meta === "string"
-        ? JSON.parse(app.install_meta as string)
-        : (app as Record<string, unknown>).install_meta;
-    if (meta && typeof meta === "object" && "type" in meta)
-      installType = (meta as { type: string }).type;
+    if (app.install_meta) {
+      const meta = JSON.parse(app.install_meta);
+      if (meta && meta.type) installType = meta.type;
+    }
   } catch {
     // keep default
   }
