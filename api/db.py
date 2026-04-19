@@ -514,3 +514,19 @@ def update_skill(skill_id: int, **fields):
     values = list(fields.values()) + [skill_id]
     with get_db(dict_cursor=False) as cur:
         cur.execute(f"UPDATE skills SET {sets} WHERE id = %s", values)
+
+
+# -------- Review timing --------
+
+def insert_review_timing(review_id: int, skill_id: int, agent_name: str,
+                          started_at, ended_at, duration_ms: int,
+                          outcome: str, error_detail: str = None):
+    with get_db(dict_cursor=False) as cur:
+        cur.execute(
+            """INSERT INTO reviews_timing
+               (review_id, skill_id, agent_name, started_at, ended_at,
+                duration_ms, outcome, error_detail)
+               VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""",
+            (review_id, skill_id, agent_name, started_at, ended_at,
+             duration_ms, outcome, error_detail),
+        )
