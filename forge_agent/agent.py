@@ -586,20 +586,40 @@ class AgentHandler(http.server.BaseHTTPRequestHandler):
     # ── /launch ───────────────────────────────────────────────
 
     def _handle_launch(self, body):
-        """Launch a locally installed app (macOS: open -a <name>)."""
+        """Launch or reveal a locally installed app (macOS)."""
         app_slug = body.get("app_slug", "")
         app_name = body.get("app_name", "")
+        action = body.get("action", "launch")  # "launch" or "reveal"
+        if not app_name and not app_slug:
+            self._json({"error": "app_name or app_slug required"}, 400)
+            return
+        # For reveal, look up install_path from installed.json
+        if action == "reveal":
+            installed = _load_installed()
+            app_entry = next((a for a in installed if a.get("slug") == app_slug), None)
+            install_path = app_entry.get("install_path", "") if app_entry else ""
+            if not install_path:
+                install_path = f"/Applications/{app_name}.app"
+            try:
+                r = subprocess.run(["open", "-R", install_path],
+                                   capture_output=True, text=True, timeout=5)
+                if r.returncode == 0:
+                    self._json({"success": True, "message": f"Revealed {install_path}"})
+                else:
+                    self._json({"success": False, "message": r.stderr.strip()[:200]}, 400)
+            except subprocess.TimeoutExpired:
+                self._json({"success": False, "message": "Reveal timed out"}, 500)
+            return
+        # Original launch logic
         if not app_name:
             self._json({"error": "app_name required"}, 400)
             return
-        # Sanitize: only allow alphanumeric, spaces, hyphens, dots
         if not re.match(r"^[a-zA-Z0-9 .\-]+$", app_name):
             self._json({"error": "Invalid app name"}, 400)
             return
         audit.info("LAUNCH %s (%s)", app_name, app_slug)
-        # Mark as forge-launched so the monitor tags the source
         if app_slug:
-            _pending_launches[app_slug] = time.time() + 45  # Must survive a full monitor cycle (30s)
+            _pending_launches[app_slug] = time.time() + 45
         try:
             r = subprocess.run(["open", "-a", app_name],
                                capture_output=True, text=True, timeout=10)
