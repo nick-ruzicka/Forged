@@ -34,6 +34,12 @@ export function InstallButton({
         return;
       }
 
+      // External apps: navigate to detail page where agent install flow lives
+      if (delivery === "external") {
+        router.push(`/apps/${slug}`);
+        return;
+      }
+
       setLoading(true);
       try {
         await installApp(toolId);

@@ -176,8 +176,11 @@ export default function AppDetailPage({
             {/* Install progress for external apps not yet installed */}
             {isExternal && !isInstalled && (
               <InstallProgress
+                toolId={app.id}
+                slug={app.slug}
                 agentAvailable={agentStatus?.running}
                 installCommand={app.install_command}
+                installMeta={app.install_meta}
               />
             )}
 

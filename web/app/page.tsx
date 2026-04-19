@@ -15,11 +15,13 @@ import { useUser } from "@/lib/user-context";
 export default function CatalogPage() {
   const { role } = useUser();
 
-  // Role picker on first visit
+  // Role picker on first visit — wait for localStorage hydration
   const [rolePickerOpen, setRolePickerOpen] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => { setHydrated(true); }, []);
   useEffect(() => {
-    if (!role) setRolePickerOpen(true);
-  }, [role]);
+    if (hydrated && !role) setRolePickerOpen(true);
+  }, [hydrated, role]);
 
   // Search with debounce
   const [query, setQuery] = useState("");
