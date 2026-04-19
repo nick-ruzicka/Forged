@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hebbia Signal Engine — Navan Edition</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a10;color:#e4e4e8;min-height:100vh;font-family:'Inter',system-ui,sans-serif;font-size:14px;line-height:1.5}
+.forge-bar{height:34px;background:#0f0f14;border-bottom:1px solid #1a1a22;display:flex;align-items:center;padding:0 16px;gap:10px;font-size:12px;color:#888}
+.forge-bar a{color:#3b82f6;text-decoration:none}
+.chip{padding:2px 8px;border-radius:3px;font-size:11px;font-weight:500}
+.chip.fork{background:#1a2436;color:#6aa6ff}
+.chip.navan{background:#2a1a3a;color:#b988ff}
+.hero{position:relative;padding:48px 40px 40px;border-bottom:1px solid #1a1a22;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-60px;right:-60px;width:400px;height:400px;background:radial-gradient(circle,rgba(99,102,241,0.06) 0%,transparent 70%);pointer-events:none}
+.hero-grid{display:flex;justify-content:space-between;align-items:flex-start;gap:40px}
+.hero-left{flex:1}
+.hero-label{font-size:12px;font-weight:600;color:#8a8a92;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px}
+.hero-title{font-family:'DM Serif Display',serif;font-size:clamp(36px,5vw,56px);font-weight:400;color:#fff;line-height:1.05;margin-bottom:16px;letter-spacing:-0.02em}
+.hero-sub{font-size:14px;color:#8a8a92;max-width:520px;line-height:1.6}
+.hero-stats{display:flex;flex-direction:column;gap:8px;min-width:200px}
+.hero-stat{text-align:right}
+.hero-stat .n{font-family:'DM Serif Display',serif;font-size:40px;color:#fff;line-height:1}
+.hero-stat .l{font-size:11px;color:#6a6a72;text-transform:uppercase;letter-spacing:0.06em;margin-top:2px}
+.nav{display:flex;gap:0;border-bottom:1px solid #1a1a22;background:#0d0d14;padding:0 40px}
+.nav-item{padding:12px 20px;font-size:13px;font-weight:500;color:#6a6a72;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s}
+.nav-item:hover{color:#c4c4cc}
+.nav-item.active{color:#6366f1;border-bottom-color:#6366f1}
+.nav-btn{margin-left:auto;display:flex;align-items:center;padding:6px 16px;gap:6px;background:#1a1a26;border:1px solid #2a2a36;border-radius:6px;color:#c4c4cc;font-size:12px;font-weight:600;cursor:pointer;margin:6px 0}
+.nav-btn:hover{background:#222236;border-color:#3a3a4a}
+.nav-btn .icon{color:#6366f1}
+.status-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid #1a1a22}
+.status-card{padding:20px 24px;border-right:1px solid #1a1a22}
+.status-card:last-child{border-right:none}
+.status-card .bar{height:3px;border-radius:2px;margin-bottom:14px;width:60px}
+.status-card .bar.ready{background:#6366f1}
+.status-card .bar.verified{background:#22c55e}
+.status-card .bar.need{background:#eab308}
+.status-card .bar.gap{background:#ef4444}
+.status-card .label{font-size:12px;font-weight:600;color:#8a8a92;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px}
+.status-card .count{font-size:28px;font-weight:700;color:#fff;margin-bottom:4px}
+.status-card .desc{font-size:12px;color:#6a6a72;line-height:1.5}
+.content{max-width:1200px;margin:0 auto;padding:28px 40px 80px}
+h2{font-size:12px;font-weight:600;color:#6a6a72;text-transform:uppercase;letter-spacing:0.08em;margin:24px 0 14px}
+.signal{background:#111118;border:1px solid #1a1a22;border-radius:10px;padding:16px 20px;margin-bottom:8px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start;transition:border-color 0.15s}
+.signal:hover{border-color:#2a2a36}
+.signal .title{color:#fff;font-weight:600;font-size:14px;margin-bottom:3px}
+.signal .meta{font-size:12px;color:#6a6a72}
+.signal .body{font-size:13px;color:#9a9aa2;margin-top:8px;line-height:1.6}
+.score-pill{font-size:12px;font-weight:700;padding:6px 12px;border-radius:999px;white-space:nowrap}
+.score-hot{background:#2a1616;color:#f87171}
+.score-warm{background:#2a2416;color:#fbbf24}
+.score-good{background:#162a1a;color:#4ade80}
+.change-card{background:#14101e;border:1px solid #2a1e3a;border-radius:10px;padding:20px;margin-top:8px}
+.change-card .title{color:#d8b4fe;font-weight:600;font-size:14px;margin-bottom:8px}
+.change-card .body{font-size:13px;color:#9a9aa2;line-height:1.7}
+.footer-note{font-size:11px;color:#4a4a52;margin-top:32px;padding-top:16px;border-top:1px solid #1a1a22;line-height:1.6}
+.kb-bar{position:fixed;bottom:0;left:0;right:0;height:32px;background:#0d0d14;border-top:1px solid #1a1a22;display:flex;align-items:center;justify-content:center;gap:16px;font-size:11px;color:#4a4a52}
+.kb-bar kbd{background:#1a1a22;color:#8a8a92;padding:1px 6px;border-radius:3px;font-family:inherit;font-weight:600;margin-right:4px}
+</style>
+</head>
+<body>
+<div class="forge-bar"><a href="/">&larr; Forge catalog</a><span>&middot;</span><span class="chip fork">Fork of hebbia-signal-engine</span><span class="chip navan">Navan Edition</span></div>
+<div class="hero"><div class="hero-grid"><div class="hero-left"><div class="hero-label">Navan RevOps Intelligence</div><div class="hero-title">TRAVEL-TECH<br>OUTBOUND</div><div class="hero-sub">Surfacing travel-industry transformation signals across 14 target accounts. Scored for Navan outbound by the RevOps team.</div></div><div class="hero-stats"><div class="hero-stat"><div class="n">14</div><div class="l">Accounts Active</div></div><div class="hero-stat"><div class="n">6</div><div class="l">Signals Live</div></div><div class="hero-stat"><div class="n">4</div><div class="l">Strong Matches</div></div></div></div></div>
+<div class="nav"><div class="nav-item active">OUTBOUND INTELLIGENCE</div><div class="nav-item">PIPELINE OPS</div><div class="nav-item">CONTACTS</div><div class="nav-item">METHODOLOGY</div><div class="nav-btn"><span class="icon">&#9889;</span> RUN PIPELINE</div></div>
+<div class="status-row"><div class="status-card"><div class="bar ready"></div><div class="label">Ready</div><div class="count">4</div><div class="desc">Strong + Good match &middot; verified delivery</div></div><div class="status-card"><div class="bar verified"></div><div class="label">Verified Email</div><div class="count">27</div><div class="desc">Deliverability confirmed</div></div><div class="status-card"><div class="bar need"></div><div class="label">Need Email</div><div class="count">8</div><div class="desc">Scored but missing address</div></div><div class="status-card"><div class="bar gap"></div><div class="label">Signal Gaps</div><div class="count">3</div><div class="desc">No signal attached</div></div></div>
+<div class="content">
+<h2>Top signals &mdash; last 14 days</h2>
+<div class="signal"><div><div class="title">Booking.com &mdash; Q1 FY26 earnings flagged T&amp;E SaaS spend cuts</div><div class="meta">Booking Holdings &middot; NDQ:BKNG &middot; Apr 2026</div><div class="body">CFO called out &ldquo;operator-level travel tooling consolidation&rdquo; on the Q1 call. Procurement cycle opens June. Target: VP Finance.</div></div><div class="score-pill score-hot">Score 92</div></div>
+<div class="signal"><div><div class="title">American Express GBT &mdash; Egencia integration dropping 3 legacy platforms</div><div class="meta">Amex GBT &middot; Rip-and-replace window &middot; Mar 2026</div><div class="body">Three legacy expense tools leaving the stack by end of Q3. Competitive displacement &mdash; pitch Navan as the unified OBT+expense layer.</div></div><div class="score-pill score-hot">Score 89</div></div>
+<div class="signal"><div><div class="title">NDC adoption mandate &mdash; 6 Fortune 500 accounts behind schedule</div><div class="meta">IATA NDC &middot; carrier compliance deadline Q3 2026</div><div class="body">Accounts without an NDC-ready OBT will lose preferred carrier pricing this summer. Ready signal: any RFP language mentioning &ldquo;NDC API&rdquo;.</div></div><div class="score-pill score-good">Score 81</div></div>
+<div class="signal"><div><div class="title">Expedia Group &mdash; Vrbo corporate pilot, M&amp;A rumor w/ TripActions-alum</div><div class="meta">EXPE &middot; Leadership change Feb 2026</div><div class="body">New Corp head came from TripActions (Navan) 2018-2021. Warm intro path open via Nick&rsquo;s LinkedIn 2nd-degree.</div></div><div class="score-pill score-warm">Score 76</div></div>
+<div class="signal"><div><div class="title">Salesforce &mdash; T&amp;E budget -18% YoY per 10-Q</div><div class="meta">CRM &middot; Cost takeout &middot; Apr 2026</div><div class="body">Explicit travel-spend reduction target for FY27. Navan policy-controls pitch lands here; current vendor is SAP Concur on a 2027 renewal.</div></div><div class="score-pill score-warm">Score 74</div></div>
+<div class="signal"><div><div class="title">Sabre &mdash; Series F bridge raise, $115M, new CRO from Concur</div><div class="meta">Sabre Corp &middot; Funding &middot; Apr 2026</div><div class="body">Concur alum = knows the corporate travel book cold. Co-sell motion viable; monitor for partnership press.</div></div><div class="score-pill score-warm">Score 71</div></div>
+<h2>What changed vs. parent</h2>
+<div class="change-card"><div class="title">Signal taxonomy swap</div><div class="body">Parent (hebbia-signal-engine) tracks generic AI-transformation signals (hiring MLEs, model adoption, AI funding). This fork replaces that taxonomy with travel-industry signals relevant to Navan RevOps: OTA earnings calls, T&amp;E budget language, NDC/GDS protocol moves, corporate travel M&amp;A, carrier pricing mandates, Concur/SAP displacement windows, Amex GBT consolidations, TMC rip-and-replace events.</div></div>
+<div class="footer-note">Backed by the same signal-engine backend. Display layer scores against Navan&rsquo;s ICP (Fortune 1000 T&amp;E buyers, 500+ traveling employees, OBT renewal in next 12mo) rather than the parent&rsquo;s generic ICP.<br>Tier 1 contacts only &middot; Tier 2 contacts excluded from enrichment by design.</div>
+</div>
+<div class="kb-bar"><span><kbd>j</kbd><kbd>k</kbd> navigate</span><span>&middot;</span><span><kbd>a</kbd> approve</span><span>&middot;</span><span><kbd>s</kbd> skip</span><span>&middot;</span><span><kbd>/</kbd> search</span><span>&middot;</span><span><kbd>?</kbd> help</span></div>
+</body>
+</html>
