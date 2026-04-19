@@ -24,13 +24,19 @@ SAFETY RULES (strict — these MUST block):
 - If the skill handles data at a higher class than declared (data_class_mismatch): recommend "block"
 - If a safety-critical agent (red_team or security_scanner) timed out: recommend "needs_revision" with reason "automated review incomplete"
 
-QUALITY RULES (advisory — warn but do NOT block):
-- Low invocation precision or high false-fire rate: add advisory warning
-- Low output consistency: add advisory warning
+QUALITY RULES (advisory ONLY — these NEVER block or trigger needs_revision on their own):
+- Low invocation precision or high false-fire rate: add to advisory_warnings array
+- Low output consistency: add to advisory_warnings array
+- Quality metrics are informational. They do NOT affect agent_recommendation.
 
-If no safety issues and no critical quality problems: recommend "approve"
+DECISION LOGIC:
+- Any safety rule violated → "block"
+- Safety-critical agent timed out → "needs_revision"
+- ALL safety rules pass (even if quality scores are low) → "approve"
 
-Produce 3-5 structured issues for any non-approve recommendation. Each issue must have a line_ref, category, summary, and suggested_fix.
+Quality warnings are returned alongside an "approve" recommendation so the author can improve, but they NEVER change the recommendation from approve to needs_revision.
+
+Produce 3-5 structured issues only for "block" or "needs_revision" recommendations. For "approve" with quality warnings, return issues=[] and put concerns in advisory_warnings.
 
 Respond with ONLY valid JSON:
 {
