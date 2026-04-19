@@ -153,3 +153,74 @@ def skill_review_pipeline(skill_id: int) -> dict:
         )
 
     return {"skill_id": skill_id, "review_id": review_id, "review_status": recommendation}
+
+
+@celery_app.task(name="forge_sandbox.tasks.async_skill_sweep")
+def async_skill_sweep() -> dict:
+    """Post-approval sweep: re-check approved skills with deferred quality checks.
+
+    Runs twice daily via Celery beat. Picks top 10 approved skills
+    (by install popularity) and runs dogfooding, temperature variation,
+    and multi-turn adversarial checks.
+
+    On failure: sets review_status='under_review', logs to skill_admin_actions.
+    """
+    from datetime import datetime
+    import json
+
+    from api import db
+    from agents import sweep
+
+    candidates = db.get_sweep_candidates(limit=10)
+    if not candidates:
+        return {"checked": 0, "flagged": 0, "message": "no approved skills to sweep"}
+
+    checked = 0
+    flagged = 0
+    results = []
+
+    for skill in candidates:
+        skill_id = skill["id"]
+        skill_text = skill.get("prompt_text") or ""
+        skill_title = skill.get("title") or ""
+
+        if not skill_text:
+            continue
+
+        # Create a review row for timing tracking
+        review_id = db.create_review(skill_id, "skill")
+
+        try:
+            result = sweep.run(
+                skill_id, review_id,
+                skill_text=skill_text,
+                skill_title=skill_title,
+            )
+            checked += 1
+
+            if not result.get("overall_pass", True):
+                # Flag the skill
+                failed = result.get("failed_checks", [])
+                reason = f"async sweep flagged: {', '.join(failed)}"
+
+                db.update_skill(skill_id, review_status="under_review")
+                db.insert_skill_admin_action(
+                    skill_id=skill_id,
+                    action="async_sweep_flag",
+                    reason=reason,
+                    reviewer="system:async_sweep",
+                    from_status="approved",
+                    to_status="under_review",
+                )
+                flagged += 1
+                results.append({"skill_id": skill_id, "title": skill_title,
+                                "status": "flagged", "failed_checks": failed})
+            else:
+                results.append({"skill_id": skill_id, "title": skill_title,
+                                "status": "passed"})
+
+        except Exception as e:
+            results.append({"skill_id": skill_id, "title": skill_title,
+                            "status": "error", "error": str(e)[:200]})
+
+    return {"checked": checked, "flagged": flagged, "results": results}

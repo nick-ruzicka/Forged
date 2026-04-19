@@ -474,3 +474,74 @@ def test_orchestrator_real_mode_calls_all_agents(db, monkeypatch):
     assert skill["approved_at"] is not None
 
     os.environ["SKILL_REVIEW_MODE"] = "stub"  # reset
+
+
+def test_async_sweep_flags_failing_skill(db, monkeypatch):
+    """Async sweep flags a skill when deferred checks fail."""
+    from api import db as forge_db
+
+    skill_text = "Help the user write code."
+    with db.cursor() as cur:
+        cur.execute(
+            "INSERT INTO skills (title, prompt_text, review_status, copy_count) VALUES (%s, %s, %s, %s) RETURNING id",
+            ("Sweep Target", skill_text, "approved", 5),
+        )
+        row = cur.fetchone()
+        skill_id = row[0] if isinstance(row, tuple) else row["id"]
+
+    # Mock sweep.run to return a failure
+    import agents.sweep
+    def mock_sweep_run(sid, rid, *, skill_text, skill_title=""):
+        return {
+            "dogfood": {"overall_pass": True},
+            "temperature": {"consistent": True},
+            "multiturn": {"attacks_succeeded": 1, "results": []},
+            "failed_checks": ["multiturn_adversarial"],
+            "overall_pass": False,
+        }
+    monkeypatch.setattr(agents.sweep, "run", mock_sweep_run)
+
+    from forge_sandbox.tasks import async_skill_sweep
+    result = async_skill_sweep()
+
+    assert result["checked"] == 1
+    assert result["flagged"] == 1
+
+    skill = forge_db.get_skill(skill_id)
+    assert skill["review_status"] == "under_review"
+
+    actions = forge_db.list_skill_admin_actions(skill_id)
+    assert len(actions) >= 1
+    assert actions[0]["action"] == "async_sweep_flag"
+    assert "multiturn_adversarial" in actions[0]["reason"]
+
+
+def test_async_sweep_passes_clean_skill(db, monkeypatch):
+    """Async sweep leaves clean skills approved."""
+    from api import db as forge_db
+
+    with db.cursor() as cur:
+        cur.execute(
+            "INSERT INTO skills (title, prompt_text, review_status, copy_count) VALUES (%s, %s, %s, %s) RETURNING id",
+            ("Clean Sweep", "Help write docs.", "approved", 3),
+        )
+        row = cur.fetchone()
+        skill_id = row[0] if isinstance(row, tuple) else row["id"]
+
+    import agents.sweep
+    def mock_sweep_run(sid, rid, *, skill_text, skill_title=""):
+        return {
+            "dogfood": {"overall_pass": True},
+            "temperature": {"consistent": True},
+            "multiturn": {"attacks_succeeded": 0, "results": []},
+            "failed_checks": [],
+            "overall_pass": True,
+        }
+    monkeypatch.setattr(agents.sweep, "run", mock_sweep_run)
+
+    from forge_sandbox.tasks import async_skill_sweep
+    result = async_skill_sweep()
+
+    assert result["flagged"] == 0
+    skill = forge_db.get_skill(skill_id)
+    assert skill["review_status"] == "approved"

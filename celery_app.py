@@ -49,6 +49,10 @@ celery_app.conf.update(
             "task": "forge_sandbox.tasks.hibernate_idle",
             "schedule": crontab(minute="*/5"),
         },
+        "async-skill-sweep": {
+            "task": "forge_sandbox.tasks.async_skill_sweep",
+            "schedule": crontab(minute=0, hour="6,18"),
+        },
     },
 )
 

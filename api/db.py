@@ -516,6 +516,25 @@ def update_skill(skill_id: int, **fields):
         cur.execute(f"UPDATE skills SET {sets} WHERE id = %s", values)
 
 
+# -------- Sweep candidates --------
+
+def get_sweep_candidates(limit: int = 10) -> list:
+    """Return approved skills for the async post-approval sweep.
+
+    Newest first, weighted by copy_count (proxy for install popularity).
+    Skips skills already under_review.
+    """
+    with get_db() as cur:
+        cur.execute(
+            """SELECT * FROM skills
+               WHERE review_status = 'approved'
+               ORDER BY copy_count DESC NULLS LAST, approved_at DESC NULLS LAST
+               LIMIT %s""",
+            (limit,),
+        )
+        return [dict(r) for r in cur.fetchall()]
+
+
 # -------- Review timing --------
 
 def insert_review_timing(review_id: int, skill_id: int, agent_name: str,
