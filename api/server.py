@@ -1045,6 +1045,72 @@ def shelf_mark_installed(tool_id: int):
     return jsonify({"installed": row is not None, "version": version})
 
 
+# -------------------- Install discovery (agent scan) --------------------
+
+def _reconcile_matches(user_id: str, payload: dict, cur) -> set:
+    """Three-pass match: bundle ID, brew formula, brew cask.
+
+    Upserts user_items rows with source='detected'. Manual-source rows that
+    are already installed_locally=TRUE keep source='manual'. Manual rows with
+    installed_locally=FALSE are upgraded to TRUE on detection (source stays
+    'manual'). Returns the set of matched tool ids for the caller's bookkeeping.
+    """
+    bundle_ids = [a["bundle_id"] for a in payload.get("apps", []) if a.get("bundle_id")]
+    formulas = list(payload.get("brew", []))
+    casks = list(payload.get("brew_casks", []))
+
+    matched = set()
+
+    if bundle_ids:
+        cur.execute(
+            "SELECT id FROM tools WHERE app_bundle_id = ANY(%s) AND status = 'approved'",
+            (bundle_ids,),
+        )
+        matched.update(r[0] for r in cur.fetchall())
+
+    if formulas:
+        cur.execute(
+            """
+            SELECT id FROM tools
+            WHERE status = 'approved'
+              AND install_meta IS NOT NULL
+              AND (install_meta::jsonb)->>'type' = 'brew'
+              AND (install_meta::jsonb)->>'formula' = ANY(%s)
+            """,
+            (formulas,),
+        )
+        matched.update(r[0] for r in cur.fetchall())
+
+    if casks:
+        cur.execute(
+            """
+            SELECT id FROM tools
+            WHERE status = 'approved'
+              AND install_meta IS NOT NULL
+              AND (install_meta::jsonb)->>'type' = 'brew'
+              AND (install_meta::jsonb)->>'cask' = ANY(%s)
+            """,
+            (casks,),
+        )
+        matched.update(r[0] for r in cur.fetchall())
+
+    for tool_id in matched:
+        cur.execute(
+            """
+            INSERT INTO user_items (user_id, tool_id, installed_locally, installed_at, source)
+            VALUES (%s, %s, TRUE, NOW(), 'detected')
+            ON CONFLICT (user_id, tool_id) WHERE user_id IS NOT NULL DO UPDATE
+              SET installed_locally = TRUE,
+                  installed_at = COALESCE(user_items.installed_at, NOW()),
+                  source = CASE WHEN user_items.source = 'manual'
+                                THEN 'manual' ELSE 'detected' END
+            """,
+            (user_id, tool_id),
+        )
+
+    return matched
+
+
 # -------------------- Reviews --------------------
 
 @app.route("/api/tools/<int:tool_id>/reviews", methods=["GET"])
