@@ -204,9 +204,9 @@ export default function AppDetailPage({
                     <ReviewCard
                       key={review.id}
                       rating={review.rating}
-                      userName={review.user_name}
+                      userName={review.author_name || review.user_name}
                       date={review.created_at}
-                      text={review.text}
+                      text={review.note || review.text}
                     />
                   ))}
                 </div>

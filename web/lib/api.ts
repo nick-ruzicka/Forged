@@ -123,7 +123,7 @@ export function postReview(
 ): Promise<Review> {
   return api<Review>(`/tools/${toolId}/reviews`, {
     method: "POST",
-    body: JSON.stringify({ rating, text }),
+    body: JSON.stringify({ rating, note: text }),
   });
 }
 

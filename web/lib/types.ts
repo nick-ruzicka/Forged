@@ -68,8 +68,11 @@ export interface Review {
   tool_id: number;
   rating: number;
   text?: string;
+  note?: string;
   user_name?: string;
+  author_name?: string;
   user_email?: string;
+  author_email?: string;
   created_at?: string;
 }
 

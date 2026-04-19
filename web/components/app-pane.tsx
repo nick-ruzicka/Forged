@@ -22,7 +22,7 @@ export function AppPane({ slug, name, onClose }: AppPaneProps) {
             size="xs"
             render={
               <a
-                href={`/apps/${slug}`}
+                href={`/embed/${slug}`}
                 target="_blank"
                 rel="noopener noreferrer"
               />

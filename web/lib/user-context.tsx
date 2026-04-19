@@ -25,14 +25,23 @@ interface UserContextValue {
 
 const UserContext = createContext<UserContextValue | null>(null);
 
-export function UserProvider({ children }: { children: ReactNode }) {
-  const [userId, setUserId] = useState("");
-  const [role, _setRole] = useState("");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [adminKey, _setAdminKey] = useState("");
+function readLocal(key: string): string {
+  if (typeof window === "undefined") return "";
+  try { return localStorage.getItem(key) ?? ""; } catch { return ""; }
+}
 
-  // Hydrate from localStorage on mount
+export function UserProvider({ children }: { children: ReactNode }) {
+  const [userId, setUserId] = useState(() => typeof window !== "undefined" ? getUserId() : "");
+  const [role, _setRole] = useState(() => readLocal("forge_user_role"));
+  const [name, setName] = useState(() => {
+    try { return JSON.parse(readLocal("forge_user")).name ?? ""; } catch { return ""; }
+  });
+  const [email, setEmail] = useState(() => {
+    try { return JSON.parse(readLocal("forge_user")).email ?? ""; } catch { return ""; }
+  });
+  const [adminKey, _setAdminKey] = useState(() => readLocal("forge_admin_key"));
+
+  // Re-hydrate on mount (ensures SSR mismatch is resolved)
   useEffect(() => {
     setUserId(getUserId());
     _setRole(localStorage.getItem("forge_user_role") ?? "");

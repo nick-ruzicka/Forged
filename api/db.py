@@ -408,17 +408,21 @@ def insert_skill(data: dict) -> int:
 def increment_skill_upvotes(skill_id: int):
     with get_db(dict_cursor=False) as cur:
         cur.execute(
-            "UPDATE skills SET upvotes = upvotes + 1 WHERE id = %s",
+            "UPDATE skills SET upvotes = upvotes + 1 WHERE id = %s RETURNING upvotes",
             (skill_id,),
         )
+        row = cur.fetchone()
+        return row[0] if row else None
 
 
 def increment_skill_copy_count(skill_id: int):
     with get_db(dict_cursor=False) as cur:
         cur.execute(
-            "UPDATE skills SET copy_count = copy_count + 1 WHERE id = %s",
+            "UPDATE skills SET copy_count = copy_count + 1 WHERE id = %s RETURNING copy_count",
             (skill_id,),
         )
+        row = cur.fetchone()
+        return row[0] if row else None
 
 
 def get_skill(skill_id: int):

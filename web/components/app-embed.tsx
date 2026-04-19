@@ -10,7 +10,7 @@ interface AppEmbedProps {
 export function AppEmbed({ slug, className }: AppEmbedProps) {
   return (
     <iframe
-      src={`/apps/${slug}`}
+      src={`/embed/${slug}`}
       className={cn("h-full w-full border-0", className)}
       sandbox="allow-scripts allow-forms allow-modals allow-downloads"
       referrerPolicy="no-referrer"
