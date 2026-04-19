@@ -88,6 +88,42 @@ export default function AppDetailPage({
     );
   }
 
+  // Full-screen embed for installed embedded apps
+  if (isInstalled && !isExternal) {
+    return (
+      <div className="flex h-full flex-col">
+        <div className="flex items-center justify-between border-b border-border bg-surface px-4 py-1.5">
+          <div className="flex items-center gap-3">
+            <Link
+              href="/"
+              className="text-xs text-text-muted hover:text-foreground transition-colors"
+            >
+              ← Apps
+            </Link>
+            <span className="text-xs text-border">|</span>
+            <span className="text-xs text-text-secondary">
+              {app.icon || "📦"} {app.name}
+            </span>
+          </div>
+          <div className="flex items-center gap-1">
+            <StarButton toolId={app.id} isStarred={isStarred} size="sm" />
+            <Button
+              variant="ghost"
+              size="xs"
+              nativeButton={false}
+              render={<Link href={`/apps/${slug}?tab=overview`} />}
+            >
+              Details
+            </Button>
+          </div>
+        </div>
+        <div className="flex-1">
+          <AppEmbed slug={slug} />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-6 p-6">
       {/* Back link */}
@@ -150,7 +186,7 @@ export default function AppDetailPage({
       </div>
 
       {/* Tabs */}
-      <Tabs defaultValue={isInstalled && !isExternal ? "open" : "overview"}>
+      <Tabs defaultValue="overview">
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="open">Open App</TabsTrigger>
