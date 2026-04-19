@@ -474,10 +474,28 @@ class AgentHandler(http.server.BaseHTTPRequestHandler):
         if install_type == "brew":
             formula = body.get("formula", "")
             cask = body.get("cask", True)
+            tap = body.get("tap", "")
+            extra_formulas = body.get("extra_formulas", [])
             if not _FORMULA_RE.match(formula):
                 self._sse_event("error", {"success": False, "message": f"Invalid formula: {formula}"})
                 self._sse_end()
                 return
+            # Run brew tap first if specified
+            if tap and _FORMULA_RE.match(tap):
+                audit.info("BREW_TAP %s", tap)
+                self._sse_event("progress", {"message": f"Tapping {tap}..."})
+                tap_proc = subprocess.run(["brew", "tap", tap],
+                                          capture_output=True, text=True, timeout=60)
+                if tap_proc.returncode != 0:
+                    err = tap_proc.stderr.strip() or tap_proc.stdout.strip()
+                    # "already tapped" is fine
+                    if "already tapped" not in err.lower():
+                        self._sse_event("error", {"success": False,
+                                                  "message": f"brew tap failed: {err[:200]}"})
+                        self._sse_end()
+                        return
+                self._sse_event("progress", {"message": f"Tapped {tap}"})
+            # Main install
             cmd = ["brew", "install"]
             if cask:
                 cmd.append("--cask")
@@ -487,6 +505,12 @@ class AgentHandler(http.server.BaseHTTPRequestHandler):
                 "slug": slug, "name": name, "process_name": process_name,
                 "install_type": "brew", "formula": formula,
             })
+            # Install extra formulas (e.g. backend companion packages)
+            for extra in extra_formulas:
+                if isinstance(extra, str) and _FORMULA_RE.match(extra):
+                    audit.info("BREW_INSTALL_EXTRA %s", extra)
+                    self._sse_event("progress", {"message": f"Installing {extra}..."})
+                    self._stream_process(["brew", "install", extra], extra)
 
         elif install_type == "pip":
             package = body.get("package", "")
