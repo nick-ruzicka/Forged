@@ -2192,7 +2192,7 @@ if __name__ == "__main__":
     host = os.environ.get("HOST", "0.0.0.0")
 
     # Governance pipeline mode check
-    _review_mode = os.environ.get("SKILL_REVIEW_MODE", "stub")
+    _review_mode = os.environ.get("SKILL_REVIEW_MODE", "real")
     _env = os.environ.get("ENV", os.environ.get("FLASK_ENV", "development"))
     if _review_mode == "stub":
         import logging

@@ -32,7 +32,7 @@ def skill_review_pipeline(skill_id: int) -> dict:
 
     from api import db
 
-    mode = os.environ.get("SKILL_REVIEW_MODE", "stub")
+    mode = os.environ.get("SKILL_REVIEW_MODE", "real")
 
     skill = db.get_skill(skill_id)
     if not skill:
