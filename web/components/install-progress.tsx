@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
-import { Loader2, Copy, Check, Download } from "lucide-react";
+import { Loader2, Copy, Check, Download, Terminal, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { installApp } from "@/lib/hooks";
@@ -36,7 +36,6 @@ export function InstallProgress({
 
   const appendLog = useCallback((line: string) => {
     setLogLines((prev) => [...prev, line]);
-    // Auto-scroll
     setTimeout(() => {
       if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
     }, 50);
@@ -113,7 +112,6 @@ export function InstallProgress({
                 appendLog(`✕ ${msg}`);
                 failed = true;
               } else {
-                // progress, installing, pulling, etc.
                 setStatusLine(msg);
                 setProgress(Math.min(5 + lineCount * 3, 95));
                 if (msg) appendLog(msg);
@@ -124,7 +122,7 @@ export function InstallProgress({
           }
         }
       } catch {
-        // Stream ended — OK if already succeeded/failed
+        // Stream ended
       }
 
       if (succeeded) {
@@ -138,7 +136,6 @@ export function InstallProgress({
       }
       if (failed) return;
 
-      // Stream ended with no terminal event
       setPhase("error");
       setStatusLine("Install ended unexpectedly");
     } catch {
@@ -161,19 +158,20 @@ export function InstallProgress({
     }
   }, [autoInstall, agentAvailable, phase, handleInstall]);
 
-  // --- Idle: show install button + manual command ---
+  // --- Idle ---
   if (phase === "idle") {
     return (
-      <div className="flex flex-col gap-3 rounded-lg border border-border bg-card p-4">
+      <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5">
+        <h4 className="text-[13px] font-semibold text-foreground">Installation</h4>
         {agentAvailable && installCommand && (
           <Button onClick={handleInstall} className="w-full">
-            <Download className="mr-2 size-4" />
+            <Download data-icon="inline-start" />
             Install {slug}
           </Button>
         )}
         {installCommand && (
           <div className="flex flex-col gap-2">
-            <span className="text-xs text-text-muted">
+            <span className="text-xs font-medium text-text-muted">
               {agentAvailable ? "Or install manually:" : "Install command"}
             </span>
             <CopyBlock text={installCommand} copied={copied} onCopy={() => {
@@ -188,27 +186,34 @@ export function InstallProgress({
 
   // --- Installing / Done / Error ---
   return (
-    <div className="flex flex-col gap-3 rounded-lg border border-border bg-card p-4">
-      {/* Status line */}
-      <div className="flex items-center gap-2">
+    <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5">
+      {/* Status header */}
+      <div className="flex items-center gap-3">
         {phase === "done" ? (
-          <Check className="size-4 shrink-0 text-green-500" />
+          <div className="flex size-8 items-center justify-center rounded-full bg-green-500/10 ring-1 ring-green-500/20">
+            <Check className="size-4 text-green-500" />
+          </div>
         ) : phase === "error" ? (
-          <span className="shrink-0 text-sm text-destructive">✕</span>
+          <div className="flex size-8 items-center justify-center rounded-full bg-destructive/10 ring-1 ring-destructive/20">
+            <AlertCircle className="size-4 text-destructive" />
+          </div>
         ) : (
-          <Loader2 className="size-4 shrink-0 animate-spin text-primary" />
+          <div className="flex size-8 items-center justify-center rounded-full bg-primary/10 ring-1 ring-primary/20">
+            <Loader2 className="size-4 animate-spin text-primary" />
+          </div>
         )}
-        <span
-          className={`text-sm ${phase === "error" ? "text-destructive" : phase === "done" ? "text-green-500" : "text-foreground"}`}
-        >
-          {statusLine}
-        </span>
+        <div className="flex flex-col gap-0.5">
+          <span className="text-[13px] font-semibold text-foreground">
+            {phase === "done" ? "Installation complete" : phase === "error" ? "Installation failed" : "Installing..."}
+          </span>
+          <span className="text-xs text-text-muted">{statusLine}</span>
+        </div>
       </div>
 
       {/* Progress bar */}
-      <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface">
+      <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-2">
         <div
-          className={`h-full rounded-full transition-all duration-300 ${
+          className={`h-full rounded-full transition-all duration-500 ease-out ${
             phase === "done"
               ? "bg-green-500"
               : phase === "error"
@@ -221,20 +226,26 @@ export function InstallProgress({
 
       {/* Live log */}
       {logLines.length > 0 && (
-        <div
-          ref={logRef}
-          className="max-h-36 overflow-y-auto rounded-md bg-black/30 px-3 py-2 font-mono text-[11px] leading-relaxed text-text-muted"
-        >
-          {logLines.map((line, i) => (
-            <div key={i}>{line}</div>
-          ))}
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-1.5">
+            <Terminal className="size-3 text-text-muted" />
+            <span className="text-[11px] font-medium text-text-muted">Output</span>
+          </div>
+          <div
+            ref={logRef}
+            className="max-h-40 overflow-y-auto rounded-xl bg-surface-2 px-4 py-3 font-mono text-[11px] leading-relaxed text-text-muted ring-1 ring-border"
+          >
+            {logLines.map((line, i) => (
+              <div key={i} className="py-0.5">{line}</div>
+            ))}
+          </div>
         </div>
       )}
 
       {/* Error fallback */}
       {phase === "error" && installCommand && (
-        <div className="mt-1 flex flex-col gap-2">
-          <span className="text-xs text-text-muted">
+        <div className="flex flex-col gap-2 border-t border-border pt-4">
+          <span className="text-xs font-medium text-text-muted">
             Install manually instead:
           </span>
           <CopyBlock text={installCommand} copied={copied} onCopy={() => {
@@ -249,21 +260,21 @@ export function InstallProgress({
 
 function CopyBlock({ text, copied, onCopy }: { text: string; copied: boolean; onCopy: () => void }) {
   return (
-    <div className="flex items-start gap-2">
-      <code className="flex-1 rounded bg-surface px-3 py-2 font-mono text-xs text-foreground whitespace-pre-wrap">
+    <div className="flex items-start gap-2 rounded-xl bg-surface-2 p-3 ring-1 ring-border">
+      <code className="flex-1 font-mono text-xs leading-relaxed text-foreground/80 whitespace-pre-wrap">
         {text}
       </code>
       <Button
         variant="ghost"
-        size="icon"
-        className="shrink-0 mt-1"
+        size="icon-sm"
+        className="shrink-0"
         onClick={async () => {
           await navigator.clipboard.writeText(text);
           toast.success("Copied to clipboard");
           onCopy();
         }}
       >
-        {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
+        {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
       </Button>
     </div>
   );

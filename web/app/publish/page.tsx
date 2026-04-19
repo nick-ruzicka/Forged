@@ -175,13 +175,16 @@ export default function PublishPage() {
   // Success view
   if (published) {
     return (
-      <div className="flex flex-col items-center gap-6 p-6">
-        <div className="flex max-w-md flex-col items-center gap-4 rounded-xl border border-border bg-card p-8 text-center">
-          <span className="text-5xl">🎉</span>
-          <h2 className="text-xl font-semibold text-foreground">
+      <div className="flex flex-col items-center gap-6 p-6 md:p-8">
+        <div className="relative flex max-w-md flex-col items-center gap-5 rounded-2xl border border-border bg-card p-10 text-center">
+          <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-primary/[0.03] to-transparent pointer-events-none" />
+          <div className="relative flex size-16 items-center justify-center rounded-2xl bg-primary/10 text-4xl">
+            🎉
+          </div>
+          <h2 className="relative text-2xl font-bold tracking-tight text-foreground">
             {published.name} published
           </h2>
-          <p className="text-sm text-text-secondary">
+          <p className="relative text-[15px] text-text-secondary leading-relaxed">
             Your app has been submitted and is pending review. You&apos;ll be
             notified once it&apos;s approved.
           </p>
@@ -210,32 +213,32 @@ export default function PublishPage() {
   }
 
   return (
-    <div className="flex flex-col gap-6 p-6">
+    <div className="flex flex-col gap-8 p-6 md:p-8">
       {/* Header */}
-      <div className="flex flex-col gap-1">
-        <h1 className="text-2xl font-semibold text-foreground">Publish</h1>
-        <p className="text-sm text-text-secondary">
-          Submit a new app to the Forge catalog.
+      <div className="flex flex-col gap-2">
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">Publish</h1>
+        <p className="text-[15px] text-text-secondary">
+          Ship something your team will love. Paste HTML, upload, or pull from GitHub.
         </p>
       </div>
 
-      {/* Mode pills */}
-      <div className="flex gap-2">
+      {/* Mode selector */}
+      <div className="inline-flex rounded-xl border border-border bg-surface-2 p-1">
         {(
           [
-            { key: "paste", label: "📝 Paste HTML" },
-            { key: "upload", label: "📦 Upload file" },
-            { key: "github", label: "🐙 From GitHub" },
+            { key: "paste", label: "Paste HTML" },
+            { key: "upload", label: "Upload file" },
+            { key: "github", label: "From GitHub" },
           ] as const
         ).map(({ key, label }) => (
           <button
             key={key}
             onClick={() => setMode(key)}
             className={cn(
-              "rounded-full border px-3 py-1 text-xs font-medium transition-colors",
+              "rounded-lg px-4 py-2 text-sm font-medium transition-all duration-150",
               mode === key
-                ? "border-primary bg-primary/10 text-primary"
-                : "border-border text-text-muted hover:text-text-secondary hover:border-border-strong",
+                ? "bg-white/[0.06] text-foreground shadow-sm"
+                : "text-text-muted hover:text-foreground",
             )}
           >
             {label}
@@ -278,12 +281,12 @@ export default function PublishPage() {
       )}
 
       {/* Metadata form */}
-      <div className="flex flex-col gap-4 rounded-xl border border-border bg-card p-4">
-        <h3 className="text-sm font-medium text-foreground">App details</h3>
+      <div className="flex flex-col gap-5 rounded-2xl border border-border bg-card p-6">
+        <h3 className="text-[15px] font-semibold text-foreground">App details</h3>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-medium text-text-secondary">
+            <label className="text-[13px] font-medium text-foreground/70">
               Name <span className="text-destructive">*</span>
             </label>
             <Input
@@ -295,7 +298,7 @@ export default function PublishPage() {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-medium text-text-secondary">
+            <label className="text-[13px] font-medium text-foreground/70">
               Tagline <span className="text-destructive">*</span>
             </label>
             <Input
@@ -307,7 +310,7 @@ export default function PublishPage() {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-medium text-text-secondary">
+            <label className="text-[13px] font-medium text-foreground/70">
               Category
             </label>
             <Select value={category} onValueChange={(v) => v && setCategory(v)}>
@@ -325,7 +328,7 @@ export default function PublishPage() {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-medium text-text-secondary">
+            <label className="text-[13px] font-medium text-foreground/70">
               Icon
             </label>
             <Input
@@ -339,7 +342,7 @@ export default function PublishPage() {
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-medium text-text-secondary">
+          <label className="text-[13px] font-medium text-foreground/70">
             Description
           </label>
           <Textarea
@@ -351,7 +354,7 @@ export default function PublishPage() {
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-medium text-text-secondary">
+            <label className="text-[13px] font-medium text-foreground/70">
               Author name
             </label>
             <Input
@@ -362,7 +365,7 @@ export default function PublishPage() {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-medium text-text-secondary">
+            <label className="text-[13px] font-medium text-foreground/70">
               Author email <span className="text-destructive">*</span>
             </label>
             <Input
@@ -377,11 +380,11 @@ export default function PublishPage() {
 
       {/* Submit */}
       <div className="flex items-center gap-4">
-        <Button onClick={handleSubmit} disabled={submitting}>
-          {submitting ? "Publishing..." : "Publish"}
+        <Button size="lg" onClick={handleSubmit} disabled={submitting}>
+          {submitting ? "Publishing..." : "Publish App"}
         </Button>
         {error && (
-          <span className="text-sm text-destructive">{error}</span>
+          <span className="text-sm font-medium text-destructive">{error}</span>
         )}
       </div>
     </div>

@@ -2,8 +2,9 @@
 
 import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Check, Download, ExternalLink } from "lucide-react";
+import { Check, Download, ArrowRight, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { installApp } from "@/lib/hooks";
 import { trackMilestone } from "@/lib/milestones";
@@ -13,6 +14,7 @@ interface InstallButtonProps {
   slug: string;
   isInstalled: boolean;
   delivery?: string;
+  size?: "sm" | "default" | "lg";
 }
 
 export function InstallButton({
@@ -20,9 +22,11 @@ export function InstallButton({
   slug,
   isInstalled,
   delivery,
+  size = "sm",
 }: InstallButtonProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const isExternal = delivery === "external";
 
   const handleClick = useCallback(
     async (e: React.MouseEvent) => {
@@ -34,8 +38,7 @@ export function InstallButton({
         return;
       }
 
-      // External apps: navigate to detail page and auto-trigger install
-      if (delivery === "external") {
+      if (isExternal) {
         router.push(`/apps/${slug}?install=1`);
         return;
       }
@@ -52,33 +55,51 @@ export function InstallButton({
         setLoading(false);
       }
     },
-    [isInstalled, toolId, slug, router],
+    [isInstalled, toolId, slug, router, isExternal],
   );
 
   if (isInstalled) {
     return (
-      <Button variant="secondary" size="sm" onClick={handleClick}>
-        <Check className="size-3.5" data-icon="inline-start" />
-        Open
+      <Button
+        variant="secondary"
+        size={size}
+        onClick={handleClick}
+        className="gap-1.5"
+      >
+        <Check className="size-3.5 text-green-400" />
+        Installed
+        <ArrowRight className="size-3 text-text-muted" />
       </Button>
     );
   }
 
-  const isExternal = delivery === "external";
+  if (loading) {
+    return (
+      <Button variant="default" size={size} disabled className="gap-1.5">
+        <Loader2 className="size-3.5 animate-spin" />
+        Installing…
+      </Button>
+    );
+  }
 
   return (
     <Button
       variant="default"
-      size="sm"
+      size={size}
       onClick={handleClick}
-      disabled={loading}
+      className="gap-1.5"
     >
       {isExternal ? (
-        <Download className="size-3.5" data-icon="inline-start" />
+        <>
+          <Download className="size-3.5" />
+          Install
+        </>
       ) : (
-        <ExternalLink className="size-3.5" data-icon="inline-start" />
+        <>
+          <ArrowRight className="size-3.5" />
+          Get App
+        </>
       )}
-      {isExternal ? "Install" : "Open"}
     </Button>
   );
 }

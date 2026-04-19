@@ -1,8 +1,20 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import {
+  ArrowUp,
+  Check,
+  Copy,
+  Download,
+  ExternalLink,
+  Search,
+  Sparkles,
+} from "lucide-react";
+import { toast } from "sonner";
+import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Select,
@@ -11,12 +23,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
 import { CategoryPills } from "@/components/category-pills";
 import { EmptyState } from "@/components/empty-state";
-import { SkillCard } from "@/components/skill-card";
 import { SubmitSkillDialog } from "@/components/submit-skill-dialog";
-import { useSkills } from "@/lib/hooks";
+import { useSkills, useMySkills } from "@/lib/hooks";
+import {
+  subscribeSkill,
+  unsubscribeSkill,
+  downloadSkillUrl,
+  upvoteSkill,
+} from "@/lib/api";
+import type { Skill } from "@/lib/types";
 
 const SKILL_CATEGORIES = [
   "Development",
@@ -43,11 +60,8 @@ export default function SkillsPage() {
 
   // Category filter
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-
-  // Sort
   const [sort, setSort] = useState<SortOption>("upvotes");
 
-  // Build API filters
   const filters = useMemo(() => {
     const f: Record<string, string> = {};
     if (debouncedQuery) f.q = debouncedQuery;
@@ -57,8 +71,13 @@ export default function SkillsPage() {
   }, [debouncedQuery, activeCategory, sort]);
 
   const { data: skills, isLoading, mutate } = useSkills(filters);
+  const { data: mySkills, mutate: mutateMySkills } = useMySkills();
 
-  // Sort client-side as fallback
+  const subscribedIds = useMemo(
+    () => new Set((mySkills ?? []).map((s) => s.id)),
+    [mySkills],
+  );
+
   const sortedSkills = useMemo(() => {
     if (!skills) return [];
     const s = [...skills];
@@ -78,31 +97,59 @@ export default function SkillsPage() {
     }
   }, [skills, sort]);
 
+  const isSearching = !!debouncedQuery || !!activeCategory;
+
   return (
-    <div className="flex flex-col gap-6 p-6">
+    <div className="flex flex-col gap-8 p-6 md:p-8">
       {/* Header */}
       <div className="flex items-start justify-between">
-        <div className="flex flex-col gap-1">
-          <h1 className="text-2xl font-semibold text-foreground">Skills</h1>
-          <p className="text-sm text-text-secondary">
-            Community SKILL.md files that teach Claude new capabilities.
+        <div className="flex flex-col gap-2">
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">
+            Skills
+          </h1>
+          <p className="text-[15px] text-text-secondary">
+            Your prompt library. Subscribe, share, and teach Claude new tricks.
           </p>
         </div>
         <Button onClick={() => setDialogOpen(true)}>+ Submit a Skill</Button>
       </div>
 
+      {/* My Skills — library section */}
+      {!isSearching && mySkills && mySkills.length > 0 && (
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-[13px] font-semibold uppercase tracking-widest text-text-muted/70">
+              My Skills
+            </h2>
+            <span className="text-xs text-text-muted tabular-nums">
+              {mySkills.length} subscribed
+            </span>
+          </div>
+          <div className="flex flex-col rounded-2xl border border-border bg-card divide-y divide-border">
+            {mySkills.map((skill) => (
+              <SkillRow key={skill.id} skill={skill} subscribed onToggle={() => {
+                unsubscribeSkill(skill.id).then(() => {
+                  mutateMySkills();
+                  toast("Unsubscribed");
+                });
+              }} />
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Search */}
       <div className="relative">
-        <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-text-muted" />
+        <Search className="absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-text-muted" />
         <input
-          placeholder="Search skills..."
-          className="h-8 w-full rounded-lg border border-input bg-surface pl-9 pr-2.5 text-sm text-foreground placeholder:text-muted-foreground outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+          placeholder="Search all skills..."
+          className="h-10 w-full rounded-xl border border-border bg-surface-2/50 pl-10 pr-4 text-sm text-foreground placeholder:text-text-muted outline-none transition-all duration-200 focus:border-primary/50 focus:bg-surface focus:ring-2 focus:ring-primary/20"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
       </div>
 
-      {/* Filters row */}
+      {/* Filters */}
       <div className="flex items-center gap-4">
         <div className="flex-1 overflow-hidden">
           <CategoryPills
@@ -111,7 +158,10 @@ export default function SkillsPage() {
             onSelect={setActiveCategory}
           />
         </div>
-        <Select value={sort} onValueChange={(v) => v && setSort(v as SortOption)}>
+        <Select
+          value={sort}
+          onValueChange={(v) => v && setSort(v as SortOption)}
+        >
           <SelectTrigger size="sm">
             <SelectValue />
           </SelectTrigger>
@@ -123,16 +173,30 @@ export default function SkillsPage() {
         </Select>
       </div>
 
+      {/* Discover header */}
+      {!isSearching && (
+        <h2 className="text-[13px] font-semibold uppercase tracking-widest text-text-muted/70">
+          Discover
+        </h2>
+      )}
+
       {/* Loading */}
       {isLoading && (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="flex flex-col rounded-2xl border border-border bg-card divide-y divide-border">
           {Array.from({ length: 6 }).map((_, i) => (
-            <Skeleton key={i} className="h-[280px] rounded-xl" />
+            <div key={i} className="flex items-center gap-4 px-5 py-4">
+              <Skeleton className="size-9 rounded-lg" />
+              <div className="flex flex-1 flex-col gap-1.5">
+                <Skeleton className="h-4 w-40 rounded-md" />
+                <Skeleton className="h-3 w-64 rounded-md" />
+              </div>
+              <Skeleton className="h-7 w-20 rounded-lg" />
+            </div>
           ))}
         </div>
       )}
 
-      {/* Empty state */}
+      {/* Empty */}
       {!isLoading && sortedSkills.length === 0 && (
         <EmptyState
           icon={<span className="text-3xl">✨</span>}
@@ -143,21 +207,132 @@ export default function SkillsPage() {
         />
       )}
 
-      {/* Grid */}
+      {/* Browse rows */}
       {!isLoading && sortedSkills.length > 0 && (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="flex flex-col rounded-2xl border border-border bg-card divide-y divide-border">
           {sortedSkills.map((skill) => (
-            <SkillCard key={skill.id} skill={skill} />
+            <SkillRow
+              key={skill.id}
+              skill={skill}
+              subscribed={subscribedIds.has(skill.id)}
+              onToggle={async () => {
+                const isSub = subscribedIds.has(skill.id);
+                try {
+                  if (isSub) {
+                    await unsubscribeSkill(skill.id);
+                    toast("Unsubscribed");
+                  } else {
+                    await subscribeSkill(skill.id);
+                    toast.success(`Added ${skill.title} to your skills`);
+                  }
+                  mutateMySkills();
+                } catch {
+                  toast.error(isSub ? "Failed to unsubscribe" : "Failed to subscribe");
+                }
+              }}
+            />
           ))}
         </div>
       )}
 
-      {/* Submit dialog */}
       <SubmitSkillDialog
         open={dialogOpen}
         onOpenChange={setDialogOpen}
         onSubmitted={() => mutate()}
       />
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// SkillRow — the core component, used for both library and browse
+// ---------------------------------------------------------------------------
+
+function SkillRow({
+  skill,
+  subscribed,
+  onToggle,
+}: {
+  skill: Skill;
+  subscribed: boolean;
+  onToggle: () => void;
+}) {
+  const preview = skill.prompt_text
+    ? skill.prompt_text.slice(0, 80).replace(/\n/g, " ").trim()
+    : null;
+
+  return (
+    <div className="group flex items-center gap-4 px-5 py-3.5 transition-colors hover:bg-white/[0.02]">
+      {/* Icon */}
+      <Link
+        href={`/skills/${skill.id}`}
+        className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-surface-2 text-base ring-1 ring-border transition-colors group-hover:ring-border-strong"
+      >
+        {skill.category === "Development" ? "⚡" :
+         skill.category === "Testing" ? "🧪" :
+         skill.category === "Debugging" ? "🐛" :
+         skill.category === "Planning" ? "📋" :
+         skill.category === "Code Review" ? "👁" :
+         skill.category === "Documents" ? "📝" : "📄"}
+      </Link>
+
+      {/* Content */}
+      <Link
+        href={`/skills/${skill.id}`}
+        className="flex min-w-0 flex-1 flex-col gap-0.5"
+      >
+        <div className="flex items-center gap-2">
+          <span className="truncate text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">
+            {skill.title}
+          </span>
+          {skill.category && (
+            <Badge variant="secondary" className="hidden sm:flex text-[10px] shrink-0">
+              {skill.category}
+            </Badge>
+          )}
+        </div>
+        <span className="truncate text-[12px] text-text-muted">
+          {skill.use_case || preview || "No description"}
+        </span>
+      </Link>
+
+      {/* Stats */}
+      <div className="hidden md:flex items-center gap-3 shrink-0 text-[11px] tabular-nums text-text-muted">
+        <span className="flex items-center gap-1">
+          <ArrowUp className="size-3" />
+          {skill.upvotes}
+        </span>
+        <span className="flex items-center gap-1">
+          <Download className="size-3" />
+          {skill.copy_count}
+        </span>
+      </div>
+
+      {/* Author */}
+      <span className="hidden lg:block shrink-0 text-[11px] text-text-muted w-24 truncate text-right">
+        {skill.author_name || "Anonymous"}
+      </span>
+
+      {/* Subscribe toggle */}
+      <Button
+        variant={subscribed ? "secondary" : "outline"}
+        size="xs"
+        className={cn("shrink-0 w-[90px]", subscribed && "text-green-400")}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onToggle();
+        }}
+      >
+        {subscribed ? (
+          <>
+            <Check className="size-3" />
+            Saved
+          </>
+        ) : (
+          "+ Save"
+        )}
+      </Button>
     </div>
   );
 }

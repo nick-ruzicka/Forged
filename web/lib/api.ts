@@ -230,6 +230,10 @@ export function subscribeSkill(skillId: number): Promise<void> {
   return api<void>(`/me/skills/${skillId}`, { method: "POST", body: JSON.stringify({}) });
 }
 
+export function unsubscribeSkill(skillId: number): Promise<void> {
+  return api<void>(`/me/skills/${skillId}`, { method: "DELETE" });
+}
+
 // ---------------------------------------------------------------------------
 // Submit — Flask serves POST /api/submit/app, POST /api/submit/from-github
 // ---------------------------------------------------------------------------

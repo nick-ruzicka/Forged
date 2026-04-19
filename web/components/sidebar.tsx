@@ -24,7 +24,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useMyItems } from "@/lib/hooks";
+import { useMyItems, useMySkills } from "@/lib/hooks";
 import { useUser } from "@/lib/user-context";
 
 interface SidebarProps {
@@ -47,6 +47,7 @@ export function Sidebar({ onOpenCommandMenu }: SidebarProps) {
   const pathname = usePathname();
   const { adminKey, name, email } = useUser();
   const { data: myItems } = useMyItems();
+  const { data: mySkills } = useMySkills();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -85,6 +86,8 @@ export function Sidebar({ onOpenCommandMenu }: SidebarProps) {
     })
     .slice(0, 8);
 
+  const subscribedSkills = (Array.isArray(mySkills) ? mySkills : []).slice(0, 6);
+
   const initials =
     name
       ?.split(" ")
@@ -99,19 +102,21 @@ export function Sidebar({ onOpenCommandMenu }: SidebarProps) {
     <TooltipProvider>
       <div
         className={cn(
-          "flex h-full flex-col bg-surface border-r border-border",
+          "flex h-full flex-col bg-surface border-r border-border transition-[width] duration-200 ease-out",
           collapsed ? "w-14" : "w-56",
         )}
       >
         {/* Logo */}
-        <div className="flex h-12 items-center px-3">
+        <div className="flex h-14 items-center px-3">
           <Link
             href="/"
-            className="flex items-center gap-2 text-foreground hover:text-foreground/80 transition-colors"
+            className="flex items-center gap-2.5 text-foreground hover:text-foreground/80 transition-colors"
           >
-            <span className="text-lg">&#9874;</span>
+            <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-base">
+              &#9874;
+            </div>
             {!collapsed && (
-              <span className="font-mono text-sm font-semibold tracking-tight">
+              <span className="font-mono text-sm font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent">
                 Forge
               </span>
             )}
@@ -158,7 +163,7 @@ export function Sidebar({ onOpenCommandMenu }: SidebarProps) {
         {installedApps && installedApps.length > 0 && (
           <div className="flex flex-col gap-0.5 px-2 overflow-y-auto">
             {!collapsed && (
-              <span className="px-2 py-1 text-[11px] font-medium text-text-muted uppercase tracking-wider">
+              <span className="px-2.5 py-1.5 text-[11px] font-semibold text-text-muted/70 uppercase tracking-widest">
                 Installed
               </span>
             )}
@@ -179,6 +184,34 @@ export function Sidebar({ onOpenCommandMenu }: SidebarProps) {
           </div>
         )}
 
+        {/* Subscribed skills */}
+        {subscribedSkills && subscribedSkills.length > 0 && (
+          <>
+            <div className="px-3 py-2">
+              <Separator />
+            </div>
+            <div className="flex flex-col gap-0.5 px-2 overflow-y-auto">
+              {!collapsed && (
+                <span className="px-2.5 py-1.5 text-[11px] font-semibold text-text-muted/70 uppercase tracking-widest">
+                  Skills
+                </span>
+              )}
+              {subscribedSkills.map((skill) => (
+                <NavItem
+                  key={skill.id}
+                  collapsed={collapsed}
+                  label={skill.title}
+                  icon={() => (
+                    <span className="text-sm leading-none">📄</span>
+                  )}
+                  href={`/skills/${skill.id}`}
+                  active={pathname === `/skills/${skill.id}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
+
         {/* Spacer */}
         <div className="flex-1" />
 
@@ -196,10 +229,10 @@ export function Sidebar({ onOpenCommandMenu }: SidebarProps) {
         )}
 
         {/* User avatar + collapse toggle */}
-        <div className="flex items-center justify-between px-2 pb-3 pt-1">
+        <div className="flex items-center justify-between border-t border-border px-2 pb-3 pt-3">
           <div
             className={cn(
-              "flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-xs font-medium text-primary",
+              "flex size-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary/30 to-primary/10 text-xs font-semibold text-primary ring-1 ring-primary/20",
             )}
           >
             {initials}
@@ -303,35 +336,23 @@ function NavItem({
   const content = (
     <span
       className={cn(
-        "flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors",
+        "relative flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-medium transition-all duration-150",
         active
           ? "bg-primary/10 text-primary"
-          : "text-text-secondary hover:bg-muted hover:text-foreground",
+          : "text-text-secondary hover:bg-white/[0.04] hover:text-foreground",
         collapsed && "justify-center px-0",
       )}
     >
+      {active && (
+        <span className="absolute left-0 top-1/2 -translate-y-1/2 h-4 w-[3px] rounded-full bg-primary" />
+      )}
       <Icon className="size-4 shrink-0" />
       {!collapsed && <span className="truncate">{label}</span>}
       {!collapsed && trailing}
     </span>
   );
 
-  const wrapped = collapsed ? (
-    <Tooltip>
-      <TooltipTrigger className="w-full">
-        {href ? (
-          <Link href={href} onClick={onClick} className="block w-full">
-            {content}
-          </Link>
-        ) : (
-          <button onClick={onClick} className="block w-full">
-            {content}
-          </button>
-        )}
-      </TooltipTrigger>
-      <TooltipContent side="right">{label}</TooltipContent>
-    </Tooltip>
-  ) : href ? (
+  const inner = href ? (
     <Link href={href} onClick={onClick} className="block w-full">
       {content}
     </Link>
@@ -340,6 +361,15 @@ function NavItem({
       {content}
     </button>
   );
+
+  const wrapped = collapsed ? (
+    <Tooltip>
+      <TooltipTrigger render={<div className="w-full" />}>
+        {inner}
+      </TooltipTrigger>
+      <TooltipContent side="right">{label}</TooltipContent>
+    </Tooltip>
+  ) : inner;
 
   return wrapped;
 }

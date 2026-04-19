@@ -83,6 +83,12 @@ export function useMySubmissions() {
 // Skills
 // ---------------------------------------------------------------------------
 
+export function useSkill(skillId: number | undefined) {
+  const { data: allSkills, ...rest } = useMySkills();
+  const skill = allSkills?.find(s => s.id === skillId) ?? undefined;
+  return { data: skill, ...rest };
+}
+
 export function useSkills(filters?: Record<string, string>) {
   const key = filters
     ? ["/skills", JSON.stringify(filters)]

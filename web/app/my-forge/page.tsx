@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EmptyState } from "@/components/empty-state";
 import { AppPane } from "@/components/app-pane";
 import { useMyItems, useMyStars, useMySkills, useMySubmissions, useAgentAvailable, useRunningApps, uninstallApp } from "@/lib/hooks";
-import { launchItem, removeStar, launchApp } from "@/lib/api";
+import { launchItem, removeStar, launchApp, unsubscribeSkill } from "@/lib/api";
 import { useUser } from "@/lib/user-context";
 import type { UserItem, Star, Skill } from "@/lib/types";
 
@@ -19,7 +19,7 @@ export default function MyForgePage() {
   const { name, email, clearIdentity, setIdentity } = useUser();
   const { data: items, mutate: mutateItems } = useMyItems();
   const { data: stars, mutate: mutateStars } = useMyStars();
-  const { data: skills } = useMySkills();
+  const { data: skills, mutate: mutateSkills } = useMySkills();
   const { data: submissions } = useMySubmissions();
   const { data: agentAvail } = useAgentAvailable(true);
   const { data: runningData } = useRunningApps(agentAvail ?? false);
@@ -70,6 +70,19 @@ export default function MyForgePage() {
     [mutateStars],
   );
 
+  const handleUnsubscribeSkill = useCallback(
+    async (skillId: number) => {
+      try {
+        await unsubscribeSkill(skillId);
+        mutateSkills();
+        toast("Unsubscribed from skill");
+      } catch {
+        toast.error("Failed to unsubscribe");
+      }
+    },
+    [mutateSkills],
+  );
+
   const handleSetEmail = useCallback(() => {
     const newEmail = prompt("Enter your email:");
     if (newEmail) {
@@ -84,7 +97,7 @@ export default function MyForgePage() {
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-bold tracking-tight text-foreground">My Forge</h1>
         <p className="text-[15px] text-text-secondary">
-          Your installed apps, saved items, and skills.
+          Everything you've installed, saved, and subscribed to.
         </p>
       </div>
 
@@ -208,14 +221,18 @@ export default function MyForgePage() {
             <EmptyState
               icon={<span className="text-3xl">📄</span>}
               title="No skills yet"
-              message="Subscribe to skills from the Skills page."
+              message="Subscribe to skills to build your prompt library. Share them with your team."
               actionLabel="Browse Skills"
               actionHref="/skills"
             />
           ) : (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {skills.map((skill) => (
-                <SkillTile key={skill.id} skill={skill} />
+                <SkillTile
+                  key={skill.id}
+                  skill={skill}
+                  onUnsubscribe={() => handleUnsubscribeSkill(skill.id)}
+                />
               ))}
             </div>
           )}
@@ -268,43 +285,59 @@ function InstalledTile({
   onOpen: () => void;
   onRemove: () => void;
 }) {
+  const lastOpened = item.last_opened_at
+    ? formatTimeAgo(item.last_opened_at)
+    : null;
+
   return (
-    <div className="group flex items-center gap-3 rounded-2xl border border-border bg-card p-4 transition-all duration-150 hover:border-border-strong hover:shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
-      <div className="relative">
-        <div className="flex size-10 items-center justify-center rounded-xl bg-surface-2 text-xl ring-1 ring-border">
-          {item.icon || "📦"}
-        </div>
-        {item.delivery === "external" && (
-          <span className={cn(
-            "absolute -right-0.5 -top-0.5 size-2.5 rounded-full ring-2 ring-card",
-            isRunning ? "bg-green-500 shadow-[0_0_6px_theme(colors.green.500)]" : "bg-neutral-600"
-          )} />
-        )}
-      </div>
-      <div className="flex min-w-0 flex-1 flex-col">
-        <span className="truncate text-sm font-medium text-foreground">
-          {item.name || item.slug}
-        </span>
-        {item.tagline && (
-          <span className="truncate text-xs text-text-secondary">
-            {item.tagline}
-          </span>
-        )}
-        <div className="flex items-center gap-2 text-xs text-text-muted">
-          {item.open_count != null && <span>{item.open_count} opens</span>}
+    <div className="group flex flex-col gap-3 rounded-2xl border border-border bg-card p-4 transition-all duration-150 hover:border-border-strong hover:shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
+      <div className="flex items-start gap-3">
+        <div className="relative shrink-0">
+          <div className="flex size-11 items-center justify-center rounded-xl bg-surface-2 text-xl ring-1 ring-border">
+            {item.icon || "📦"}
+          </div>
           {item.delivery === "external" && (
-            <Badge variant="outline" className="text-[10px]">
-              External
-            </Badge>
+            <span className={cn(
+              "absolute -right-0.5 -top-0.5 size-2.5 rounded-full ring-2 ring-card",
+              isRunning ? "bg-green-500 shadow-[0_0_6px_theme(colors.green.500)] animate-pulse" : "bg-neutral-600"
+            )} />
           )}
         </div>
-      </div>
-      <div className="flex items-center gap-1">
+        <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+          <span className="truncate text-[14px] font-semibold text-foreground">
+            {item.name || item.slug}
+          </span>
+          {item.tagline && (
+            <span className="truncate text-[12px] text-text-secondary">
+              {item.tagline}
+            </span>
+          )}
+        </div>
         <Button
-          variant="outline"
+          variant="ghost"
+          size="icon-xs"
+          className="shrink-0 opacity-0 group-hover:opacity-100 hover:text-destructive transition-opacity"
+          onClick={onRemove}
+        >
+          <Trash2 />
+        </Button>
+      </div>
+
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2 text-[11px] text-text-muted">
+          {lastOpened && <span>Opened {lastOpened}</span>}
+          {!lastOpened && item.open_count != null && item.open_count > 0 && (
+            <span>{item.open_count} opens</span>
+          )}
+          {item.delivery === "external" && (
+            <Badge variant="outline" className="text-[10px]">Desktop</Badge>
+          )}
+        </div>
+        <Button
+          variant={isRunning ? "default" : "outline"}
           size="xs"
           onClick={onOpen}
-          className={isRunning ? "border-green-500/30 text-green-500" : ""}
+          className={isRunning ? "bg-green-500/15 text-green-400 border border-green-500/30 hover:bg-green-500/25 shadow-none" : ""}
         >
           {item.delivery === "external" ? (
             <>
@@ -314,14 +347,6 @@ function InstalledTile({
           ) : (
             "Open"
           )}
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon-xs"
-          className="opacity-0 group-hover:opacity-100 hover:text-destructive"
-          onClick={onRemove}
-        >
-          <Trash2 />
         </Button>
       </div>
     </div>
@@ -395,21 +420,62 @@ function SubmissionTile({ skill }: { skill: Skill }) {
   );
 }
 
-function SkillTile({ skill }: { skill: Skill }) {
+function SkillTile({ skill, onUnsubscribe }: { skill: Skill; onUnsubscribe: () => void }) {
+  const preview = skill.prompt_text
+    ? skill.prompt_text.slice(0, 120).replace(/\n/g, " ") + (skill.prompt_text.length > 120 ? "…" : "")
+    : null;
+
   return (
-    <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4">
-      <div className="flex size-10 items-center justify-center rounded-xl bg-surface-2 text-xl ring-1 ring-border">
-        📄
-      </div>
-      <div className="flex min-w-0 flex-1 flex-col">
-        <span className="truncate text-sm font-medium text-foreground">
-          {skill.title}
-        </span>
-        <div className="flex items-center gap-2 text-xs text-text-muted">
-          {skill.category && <span>{skill.category}</span>}
-          {skill.author_name && <span>by {skill.author_name}</span>}
+    <Link
+      href={`/skills/${skill.id}`}
+      className="group flex flex-col gap-3 rounded-2xl border border-border bg-card p-4 transition-all duration-150 hover:border-border-strong hover:-translate-y-0.5 hover:shadow-[0_4px_20px_rgba(0,0,0,0.2)]"
+    >
+      <div className="flex items-start gap-3">
+        <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-surface-2 text-xl ring-1 ring-border">
+          📄
         </div>
+        <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+          <span className="truncate text-[14px] font-semibold text-foreground">
+            {skill.title}
+          </span>
+          <div className="flex items-center gap-2 text-[11px] text-text-muted">
+            {skill.category && <Badge variant="secondary" className="text-[10px]">{skill.category}</Badge>}
+            {skill.author_name && <span>by {skill.author_name}</span>}
+          </div>
+        </div>
+        <Button
+          variant="ghost"
+          size="icon-xs"
+          className="shrink-0 opacity-0 group-hover:opacity-100 hover:text-destructive transition-opacity"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onUnsubscribe();
+          }}
+        >
+          <Trash2 />
+        </Button>
       </div>
-    </div>
+      {preview && (
+        <p className="line-clamp-2 rounded-lg bg-surface-2/50 px-3 py-2 font-mono text-[11px] leading-relaxed text-text-muted ring-1 ring-border/50">
+          {preview}
+        </p>
+      )}
+      <div className="flex items-center justify-between text-[11px] text-text-muted">
+        <span>{skill.upvotes} upvotes · {skill.copy_count} downloads</span>
+        {skill.subscribed_at && (
+          <span>Subscribed {formatTimeAgo(skill.subscribed_at)}</span>
+        )}
+      </div>
+    </Link>
   );
+}
+
+function formatTimeAgo(iso: string): string {
+  const diff = (Date.now() - new Date(iso).getTime()) / 1000;
+  if (diff < 60) return "just now";
+  if (diff < 3600) return Math.floor(diff / 60) + "m ago";
+  if (diff < 86400) return Math.floor(diff / 3600) + "h ago";
+  if (diff < 604800) return Math.floor(diff / 86400) + "d ago";
+  return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }

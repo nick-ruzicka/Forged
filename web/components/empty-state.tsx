@@ -19,13 +19,20 @@ export function EmptyState({
   onAction,
 }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center gap-4 py-16 text-center">
+    <div className="relative flex flex-col items-center justify-center gap-5 py-20 text-center">
+      {/* Atmospheric glow */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="size-40 rounded-full bg-primary/[0.03] blur-3xl" />
+      </div>
+
       {icon && (
-        <div className="text-text-muted">{icon}</div>
+        <div className="relative flex size-16 items-center justify-center rounded-2xl bg-surface-2 ring-1 ring-border text-text-muted">
+          {icon}
+        </div>
       )}
-      <div className="flex flex-col gap-1">
-        <h3 className="text-sm font-medium text-foreground">{title}</h3>
-        <p className="text-sm text-text-secondary max-w-sm">{message}</p>
+      <div className="relative flex flex-col gap-1.5">
+        <h3 className="text-base font-semibold text-foreground">{title}</h3>
+        <p className="text-sm text-text-secondary max-w-sm leading-relaxed">{message}</p>
       </div>
       {actionLabel && actionHref && (
         <Button variant="default" size="sm" nativeButton={false} render={<Link href={actionHref} />}>

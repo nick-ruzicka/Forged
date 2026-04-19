@@ -1,7 +1,8 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { ArrowUp, ChevronRight, Copy, Download, ExternalLink } from "lucide-react";
+import { ArrowUp, ChevronRight, Copy, Download, ExternalLink, Eye } from "lucide-react";
+import Link from "next/link";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -56,30 +57,34 @@ export function SkillCard({ skill }: SkillCardProps) {
     : "";
 
   return (
-    <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-4">
+    <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5 transition-all duration-200 hover:border-border-strong hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)]">
       {/* Header */}
       <div className="flex items-start justify-between">
         {skill.category && (
           <Badge variant="secondary">{skill.category}</Badge>
         )}
-        <span className="text-xs text-text-muted">
+        <span className="text-[11px] text-text-muted tabular-nums">
           {skill.copy_count} downloads
         </span>
       </div>
 
       {/* Title + use case */}
-      <div className="flex flex-col gap-1">
-        <span className="text-sm font-medium text-foreground">
+      <div className="flex flex-col gap-1.5">
+        <Link
+          href={`/skills/${skill.id}`}
+          className="text-[15px] font-semibold tracking-tight text-foreground hover:text-primary transition-colors"
+          onClick={(e) => e.stopPropagation()}
+        >
           {skill.title}
-        </span>
+        </Link>
         {skill.use_case && (
-          <span className="text-xs text-text-secondary">{skill.use_case}</span>
+          <span className="text-[13px] leading-snug text-text-secondary">{skill.use_case}</span>
         )}
       </div>
 
       {/* Prompt preview */}
       {promptPreview && (
-        <pre className="line-clamp-4 whitespace-pre-wrap rounded-md bg-muted p-2 font-mono text-xs text-text-secondary">
+        <pre className="line-clamp-4 whitespace-pre-wrap rounded-lg bg-surface-2 p-3 font-mono text-xs leading-relaxed text-text-muted ring-1 ring-border">
           {promptPreview}
         </pre>
       )}
@@ -117,7 +122,7 @@ export function SkillCard({ skill }: SkillCardProps) {
       </div>
 
       {/* Footer */}
-      <div className="mt-auto flex flex-wrap items-center gap-2 border-t border-border pt-3">
+      <div className="mt-auto flex flex-wrap items-center gap-2 border-t border-border pt-4">
         {/* Upvote */}
         <Button
           variant={upvoted ? "default" : "outline"}

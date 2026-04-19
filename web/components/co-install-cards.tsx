@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Users } from "lucide-react";
 import { useCoInstalls } from "@/lib/hooks";
 
 interface CoInstallCardsProps {
@@ -14,24 +15,31 @@ export function CoInstallCards({ toolId, toolName }: CoInstallCardsProps) {
   if (!coinstalls || coinstalls.length === 0) return null;
 
   return (
-    <div className="flex flex-col gap-3">
-      <p className="text-[10px] font-medium uppercase tracking-wider text-text-muted">
-        People who use {toolName} also use
-      </p>
-      <div className="flex gap-3">
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center gap-2">
+        <Users className="size-3.5 text-text-muted" />
+        <h3 className="text-[13px] font-semibold uppercase tracking-widest text-text-muted/70">
+          Frequently used together
+        </h3>
+      </div>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {coinstalls.map((ci) => (
           <Link
             key={ci.slug}
             href={`/apps/${ci.slug}`}
-            className="flex flex-1 flex-col gap-1 rounded-lg border border-border bg-surface p-3 opacity-80 transition-all hover:border-accent hover:opacity-100"
+            className="group flex items-center gap-3 rounded-2xl border border-border bg-card p-4 transition-all duration-150 hover:border-border-strong hover:-translate-y-0.5 hover:shadow-[0_4px_20px_rgba(0,0,0,0.2)]"
           >
-            <div className="flex items-center gap-2">
-              <span className="text-base">{ci.icon || "⊞"}</span>
-              <span className="text-sm font-semibold text-foreground">{ci.name}</span>
+            <div className="flex size-10 items-center justify-center rounded-xl bg-surface-2 text-lg ring-1 ring-border">
+              {ci.icon || "⊞"}
             </div>
-            <span className="text-[10px] text-text-muted">
-              used by {ci.overlap} others
-            </span>
+            <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+              <span className="truncate text-[14px] font-semibold text-foreground">
+                {ci.name}
+              </span>
+              <span className="text-xs text-text-muted">
+                {ci.overlap} users in common
+              </span>
+            </div>
           </Link>
         ))}
       </div>

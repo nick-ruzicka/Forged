@@ -14,7 +14,7 @@ export function Providers({ children }: { children: ReactNode }) {
     <UserProvider>
       <div className="flex h-screen">
         <Sidebar onOpenCommandMenu={() => setCommandOpen(true)} />
-        <main className="flex-1 overflow-y-auto pt-12 md:pt-0">
+        <main className="flex-1 overflow-y-auto pt-12 md:pt-0 animate-fade-in-up">
           {children}
         </main>
       </div>

@@ -3,7 +3,7 @@
 import { use, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { ExternalLink, PanelLeftClose, PanelLeft } from "lucide-react";
+import { ExternalLink, PanelLeftClose, PanelLeft, Download, Star, Clock, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -58,17 +58,24 @@ export default function AppDetailPage({
   // Loading state
   if (isLoading) {
     return (
-      <div className="flex flex-col gap-6 p-6">
-        <Skeleton className="h-5 w-20" />
-        <div className="flex items-start gap-4">
-          <Skeleton className="size-12 rounded-lg" />
-          <div className="flex flex-col gap-2">
-            <Skeleton className="h-7 w-48" />
-            <Skeleton className="h-4 w-64" />
-            <Skeleton className="h-4 w-32" />
+      <div className="flex flex-col">
+        <div className="flex flex-col gap-6 border-b border-border bg-gradient-to-b from-surface-2/80 to-transparent p-6 md:p-8">
+          <Skeleton className="h-4 w-24 rounded-lg" />
+          <div className="flex items-start gap-5">
+            <Skeleton className="size-[72px] rounded-2xl" />
+            <div className="flex flex-col gap-3">
+              <Skeleton className="h-8 w-56 rounded-lg" />
+              <Skeleton className="h-4 w-80 rounded-lg" />
+              <div className="flex gap-2">
+                <Skeleton className="h-6 w-24 rounded-lg" />
+                <Skeleton className="h-6 w-20 rounded-lg" />
+              </div>
+            </div>
           </div>
         </div>
-        <Skeleton className="h-64 w-full rounded-lg" />
+        <div className="p-6 md:p-8">
+          <Skeleton className="h-64 w-full rounded-xl" />
+        </div>
       </div>
     );
   }
@@ -100,35 +107,45 @@ export default function AppDetailPage({
 
     return (
       <div className="flex h-full flex-col">
-        <div className="flex items-center justify-between border-b border-border bg-surface px-4 py-1.5">
-          <div className="flex items-center gap-2">
+        {/* Chrome bar */}
+        <div className="relative flex h-10 shrink-0 items-center border-b border-border bg-gradient-to-b from-surface-2/80 to-surface px-3">
+          {/* Left: navigation */}
+          <div className="flex items-center gap-1">
             <Button
               variant="ghost"
-              size="icon-sm"
+              size="icon-xs"
               onClick={toggleSidebar}
               aria-label="Toggle sidebar"
               className="text-text-muted hover:text-foreground"
             >
-              <PanelLeftClose className="size-4" />
+              <PanelLeftClose className="size-3.5" />
             </Button>
-            <Link
-              href="/"
-              className="text-xs text-text-muted hover:text-foreground transition-colors"
+            <Button
+              variant="ghost"
+              size="xs"
+              nativeButton={false}
+              render={<Link href="/" />}
+              className="text-text-muted"
             >
               ← Apps
-            </Link>
-            <span className="text-xs text-border">|</span>
-            <span className="text-xs text-text-secondary">
-              {app.icon || "📦"} {app.name}
-            </span>
+            </Button>
           </div>
-          <div className="flex items-center gap-1">
+
+          {/* Center: app identity */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2">
+            <span className="text-sm">{app.icon || "📦"}</span>
+            <span className="text-[13px] font-semibold text-foreground">{app.name}</span>
+          </div>
+
+          {/* Right: actions */}
+          <div className="ml-auto flex items-center gap-1">
             <StarButton toolId={app.id} isStarred={isStarred} size="sm" />
             <Button
               variant="ghost"
               size="xs"
               nativeButton={false}
               render={<Link href={`/apps/${slug}?tab=overview`} />}
+              className="text-text-muted hover:text-foreground"
             >
               Details
             </Button>
@@ -142,65 +159,100 @@ export default function AppDetailPage({
   }
 
   return (
-    <div className="flex flex-col gap-6 p-6">
-      {/* Back link */}
-      <Link
-        href="/"
-        className="text-sm text-text-muted hover:text-foreground transition-colors w-fit"
-      >
-        ← Apps
-      </Link>
+    <div className="flex flex-col">
+      {/* Hero section */}
+      <div className="relative flex flex-col gap-6 border-b border-border bg-gradient-to-b from-surface-2/80 via-surface-2/30 to-transparent p-6 md:p-8 md:pb-8">
+        {/* Subtle radial glow behind icon */}
+        <div className="absolute top-12 left-12 size-32 rounded-full bg-primary/[0.04] blur-3xl pointer-events-none" />
 
-      {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div className="flex items-start gap-4">
-          <span className="text-4xl">{app.icon || "📦"}</span>
-          <div className="flex flex-col gap-1">
-            <h1 className="text-2xl font-semibold text-foreground">
-              {app.name}
-            </h1>
-            {app.tagline && (
-              <p className="text-sm text-text-secondary">{app.tagline}</p>
-            )}
-            <div className="flex flex-wrap items-center gap-2 text-xs text-text-muted">
-              <span>{app.author_name || "Unknown"}</span>
-              {app.category && (
-                <Badge variant="secondary">{app.category}</Badge>
-              )}
-              {app.install_count != null && (
-                <span>{app.install_count} installs</span>
-              )}
+        <Link
+          href="/"
+          className="relative text-[13px] text-text-muted hover:text-foreground transition-colors w-fit"
+        >
+          ← Back to Apps
+        </Link>
+
+        <div className="relative flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+          <div className="flex items-start gap-5">
+            <div className="flex size-[72px] items-center justify-center rounded-2xl bg-card text-[40px] ring-1 ring-border shadow-[0_8px_30px_rgba(0,0,0,0.25)]">
+              {app.icon || "📦"}
+            </div>
+            <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-1">
+                <h1 className="text-3xl font-bold tracking-tight text-foreground">
+                  {app.name}
+                </h1>
+                {app.tagline && (
+                  <p className="text-[15px] leading-relaxed text-text-secondary max-w-lg">
+                    {app.tagline}
+                  </p>
+                )}
+              </div>
+
+              <div className="flex flex-wrap items-center gap-3 text-[13px] text-text-muted">
+                <span className="font-medium text-text-secondary">{app.author_name || "Unknown"}</span>
+                {app.category && (
+                  <Badge variant="secondary">{app.category}</Badge>
+                )}
+              </div>
+
+              {/* Stat pills */}
+              <div className="flex flex-wrap items-center gap-2 pt-1">
+                {app.install_count != null && (
+                  <StatPill icon={<Users className="size-3" />}>
+                    {formatCount(app.install_count)} {app.install_count === 1 ? "install" : "installs"}
+                  </StatPill>
+                )}
+                {app.avg_rating != null && app.avg_rating > 0 && (
+                  <StatPill icon={<Star className="size-3 fill-yellow-400 text-yellow-400" />}>
+                    {app.avg_rating.toFixed(1)} rating
+                  </StatPill>
+                )}
+                {app.delivery === "external" && (
+                  <StatPill icon={<Download className="size-3" />}>
+                    Desktop app
+                  </StatPill>
+                )}
+                {app.created_at && (
+                  <StatPill icon={<Clock className="size-3" />}>
+                    {humanDate(app.created_at)}
+                  </StatPill>
+                )}
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Action buttons */}
-        <div className="flex items-center gap-2">
-          <InstallButton
-            toolId={app.id}
-            slug={app.slug}
-            isInstalled={isInstalled}
-            delivery={app.delivery}
-          />
-          <StarButton toolId={app.id} isStarred={isStarred} />
-          {app.source_url && (
-            <Button
-              variant="ghost"
-              size="icon"
-              nativeButton={false}
-              render={
-                <a
-                  href={app.source_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                />
-              }
-            >
-              <ExternalLink className="size-4" />
-            </Button>
-          )}
+          {/* Action buttons */}
+          <div className="flex items-center gap-2">
+            <InstallButton
+              toolId={app.id}
+              slug={app.slug}
+              isInstalled={isInstalled}
+              delivery={app.delivery}
+            />
+            <StarButton toolId={app.id} isStarred={isStarred} />
+            {app.source_url && (
+              <Button
+                variant="ghost"
+                size="icon"
+                nativeButton={false}
+                render={
+                  <a
+                    href={app.source_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  />
+                }
+              >
+                <ExternalLink className="size-4" />
+              </Button>
+            )}
+          </div>
         </div>
       </div>
+
+      {/* Content */}
+      <div className="flex flex-col gap-8 p-6 md:p-8">
 
       {/* Tabs */}
       <Tabs defaultValue="overview">
@@ -211,62 +263,162 @@ export default function AppDetailPage({
 
         {/* Overview tab */}
         <TabsContent value="overview">
-          <div className="flex flex-col gap-6 pt-4">
-            {/* Description */}
-            {app.description && (
-              <p className="whitespace-pre-wrap text-sm text-text-secondary">
-                {app.description}
-              </p>
-            )}
+          <div className="flex flex-col gap-8 pt-6 lg:flex-row">
+            {/* Main content */}
+            <div className="flex flex-1 flex-col gap-8 min-w-0">
+              {/* External app control panel */}
+              {isExternal && isInstalled && (
+                <ExternalControlPanel
+                  app={app}
+                  isInstalled={isInstalled}
+                  onUninstall={async () => {
+                    await uninstallApp(app.id);
+                  }}
+                />
+              )}
 
-            {/* External app control panel */}
-            {isExternal && isInstalled && (
-              <ExternalControlPanel
-                app={app}
-                isInstalled={isInstalled}
-                onUninstall={async () => {
-                  await uninstallApp(app.id);
-                }}
-              />
-            )}
+              {/* Install progress for external apps not yet installed */}
+              {isExternal && !isInstalled && (
+                <InstallProgress
+                  toolId={app.id}
+                  slug={app.slug}
+                  agentAvailable={agentAvailable ?? false}
+                  installCommand={app.install_command}
+                  installMeta={app.install_meta}
+                  autoInstall={autoInstall}
+                  onInstalled={() => mutateItems()}
+                />
+              )}
 
-            {/* Install progress for external apps not yet installed */}
-            {isExternal && !isInstalled && (
-              <InstallProgress
-                toolId={app.id}
-                slug={app.slug}
-                agentAvailable={agentAvailable ?? false}
-                installCommand={app.install_command}
-                installMeta={app.install_meta}
-                autoInstall={autoInstall}
-                onInstalled={() => mutateItems()}
-              />
-            )}
-
-            {/* Co-installs */}
-            <CoInstallCards toolId={app.id} toolName={app.name} />
-
-            {/* Reviews */}
-            <div className="flex flex-col gap-4">
-              <h2 className="text-lg font-semibold text-foreground">Reviews</h2>
-              <ReviewForm
-                toolId={app.id}
-                onSubmitted={() => mutateReviews()}
-              />
-              {reviews && reviews.length > 0 ? (
+              {/* About */}
+              {app.description && (
                 <div className="flex flex-col gap-3">
-                  {reviews.map((review) => (
-                    <ReviewCard
-                      key={review.id}
-                      rating={review.rating}
-                      userName={review.author_name || review.user_name}
-                      date={review.created_at}
-                      text={review.note || review.text}
-                    />
-                  ))}
+                  <h3 className="text-[13px] font-semibold uppercase tracking-widest text-text-muted/70">
+                    About this app
+                  </h3>
+                  <p className="whitespace-pre-wrap text-[15px] leading-[1.7] text-text-secondary">
+                    {app.description}
+                  </p>
                 </div>
-              ) : (
-                <p className="text-sm text-text-muted">No reviews yet.</p>
+              )}
+
+              {/* Co-installs */}
+              <CoInstallCards toolId={app.id} toolName={app.name} />
+
+              {/* Reviews */}
+              <div className="flex flex-col gap-5">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-[13px] font-semibold uppercase tracking-widest text-text-muted/70">
+                    Reviews
+                  </h3>
+                  {reviews && reviews.length > 0 && (
+                    <span className="text-xs text-text-muted tabular-nums">
+                      {reviews.length} review{reviews.length !== 1 ? "s" : ""}
+                    </span>
+                  )}
+                </div>
+                {/* Aggregate rating */}
+                {reviews && reviews.length > 0 && (() => {
+                  const avg = reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
+                  const dist = [5, 4, 3, 2, 1].map(n => ({
+                    stars: n,
+                    count: reviews.filter(r => r.rating === n).length,
+                    pct: (reviews.filter(r => r.rating === n).length / reviews.length) * 100,
+                  }));
+                  return (
+                    <div className="flex gap-6 rounded-2xl border border-border bg-card p-5 items-center">
+                      <div className="flex flex-col items-center gap-1 pr-2">
+                        <span className="text-4xl font-bold tabular-nums text-foreground">{avg.toFixed(1)}</span>
+                        <div className="flex gap-0.5">
+                          {[1,2,3,4,5].map(i => (
+                            <Star key={i} className={`size-3.5 ${i <= Math.round(avg) ? "fill-yellow-400 text-yellow-400" : "text-border-strong"}`} />
+                          ))}
+                        </div>
+                        <span className="text-[11px] text-text-muted mt-0.5">{reviews.length} ratings</span>
+                      </div>
+                      <div className="flex flex-1 flex-col gap-1.5">
+                        {dist.map(d => (
+                          <div key={d.stars} className="flex items-center gap-2">
+                            <span className="w-3 text-right text-[11px] tabular-nums text-text-muted">{d.stars}</span>
+                            <div className="flex-1 h-1.5 rounded-full bg-surface-2 overflow-hidden">
+                              <div className="h-full rounded-full bg-yellow-400/80 transition-all" style={{ width: `${d.pct}%` }} />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                <ReviewForm
+                  toolId={app.id}
+                  onSubmitted={() => mutateReviews()}
+                />
+                {reviews && reviews.length > 0 ? (
+                  <div className="flex flex-col gap-3">
+                    {reviews.map((review) => (
+                      <ReviewCard
+                        key={review.id}
+                        rating={review.rating}
+                        userName={review.author_name || review.user_name}
+                        date={review.created_at}
+                        text={review.note || review.text}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center gap-3 py-8 text-center">
+                    <div className="flex gap-1">
+                      {[1,2,3,4,5].map(i => (
+                        <Star key={i} className="size-5 text-border-strong" />
+                      ))}
+                    </div>
+                    <p className="text-sm text-text-muted">No reviews yet. Be the first to share your thoughts.</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Metadata sidebar */}
+            <div className="flex flex-col gap-4 lg:w-72 lg:shrink-0">
+              <div className="flex flex-col gap-0.5 rounded-2xl border border-border bg-card p-5">
+                <h4 className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-text-muted/70">
+                  Details
+                </h4>
+                <DetailRow label="Author" value={app.author_name || "Unknown"} />
+                {app.category && <DetailRow label="Category" value={app.category} />}
+                <DetailRow label="Type" value={isExternal ? "Desktop app" : "Embedded"} />
+                {app.install_count != null && (
+                  <DetailRow label="Installs" value={formatCount(app.install_count)} />
+                )}
+                {app.avg_rating != null && app.avg_rating > 0 && (
+                  <DetailRow label="Rating" value={`${app.avg_rating.toFixed(1)} / 5`} />
+                )}
+                <DetailRow label="Version" value={`v${app.version}`} />
+                {app.created_at && (
+                  <DetailRow
+                    label="Published"
+                    value={new Date(app.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                  />
+                )}
+                {app.deployed_at && (
+                  <DetailRow
+                    label="Updated"
+                    value={new Date(app.deployed_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                  />
+                )}
+              </div>
+
+              {app.source_url && (
+                <a
+                  href={app.source_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-[13px] font-medium text-text-secondary transition-colors hover:border-border-strong hover:text-foreground"
+                >
+                  <ExternalLink className="size-3.5" />
+                  View source code
+                </a>
               )}
             </div>
           </div>
@@ -274,26 +426,79 @@ export default function AppDetailPage({
 
         {/* Open App tab */}
         <TabsContent value="open">
-          <div className="flex flex-col gap-4 pt-4">
+          <div className="flex flex-col gap-5 pt-6">
             {!isInstalled && (
-              <div className="flex items-center justify-between rounded-lg border border-border bg-surface p-3">
-                <span className="text-sm text-text-secondary">
-                  Sample data — install to make this yours
-                </span>
-                <InstallButton
-                  toolId={app.id}
-                  slug={app.slug}
-                  isInstalled={isInstalled}
-                  delivery={app.delivery}
-                />
+              <div className="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-primary/[0.06] to-primary/[0.02] px-6 py-5">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/[0.08] to-transparent pointer-events-none" />
+                <div className="relative flex items-center justify-between gap-4">
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[15px] font-semibold text-foreground">
+                      You&apos;re previewing {app.name}
+                    </span>
+                    <span className="text-[13px] text-text-secondary">
+                      Install to save your data, unlock all features, and add it to your collection.
+                    </span>
+                  </div>
+                  <InstallButton
+                    toolId={app.id}
+                    slug={app.slug}
+                    isInstalled={isInstalled}
+                    delivery={app.delivery}
+                    size="default"
+                  />
+                </div>
               </div>
             )}
-            <div className="h-[600px] overflow-hidden rounded-lg border border-border">
-              <AppEmbed slug={slug} preview={!isInstalled} />
+            <div className="relative">
+              {/* Window frame header */}
+              <div className="flex h-8 items-center gap-2 rounded-t-2xl border border-b-0 border-border bg-surface-2/80 px-3">
+                <div className="flex gap-1.5">
+                  <span className="size-2.5 rounded-full bg-border-strong" />
+                  <span className="size-2.5 rounded-full bg-border-strong" />
+                  <span className="size-2.5 rounded-full bg-border-strong" />
+                </div>
+                <span className="flex-1 text-center text-[11px] text-text-muted">{app.name}</span>
+              </div>
+              <div className="h-[620px] overflow-hidden rounded-b-2xl border border-t-0 border-border shadow-[0_12px_40px_rgba(0,0,0,0.3)]">
+                <AppEmbed slug={slug} preview={!isInstalled} />
+              </div>
             </div>
           </div>
         </TabsContent>
       </Tabs>
+      </div>
     </div>
   );
+}
+
+function StatPill({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
+  return (
+    <div className="flex items-center gap-1.5 rounded-lg bg-surface-2 px-2.5 py-1 text-xs text-text-secondary ring-1 ring-border">
+      <span className="text-text-muted">{icon}</span>
+      <span className="font-medium">{children}</span>
+    </div>
+  );
+}
+
+function humanDate(iso: string): string {
+  const diff = (Date.now() - new Date(iso).getTime()) / 1000;
+  if (diff < 86400) return "Added today";
+  if (diff < 172800) return "Added yesterday";
+  if (diff < 604800) return `Added ${Math.floor(diff / 86400)}d ago`;
+  if (diff < 2592000) return `Added ${Math.floor(diff / 604800)}w ago`;
+  return "Added " + new Date(iso).toLocaleDateString("en-US", { month: "short", year: "numeric" });
+}
+
+function DetailRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
+      <span className="text-xs text-text-muted">{label}</span>
+      <span className="text-xs font-medium text-foreground">{value}</span>
+    </div>
+  );
+}
+
+function formatCount(n: number): string {
+  if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, "") + "k";
+  return String(n);
 }

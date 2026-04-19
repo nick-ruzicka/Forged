@@ -37,6 +37,10 @@ export interface Skill {
   upvotes: number;
   copy_count: number;
   created_at?: string;
+  // Subscription metadata (present when fetched via /me/skills)
+  subscribed_at?: string;
+  last_synced_at?: string;
+  installed_version?: string;
   // Governance
   review_status?: string;
   review_id?: number;

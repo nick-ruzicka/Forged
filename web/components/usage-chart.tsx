@@ -10,51 +10,80 @@ export function UsageChart({ sessions }: UsageChartProps) {
   if (!sessions || sessions.length === 0) return null;
 
   const maxSec = Math.max(...sessions.map((d) => d.duration_sec), 1);
-  const barW = 24;
+  const barW = 28;
   const gap = 4;
-  const h = 48;
+  const h = 56;
   const totalW = sessions.length * (barW + gap) - gap;
+
+  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   return (
     <svg
       width={totalW}
-      height={h + 18}
-      viewBox={`0 0 ${totalW} ${h + 18}`}
+      height={h + 20}
+      viewBox={`0 0 ${totalW} ${h + 20}`}
       className="block"
     >
       {sessions.map((d, i) => {
         const barH = Math.max(
           (d.duration_sec / maxSec) * h,
-          d.duration_sec > 0 ? 3 : 0,
+          d.duration_sec > 0 ? 4 : 0,
         );
         const x = i * (barW + gap);
         const y = h - barH;
-        const fill = d.duration_sec > 0 ? "#0066FF" : "#1a1a1a";
-        const dayLabel = d.date.slice(5); // MM-DD
+        const hasData = d.duration_sec > 0;
+
+        // Get day name from date
+        const dateObj = new Date(d.date + "T00:00:00");
+        const dayLabel = dayNames[dateObj.getDay()];
 
         return (
           <g key={d.date}>
+            {/* Background bar slot */}
             <rect
               x={x}
-              y={y}
+              y={0}
               width={barW}
-              height={barH}
-              rx={3}
-              fill={fill}
-              opacity={0.8}
+              height={h}
+              rx={6}
+              fill="currentColor"
+              className="text-surface-2"
+              opacity={0.5}
             />
+            {/* Active bar */}
+            {hasData && (
+              <rect
+                x={x}
+                y={y}
+                width={barW}
+                height={barH}
+                rx={6}
+                fill="url(#barGradient)"
+                opacity={0.9}
+              />
+            )}
+            {/* Day label */}
             <text
               x={x + barW / 2}
-              y={h + 14}
+              y={h + 15}
               textAnchor="middle"
-              fill="#555"
-              fontSize={9}
+              fill="currentColor"
+              className="text-text-muted"
+              fontSize={10}
+              fontWeight={500}
             >
               {dayLabel}
             </text>
           </g>
         );
       })}
+      {/* Gradient definition */}
+      <defs>
+        <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="hsl(217, 92%, 60%)" />
+          <stop offset="100%" stopColor="hsl(217, 92%, 45%)" />
+        </linearGradient>
+      </defs>
     </svg>
   );
 }
