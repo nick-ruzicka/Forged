@@ -74,3 +74,40 @@ def test_timed_decorator_logs_error(db):
             pytest.skip("dict cursor not available")
         assert row["outcome"] == "error"
         assert "something broke" in row["error_detail"]
+
+
+def test_classifier_returns_expected_fields(db, monkeypatch):
+    """Classifier returns detected_category, detected_output_type, classification_confidence."""
+    from api import db as forge_db
+
+    with db.cursor() as cur:
+        cur.execute(
+            "INSERT INTO skills (title, prompt_text, category, review_status) VALUES (%s, %s, %s, %s) RETURNING id",
+            ("Classify Me", "Help write unit tests for Python code", "Testing", "pending"),
+        )
+        row = cur.fetchone()
+        skill_id = row[0] if isinstance(row, tuple) else row["id"]
+    review_id = forge_db.create_review(skill_id, "skill")
+
+    # Mock the Claude API call
+    import agents.base
+    class FakeMessage:
+        content = [type("Block", (), {"text": '{"detected_category": "Testing", "detected_output_type": "code", "classification_confidence": 0.95, "category_mismatch": false}'})()]
+    class FakeClient:
+        class messages:
+            @staticmethod
+            def create(**kwargs):
+                return FakeMessage()
+    monkeypatch.setattr(agents.base, "_client", FakeClient())
+
+    from agents.classifier import run
+    result = run(skill_id, review_id, skill_text="Help write unit tests for Python code", declared_category="Testing")
+
+    assert result["detected_category"] == "Testing"
+    assert result["detected_output_type"] == "code"
+    assert result["classification_confidence"] == 0.95
+
+    # Verify DB was updated
+    review = forge_db.get_review_by_skill(skill_id)
+    assert review is not None
+    assert review["detected_category"] == "Testing"
