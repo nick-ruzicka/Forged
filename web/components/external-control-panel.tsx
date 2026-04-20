@@ -3,7 +3,6 @@
 import { useState, useCallback } from "react";
 import { FolderOpen, ExternalLink, Trash2, ChevronDown, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { UsageChart, formatDuration, timeAgo, formatUptime } from "@/components/usage-chart";
 import { CoInstallCards } from "@/components/co-install-cards";
@@ -84,52 +83,57 @@ export function ExternalControlPanel({
     }
   }, []);
 
+  // CLI tools (brew formula, git clone) don't have a launchable process
+  const isLaunchable = installType === "brew-cask" || installType === "dmg" || installType === "docker";
+
   return (
     <div className="flex flex-col gap-6">
-      {/* Status + Launch bar */}
-      <div className="flex items-center justify-between rounded-2xl border border-border bg-card p-4">
-        <div className="flex items-center gap-3">
-          <div className="relative">
-            <AppIcon name={app.name} slug={app.slug} icon={app.icon} size={40} />
-            <span
-              className={`absolute -right-0.5 -top-0.5 size-2.5 rounded-full ring-2 ring-card ${
-                isRunning
-                  ? "bg-green-500 shadow-[0_0_6px_theme(colors.green.500)]"
-                  : "bg-neutral-600"
-              }`}
-            />
-          </div>
-          <div className="flex flex-col gap-0.5">
-            <div className="flex items-center gap-2">
-              <span className="text-[14px] font-semibold text-foreground">
-                {isRunning ? "Running" : "Not running"}
-              </span>
-              {isRunning && runningApp?.uptime_sec && (
-                <span className="text-xs text-text-muted tabular-nums">
-                  {formatUptime(runningApp.uptime_sec)} uptime
+      {/* Status + Launch bar — only for launchable desktop apps */}
+      {isLaunchable && (
+        <div className="flex items-center justify-between rounded-2xl border border-border bg-card p-4">
+          <div className="flex items-center gap-3">
+            <div className="relative">
+              <AppIcon name={app.name} slug={app.slug} icon={app.icon} size={40} />
+              <span
+                className={`absolute -right-0.5 -top-0.5 size-2.5 rounded-full ring-2 ring-card ${
+                  isRunning
+                    ? "bg-green-500 shadow-[0_0_6px_theme(colors.green.500)]"
+                    : "bg-neutral-600"
+                }`}
+              />
+            </div>
+            <div className="flex flex-col gap-0.5">
+              <div className="flex items-center gap-2">
+                <span className="text-[14px] font-semibold text-foreground">
+                  {isRunning ? "Running" : "Not running"}
                 </span>
-              )}
-            </div>
-            <div className="flex items-center gap-2">
-              <Badge variant="secondary" className="text-[10px] uppercase">
-                {installType}
-              </Badge>
+                {isRunning && runningApp?.uptime_sec && (
+                  <span className="text-xs text-text-muted tabular-nums">
+                    {formatUptime(runningApp.uptime_sec)} uptime
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center gap-2">
+                <Badge variant="secondary" className="text-[10px] uppercase">
+                  {installType}
+                </Badge>
+              </div>
             </div>
           </div>
+          <Button
+            size="sm"
+            disabled={launching}
+            onClick={handleLaunch}
+            className={
+              isRunning
+                ? "bg-green-500/15 text-green-500 border border-green-500/30 hover:bg-green-500/25 shadow-none"
+                : ""
+            }
+          >
+            {launching ? "Opening…" : isRunning ? "Focus" : "Launch"}
+          </Button>
         </div>
-        <Button
-          size="sm"
-          disabled={launching}
-          onClick={handleLaunch}
-          className={
-            isRunning
-              ? "bg-green-500/15 text-green-500 border border-green-500/30 hover:bg-green-500/25 shadow-none"
-              : ""
-          }
-        >
-          {launching ? "Opening…" : isRunning ? "Focus" : "Launch"}
-        </Button>
-      </div>
+      )}
 
       {/* Stats grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -205,7 +209,7 @@ export function ExternalControlPanel({
       </div>
 
       {/* Co-installs */}
-      <CoInstallCards toolId={app.id} toolName={app.name} />
+      <CoInstallCards toolId={app.id} />
 
       {/* Quick actions */}
       <div className="flex flex-wrap gap-2">
