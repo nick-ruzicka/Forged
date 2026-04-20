@@ -1,0 +1,217 @@
+schema_version: 1
+app: career-ops
+
+profile_fields:
+  - key: full_name
+    prompt: "Your full name"
+    type: string
+    source: forge.user.name
+    required: true
+  - key: email
+    prompt: "Your email address"
+    type: email
+    source: forge.user.email
+    required: true
+  - key: phone
+    prompt: "Phone number (with country code)"
+    type: phone
+    required: false
+  - key: location
+    prompt: "City, State/Country (e.g. San Francisco, CA)"
+    type: string
+    required: true
+  - key: linkedin
+    prompt: "LinkedIn profile URL"
+    type: url
+    required: true
+  - key: github
+    prompt: "GitHub profile URL"
+    type: url
+    required: false
+  - key: portfolio_url
+    prompt: "Portfolio or personal website URL"
+    type: url
+    required: false
+
+config_files:
+  - path: config/profile.yml
+    template: config/profile.example.yml
+    format: yaml
+    sections:
+      - name: candidate
+        fields:
+          - key: full_name
+            type: string
+            required: true
+          - key: email
+            type: string
+            required: true
+          - key: phone
+            type: string
+          - key: location
+            type: string
+            required: true
+          - key: linkedin
+            type: url
+            required: true
+          - key: github
+            type: url
+          - key: portfolio_url
+            type: url
+          - key: twitter
+            type: url
+
+      - name: target_roles
+        fields:
+          - key: primary
+            type: list
+            prompt: "Your target job titles"
+            required: true
+            items:
+              type: string
+          - key: archetypes
+            type: object_list
+            prompt: "Role archetypes with fit level"
+            items:
+              fields:
+                - key: name
+                  type: string
+                - key: level
+                  type: string
+                - key: fit
+                  type: string
+                  prompt: "primary | secondary | adjacent"
+
+      - name: narrative
+        fields:
+          - key: headline
+            type: string
+            prompt: "One-line professional headline"
+            required: true
+          - key: exit_story
+            type: string
+            prompt: "Your unique career narrative"
+          - key: superpowers
+            type: list
+            prompt: "Your top 3-5 professional superpowers"
+            required: true
+            items:
+              type: string
+          - key: proof_points
+            type: object_list
+            prompt: "Projects or achievements with measurable impact"
+            items:
+              fields:
+                - key: name
+                  type: string
+                - key: url
+                  type: url
+                - key: hero_metric
+                  type: string
+
+      - name: compensation
+        fields:
+          - key: target_range
+            type: string
+            prompt: "Target total compensation range (e.g. $150K-200K)"
+            required: true
+          - key: currency
+            type: string
+          - key: minimum
+            type: string
+            prompt: "Walk-away minimum compensation"
+          - key: location_flexibility
+            type: string
+            prompt: "Remote/hybrid/onsite preferences"
+
+      - name: location
+        fields:
+          - key: country
+            type: string
+          - key: city
+            type: string
+          - key: timezone
+            type: string
+          - key: visa_status
+            type: string
+
+  - path: cv.md
+    format: markdown
+    sections:
+      - name: cv
+        fields:
+          - key: content
+            type: freeform_file
+            prompt: "Your CV/resume in Markdown format"
+            required: true
+
+  - path: portals.yml
+    template: templates/portals.example.yml
+    format: yaml
+    sections:
+      - name: title_filter
+        fields:
+          - key: positive
+            type: list
+            prompt: "Keywords that match your target roles"
+            required: true
+            items:
+              type: string
+          - key: negative
+            type: list
+            prompt: "Keywords to exclude"
+            items:
+              type: string
+          - key: seniority_boost
+            type: list
+            items:
+              type: string
+
+      - name: search_queries
+        fields:
+          - key: queries
+            type: object_list
+            prompt: "Job board search queries"
+            items:
+              fields:
+                - key: name
+                  type: string
+                - key: query
+                  type: string
+                - key: enabled
+                  type: string
+
+      - name: tracked_companies
+        fields:
+          - key: companies
+            type: object_list
+            prompt: "Companies to monitor for new roles"
+            required: true
+            items:
+              fields:
+                - key: name
+                  type: string
+                - key: careers_url
+                  type: url
+                - key: enabled
+                  type: string
+
+verification:
+  command: "npm run doctor"
+  success_pattern: "✓|pass|ok|All checks"
+
+capabilities:
+  network:
+    - "*.greenhouse.io"
+    - "*.ashbyhq.com"
+    - "jobs.lever.co"
+    - "apply.workable.com"
+  reads:
+    - "config/**"
+    - "templates/**"
+    - "jds/**"
+    - "data/**"
+  writes:
+    - "output/**"
+    - "data/**"
+    - "reports/**"
