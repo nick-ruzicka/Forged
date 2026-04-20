@@ -25,26 +25,20 @@ interface UserContextValue {
 
 const UserContext = createContext<UserContextValue | null>(null);
 
-function readLocal(key: string): string {
-  if (typeof window === "undefined") return "";
-  try { return localStorage.getItem(key) ?? ""; } catch { return ""; }
-}
-
 export function UserProvider({ children }: { children: ReactNode }) {
-  const [userId, setUserId] = useState(() => typeof window !== "undefined" ? getUserId() : "");
-  const [role, _setRole] = useState(() => readLocal("forge_user_role"));
-  const [name, setName] = useState(() => {
-    try { return JSON.parse(readLocal("forge_user")).name ?? ""; } catch { return ""; }
-  });
-  const [email, setEmail] = useState(() => {
-    try { return JSON.parse(readLocal("forge_user")).email ?? ""; } catch { return ""; }
-  });
-  const [adminKey, _setAdminKey] = useState(() => readLocal("forge_admin_key"));
+  // All identity state starts empty for SSR and the first client render so the
+  // server's HTML matches what the client will paint on pass 1. Hydration from
+  // localStorage happens inside the post-mount effect below — that keeps the
+  // two render trees identical and avoids the Next.js hydration-mismatch warning
+  // (e.g. server paints "U" in the avatar, client lazy-inits to "NR").
+  const [userId, setUserId] = useState("");
+  const [role, _setRole] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [adminKey, _setAdminKey] = useState("");
 
-  // Re-hydrate on mount. Lazy initializers above return "" during SSR (no
-  // window), so after client takes over we have to pull the real values
-  // from localStorage — that's a legitimate external-store sync, not a
-  // render-triggered state cascade.
+  // Hydrate from localStorage once the client takes over. This is an external-store
+  // sync, not a render-triggered state cascade.
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     setUserId(getUserId());

@@ -49,20 +49,24 @@ export function Sidebar({ onOpenCommandMenu }: SidebarProps) {
   const { adminKey, name, email } = useUser();
   const { data: myItems } = useMyItems();
   const { data: mySkills } = useMySkills();
-  const [collapsed, setCollapsed] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return localStorage.getItem("forge_sidebar_collapsed") === "true";
-  });
+  // Start expanded for SSR + first client render (matches server HTML), then
+  // hydrate from localStorage in the mount effect below. Reading localStorage
+  // in a useState initializer produces a hydration mismatch when the stored
+  // preference differs from the SSR default.
+  const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Subscribe to external toggle events.
+  // Hydrate collapsed state from localStorage and subscribe to toggle events.
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
+    setCollapsed(localStorage.getItem("forge_sidebar_collapsed") === "true");
     const handleToggle = () => {
       setCollapsed(localStorage.getItem("forge_sidebar_collapsed") === "true");
     };
     window.addEventListener("forge-sidebar-toggle", handleToggle);
     return () => window.removeEventListener("forge-sidebar-toggle", handleToggle);
   }, []);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const toggleCollapsed = useCallback(() => {
     setCollapsed((prev) => {
