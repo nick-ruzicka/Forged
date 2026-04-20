@@ -32,6 +32,7 @@ TIMEOUTS = {
     "prompt_hardener": 90,
     "qa_tester": 360,
     "synthesizer": 30,
+    "sweep": 600,
 }
 
 _client = None

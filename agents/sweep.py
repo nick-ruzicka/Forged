@@ -93,7 +93,12 @@ def _run_dogfood_check(skill_text: str, skill_title: str) -> dict:
         messages=[{"role": "user", "content": f"Skill title: {skill_title}\n\nSkill text:\n{skill_text[:2000]}"}],
         system="Generate exactly 3 realistic prompts a user would send when using this skill. Respond with JSON: {\"prompts\": [\"...\", \"...\", \"...\"]}",
     )
-    prompts = parse_json_response(gen_resp.content[0].text).get("prompts", [])[:3]
+    try:
+        prompts = parse_json_response(gen_resp.content[0].text).get("prompts", [])[:3]
+    except (json.JSONDecodeError, ValueError):
+        return {"prompts_tested": 0, "prompts_passed": 0,
+                "issues": ["could not parse prompt-generation response"],
+                "overall_pass": False}
 
     # Evaluate each prompt
     eval_msg = f"SKILL.md:\n\n{skill_text[:3000]}\n\n---\n\nTest prompts:\n" + "\n".join(f"{i+1}. {p}" for i, p in enumerate(prompts))
@@ -103,7 +108,12 @@ def _run_dogfood_check(skill_text: str, skill_title: str) -> dict:
         messages=[{"role": "user", "content": eval_msg}],
         system=DOGFOOD_PROMPT,
     )
-    return parse_json_response(resp.content[0].text)
+    try:
+        return parse_json_response(resp.content[0].text)
+    except (json.JSONDecodeError, ValueError):
+        return {"prompts_tested": len(prompts), "prompts_passed": 0,
+                "issues": ["could not parse dogfood evaluation"],
+                "overall_pass": False}
 
 
 def _run_temperature_check(skill_text: str) -> dict:
@@ -133,7 +143,11 @@ def _run_temperature_check(skill_text: str) -> dict:
         messages=[{"role": "user", "content": f"Outputs:\n\n{outputs_text}"}],
         system=TEMPERATURE_PROMPT,
     )
-    return parse_json_response(judge_resp.content[0].text)
+    try:
+        return parse_json_response(judge_resp.content[0].text)
+    except (json.JSONDecodeError, ValueError):
+        return {"consistent": False, "variation_level": "unknown",
+                "issues": ["could not parse temperature-judge response"]}
 
 
 def _run_multiturn_attacks(skill_text: str) -> dict:

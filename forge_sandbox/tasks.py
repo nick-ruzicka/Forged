@@ -170,6 +170,7 @@ def async_skill_sweep() -> dict:
 
     from api import db
     from agents import sweep
+    from agents.base import TIMEOUTS, with_timeout
 
     candidates = db.get_sweep_candidates(limit=10)
     if not candidates:
@@ -191,7 +192,8 @@ def async_skill_sweep() -> dict:
         review_id = db.create_review(skill_id, "skill")
 
         try:
-            result = sweep.run(
+            result = with_timeout(
+                sweep.run, TIMEOUTS["sweep"],
                 skill_id, review_id,
                 skill_text=skill_text,
                 skill_title=skill_title,
@@ -199,11 +201,26 @@ def async_skill_sweep() -> dict:
             checked += 1
 
             if not result.get("overall_pass", True):
-                # Flag the skill
+                # Flag the skill — but only if it's still `approved`. If an
+                # admin has already blocked or needs-revisioned it while
+                # sweep.run was off doing LLM calls, we respect that.
                 failed = result.get("failed_checks", [])
                 reason = f"async sweep flagged: {', '.join(failed)}"
 
-                db.update_skill(skill_id, review_status="under_review")
+                with db.get_db() as cur:
+                    cur.execute(
+                        "UPDATE skills SET review_status = 'under_review' "
+                        "WHERE id = %s AND review_status = 'approved' "
+                        "RETURNING id",
+                        (skill_id,),
+                    )
+                    touched = cur.fetchone()
+                if not touched:
+                    # Admin changed the state mid-sweep; don't overwrite.
+                    results.append({"skill_id": skill_id, "title": skill_title,
+                                    "status": "stale_skip", "failed_checks": failed})
+                    continue
+
                 db.insert_skill_admin_action(
                     skill_id=skill_id,
                     action="async_sweep_flag",
