@@ -96,14 +96,26 @@ def with_timeout(fn, timeout_seconds, *args, **kwargs):
 
 
 def parse_json_response(text: str) -> dict:
-    """Parse JSON from a Claude response, stripping markdown code fences.
+    """Parse JSON from a Claude response.
 
-    Claude often wraps JSON in ```json ... ``` blocks. This handles that
-    plus leading/trailing whitespace.
+    Handles three common Claude output shapes:
+      1. Bare JSON:                 {"a": 1}
+      2. Fenced JSON:               ```json\n{"a": 1}\n```
+      3. Prose + fenced JSON:       Here's the JSON:\n```json\n{"a": 1}\n```
+      4. Prose + bare JSON:         Sure thing:\n{"a": 1}
+
+    Extracts by content, not by position, so prose before/after the block
+    doesn't break parsing. Raises json.JSONDecodeError if nothing parseable
+    is found.
     """
-    cleaned = text.strip()
-    # Strip markdown code fences
-    cleaned = re.sub(r"^```(?:json)?\s*\n?", "", cleaned)
-    cleaned = re.sub(r"\n?```\s*$", "", cleaned)
-    cleaned = cleaned.strip()
+    cleaned = (text or "").strip()
+
+    fenced = re.search(r"```(?:json)?\s*\n?(.*?)\n?\s*```", cleaned, re.DOTALL)
+    if fenced:
+        cleaned = fenced.group(1).strip()
+    else:
+        bare = re.search(r"(\{.*\}|\[.*\])", cleaned, re.DOTALL)
+        if bare:
+            cleaned = bare.group(1).strip()
+
     return json.loads(cleaned)

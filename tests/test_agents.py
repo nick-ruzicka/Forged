@@ -1,8 +1,59 @@
 """Tests for the agents package."""
+import json
 import os
 import pytest
 
 os.environ.setdefault("ANTHROPIC_API_KEY", "sk-test-placeholder")
+
+
+# ---------- parse_json_response (pure fn, no DB) ----------
+
+class TestParseJsonResponse:
+    """Bug 3 regression — parser must handle prose-wrapped Claude output."""
+
+    def test_bare_json(self):
+        from agents.base import parse_json_response
+        assert parse_json_response('{"a": 1}') == {"a": 1}
+
+    def test_fenced_json(self):
+        from agents.base import parse_json_response
+        text = '```json\n{"a": 1}\n```'
+        assert parse_json_response(text) == {"a": 1}
+
+    def test_fenced_unlabeled(self):
+        from agents.base import parse_json_response
+        assert parse_json_response('```\n{"a": 1}\n```') == {"a": 1}
+
+    def test_fenced_json_with_prose_prefix(self):
+        """Claude frequently wanders into prose before the fence."""
+        from agents.base import parse_json_response
+        text = "Here's the JSON:\n```json\n{\"a\": 1}\n```"
+        assert parse_json_response(text) == {"a": 1}
+
+    def test_fenced_json_with_prose_suffix(self):
+        from agents.base import parse_json_response
+        text = '```json\n{"a": 1}\n```\nLet me know if this helps.'
+        assert parse_json_response(text) == {"a": 1}
+
+    def test_bare_json_with_prose_prefix(self):
+        from agents.base import parse_json_response
+        text = 'Sure thing:\n{"a": 1, "b": [2, 3]}'
+        assert parse_json_response(text) == {"a": 1, "b": [2, 3]}
+
+    def test_json_array_with_prose(self):
+        from agents.base import parse_json_response
+        text = 'Here are the items:\n[1, 2, 3]'
+        assert parse_json_response(text) == [1, 2, 3]
+
+    def test_unparseable_raises(self):
+        from agents.base import parse_json_response
+        with pytest.raises((json.JSONDecodeError, ValueError)):
+            parse_json_response("not json at all, no brackets")
+
+    def test_empty_raises(self):
+        from agents.base import parse_json_response
+        with pytest.raises((json.JSONDecodeError, ValueError)):
+            parse_json_response("")
 
 
 def test_timed_decorator_logs_success(db):

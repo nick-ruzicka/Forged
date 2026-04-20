@@ -87,12 +87,27 @@ def run(skill_id: int, review_id: int, *, all_results: dict,
             system=SYNTHESIZER_PROMPT,
         )
         text = resp2.content[0].text
-        result = parse_json_response(text)
+        try:
+            result = parse_json_response(text)
+        except (json.JSONDecodeError, ValueError):
+            # Second parse also failed — persist a fallback row so the
+            # review is marked needs_revision with a readable summary.
+            result = {
+                "agent_recommendation": "needs_revision",
+                "agent_confidence": 0.0,
+                "review_summary": "synthesizer produced unparseable output twice",
+                "issues": [],
+                "advisory_warnings": [],
+                "data_class_mismatch": False,
+            }
 
     db.update_agent_review(review_id,
         agent_recommendation=result.get("agent_recommendation", "needs_revision"),
         agent_confidence=result.get("agent_confidence", 0.5),
         review_summary=result.get("review_summary", ""),
+        issues=result.get("issues", []),
+        advisory_warnings=result.get("advisory_warnings", []),
+        data_class_mismatch=bool(result.get("data_class_mismatch", False)),
         completed_at=datetime.utcnow(),
     )
     return result
