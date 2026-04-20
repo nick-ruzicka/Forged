@@ -105,7 +105,7 @@ function buildSections(schema: ParsedSchema): WizardSection[] {
           // Each schema section becomes one wizard section
           const fields: SchemaField[] = sec.fields.map((f) => ({
             key: `${sec.name}.${f.key}`,
-            prompt: f.prompt,
+            prompt: f.prompt || keyToLabel(f.key),
             type: (f.type as SchemaField["type"]) || "string",
             required: f.required,
             validation: f.validation,
@@ -127,6 +127,12 @@ function buildSections(schema: ParsedSchema): WizardSection[] {
 
 function formatSectionTitle(name: string): string {
   return name
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+function keyToLabel(key: string): string {
+  return key
     .replace(/_/g, " ")
     .replace(/\b\w/g, (c) => c.toUpperCase());
 }
