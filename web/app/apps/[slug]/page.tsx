@@ -534,39 +534,43 @@ export default function AppDetailPage({
 }
 
 function GettingStartedCard({ app }: { app: App }) {
-  const [copied, setCopied] = useState(false);
+  const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
 
-  // Determine the launch command based on install type
-  let launchCmd = "";
-  let launchHint = "";
+  // Build step-by-step instructions based on install type
+  const steps: { label: string; command: string; note?: string }[] = [];
   try {
     const meta = app.install_meta ? JSON.parse(app.install_meta) : null;
-    if (meta?.type === "brew" || meta?.type === "brew-cask") {
-      const formula = meta.formula || app.slug;
-      launchCmd = formula;
-      launchHint = "Run this in your terminal to get started";
+    if (meta?.type === "brew") {
+      steps.push(
+        { label: "Set up (first time only)", command: `${meta.formula || app.slug} --setup`, note: "Follow the prompts to configure API keys and preferences" },
+        { label: "Try it", command: `echo "Hello world" | ${meta.formula || app.slug} --pattern summarize` },
+      );
+    } else if (meta?.type === "brew-cask" || meta?.type === "dmg") {
+      steps.push(
+        { label: "Open the app", command: `open -a "${app.name}"` },
+      );
     } else if (meta?.type === "command") {
-      // For git clone installs, the app lives in a directory
       const cmd = meta.command || app.install_command || "";
       const dirMatch = cmd.match(/~\/([^\s&]+)/);
       if (dirMatch) {
-        launchCmd = `cd ~/${dirMatch[1]}`;
-        launchHint = "Open this directory in your terminal";
+        steps.push(
+          { label: "Open the project", command: `cd ~/${dirMatch[1]}` },
+          { label: "Start using it", command: "claude", note: "Open Claude Code in this directory to begin" },
+        );
       }
     }
   } catch {
     // ignore
   }
 
-  if (!launchCmd) {
-    launchCmd = app.slug;
-    launchHint = "Run this in your terminal";
+  if (steps.length === 0) {
+    steps.push({ label: "Run it", command: app.slug });
   }
 
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(launchCmd);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopy = async (idx: number, cmd: string) => {
+    await navigator.clipboard.writeText(cmd);
+    setCopiedIdx(idx);
+    setTimeout(() => setCopiedIdx(null), 2000);
   };
 
   return (
@@ -575,26 +579,33 @@ function GettingStartedCard({ app }: { app: App }) {
         <div className="flex size-8 items-center justify-center rounded-full bg-green-500/10 ring-1 ring-green-500/20">
           <Check className="size-4 text-green-400" />
         </div>
-        <div className="flex flex-col gap-0.5">
-          <span className="text-[14px] font-semibold text-foreground">
-            {app.name} is installed
-          </span>
-          <span className="text-[13px] text-text-secondary">
-            {launchHint}
-          </span>
-        </div>
+        <span className="text-[14px] font-semibold text-foreground">
+          {app.name} is installed — here&apos;s how to get started
+        </span>
       </div>
 
-      <div className="flex items-center gap-2 rounded-xl bg-surface-2 p-3 ring-1 ring-border">
-        <code className="flex-1 font-mono text-sm text-foreground">
-          {launchCmd}
-        </code>
-        <button
-          onClick={handleCopy}
-          className="shrink-0 rounded-lg p-1.5 text-text-muted hover:bg-white/[0.04] hover:text-foreground transition-colors"
-        >
-          {copied ? <Check className="size-3.5 text-green-400" /> : <Copy className="size-3.5" />}
-        </button>
+      <div className="flex flex-col gap-3">
+        {steps.map((step, i) => (
+          <div key={i} className="flex flex-col gap-1.5">
+            <span className="text-[12px] font-semibold text-text-secondary">
+              Step {i + 1}: {step.label}
+            </span>
+            <div className="flex items-center gap-2 rounded-xl bg-surface-2 p-3 ring-1 ring-border">
+              <code className="flex-1 font-mono text-sm text-foreground">
+                {step.command}
+              </code>
+              <button
+                onClick={() => handleCopy(i, step.command)}
+                className="shrink-0 rounded-lg p-1.5 text-text-muted hover:bg-white/[0.04] hover:text-foreground transition-colors"
+              >
+                {copiedIdx === i ? <Check className="size-3.5 text-green-400" /> : <Copy className="size-3.5" />}
+              </button>
+            </div>
+            {step.note && (
+              <span className="text-[11px] text-text-muted">{step.note}</span>
+            )}
+          </div>
+        ))}
       </div>
 
       {app.source_url && (
@@ -604,7 +615,7 @@ function GettingStartedCard({ app }: { app: App }) {
           rel="noopener noreferrer"
           className="text-xs text-text-muted hover:text-foreground transition-colors"
         >
-          View documentation on GitHub →
+          View full documentation on GitHub →
         </a>
       )}
     </div>
