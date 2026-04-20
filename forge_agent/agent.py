@@ -834,7 +834,7 @@ class AgentHandler(http.server.BaseHTTPRequestHandler):
     # ── /open-terminal ─────────────────────────────────────────
 
     def _handle_open_terminal(self, body):
-        """Open the user's terminal with a command pre-filled."""
+        """Open Terminal.app with a command pre-filled and executed."""
         command = body.get("command", "")
         cwd = body.get("cwd", os.path.expanduser("~"))
 
@@ -842,8 +842,6 @@ class AgentHandler(http.server.BaseHTTPRequestHandler):
             self._json({"error": "command required"}, 400)
             return
 
-        # Sanitize: only allow simple commands, no pipes/redirects from the API
-        # (the user sees the command before it runs in their terminal)
         audit.info("OPEN_TERMINAL cmd=%s cwd=%s", command[:200], cwd)
 
         import platform
@@ -851,53 +849,19 @@ class AgentHandler(http.server.BaseHTTPRequestHandler):
             self._json({"error": "open-terminal only supported on macOS"}, 400)
             return
 
-        # Detect terminal: prefer Ghostty > iTerm2 > Terminal.app
-        terminal = None
-        for app in ["Ghostty", "iTerm", "Terminal"]:
-            app_path = f"/Applications/{app}.app"
-            if os.path.exists(app_path):
-                terminal = app
-                break
-
-        if not terminal:
-            terminal = "Terminal"
-
         try:
-            if terminal == "Ghostty":
-                # Ghostty: open a new window with the command
-                subprocess.Popen([
-                    "osascript", "-e",
-                    f'tell application "Ghostty" to activate',
-                ])
-                # Small delay then use osascript to type the command
-                subprocess.Popen([
-                    "osascript", "-e",
-                    f'tell application "System Events" to tell process "Ghostty" to keystroke "t" using command down',
-                ])
-                import time
-                time.sleep(0.5)
-                subprocess.Popen([
-                    "osascript", "-e",
-                    f'tell application "System Events" to keystroke "{command}\n"',
-                ])
-            elif terminal == "iTerm":
-                subprocess.Popen([
-                    "osascript", "-e",
-                    f'tell application "iTerm2"\n'
-                    f'  create window with default profile command "cd {cwd} && {command}"\n'
-                    f'end tell',
-                ])
-            else:
-                # Terminal.app
-                subprocess.Popen([
-                    "osascript", "-e",
-                    f'tell application "Terminal"\n'
-                    f'  activate\n'
-                    f'  do script "cd {cwd} && {command}"\n'
-                    f'end tell',
-                ])
-
-            self._json({"success": True, "terminal": terminal, "command": command})
+            # Use Terminal.app — works on every Mac, no dependencies
+            # Escape double quotes in the command for AppleScript
+            safe_cmd = command.replace('\\', '\\\\').replace('"', '\\"')
+            safe_cwd = cwd.replace('\\', '\\\\').replace('"', '\\"')
+            script = (
+                f'tell application "Terminal"\n'
+                f'  activate\n'
+                f'  do script "cd \\"{safe_cwd}\\" && {safe_cmd}"\n'
+                f'end tell'
+            )
+            subprocess.Popen(["osascript", "-e", script])
+            self._json({"success": True, "terminal": "Terminal.app", "command": command})
         except Exception as exc:
             self._json({"error": f"Failed to open terminal: {exc}"}, 500)
 

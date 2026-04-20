@@ -590,10 +590,19 @@ function GettingStartedCard({ app }: { app: App }) {
             <span className="text-[12px] font-semibold text-text-secondary">
               Step {i + 1}: {step.label}
             </span>
-            <div className="flex items-center gap-2 rounded-xl bg-surface-2 p-3 ring-1 ring-border">
-              <code className="flex-1 font-mono text-sm text-foreground">
-                {step.command}
-              </code>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2 rounded-xl bg-surface-2 p-3 ring-1 ring-border">
+                <code className="flex-1 font-mono text-sm text-foreground">
+                  {step.command}
+                </code>
+                <button
+                  onClick={() => handleCopy(i, step.command)}
+                  className="shrink-0 rounded-lg p-1.5 text-text-muted hover:bg-white/[0.04] hover:text-foreground transition-colors"
+                  title="Copy command"
+                >
+                  {copiedIdx === i ? <Check className="size-3.5 text-green-400" /> : <Copy className="size-3.5" />}
+                </button>
+              </div>
               <button
                 onClick={async () => {
                   try {
@@ -604,17 +613,10 @@ function GettingStartedCard({ app }: { app: App }) {
                     });
                   } catch { /* ignore */ }
                 }}
-                className="shrink-0 rounded-lg p-1.5 text-text-muted hover:bg-white/[0.04] hover:text-foreground transition-colors"
-                title="Run in terminal"
+                className="flex items-center justify-center gap-2 rounded-xl border border-primary/30 bg-primary/[0.08] px-4 py-2.5 text-[13px] font-medium text-primary transition-colors hover:bg-primary/[0.15]"
               >
-                <Terminal className="size-3.5" />
-              </button>
-              <button
-                onClick={() => handleCopy(i, step.command)}
-                className="shrink-0 rounded-lg p-1.5 text-text-muted hover:bg-white/[0.04] hover:text-foreground transition-colors"
-                title="Copy command"
-              >
-                {copiedIdx === i ? <Check className="size-3.5 text-green-400" /> : <Copy className="size-3.5" />}
+                <Terminal className="size-4" />
+                Run in Terminal
               </button>
             </div>
             {step.note && (
