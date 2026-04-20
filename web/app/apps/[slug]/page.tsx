@@ -28,6 +28,7 @@ import {
   useAgentAvailable,
   uninstallApp,
 } from "@/lib/hooks";
+import type { App } from "@/lib/types";
 
 export default function AppDetailPage({
   params,
@@ -281,6 +282,11 @@ export default function AppDetailPage({
           <div className="flex flex-col gap-8 pt-6 lg:flex-row">
             {/* Main content */}
             <div className="flex flex-1 flex-col gap-8 min-w-0">
+              {/* Getting started — for installed external apps */}
+              {isExternal && isInstalled && (
+                <GettingStartedCard app={app} />
+              )}
+
               {/* External app control panel */}
               {isExternal && isInstalled && (
                 <ExternalControlPanel
@@ -523,6 +529,84 @@ export default function AppDetailPage({
         </TabsContent>
       </Tabs>
       </div>
+    </div>
+  );
+}
+
+function GettingStartedCard({ app }: { app: App }) {
+  const [copied, setCopied] = useState(false);
+
+  // Determine the launch command based on install type
+  let launchCmd = "";
+  let launchHint = "";
+  try {
+    const meta = app.install_meta ? JSON.parse(app.install_meta) : null;
+    if (meta?.type === "brew" || meta?.type === "brew-cask") {
+      const formula = meta.formula || app.slug;
+      launchCmd = formula;
+      launchHint = "Run this in your terminal to get started";
+    } else if (meta?.type === "command") {
+      // For git clone installs, the app lives in a directory
+      const cmd = meta.command || app.install_command || "";
+      const dirMatch = cmd.match(/~\/([^\s&]+)/);
+      if (dirMatch) {
+        launchCmd = `cd ~/${dirMatch[1]}`;
+        launchHint = "Open this directory in your terminal";
+      }
+    }
+  } catch {
+    // ignore
+  }
+
+  if (!launchCmd) {
+    launchCmd = app.slug;
+    launchHint = "Run this in your terminal";
+  }
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(launchCmd);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="flex flex-col gap-4 rounded-2xl border border-green-500/20 bg-green-500/[0.04] p-5">
+      <div className="flex items-center gap-3">
+        <div className="flex size-8 items-center justify-center rounded-full bg-green-500/10 ring-1 ring-green-500/20">
+          <Check className="size-4 text-green-400" />
+        </div>
+        <div className="flex flex-col gap-0.5">
+          <span className="text-[14px] font-semibold text-foreground">
+            {app.name} is installed
+          </span>
+          <span className="text-[13px] text-text-secondary">
+            {launchHint}
+          </span>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2 rounded-xl bg-surface-2 p-3 ring-1 ring-border">
+        <code className="flex-1 font-mono text-sm text-foreground">
+          {launchCmd}
+        </code>
+        <button
+          onClick={handleCopy}
+          className="shrink-0 rounded-lg p-1.5 text-text-muted hover:bg-white/[0.04] hover:text-foreground transition-colors"
+        >
+          {copied ? <Check className="size-3.5 text-green-400" /> : <Copy className="size-3.5" />}
+        </button>
+      </div>
+
+      {app.source_url && (
+        <a
+          href={app.source_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-text-muted hover:text-foreground transition-colors"
+        >
+          View documentation on GitHub →
+        </a>
+      )}
     </div>
   );
 }
