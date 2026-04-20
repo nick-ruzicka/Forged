@@ -1,6 +1,6 @@
 """Forge Slack Deployment Bot.
 
-Socket-mode Slack bot that lets the RevOps team deploy static-HTML apps to
+Socket-mode Slack bot that lets your team deploy static-HTML apps to
 Forge from Slack: paste an HTML code block after @forge-bot deploy, drop an
 attached .html file into a channel, or use the /forge slash command.
 """

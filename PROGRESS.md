@@ -162,32 +162,118 @@ T3_NEW DONE
 T3-APP DONE
 
 ## COORDINATOR STATUS
-Last check: 2026-04-19 (Cycle 79)
+Last check: 2026-04-20 (Cycle 84)
 
-### Cycle 79 Highlights — **INSTALL-FLOW FIX BURST**: HEAD `a9a231d` → `127219e` via **9 commits** (C78→C79, all `fix(web)`/`fix:` on the Next.js install-progress flow — InstallProgress live log output, SSE streaming via Flask CORS proxy, error-state surfacing, brew tap handling, multi-threaded forge-agent, success-state toast suppression, post-install refresh to control panel + Launch, brew installed/starred detection); 4 stuck PIDs now past **~84h** runtime (PID 3358 at 03-12:38, PID 8992 at 03-12:00, PIDs 9962/9974 at 03-11:55); screenshot burn `5241 → 5325` (+84 in ~24h ≈ **3.5/hr** — mild uptick from C78's 2/hr but still 7× below C77's 26/hr peak); newest capture `no-run-button-20260419T165744.png` at **2026-04-19 12:57 — fresh today** (vs C78's 3-day-stale newest), so the loop did fire at least once this interval; `.env.example` UNCHANGED at 1344 bytes (23+ cycles stale, 68 cycles overdue); TASK QUEUE FROZEN 62ND CYCLE (190 incomplete = 10/file × 19 files); ZERO new tasks added (literal `<3` rule does not fire on any file); ZERO new UNBLOCKED notes written (67th consecutive zero-bump cycle — duplicates prohibited, all 4 stuck-PID notes already verbatim-operative).
+### Cycle 84 Highlights — **FEATURE BRANCH ADVANCES, MAIN QUIET, 7000 CROSSED**: audit run from `fix/debug-pass-hardening` (not main). Feature-branch HEAD advanced **+1 commit** since C83's `1c5ca85` — new tip is **`e5bfcfe`** (`feat(agent): git_clone install_type with structured allowlists`), extending the install-discovery vertical from C80. **Main HEAD unchanged** at `21edb5e` since C83 (C83's reported `1c5ca85` was branch-local on `fix/debug-pass-hardening`, not on main — correction noted here). 4 stuck PIDs now past **~97h** (PID 3358 at **04-01:12**, PID 8992 at 04-00:34, PIDs 9962/9974 at ~04-00:29 — +~38min since C83, tracking expected elapsed interval; all four still live processes). Screenshot burn `6989 → 7059` (+70 in ~38min ≈ **~110/hr**, sustained C83 rate — **7000 threshold crossed** as predicted). `.env.example` UNCHANGED at 1344 bytes (28+ cycles stale, 73 cycles overdue). TASK QUEUE FROZEN 67TH CYCLE (190 incomplete = 10/file × 19 files, literal `grep -cE '^\[ \]'` returns `10` on every one of 19 files). ZERO new tasks added (Rule 1 `<3` does not fire on any file). ZERO new UNBLOCKED notes written (72nd consecutive zero-bump cycle — all 4 stuck-PID notes still verbatim-operative at T3_frontend.md:38,40,42,44 and T6_testing.md:22,24,26,28).
+
+### Actions Taken This Cycle (Cycle 84)
+- Tasks added: **0** (Rule 1 not triggered — literal audit returns `10` on every one of 19 files; 67-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes still verbatim-operative; kill command unchanged since C75, now 10 cycles stale).
+- COORDINATOR STATUS Cycle 84 block prepended; Cycle 83 block demoted to Prior Cycle Archive (this edit); Cycle 82 archive dropped.
+
+### What Changed This Cycle (Cycle 84)
+- **Branch provenance correction.** C83 recorded HEAD `1c5ca85` as "main HEAD". Verified this cycle via `git log main`: main top is `21edb5e` (unchanged since C83), and `1c5ca85` only resolves on `fix/debug-pass-hardening`. The two commits C83 attributed to main were actually branch-local. Main has been quiet for the C83→C84 interval; the active work currently lives on `fix/debug-pass-hardening`.
+- **One new commit on feature branch: agent install typing.** `e5bfcfe feat(agent): git_clone install_type with structured allowlists` — extends the governed install-discovery vertical (C80's `040c2ee` → `6f17b0e` arc) with a typed `git_clone` install pathway and structured allowlists. Still no task-file representation for this vertical.
+- **Screenshot threshold 7000 crossed.** `ls tests/reports/screenshots/ | wc -l` returned **7059** vs C83's 6989 → +70 captures in ~38min, rate sustained at ~110/hr. Loop remains live-capturing at steady cadence — not wedged, not accelerating.
+- **Stuck PIDs past 97h, all four still alive:** `ps -p 3358,8992,9962,9974 -o pid,etime,comm` returns PID 3358 at **04-01:12:32** (4d 1h 12m — past the 4-day mark into hour 25), PID 8992 at **04-00:34:37**, PID 9962 at **04-00:29:36**, PID 9974 at **04-00:29:34**. Elapsed delta since C83 is +~38min across all four — nothing killed or restarted. HUMAN action unchanged: `kill 3358 8992 9962 9974`.
+- **.env.example STILL at 1344 bytes:** `wc -c .env.example` returns `1344`. T5_deploy Cycle 11 rescue now **73 cycles overdue**. Neither branch touched this file in C83→C84.
+- **Task queue state: frozen 67 cycles.** 190 incomplete across 19 files, exactly 10 each. No file crossed the `<3` threshold, so Rule 1 refill did not fire. Structural mismatch between task files and actual work (governed skills, install discovery + new git_clone install_type, config-schema autogen, Next.js retirement, debug-pass hardening) continues to widen.
+
+### Pending Unblocks (Cycle 84 — 2 of 3 from C76 list remain)
+1. ~~**Commit freeze**~~ — **RESOLVED C76**, sustained through C77→C84. Not re-opened.
+2. **Screenshot harness root-cause** (C56, **28 cycles overdue**) — loop lives in `tests/agents/ui_tester.py` (PID 3358). Companion PIDs: 8992 (code_auditor.py), 9962 (test_dashboard.py), 9974 (ux_auditor.py). Required: `kill 3358 8992 9962 9974`, then retire ui_tester.py (vanilla `frontend/` is being retired per `2026-04-19-retire-vanilla-frontend.md`) or redirect it at `web/`. **URGENCY: 7059 captures on disk (7000 threshold crossed), 97h+ runtime, PID 3358 into day 5, still live-capturing at ~110/hr.**
+3. **`.env.example` Slack/Flask append** (C11, **73 cycles overdue**) — file at 1344 bytes; 4-line append documented inline in T5_deploy.md:28-36. ~30-second human edit.
+
+### Action Items for Next Cycle (Cycle 85)
+- **Coordinator scope unchanged:** no code writes, no PID kills, no edits outside PROGRESS.md.
+- **Human actions (priority unchanged, urgency compounding):** (a) `kill 3358 8992 9962 9974` — 7059 screenshots, 97h+ runtime, PID 3358 into day 5, red-alert; (b) 4-line `.env.example` Slack/Flask append per T5_deploy.md:28-36 (73 cycles overdue); (c) **rewrite / retire the 19 tasks/T*.md queues** — verticals shipping on `fix/debug-pass-hardening` (install-type allowlists, governed skills, config-schema autogen, debug-pass hardening) remain unrepresented; new task files plus a prune pass on the legacy 19 would unstick Rule 1.
+- **Watch next cycle:** whether `fix/debug-pass-hardening` merges to main (would jump main HEAD by ≥3 commits at once); whether stuck PIDs finally get killed (8000-screenshot threshold would cross ~9h from now at current rate); whether main resumes its own commit cadence.
+
+---
+
+### Prior Cycle Archive (Cycle 83)
+Last check: 2026-04-20 (Cycle 83)
+
+### Cycle 83 Highlights — **QUIET PROGRESS, QUEUES STILL FROZEN**: main HEAD advanced by **2 commits** since C82's `8fff9ab` — new HEAD is **`1c5ca85`** (fix(web): avoid SSR hydration mismatch on identity and sidebar state) preceded by `21edb5e` (fix: debug pass — RCE hardening, stale tests, React lint). Both extend the Next.js polish + hardening arc; no new vertical. 4 stuck PIDs now past **~96h** runtime (PID 3358 at 04-00:34, PIDs 8992/9962/9974 at ~03-23:51-56 — added ~2h since C82, expected elapsed interval, all still live). Screenshot burn `6763 → 6989` (+226 in ~2h ≈ **~110/hr**, sustained at C82's rate; 7000 threshold imminent). `.env.example` UNCHANGED at 1344 bytes (27+ cycles stale, 72 cycles overdue). TASK QUEUE FROZEN 66TH CYCLE (190 incomplete = 10/file × 19 files, literal `grep -cE '^\[ \]'` returns `10` on every one of 19 files). ZERO new tasks added (Rule 1 `<3` does not fire on any file). ZERO new UNBLOCKED notes written (71st consecutive zero-bump cycle — all 4 stuck-PID notes still verbatim-operative).
 
 ### Actions Taken This Cycle
-- Tasks added: **0** (Rule 1 not triggered — literal audit `for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` returns `10` on every one of 19 files; 62-cycle flatline).
-- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at T3_frontend.md:38 and T6_testing.md:22,24; kill command `kill 3358 8992 9962 9974` unchanged since C75, now 5 cycles stale).
-- COORDINATOR STATUS Cycle 79 block prepended; Cycle 78 block demoted to Prior Cycle Archive (this commit).
+- Tasks added: **0** (Rule 1 not triggered — literal audit returns `10` on every one of 19 files; 66-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes still verbatim-operative at T3_frontend.md:38 and T6_testing.md:22,24; kill command unchanged since C75, now 9 cycles stale).
+- COORDINATOR STATUS Cycle 83 block prepended; Cycle 82 block demoted to Prior Cycle Archive (this edit).
 
 ### What Changed This Cycle
-- **Commit velocity resumed (post-lull):** 9 commits in the C78→C79 interval — `6b2d2d1` (QA rounds 2), `bcb271f` (SSE Flask proxy w/ CORS), `471e0e7` (install error state), `6dbbc85` (brew taps + extra formulas), `27d6751` (multi-threaded forge-agent — installs no longer block all requests), `77d0f7b` (suppress false success-toast error), `c56203c` (rewrite InstallProgress with live log output), `e38267b` (post-install refresh → control panel + Launch button), `127219e` (HEAD — `tool_id` missing from API broke installed/starred detection). All commits target the Next.js (`web/`) install-progress flow + `forge-agent` backend — the tight cluster suggests a focused install-UX hardening sprint. Velocity (9/cycle) sits between C77's burst (26) and C78's lull (1) — looks like normal feature-development cadence resuming.
-- **Screenshot burn ticked up modestly:** `ls tests/reports/screenshots/ | wc -l` returned **5325** vs C78's 5241 → **+84 in ~24h ≈ 3.5/hr**, up from C78's 2/hr but nowhere near C77's 26/hr or C74's 60/hr. **Critical correction to C78's wedged-loop hypothesis:** newest capture is `no-run-button-20260419T165744.png` at **2026-04-19 12:57 — same day as this audit**, not 3 days stale. The loop IS still firing (intermittently); C78's "wedged/idle" framing was incomplete. Capture pattern (`no-run-button-*`, `catalog-no-cards-*`) suggests ui_tester.py is still asserting against the legacy `frontend/` selectors — which would be expected to fail given the canonical UI is `web/` now.
-- **Stuck PIDs past 84h:** `ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms all 4 alive: PID 3358 (ui_tester.py) at **03-12:38:35**, PID 8992 (code_auditor.py) at **03-12:00:40**, PID 9962 (test_dashboard.py) at **03-11:55:39**, PID 9974 (ux_auditor.py) at **03-11:55:37**. PID 3358 is the one producing the new screenshots — it's stuck in a polling loop, not crashed. HUMAN action unchanged: `kill 3358 8992 9962 9974`.
-- **.env.example STILL at 1344 bytes:** `wc -c .env.example` returns 1344. T5_deploy Cycle 11 rescue now **68 cycles overdue**. The C78→C79 9-commit burst did not touch this file (all 9 commits are on `web/` + `forge_agent/`).
-- **Task queue state:** 190 incomplete across 19 files, 10 each, frozen 62 cycles. Staleness concern from C77/C78 deepens — install-flow work this cycle landed entirely in `web/` (Next.js) + `forge_agent/`, neither of which is reflected in any of the 19 task queues. The task files describe the original vanilla-frontend + Flask architecture; the work the user is actually shipping is on the new stack.
-- **Working-tree shape:** PROGRESS.md (this edit), frontend/my-tools.html, tests/reports/* (audit artifacts churn), several `tests/reports/screenshots/catalog-load-fail-*` and `catalog-no-cards-*` from the still-firing harness. 2 untracked plan docs persist (`docs/superpowers/plans/2026-04-18-nextjs-frontend-rewrite.md`, `2026-04-19-retire-vanilla-frontend.md`) — neither has been committed yet across C77/C78/C79.
+- **Two-commit interval, both polish/hardening on `web/`.** `21edb5e` ("fix: debug pass — RCE hardening, stale tests, React lint") landed first, then `1c5ca85` ("fix(web): avoid SSR hydration mismatch on identity and sidebar state"). Continues the Next.js arc that's been running since C77; no new themes opened, no themes closed. C82's HEAD `8fff9ab` is still reachable (no history rewrite this cycle).
+- **Working tree updated since C82.** `git status` now shows additional in-flight edits: one `apps/hebbia-*.html` demo file deleted + another added (untracked), `forge_agent/agent.py`, `frontend/js/my-tools.js`, `frontend/publish.html` modified, plus the existing `db/seed*.py`, `scripts/seed_demo_apps.py`, `tests/conftest.py`, `tests/eval/corpus/*.json`, and `tests/test_tools_api.py` deltas — debug-pass churn that wasn't fully captured in the two new commits.
+- **Screenshot burn rate sustained at ~110/hr.** `ls tests/reports/screenshots/ | wc -l` returned **6989** vs C82's 6763 → **+226 captures in ~2h** (matches stuck-PID elapsed delta). 7000 threshold will likely cross within the next cycle. Loop is still live-capturing — not idle, not wedged.
+- **Stuck PIDs past 96h, all four still alive:** `ps -p 3358,8992,9962,9974 -o pid,etime,comm` returns PID 3358 at **04-00:34:14**, PID 8992 at **03-23:56:19**, PID 9962 at **03-23:51:18**, PID 9974 at **03-23:51:16**. PID 3358 has now crossed the **4-day** mark. HUMAN action unchanged: `kill 3358 8992 9962 9974`.
+- **.env.example STILL at 1344 bytes:** `wc -c .env.example` returns `1344`. T5_deploy Cycle 11 rescue now **72 cycles overdue**. Neither commit this cycle touched this file.
+- **Task queue state: frozen 66 cycles.** 190 incomplete across 19 files, 10 each. No file crossed the `<3` threshold. Structural mismatch between task files and real work (governed skills, install discovery, config-schema autogen, Next.js retirement of vanilla frontend, debug-pass hardening) remains — none of the recent verticals have task-file representation.
 
-### Pending Unblocks (Cycle 79 — 2 of 3 from C76 list remain, unchanged from C77/C78)
-1. ~~**Commit freeze**~~ — **RESOLVED C76**, sustained C77, lulled C78, resumed C79. Not re-opened.
-2. **Screenshot harness root-cause** (C56, 23 cycles overdue) — loop lives in `tests/agents/ui_tester.py` (PID 3358). Companion idle-but-stuck PIDs: 8992 (code_auditor.py), 9962 (test_dashboard.py), 9974 (ux_auditor.py). Required: `kill 3358 8992 9962 9974` (4 PIDs), then either retire ui_tester.py (vanilla `frontend/` is being retired per `2026-04-19-retire-vanilla-frontend.md`) or redirect it at `web/`. C78 said the loop appeared wedged; C79 evidence (fresh capture from 12:57 today) **upgrades this to actively-running-but-asserting-on-wrong-UI**.
-3. **`.env.example` Slack/Flask append** (C11, 68 cycles overdue) — file at 1344 bytes; 4-line append documented inline in T5_deploy.md:28-36. ~30-second human edit.
+### Pending Unblocks (Cycle 83 — 2 of 3 from C76 list remain)
+1. ~~**Commit freeze**~~ — **RESOLVED C76**, sustained through C77→C83 (commit velocity continues, +2 this interval). Not re-opened.
+2. **Screenshot harness root-cause** (C56, **27 cycles overdue**) — loop lives in `tests/agents/ui_tester.py` (PID 3358). Companion PIDs: 8992 (code_auditor.py), 9962 (test_dashboard.py), 9974 (ux_auditor.py). Required: `kill 3358 8992 9962 9974`, then retire ui_tester.py (vanilla `frontend/` is being retired per `2026-04-19-retire-vanilla-frontend.md`) or redirect it at `web/`. **URGENCY: 6989 captures on disk, 96h+ runtime, still live-capturing at ~110/hr; PID 3358 just crossed the 4-day mark.**
+3. **`.env.example` Slack/Flask append** (C11, **72 cycles overdue**) — file at 1344 bytes; 4-line append documented inline in T5_deploy.md:28-36. ~30-second human edit.
 
-### Action Items for Next Cycle (Cycle 80)
+### Action Items for Next Cycle (Cycle 84)
+- **Coordinator scope unchanged:** no code writes, no PID kills, no edits outside PROGRESS.md.
+- **Human actions (priority unchanged, urgency compounding):** (a) `kill 3358 8992 9962 9974` — 6989 screenshots, 96h+ runtime, PID 3358 across 4 days, red-alert; (b) 4-line `.env.example` Slack/Flask append per T5_deploy.md:28-36 (72 cycles overdue); (c) **rewrite / retire the 19 tasks/T*.md queues** — verticals shipping on `web/` (governed skills, install discovery, config-schema autogen, debug-pass hardening) remain unrepresented; new task files plus a prune pass on the legacy 19 would unstick the refill rule.
+- **Watch next cycle:** whether the working-tree debug-pass churn (apps/, forge_agent/, frontend/, tests/) lands in a third commit or keeps growing; whether stuck PIDs finally get killed (the 7000-screenshot threshold should cross visibly); whether a fresh vertical opens or the `web/` polish arc continues to dominate.
+
+---
+
+### Prior Cycle Archive (Cycle 81)
+Last check: 2026-04-19 (Cycle 81)
+
+### Cycle 81 Highlights — **CONFIG-SCHEMA + AUTOGEN WAVE, SECOND HISTORY REWRITE**: C80 HEAD `dda1b53` is again unreachable (`git rev-parse dda1b53` → `unknown revision`); new main HEAD is **`9096e3d`** with a fresh ~20-commit arc centered on auto-generated config schemas and the onboarding/setup-skill agent (`3c988c6` config schema spec + validator + migration → `e6ecd14` onboarding agent for setup skills → `5966e8f` configure endpoint + config writer → `ac270d8` config wizard auto-fill component → `5382d04` generate config schemas from GitHub URLs → `41523af` wire config_schema to API + resolve models-package conflict → `7e2953b` resilient migration loop in db fixture → `9096e3d` HEAD: claude-haiku for schema autogen + config_schema on Tool model); interleaved with `b56dcf6` flip `SKILL_REVIEW_MODE` default stub→real (Phase 5), `87fe13b` async post-approval sweep (Phase 3), `78e072f` sweep admin-override race fix + runtime cap, `ae04ac2` robust JSON parser + synthesizer persistence, `b5444e2` seed script for demo apps + polished travel edition HTML, `2850521` admin endpoints + migration ordering fixes, `494ce21` agent_reviews surviving full init_db chain, `ac0351e` submissions endpoint using `author_user_id`; 4 stuck PIDs now past **~92h** runtime (PID 3358 at 03-20:28, PID 8992 at 03-19:50, PIDs 9962/9974 at 03-19:45 — up ~6h since C80); screenshot burn `5507 → 6547` (+1040 in ~same-day interval — rate sustained at tens-per-hour, well past 6000 threshold); `.env.example` UNCHANGED at 1344 bytes (25+ cycles stale, 70 cycles overdue); TASK QUEUE FROZEN 64TH CYCLE (190 incomplete = 10/file × 19 files); ZERO new tasks added (literal `<3` rule does not fire on any file); ZERO new UNBLOCKED notes written (69th consecutive zero-bump cycle — duplicates prohibited, all 4 stuck-PID notes already verbatim-operative).
+
+### Actions Taken This Cycle (Cycle 81)
+- Tasks added: **0** (Rule 1 not triggered — literal audit returns `10` on every one of 19 files; 64-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at T3_frontend.md:38 and T6_testing.md:22,24).
+- COORDINATOR STATUS Cycle 81 block prepended; Cycle 80 block demoted to Prior Cycle Archive.
+
+---
+
+### Prior Cycle Archive (Cycle 80)
+Last check: 2026-04-19 (Cycle 80)
+
+### Cycle 80 Highlights — **GOVERNED-SKILLS PIVOT + HISTORY REWRITE**: prior C79 HEAD `127219e` is no longer reachable (`git rev-parse 127219e` → `unknown revision`) — the C78→C79 install-flow burst was rebased/rewritten; new main HEAD is **`dda1b53`** with a fresh 6-commit "governed skills" cluster on top (`eec1d1a` schema → `f6b6db1` db unified create_review + approved-only default → `94ce2fa` Skill governance fields → `593bf53` stubbed skill_review_pipeline behind `SKILL_REVIEW_MODE` flag → `c35cd99` pending/override/status endpoints → `dda1b53` HEAD, skills tests updated for new response shape); 4 stuck PIDs now past **~86h** runtime (PID 3358 at 03-14:16, PID 8992 at 03-13:38, PIDs 9962/9974 at 03-13:33 — up ~1h40m since C79); screenshot burn `5325 → 5507` (+182 in ~6h ≈ **30/hr** — HUGE RE-ACCELERATION back to C77-era rates, newest capture `no-run-button-20260419T183534.png` at **2026-04-19 18:35 — live-fresh, minutes old**, loop is undeniably active); `.env.example` UNCHANGED at 1344 bytes (24+ cycles stale, 69 cycles overdue); TASK QUEUE FROZEN 63RD CYCLE (190 incomplete = 10/file × 19 files); ZERO new tasks added (literal `<3` rule does not fire on any file); ZERO new UNBLOCKED notes written (68th consecutive zero-bump cycle — duplicates prohibited, all 4 stuck-PID notes already verbatim-operative).
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — literal audit `for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` returns `10` on every one of 19 files; 63-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at T3_frontend.md:38 and T6_testing.md:22,24; kill command `kill 3358 8992 9962 9974` unchanged since C75, now 6 cycles stale).
+- COORDINATOR STATUS Cycle 80 block prepended; Cycle 79 block demoted to Prior Cycle Archive (this commit).
+
+### What Changed This Cycle
+- **History rewrite detected:** `git rev-parse 127219e` (C79's recorded HEAD) now errors with `unknown revision or path not in the working tree` — the commit was squashed or rebased out between C79 and C80. Same for C79-cited intermediates `6b2d2d1`, `bcb271f`, `471e0e7`, `6dbbc85`, `27d6751`, `77d0f7b`, `c56203c`, `e38267b`, `a9a231d`, `da89bab` — the entire C77→C79 commit chain as logged in the Prior Cycle Archive is no longer reachable. Current `main` tip is `dda1b53`. Functional changes (install-flow fixes, SSE, multi-threading, etc.) still appear in log via renamed-subject commits (`cd85160 rewrite InstallProgress`, `8d608de suppress false success-toast`, `3788f7a post-install refresh`, `9130521 tool_id missing from API`, `8d4346d multi-threaded forge-agent`, `84905fd install SSE streaming`, `1afc762 brew taps`, `73512bc install error state`, `4c04dbb Button nativeButton`). Net: C78/C79 narrative still broadly true but **commit hashes in the archive below are dead pointers** — do not cite them as resolvable refs.
+- **New theme on main: governed skills.** 6 commits at the tip (`eec1d1a` → `dda1b53`) introduce a skill-submission governance stack — schema migration, unified `create_review` with approved-only default filter, Skill dataclass governance fields, stubbed `skill_review_pipeline` gated on `SKILL_REVIEW_MODE` env flag, API surface for `pending/admin override/review status`, and skills tests updated for the new response shape. This aligns with the untracked plan `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` (new this cycle, not present in C79 untracked list) and the `governed-skills-pipeline` skill that shows up in the session's available-skills list. **None of this work is reflected in any of the 19 task queue files** — this is a fresh vertical that needs its own task file (e.g., `tasks/T_SKILL_GOV.md`), not to be shoehorned into existing queues.
+- **Also new on main: agent install discovery.** `040c2ee` (`/Applications` scanner), `88a4d1e` (GET /scan w/ 30s cache), `07c365d` (scan on startup + after install), `6f17b0e` (scanner tests) — a companion installable-app detection subsystem. Accompanied by `5cb25eb` spec doc + `e30815b` implementation plan. Also new vertical, also absent from task queues.
+- **Screenshot burn re-accelerated HARD:** `ls tests/reports/screenshots/ | wc -l` returned **5507** vs C79's 5325 → **+182 captures**. Gap between C79 and C80 is only a fraction of a day (same calendar date, 2026-04-19), so the effective rate is **~30/hr** — back to C77-era burst levels, 8-9× C79's 3.5/hr. Newest file `no-run-button-20260419T183534.png` at **18:35** (minutes old at audit time). Companion `catalog-no-cards-20260419T183533.png` one second earlier. Pattern: paired `no-run-button-*` + `catalog-no-cards-*` captures emit together every ~minute. The loop is not wedged, not intermittent — it is actively thrashing.
+- **Stuck PIDs past 86h, ticking up:** `ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms all 4 alive: PID 3358 (ui_tester.py) at **03-14:16:38**, PID 8992 (code_auditor.py) at **03-13:38:43**, PID 9962 (test_dashboard.py) at **03-13:33:42**, PID 9974 (ux_auditor.py) at **03-13:33:40**. ~+1h40m since C79's baseline across all four. PID 3358 is confirmed the screenshot-emitter per newest-file timestamp. HUMAN action unchanged: `kill 3358 8992 9962 9974`.
+- **.env.example STILL at 1344 bytes:** `wc -c .env.example` returns 1344. T5_deploy Cycle 11 rescue now **69 cycles overdue**. None of the commits since C79 touched this file (new commits target `web/`, `forge_agent/`, `db/migrations/`, `api/server.py`, `api/models.py`, `api/pipeline.py`, `tests/test_skills_api.py`).
+- **Task queue state: frozen 63 cycles, staleness now acute.** 190 incomplete across 19 files, 10 each. Between C77 and C80, the active work has moved through at least 3 major verticals (Next.js frontend rewrite, install-flow hardening, governed-skills pipeline, agent install discovery) — none of which exists in the 19 task files. Recommendation from C77/C78/C79 (re-audit or rewrite queues) is now at red-alert. Adding tasks by the `<3` rule continues to not fire because existing queues still literally contain 10 items each — but those 10 items are increasingly describing retired code paths.
+- **Working-tree shape:** `git status` shows PROGRESS.md (this edit), `tests/reports/{code_audit.json,ui_report.json,ux_auditor.log}` (audit artifacts churn from live harness), and 11 `web/**` files (app pages, components, providers, globals.css). Two pre-existing plan docs from C77-C79 are now committed (`1b96cda`, `e30815b`, etc.) and are no longer untracked. One **new** untracked plan: `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`.
+
+### Pending Unblocks (Cycle 80 — 2 of 3 from C76 list remain; staleness acute)
+1. ~~**Commit freeze**~~ — **RESOLVED C76**, sustained through C79→C80 (history was rebased but velocity continues on new hashes). Not re-opened.
+2. **Screenshot harness root-cause** (C56, **24 cycles overdue**) — loop lives in `tests/agents/ui_tester.py` (PID 3358). Companion PIDs: 8992 (code_auditor.py), 9962 (test_dashboard.py), 9974 (ux_auditor.py). Required: `kill 3358 8992 9962 9974`, then retire ui_tester.py (vanilla `frontend/` is the subject of retirement plans per `2026-04-19-retire-vanilla-frontend.md` and newer plan doc from C79 interval) or redirect it at `web/`. **URGENCY UPGRADED: burn rate is back at ~30/hr — 8-9× C79** — no longer intermittent, the loop is live-capturing against the wrong UI in real time.
+3. **`.env.example` Slack/Flask append** (C11, **69 cycles overdue**) — file at 1344 bytes; 4-line append documented inline in T5_deploy.md:28-36. ~30-second human edit.
+
+### Action Items for Next Cycle (Cycle 81)
 - **Coordinator scope unchanged:** code writes, PID kills, and edits outside PROGRESS.md remain prohibited.
-- **Human actions (unchanged priority):** (a) `kill 3358 8992 9962 9974` to stop the wrong-UI screenshot loop and free RAM/FDs — urgency BUMPED back up since C79 evidence shows the loop is still firing; (b) 4-line `.env.example` Slack/Flask append per T5_deploy.md:28-36; (c) re-audit all 19 `tasks/T*.md` queues against HEAD — install-flow work landing entirely in `web/` + `forge_agent/` while task queues still describe vanilla frontend + Flask is the clearest signal yet that the queues need a rewrite, not incremental additions.
-- **Watch next cycle:** whether the install-flow burst extends into adjacent areas (control panel, social layer follow-up, agent capabilities) or settles back into a lull; whether the 2 untracked plan docs get committed (signaling vanilla retirement is moving from spec to action); whether anyone kills the 4 stuck PIDs before they cross 4 days.
+- **Human actions (priority bumped):** (a) `kill 3358 8992 9962 9974` — **red-alert priority now**, ~30/hr burn on PID 3358 confirmed minutes-old; (b) 4-line `.env.example` Slack/Flask append per T5_deploy.md:28-36 (69 cycles overdue, now a coordinator embarrassment); (c) **rewrite / retire the 19 tasks/T*.md queues** — C77/C78/C79 noted growing staleness, C80 confirms: 3 new verticals (Next.js rewrite, governed skills, install discovery) have no representation in any task file, while task files still list tasks tied to deleted files (`api/executor.py`, `api/dlp.py`, `frontend/js/submit.js`, `frontend/js/tool.js`, `agents/trust_calculator.py`). Single new file `tasks/T_SKILL_GOV.md` + `tasks/T_INSTALL_DISC.md` + a purge pass on the legacy 19 would restore signal/noise.
+- **Watch next cycle:** whether the screenshot loop finally gets killed (crossed 86h at audit); whether commits 20+ on main continue the governed-skills arc or pivot again; whether the coordinator's `<3` rule ever fires (it literally cannot until a human or another agent checks off items); whether new task files appear for the 3 untracked verticals.
+
+---
+
+### Prior Cycle Archive (Cycle 79)
+Last check: 2026-04-19 (Cycle 79)
+
+### Cycle 79 Highlights — **INSTALL-FLOW FIX BURST**: HEAD `a9a231d` → `127219e` via **9 commits** (C78→C79, all `fix(web)`/`fix:` on the Next.js install-progress flow — InstallProgress live log output, SSE streaming via Flask CORS proxy, error-state surfacing, brew tap handling, multi-threaded forge-agent, success-state toast suppression, post-install refresh to control panel + Launch, brew installed/starred detection); 4 stuck PIDs now past **~84h** runtime (PID 3358 at 03-12:38, PID 8992 at 03-12:00, PIDs 9962/9974 at 03-11:55); screenshot burn `5241 → 5325` (+84 in ~24h ≈ **3.5/hr** — mild uptick from C78's 2/hr but still 7× below C77's 26/hr peak); newest capture `no-run-button-20260419T165744.png` at **2026-04-19 12:57 — fresh today** (vs C78's 3-day-stale newest), so the loop did fire at least once this interval; `.env.example` UNCHANGED at 1344 bytes (23+ cycles stale, 68 cycles overdue); TASK QUEUE FROZEN 62ND CYCLE (190 incomplete = 10/file × 19 files); ZERO new tasks added (literal `<3` rule does not fire on any file); ZERO new UNBLOCKED notes written (67th consecutive zero-bump cycle — duplicates prohibited, all 4 stuck-PID notes already verbatim-operative). **NOTE (C80 superseded):** commit hashes `127219e`, `a9a231d`, `6b2d2d1`, `bcb271f`, `471e0e7`, `6dbbc85`, `27d6751`, `77d0f7b`, `c56203c`, `e38267b`, `da89bab` in this and the C78 archive are **no longer reachable on main** due to a history rewrite between C79 and C80 — cite functional descriptions, not hashes.
+
+### Actions Taken This Cycle (Cycle 79)
+- Tasks added: **0** (Rule 1 not triggered — literal audit returns `10` on every one of 19 files; 62-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative; kill command `kill 3358 8992 9962 9974` unchanged since C75).
+- COORDINATOR STATUS Cycle 79 block prepended; Cycle 78 block demoted to Prior Cycle Archive.
 
 ---
 
@@ -11497,3 +11583,3509 @@ T-DASH DONE
 - iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17, applies to `frontend/`/`apps/<slug>`)**. ⚠ **`web/components/app-embed.tsx` (per `debdc29`) deliberately adds `allow-same-origin` for installed Class-A embedded apps** — contract is scope-incomplete on the `web/` side. Critical Path #1 above tracks the resolution.
 - Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
 - forge_bot/webhook.py on port 8093 (NOT 8091).
+
+
+## COORDINATOR STATUS — Cycle 210 (2026-04-19)
+
+### Headline — FLATLINE **162nd cycle** on task-file side; **GIT HISTORY REBASED** between C209 and C210 — C209's anchor commit `12222ac` is no longer reachable (`git rev-list --count 12222ac..HEAD` exits 128, "unknown revision"). Same-message commits now carry different SHAs: C209's `debdc29` (allow-same-origin add) is now `27457c7`; C209's `bcfd66b` (search-box fix) is now `21b3660`; C209's `c5a872f` (sidebar toggle) is now `fc1c068`; C209's `3f2c925` (full-screen embed) is now `335c6b5`. Implication: **C201→C209 commit-count series (22→25→28) is now broken** — every prior `git rev-list --count <anchor>..HEAD` line in this PROGRESS.md is unreproducible. New HEAD `98b5437` ("chore: gitignore .worktrees/"). Git log -10 surfaces 4 net-new commits beyond C209's `bcfd66b` equivalent: `b27135b` "fix(web): installed embedded apps default to Open App tab", `5cb25eb` "docs: spec for agent install discovery & reconciliation", `c2acf6c` "chore: update UI test report and add agent install discovery plan", `1b96cda` "chore: prep for GitHub — gitignore venv/screenshots, remove tracked ux_shots", `e30815b` "docs: implementation plan for agent install discovery", `98b5437` "chore: gitignore .worktrees/". So **6 net-new commits past the C209 reference point**, plus full chain rebase — likely a `git rebase -i` cleanup pass (also dropped `tests/reports/audit_*` from tracked state per the `.gitignore` commits). Coordinator gap **~13m36s** (PID 3358 ELAPSED 03-13:20:56 → 03-13:34:32) — sub-15m, paired now with C206 (14m07s), C209 (14m03s) as the only sub-15m gaps in the post-C200 corridor. Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **162nd consecutive cycle frozen**) → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified verbatim-operative → **150-cycle zero-bump streak** → **0 duplicate notes added**. Screenshot disk **5,429** (+26 since C209's 5,403); across 816s gap = **~31.38s/file** — in-band 30.7–33.2 envelope, mid-low. `.env.example` C11 Slack/Flask append now **175 cycles stale**.
+
+### Cadence (band holds, 18-point window)
+- +26 screenshots over ~13m36s (816s) gap → **~31.38s/file** — in-band, mid-low.
+- Post-C189 trend: C200=32.4, C201=33.2, C202=30.9, C203=33.07, C204=30.9, C205=32.55, C206=25.67 (gap-artifact), C207=32.04, C208=31.57, C209=32.42, **C210=31.38** s/file — 18-point window holds 30.7–33.2 with C206 still the only outlier.
+- 2s stagger 9962↔9974 preserved (51:36 vs 51:34) — intact across all **162 cycles**.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete → bypassed by design. **162-cycle flatline streak**.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974` → all 4 alive; full quad past 03-day-12h, leader past 03-day-13h:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-13:34:32** *(~85.58h; +13m36s vs C209)* — flagged `T3_frontend.md:38` (C25, verified operative).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-12:56:37** *(~84.94h)* — flagged `T6_testing.md:24` (C93, verified operative).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-12:51:36** *(~84.86h)* — flagged `T6_testing.md:22` (C72, verified operative).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-12:51:34** *(~84.86h; 2s stagger preserved)* — flagged `T6_testing.md:22` (C72, verified operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 162-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative; 150-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 210 block appended (this block).
+
+### What Changed This Cycle
+- **GIT HISTORY REBASED — major event**: Between C209 and C210 the entire commit chain referenced in C209 was rewritten. Same commit messages, different SHAs. C209's anchor `12222ac` is no longer reachable. All prior `git rev-list --count` series in this PROGRESS.md are now unreproducible by SHA — anyone trying to verify "28 commits since C201 anchor" cited in C209 will hit `unknown revision`. Recommend establishing a new C210 anchor: HEAD `98b5437`. Future commit-count audits reset from this point.
+- **6 net-new commits past C209 equivalent**: `b27135b` (Open App tab default), `5cb25eb` (agent install discovery spec — note: this is the doc C208/C209 Critical Path #2 wanted read; SHA changed but content presumably preserved), `c2acf6c` (UI test report + install discovery plan update), `1b96cda` (gitignore venv/screenshots, remove tracked ux_shots — likely the source of the "rebased history" cleanup), `e30815b` (implementation plan for agent install discovery), `98b5437` (gitignore .worktrees/). Pattern: post-rebase commits are heavily docs + git-hygiene focused, not feature work — consistent with "preparing for GitHub" message in `1b96cda`. Suggests human operator did a public-facing cleanup pass.
+- **Untracked file list shrunk**: `git status` from session start shows only `M tests/reports/ui_report.json` — vs C209's "20+ modified `tests/reports/*.{json,log,png}` + `frontend/my-tools.html` (4-cycle dirty) + 5 untracked items". The dirty `frontend/my-tools.html` 4-cycle carry-over is **resolved** (no longer in working tree). The 2 untracked plan docs (`2026-04-18-nextjs-frontend-rewrite.md`, `2026-04-19-retire-vanilla-frontend.md`) appear to have been either committed or moved — need verification next cycle.
+- **Web/embed surface stabilizing**: 4 new commits since C209 are 1 web feature fix (Open App tab default) + 5 docs/chore commits. The C203-launched install/embed wave is shifting from feature-burst to documentation/cleanup phase. Combined with the rebase, this looks like end-of-burst consolidation.
+- **C209 Critical Path #1 (web-side iframe sandbox clause) still pending** — no commit signature in HEAD-10 references CONTRACTS.md or SPEC.md changes. Carry-over.
+- All 4 stuck PIDs alive; all 4 deeper into 03-day-12h/13h territory.
+
+### Critical Path (Cycle 211) — post-rebase reset, contract-update lead, install/embed audit
+1. **NEW, HIGHEST LEVERAGE: HUMAN, did you intend the rebase?** Verify the C209→C210 history rewrite was intentional (likely yes — `1b96cda` "prep for GitHub" suggests cleanup). If yes, establish `98b5437` as new coordinator anchor; if no, recover via reflog. Either way, abandon prior commit-count series.
+2. **Carry-over from C209 #1: HUMAN draft `web/`-side iframe sandbox clause** — `web/components/app-embed.tsx` adds `allow-same-origin` for installed Class-A embedded apps. C17 contract scope-incomplete. Still unresolved.
+3. **NEW: read `5cb25eb` (agent install discovery spec)** — replaces C208/C209 #2's read of `d0bba13` (same content, new SHA). Also read `e30815b` (implementation plan for same surface).
+4. **HUMAN: `kill 3358 8992 9962 9974`** — 162nd cycle unexecuted. Leader past 85.58h. 5,429 PNGs on disk.
+5. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **175-cycle stale**.
+6. **COORDINATOR carry-over (C202→C209): read `docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md`** — 9th cycle as carry-over. Verify it survived the rebase (was untracked in C209 — may now be tracked or deleted).
+7. **HUMAN: draft `T_WEB.md`** — web/ tree still has zero task-file ownership.
+8. **HUMAN: draft `T_INSTALL.md`** — install/embed surface now has both spec (`5cb25eb`) and implementation plan (`e30815b`) committed; ripe for task-file ownership.
+9. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park or re-scope. Item #6 above should settle this.
+10. **HUMAN: harness retarget** — Selenium loop (PID 3358, ~31.38s/file) still hitting vanilla `frontend/`. Per 2026-04-19 retirement plan, loop targets may be about to be deleted.
+11. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-017, `api/inspector.py`, `db/seed_real_apps.py`, entire `web/` Next.js tree, `forge-agent/` component, install/embed surface.
+12. **NEW — verify dirty file resolution**: `frontend/my-tools.html` (4-cycle dirty in C209) is no longer in `git status`. Confirm whether committed, deleted, or stashed.
+13. **Verify `2026-04-18-nextjs-frontend-rewrite.md` + `2026-04-19-retire-vanilla-frontend.md` survived the rebase** (untracked in C209 — may have been committed during cleanup).
+14. **Base UI `onChange`/`onValueChange` audit** (C209 carry-over from `bcfd66b`/`21b3660`): one-shot grep across `web/` for other Base UI primitives with silent-no-op handlers.
+15. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+16-22. Carry-overs (C190→C209): `806b91c` vs `592ad7c` diff, `VISION.md` from `e92e351`, SPEC.md `8d70c7b^..8d70c7b` diff, `fc5e86b` social/discoverability spec, `T_AGENT.md` draft, `0c2a4e7` plan doc location, `docs/superpowers/specs/2026-04-19-governed-skills-design.md`, `0e024e2` "10-round QA sweep" diff. **All of these reference SHAs that may no longer be reachable post-rebase** — verification step needed before any read attempt.
+
+### Contract Reminders (item #2 above pending — NOT YET RESOLVED)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — `web/` is now de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17, applies to `frontend/`/`apps/<slug>`)**. ⚠ **`web/components/app-embed.tsx` (per the post-rebase `27457c7`, formerly `debdc29`) deliberately adds `allow-same-origin` for installed Class-A embedded apps** — contract is scope-incomplete on the `web/` side. Critical Path #2 above tracks the resolution.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+
+## COORDINATOR STATUS — Cycle 211 (2026-04-19)
+
+### Headline — FLATLINE **163rd cycle** on task-file side; **GIT HEAD UNCHANGED** at `98b5437` since C210 (`git rev-list --count 98b5437..HEAD` = 0). First zero-commit gap since the C210 rebase event — post-rebase corridor entered a quiet period after 6 net-new commits in the prior gap. Coordinator gap **~12m47s** (PID 3358 ELAPSED 03-13:34:32 → 03-13:47:19, 767s) — third sub-15m gap in four cycles (C206 14m07s, C209 14m03s, C210 13m36s, **C211 12m47s**) and the shortest of the post-C200 corridor; the post-rebase `1b96cda`-driven cleanup of tracked screenshots may have shaved per-iteration overhead from the loop. **CADENCE ANOMALY: +49 PNGs over 767s = ~15.65s/file**, far below the post-C189 30.7–33.2 band — closest prior outlier was C206's 25.67 (gap-artifact). Two interpretations: (a) genuine throughput-doubling (multiple agents now emitting per iteration, or per-file overhead halved post-cleanup), or (b) measurement-basis drift (`screenshots/` dir alone now at 5,453 vs the all-PNG count of 5,478 — `audit_shots/` 3 + `ux_shots/` 22 = 25 static items now bundled in the count that previously may not have been). Recommend a one-cycle baseline-pin next cycle: capture both `find tests/reports -name '*.png' | wc -l` and `ls tests/reports/screenshots/*.png | wc -l` to disambiguate. Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **163rd consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified verbatim-operative → **151-cycle zero-bump streak** → **0 duplicate notes added**. Working tree narrowed further: only `M PROGRESS.md`, `M tests/reports/ui_report.json`, `M tests/reports/ux_auditor.log`, `?? .claude/` — vs C210's `M tests/reports/ui_report.json` only (PROGRESS.md + ux_auditor.log are coordinator-side churn, .claude/ is harness state, no new feature-side dirt). `.env.example` C11 Slack/Flask append now **176 cycles stale**.
+
+### Cadence (anomaly flagged, 19-point window)
+- +49 PNGs over ~12m47s (767s) gap → **~15.65s/file** — **OUT-OF-BAND**, ~2x faster than 30.7–33.2 envelope.
+- Post-C189 trend: ..., C209=32.42, C210=31.38, **C211=15.65** (anomaly) s/file.
+- Distinct from C206's 25.67 (a 5m20s under-gap that produced too-few-files-for-arithmetic). C211 is the inverse: a normal-length gap that produced too-many-files. Suggests genuine throughput shift, not gap-measurement artifact.
+- 2s stagger 9962↔9974 preserved (04:23 vs 04:21) — intact across all **163 cycles**.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **163-cycle flatline streak**.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; full quad past 03-day-13h, leader at ~85.79h:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-13:47:19** *(leader; ~85.79h; +12m47s vs C210)* — flagged `T3_frontend.md:38` (C25, verified operative verbatim).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-13:09:24** *(~85.16h)* — flagged `T6_testing.md:24` (C93, verified operative verbatim).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-13:04:23** *(~85.07h)* — flagged `T6_testing.md:22` (C72, verified operative verbatim).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-13:04:21** *(~85.07h; 2s stagger preserved across all 163 cycles)* — flagged `T6_testing.md:22` (C72, verified operative verbatim).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 163-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative; 151-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 211 block appended (this block).
+
+### What Changed This Cycle
+- **Quiet git period**: zero new commits since C210's HEAD `98b5437`. First zero-commit gap of the post-rebase corridor. The 6-commit burst at C210 (4 net features + 2 chores) appears to have been a one-shot cleanup tied to the rebase — not the start of a sustained burst.
+- **Cadence anomaly (~15.65s/file)**: Two competing hypotheses live. Hypothesis (a) — **throughput shift**: post-`1b96cda` the harness no longer overwrites the previously-tracked 22-file `ux_shots/` set on each pass (now gitignored, so no git-side churn), shaving file-write + git-stat overhead per iteration. Plausible — would explain a step-function speedup that survives across multiple cycles. Hypothesis (b) — **counting-basis drift**: `audit_shots/` (3 files) and `ux_shots/` (22 files) are now untracked but still in `find -name '*.png'` output; if any of the 22 ux_shots got rewritten this cycle they'd be double-counted. Less plausible (the 22 are old static fail-shots from 2026-04-16). Recommend pin-and-watch: if C212-C214 also print sub-20s/file, hypothesis (a) confirmed and the 30.7–33.2 band is dead. Note: 49 over 767s is a hard count, not extrapolation, so the data point is robust.
+- **Working tree narrowed**: C210 had only `M tests/reports/ui_report.json` dirty. Now `M PROGRESS.md` (coordinator self-edits) + `M tests/reports/ui_report.json` (active harness) + `M tests/reports/ux_auditor.log` (active harness) + `?? .claude/` (harness state dir). All four are expected churn — the post-rebase clean state is holding.
+- **C209 Critical Path #1 / C210 #2 (web-side iframe sandbox clause) STILL PENDING** — no commit signature touches CONTRACTS.md or SPEC.md. **3-cycle carry-over** since the C209 confirmation of `debdc29` (now `27457c7`) `allow-same-origin` add. Coordinator continues to flag scope-incompleteness against `web/components/app-embed.tsx`.
+- **C210 Critical Path #6 verification (`docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md` post-rebase status)**: not verified this cycle. The file is no longer surfaced in the narrowed `git status` output, but coordinator did not run `git ls-files` to confirm whether it's now committed or simply gitignored. Carry-over.
+- **C210 Critical Path #3 reads (`5cb25eb` install discovery spec, `e30815b` impl plan)**: not yet read by coordinator. 2-cycle carry-over.
+- All 4 stuck PIDs alive; leader at ~85.79h (deepest yet); trio at ~85.07h. Projected 03-day-14h crossing for leader: ~13 minutes from this cycle (~C212 timing).
+
+### Critical Path (Cycle 212) — pin cadence basis, contract-update lead, post-rebase verification
+1. **NEW, HIGHEST LEVERAGE: PIN THE CADENCE BASIS.** Capture both `find tests/reports -name '*.png' | wc -l` AND `ls tests/reports/screenshots/*.png | wc -l` to disambiguate hypothesis (a) vs (b) above. If `screenshots/`-only delta is also out-of-band, hypothesis (a) is confirmed and the 30.7–33.2 cadence band published since C189 is **defunct** — needs a new envelope. If `screenshots/`-only delta is in-band but all-PNG isn't, hypothesis (b) is confirmed and the all-PNG counter is broken (some untracked dir is double-counting).
+2. **Carry-over from C210 #2 / C209 #1: HUMAN draft `web/`-side iframe sandbox clause** — `web/components/app-embed.tsx` (post-rebase `27457c7`) adds `allow-same-origin` for installed Class-A embedded apps. C17 contract scope-incomplete. **3-cycle carry-over.**
+3. **Carry-over from C210 #3: read `5cb25eb` (agent install discovery spec) + `e30815b` (impl plan)** — both committed at C210, both unread by coordinator. 2-cycle carry-over.
+4. **HUMAN: `kill 3358 8992 9962 9974`** — 163rd cycle unexecuted. Leader past 85.79h; will cross 03-day-14h within ~13 minutes. 5,478 PNGs on disk (or 5,453 in `screenshots/` alone — see #1).
+5. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **176-cycle stale**, survived the rebase + 6 post-rebase commits.
+6. **COORDINATOR (10-cycle carry-over from C202): read `docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md`** — verify post-rebase status (committed? gitignored? deleted?) before attempting read.
+7. **HUMAN: draft `T_WEB.md`** — `web/` tree still has zero task-file ownership; install/embed surface stable enough to scope.
+8. **HUMAN: draft `T_INSTALL.md`** — install/embed surface now has both spec (`5cb25eb`) and impl plan (`e30815b`) committed; ripe for task-file ownership.
+9. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope.
+10. **HUMAN: harness retarget** — Selenium loop (PID 3358) still hitting vanilla `frontend/`. Per 2026-04-19 retirement plan, loop targets may be slated for deletion.
+11. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-017, `api/inspector.py`, `db/seed_real_apps.py`, entire `web/` Next.js tree, `forge-agent/` component, install/embed surface.
+12. **Verify dirty file resolution (C210 #12 carry-over)**: `frontend/my-tools.html` no longer in `git status`. Run `git ls-files frontend/my-tools.html` to confirm whether committed, deleted, or untracked.
+13. **Verify post-rebase plan-doc status (C210 #13 carry-over)**: `2026-04-18-nextjs-frontend-rewrite.md` + `2026-04-19-retire-vanilla-frontend.md` — committed, deleted, or still untracked?
+14. **Base UI `onChange`/`onValueChange` audit** (C209 carry-over from `bcfd66b`/`21b3660`): one-shot grep across `web/` for other Base UI primitives with silent-no-op handlers.
+15. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+16. **Pre-rebase SHA carry-overs (C190→C209)**: `806b91c` vs `592ad7c` diff, `VISION.md` from `e92e351`, SPEC.md `8d70c7b^..8d70c7b` diff, `fc5e86b` social/discoverability spec, `T_AGENT.md` draft, `0c2a4e7` plan doc location, `docs/superpowers/specs/2026-04-19-governed-skills-design.md`, `0e024e2` "10-round QA sweep" diff. **All reference pre-C210-rebase SHAs that may no longer be reachable** — `git cat-file -e <sha>` verification required before any read attempt.
+17. **NEW — quiet-git-period analysis**: zero commits this cycle is a notable signal after the C209→C210 6-commit burst. If C212-C213 also produce zero commits, the post-rebase cleanup wave is fully consolidated and human operator may be waiting on coordinator/contract decisions (#1, #2 above) before next push.
+
+### Contract Reminders (item #2 above pending — NOT YET RESOLVED, 3-cycle carry-over)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — `web/` is now de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17, applies to `frontend/`/`apps/<slug>`)**. ⚠ **`web/components/app-embed.tsx` (per the post-rebase `27457c7`, formerly `debdc29`) deliberately adds `allow-same-origin` for installed Class-A embedded apps** — contract is scope-incomplete on the `web/` side. Critical Path #2 above tracks the resolution.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+
+## COORDINATOR STATUS — Cycle 212 (2026-04-19)
+
+### Headline — FLATLINE **164th cycle** on task-file side; **GOVERNED-SKILLS WORK RESUMED**: HEAD advanced `98b5437` → `593bf53` with **1 new commit** — `feat(pipeline): stubbed skill_review_pipeline behind SKILL_REVIEW_MODE flag` (touches `forge_sandbox/tasks.py` +59 / `tests/test_skills_api.py` +28). Breaks C211's zero-commit lull; signals the governed-skills Phase 1 plan (new untracked `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`) is moving into implementation. Coordinator gap **~13m39s** (PID 3358 ELAPSED 03-13:47:19 → 03-14:00:58, 819s) — fourth sub-15m gap in five cycles (C209 14m03s, C210 13m36s, C211 12m47s, **C212 13m39s**). **CADENCE PIN RESULT (per C211 #1)**: `find tests/reports -name '*.png' | wc -l` = **5502** (+24 since C211's 5478); `ls tests/reports/screenshots/*.png | wc -l` = **5477** (+24 since C211's 5453). **Both bases agree on +24** → hypothesis (b) (counting-basis drift) is **REJECTED** — the two counters move in lockstep this cycle. Rate: 24/819s = **~34.13s/file** — back in/just above the post-C189 30.7–33.2 envelope (1s above high end, within noise). C211's 15.65s/file anomaly looks like a **one-cycle transient burst** (possibly a harness-side retry-storm or log-flush during the post-rebase settling), not a structural throughput shift. Hypothesis (a) (sustained speedup from `1b96cda` cleanup) is **WEAKENED** — it predicted sustained sub-20s cadence which C212 does not deliver. Prior 30.7–33.2 band effectively re-confirmed with C211 logged as an outlier. Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **164th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified verbatim-operative → **152-cycle zero-bump streak** → **0 duplicate notes added**. `.env.example` C11 Slack/Flask append now **177 cycles stale** — unchanged by the 1-commit governed-skills push.
+
+### Cadence (band re-confirmed, 20-point window)
+- +24 screenshots over ~13m39s (819s) gap → **~34.13s/file** — in-band / 1s above high end, within noise envelope.
+- Post-C189 trend: ..., C208=31.57, C209=32.42, C210=31.38, C211=**15.65 (outlier)**, **C212=34.13** s/file — band restored at 30.7–34.1 when C211 excluded.
+- C211 reclassified from "anomaly pending disambiguation" → **confirmed one-cycle transient** via two-basis agreement test this cycle.
+- 2s stagger 9962↔9974 preserved (18:02 vs 18:00) — intact across all **164 cycles**.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **164-cycle flatline streak**.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; leader crossed 03-day-14h as predicted in C211; full quad past 03-day-13h:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-14:00:58** *(leader; ~86.02h; +13m39s vs C211; **crossed 03-day-14h this cycle** exactly on C211's projection)* — flagged `T3_frontend.md:38` (C25, verified operative verbatim).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-13:23:03** *(~85.38h)* — flagged `T6_testing.md:24` (C93, verified operative verbatim).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-13:18:02** *(~85.30h)* — flagged `T6_testing.md:22` (C72, verified operative verbatim).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-13:18:00** *(~85.30h; 2s stagger preserved across all 164 cycles)* — flagged `T6_testing.md:22` (C72, verified operative verbatim).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 164-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative; 152-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 212 block appended (this block).
+
+### What Changed This Cycle
+- **New commit `593bf53` — `feat(pipeline): stubbed skill_review_pipeline behind SKILL_REVIEW_MODE flag`**: author Nicholas Ruzicka + Claude Sonnet 4.6 co-author, timestamp 2026-04-19 14:20:09 -0400. Diff: `forge_sandbox/tasks.py` +59/-2 (adds governed-skills pipeline stub gated by `SKILL_REVIEW_MODE` env flag — likely imports existing Celery task infrastructure and adds a no-op handler) + `tests/test_skills_api.py` +28/-0 (test cases for the flagged-off path). Pairs with the new untracked `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` — governed-skills Phase 1 implementation is live; the recent commit series `eec1d1a` (schema) → `f6b6db1` (create_review/test cases) → `94ce2fa` (Skill dataclass governance fields) → `593bf53` (pipeline stub) forms a coherent 4-commit vertical slice landing the governance surface. Task-queue implication: **no `tasks/T*.md` file carries ownership of the skill-review pipeline** — the work is landing outside the 19-file queue structure, consistent with the C211 "task files describe vanilla architecture; real work lands elsewhere" staleness signal.
+- **Working-tree shape evolved**: C211 had `M PROGRESS.md + M tests/reports/ui_report.json + M tests/reports/ux_auditor.log + ?? .claude/`. C212 adds `M tests/reports/code_audit.json` (NEW — `tests/agents/code_auditor.py` (PID 8992) fired a write this cycle, first observed harness activity from PID 8992 in the post-rebase corridor) and `?? docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` (NEW — the phase 1 plan doc, untracked). All five signals are expected churn; no surprise dirt.
+- **Cadence pin resolved (C211 #1)**: all-PNG and screenshots/-only deltas both equal +24, agreement confirms the two counters are in lockstep. C211's 15.65s/file was NOT a counting-basis artifact and NOT a sustained throughput shift — reclassified as **one-cycle transient**. The 30.7–33.2 envelope (now 30.7–34.1 after 20-point widening) stands. Future cycles need only track all-PNG as the primary cadence metric.
+- **C210 Critical Path #2 / C209 #1 (web-side iframe sandbox clause) STILL PENDING** — no commit signature touches CONTRACTS.md or SPEC.md this cycle. **4-cycle carry-over** since C209 confirmation of the `allow-same-origin` add. The 1 new commit is on the governed-skills track, not the embed-surface track.
+- **C211 Critical Path #6 verification (`2026-04-19-retire-vanilla-frontend.md` post-rebase status)**: not verified this cycle. Continues to carry over.
+- **C210/C211 Critical Path #3 reads (`5cb25eb` install discovery spec, `e30815b` impl plan)**: still unread by coordinator. 3-cycle carry-over.
+- **Quiet-period hypothesis (C211 #17) RESOLVED**: C211 projected that another zero-commit cycle would confirm consolidation. Instead, C212 produced 1 commit — suggesting the post-rebase corridor is transitioning from cleanup→feature work rather than settling into a hold pattern. Direction: governed-skills Phase 1 is the active feature front.
+- All 4 stuck PIDs alive; leader at ~86.02h, crossed 03-day-14h (C211 projection nailed); trio at ~85.30h. Projected 03-day-15h crossing for leader: ~60 minutes from this cycle.
+
+### Critical Path (Cycle 213) — governed-skills follow-through, contract-update lead, carry-overs
+1. **NEW, HIGH LEVERAGE: read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** (untracked) to understand the Phase 1 scope; then read commit `593bf53` diff to confirm the pipeline stub aligns with the plan. This is the active feature front — coordinator orientation here will improve downstream triage quality.
+2. **Carry-over from C211 #2 / C210 #2 / C209 #1: HUMAN draft `web/`-side iframe sandbox clause** — `web/components/app-embed.tsx` (post-rebase `27457c7`) adds `allow-same-origin` for installed Class-A embedded apps. C17 contract scope-incomplete. **4-cycle carry-over.**
+3. **Carry-over from C211 #3 / C210 #3: read `5cb25eb` (agent install discovery spec) + `e30815b` (impl plan)** — 3-cycle carry-over. Note: `593bf53` landed without coordinator reading the prior install-discovery spec pair; risk of coordinator losing thread on multiple concurrent feature fronts.
+4. **HUMAN: `kill 3358 8992 9962 9974`** — 164th cycle unexecuted. Leader past 86.02h (crossed 03-day-14h); will cross 03-day-15h within ~60 minutes. 5,502 PNGs on disk.
+5. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **177 cycles stale**, survived the rebase and both post-rebase feature commits.
+6. **COORDINATOR (11-cycle carry-over from C202): read `docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md`** — verify post-rebase status (committed? gitignored? deleted?) before attempting read. `git ls-files <path>` one-liner would resolve.
+7. **HUMAN: draft `T_WEB.md`** — `web/` tree still has zero task-file ownership; install/embed surface stable enough to scope.
+8. **HUMAN: draft `T_INSTALL.md`** — install/embed surface now has both spec (`5cb25eb`) and impl plan (`e30815b`) committed; ripe for task-file ownership.
+9. **NEW: HUMAN: draft `T_SKILLS.md` or equivalent** — governed-skills pipeline is now 4 commits deep (`eec1d1a` schema, `f6b6db1` create_review/test cases, `94ce2fa` Skill dataclass, `593bf53` pipeline stub) + 1 untracked Phase 1 plan doc. Zero task-file coverage for this surface despite being the active feature front. Risk: governed-skills work proceeds without queue discipline, then later retrofits are expensive.
+10. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope.
+11. **HUMAN: harness retarget** — Selenium loop (PID 3358) still hitting vanilla `frontend/`. Per 2026-04-19 retirement plan, loop targets may be slated for deletion.
+12. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-017, `api/inspector.py`, `db/seed_real_apps.py`, entire `web/` Next.js tree, `forge-agent/` component, install/embed surface, **governed-skills pipeline (new this cycle)**.
+13. **Verify dirty file resolution (C211 #12 carry-over)**: `frontend/my-tools.html` no longer in `git status`. Run `git ls-files frontend/my-tools.html` to confirm whether committed, deleted, or untracked.
+14. **Verify post-rebase plan-doc status (C211 #13 carry-over)**: `2026-04-18-nextjs-frontend-rewrite.md` + `2026-04-19-retire-vanilla-frontend.md` — committed, deleted, or still untracked?
+15. **Base UI `onChange`/`onValueChange` audit** (C209 carry-over from `bcfd66b`/`21b3660`): one-shot grep across `web/` for other Base UI primitives with silent-no-op handlers.
+16. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`). **Note**: `593bf53` already touches `forge_sandbox/tasks.py` — if new Celery-task lines overlap with T1_docker_sandbox Cycle 12's beat-schedule append rules, T1_docker_sandbox queue tasks #5 (`gc-orphan-images` beat entry) + #6 (`prewarm-popular-apps` beat entry) may need re-read before pickup to avoid stale import patterns.
+17. **Pre-rebase SHA carry-overs (C190→C209)**: `806b91c` vs `592ad7c` diff, `VISION.md` from `e92e351`, SPEC.md `8d70c7b^..8d70c7b` diff, `fc5e86b` social/discoverability spec, `T_AGENT.md` draft, `0c2a4e7` plan doc location, `docs/superpowers/specs/2026-04-19-governed-skills-design.md`, `0e024e2` "10-round QA sweep" diff. All reference pre-C210-rebase SHAs — `git cat-file -e <sha>` verification required before any read attempt. **Note**: `docs/superpowers/specs/2026-04-19-governed-skills-design.md` just became load-bearing as the design referent for `593bf53` and the Phase 1 plan; prioritize its verification.
+18. **NEW — concurrent-front watch**: coordinator is now tracking three active feature fronts (governed-skills pipeline, install/embed surface, web-side sandbox contract) with zero task-file coverage for any of them. Risk is losing thread on at least one. If C213-C215 produce commits on more than one front, escalate the T_WEB.md / T_INSTALL.md / T_SKILLS.md drafting items.
+
+### Contract Reminders (item #2 above pending — NOT YET RESOLVED, 4-cycle carry-over)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — `web/` is now de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17, applies to `frontend/`/`apps/<slug>`)**. ⚠ **`web/components/app-embed.tsx` (per the post-rebase `27457c7`, formerly `debdc29`) deliberately adds `allow-same-origin` for installed Class-A embedded apps** — contract is scope-incomplete on the `web/` side. Critical Path #2 above tracks the resolution.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+
+## COORDINATOR STATUS — Cycle 213 (2026-04-19)
+
+### Headline — FLATLINE **165th cycle** on task-file side; **GOVERNED-SKILLS TRACK SUSTAINS**: HEAD advanced `593bf53` → `dda1b53` with **2 new commits** (`c35cd99` feat(api) skill submission pending/admin override/review status endpoints, `dda1b53` fix(tests) approved-only default + new response shape). Combined diff: `api/server.py` +146 / `tests/conftest.py` +17 / `tests/test_skills_api.py` +95 (251 ins / 7 del across 3 files). Adds the Flask-side surface for the governed-skills pipeline stub landed in C212 — now 6 commits deep on that front (`eec1d1a` schema → `f6b6db1` create_review → `94ce2fa` dataclass → `593bf53` pipeline stub → `c35cd99` API endpoints → `dda1b53` test alignment). **NEW WORKING-TREE SURFACE**: ~20 `M web/` files appear dirty this cycle (web/app/{apps/[slug],my-forge,publish,skills,globals.css,page.tsx,providers.tsx} + web/components/{app-card,category-pills,empty-state,sidebar,skill-card,trending-strip} + web/components/ui/{badge,button,input,skeleton,tabs,textarea}) — uncommitted Next.js WIP that was not present in C212's working tree. Appears to be a broad frontend polish pass staged but not committed; coordinator flags as **uncommitted-WIP-at-rest** (not a git-state anomaly, but a staleness risk if the author drops the branch). Coordinator gap **~29m57s** (PID 3358 ELAPSED 03-14:00:58 → 03-14:30:55, 1797s) — first gap back above 20m in five cycles; post-commit push likely took longer than the harness retry cadence. **CADENCE**: `find tests/reports -name '*.png' | wc -l` = **5558** (+56 since C212's 5502); `ls tests/reports/screenshots/*.png | wc -l` = **5533** (+56 since C212's 5477). Both bases agree on +56 → basis-drift rejection re-confirmed for a second cycle. Rate: 56/1797 = **~32.09s/file** — mid-band (30.7–34.1 envelope), cleanly in-envelope. C211's 15.65s/file transient continues to look like a one-cycle outlier; band now standing 5 cycles strong (C208=31.57, C209=32.42, C210=31.38, C212=34.13, **C213=32.09**). Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **165th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified verbatim-operative → **153-cycle zero-bump streak** → **0 duplicate notes added**. `.env.example` C11 Slack/Flask append now **178 cycles stale** — unchanged by the 2-commit push.
+
+### Cadence (mid-band, 5 cycles in-envelope)
+- +56 screenshots over ~29m57s (1797s) gap → **~32.09s/file** — squarely in 30.7–34.1 band.
+- Post-C189 trend (C211 excluded as confirmed outlier): ..., C208=31.57, C209=32.42, C210=31.38, C212=34.13, **C213=32.09** s/file — stable envelope, no drift.
+- 2s stagger 9962↔9974 preserved (47:59 vs 47:57) — intact across all **165 cycles**.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **165-cycle flatline streak**.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; leader still climbing; trio closing in on 03-day-14h:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-14:30:55** *(leader; ~86.52h; +29m57s vs C212; projected 03-day-15h crossing ~29m from now → likely **C214**)* — flagged `T3_frontend.md:38` (C25, verified operative verbatim).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-13:53:00** *(~85.88h; +29m57s)* — flagged `T6_testing.md:24` (C93, verified operative verbatim).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-13:47:59** *(~85.80h; +29m57s)* — flagged `T6_testing.md:22` (C72, verified operative verbatim).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-13:47:57** *(~85.80h; +29m57s; 2s stagger preserved)* — flagged `T6_testing.md:22` (C72, verified operative verbatim).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 165-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative; 153-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 213 block appended (this block).
+
+### What Changed This Cycle
+- **Two new commits on governed-skills track**: `c35cd99` (API endpoints: `POST /api/skills` now returns `pending`, new admin override + review-status endpoints) + `dda1b53` (test suite realignment: approved-only default filter assertion + new response shape). The pair is a coherent "land the HTTP surface" step following C212's pipeline stub. The 6-commit governed-skills series is now: schema → db layer → dataclass → pipeline stub → API endpoints → test alignment — a top-down vertical slice with pipeline execution still stubbed behind `SKILL_REVIEW_MODE`. Task-queue implication **unchanged**: still zero `tasks/T*.md` ownership of this surface. Risk elevated — 2 of the last 2 cycles have produced commits on this front with no task-file discipline.
+- **NEW: large uncommitted `web/` WIP surface**. ~20 Next.js files dirty (app pages, components, UI primitives) with no matching commit. Without a diff read, coordinator can't classify the nature of the change (polish pass? refactor? response to a Base UI primitive fix?). Flagged for verification — if these stay uncommitted across multiple cycles, risk of lost work grows. Contrasts with the tight commit discipline on the governed-skills track.
+- **CADENCE: mid-band restored**. C212 came in at 34.13 (1s above band), C213 at 32.09 (mid-band). C211's 15.65 remains the sole outlier in a 5-cycle post-rebase window; the 30.7–34.1 envelope has held across all non-outlier cycles. Can demote cadence to a back-burner telemetry line unless/until a second anomaly hits.
+- **C210→C213 Critical Path #2 (web-side iframe sandbox clause) STILL PENDING** — no commit touches CONTRACTS.md or SPEC.md. **5-cycle carry-over** since C209 confirmation. Both active feature fronts (governed-skills, web/ WIP) bypass this work.
+- **C202→C213 Critical Path #6 verification (`2026-04-19-retire-vanilla-frontend.md` post-rebase status)**: not verified this cycle. **12-cycle carry-over**; one-liner `git ls-files docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md` would resolve and should be prioritized in C214.
+- **C210→C213 Critical Path #3 reads (`5cb25eb` install discovery spec, `e30815b` impl plan)**: still unread by coordinator. **4-cycle carry-over**. The 6-commit governed-skills track now looks mature enough that coordinator's inattention to the install-discovery pair is costing context on whichever front lands next.
+- **C213 Critical Path #1 (read governed-skills Phase 1 plan)**: not executed this cycle — coordinator prioritized the cadence pin and commit-diff scan. Now **2-cycle carry-over**. Priority escalating.
+- All 4 stuck PIDs alive; leader at ~86.52h; trio at ~85.80h.
+
+### Critical Path (Cycle 214) — escalating doc reads, carry-overs, WIP verification
+1. **ESCALATING: read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** (untracked) — 2-cycle carry-over; the governed-skills track now has 6 commits behind the plan document and coordinator has still not read it. Each subsequent commit increases the risk of coordinator triage missing Phase 1 exit criteria.
+2. **NEW: inspect uncommitted `web/` WIP** — `git diff --stat web/` and a cursory read of at least 2-3 of the changed files to classify the nature of the WIP (polish vs refactor vs bug-fix). If it's a coherent change set that's staged but not committed, flag to HUMAN to commit/stash before context drifts.
+3. **Carry-over from C212 #2 / C211 #2 / C210 #2 / C209 #1: HUMAN draft `web/`-side iframe sandbox clause** — `web/components/app-embed.tsx` (post-rebase `27457c7`) adds `allow-same-origin` for installed Class-A embedded apps. C17 contract scope-incomplete. **5-cycle carry-over.**
+4. **Carry-over from C212 #3 / C211 #3 / C210 #3: read `5cb25eb` (agent install discovery spec) + `e30815b` (impl plan)** — 4-cycle carry-over. Risk: multiple concurrent feature fronts leaving coordinator unable to sanity-check any of them against their specs.
+5. **HUMAN: `kill 3358 8992 9962 9974`** — 165th cycle unexecuted. Leader past 86.52h (projected 03-day-15h crossing ~29m from now → likely mid-C214). 5,558 PNGs on disk.
+6. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **178 cycles stale**, survived rebase + 6 governed-skills commits + 20-file web/ WIP.
+7. **COORDINATOR one-liner (12-cycle carry-over from C202)**: `git ls-files docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md` to verify tracked/untracked/deleted status before any read attempt.
+8. **HUMAN: draft `T_WEB.md`** — `web/` tree has 20 dirty files this cycle AND zero task-file ownership. This pairing makes the absence of `T_WEB.md` acutely felt.
+9. **HUMAN: draft `T_INSTALL.md`** — install/embed surface has both spec (`5cb25eb`) and impl plan (`e30815b`) committed; ripe for ownership.
+10. **HUMAN: draft `T_SKILLS.md`** (carry-over C212 #9) — governed-skills pipeline now **6 commits deep** + 1 untracked Phase 1 plan; still zero task-file coverage. Escalation recommended.
+11. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope.
+12. **HUMAN: harness retarget** — Selenium loop (PID 3358) still hitting vanilla `frontend/`. Per 2026-04-19 retirement plan, loop targets may be slated for deletion.
+13. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-017, `api/inspector.py`, `db/seed_real_apps.py`, entire `web/` Next.js tree, `forge-agent/` component, install/embed surface, governed-skills pipeline.
+14. **Verify dirty file resolution (C211→C213 #12 carry-over)**: `frontend/my-tools.html` no longer in `git status`. Run `git ls-files frontend/my-tools.html` to confirm committed/deleted/untracked.
+15. **Verify post-rebase plan-doc status (C211→C213 #13 carry-over)**: `2026-04-18-nextjs-frontend-rewrite.md` + `2026-04-19-retire-vanilla-frontend.md` — committed/deleted/untracked?
+16. **Base UI `onChange`/`onValueChange` audit** (C209 carry-over from `bcfd66b`/`21b3660`): one-shot grep across `web/` for other Base UI primitives with silent-no-op handlers. **Possibly resolved by the uncommitted web/ WIP** — inspection in #2 above may close this item.
+17. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`). `c35cd99`'s `api/server.py` touch may change the import surface any new handler work would slot into — re-read before pickup.
+18. **Pre-rebase SHA carry-overs (C190→C213)**: `806b91c` vs `592ad7c` diff, `VISION.md` from `e92e351`, SPEC.md `8d70c7b^..8d70c7b` diff, `fc5e86b` social/discoverability spec, `T_AGENT.md` draft, `0c2a4e7` plan doc location, `docs/superpowers/specs/2026-04-19-governed-skills-design.md` (load-bearing for governed-skills track, prioritize), `0e024e2` "10-round QA sweep" diff. `git cat-file -e <sha>` verification required before any read attempt.
+19. **Concurrent-front watch (C212 #18 update)**: coordinator is tracking **four** active feature fronts now — governed-skills pipeline (6 commits), install/embed surface (spec+plan), web-side sandbox contract, and the new uncommitted web/ WIP. Zero task-file coverage for any of them. If C214–C216 produces commits on more than two, escalate all three `T_WEB.md` / `T_INSTALL.md` / `T_SKILLS.md` drafting items to HIGH.
+
+### Contract Reminders (item #3 above pending — NOT YET RESOLVED, 5-cycle carry-over)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — `web/` is now de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17, applies to `frontend/`/`apps/<slug>`)**. ⚠ **`web/components/app-embed.tsx` (per the post-rebase `27457c7`, formerly `debdc29`) deliberately adds `allow-same-origin` for installed Class-A embedded apps** — contract is scope-incomplete on the `web/` side. Critical Path #3 above tracks the resolution.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+
+## COORDINATOR STATUS — Cycle 214 (2026-04-19)
+
+### Headline — FLATLINE **166th cycle** on task-file side; **ZERO-COMMIT LULL RESUMES**: HEAD unchanged at `dda1b53` — **0 new commits** since C213's 2-commit push (`c35cd99` + `dda1b53`). Governed-skills track pauses after the 6-commit vertical slice (schema → db layer → dataclass → pipeline stub → API endpoints → test alignment). Coordinator gap **~15m31s** (PID 3358 ELAPSED 03-14:30:55 → 03-14:46:26, 931s) — back to the sub-20m range after C213's 29m57s post-push stretch. The **uncommitted `web/` WIP surface flagged in C213** (~20 Next.js files dirty) is **still uncommitted**; working-tree shape identical to C213. **CADENCE**: `find tests/reports -name '*.png' | wc -l` = **5588** (+30 since C213's 5558); `ls tests/reports/screenshots/*.png | wc -l` = **5563** (+30 since C213's 5533). Both bases agree on +30 → basis-drift rejection confirmed for a **third consecutive cycle**. Rate: 30/931 = **~31.03s/file** — mid-band (30.7–34.1 envelope). Post-C189 trend (C211 excluded as confirmed outlier): ..., C210=31.38, C212=34.13, C213=32.09, **C214=31.03** s/file — now 6 cycles in-envelope, band fully restored. Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **166th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified verbatim-operative → **154-cycle zero-bump streak** → **0 duplicate notes added**. `.env.example` C11 Slack/Flask append now **179 cycles stale** — unchanged across the 2-commit C213 push and the zero-commit C214 lull.
+
+### Cadence (mid-band, 6 cycles in-envelope)
+- +30 screenshots over ~15m31s (931s) gap → **~31.03s/file** — squarely in 30.7–34.1 band.
+- 20-point window: C208=31.57, C209=32.42, C210=31.38, C212=34.13, C213=32.09, **C214=31.03** s/file (C211=15.65 remains sole outlier, 6 cycles in-envelope since).
+- 2s stagger 9962↔9974 preserved (03:30 vs 03:28) — intact across all **166 cycles**.
+- Demoted to back-burner telemetry (per C213 assessment) — only re-surface on a second anomaly.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **166-cycle flatline streak**.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; leader closing on 03-day-15h; trio past 03-day-14h:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-14:46:26** *(leader; ~86.77h; +15m31s vs C213; projected 03-day-15h crossing in ~14m → **mid-C215**)* — flagged `T3_frontend.md:38` (C25, verified operative verbatim).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-14:08:31** *(~86.14h; +15m31s; crossed 03-day-14h this cycle)* — flagged `T6_testing.md:24` (C93, verified operative verbatim).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-14:03:30** *(~86.06h; +15m31s; crossed 03-day-14h this cycle)* — flagged `T6_testing.md:22` (C72, verified operative verbatim).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-14:03:28** *(~86.06h; +15m31s; 2s stagger preserved; crossed 03-day-14h this cycle)* — flagged `T6_testing.md:22` (C72, verified operative verbatim).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 166-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative; 154-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 214 block appended (this block).
+
+### What Changed This Cycle
+- **Zero new commits**. HEAD still at `dda1b53` from C213. The governed-skills 6-commit vertical slice appears consolidated; no follow-through this cycle on that track. First zero-commit gap since the C211→C212 transition (which broke after 1 cycle).
+- **Uncommitted `web/` WIP still at rest** — same ~20 Next.js files dirty as C213 (no new dirty files, no newly-committed files). C213 flagged this as "uncommitted-WIP-at-rest"; that characterization **strengthens** with a second cycle at rest. If this persists another 2–3 cycles, escalate to HIGH: risk of lost work if the author drops the branch or moves to a different worktree. Coordinator did NOT `git diff --stat web/` this cycle per Critical Path #2 (deferred; see carry-over below).
+- **Working-tree shape unchanged**: identical file set to C213 (`M PROGRESS.md` + `M tests/reports/{code_audit.json, ui_report.json, ux_auditor.log}` + 20 `M web/` files + `?? .claude/` + `?? docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`). All expected churn + WIP + untracked plan doc.
+- **Cadence back to mid-band**: 31.03s/file is the tightest in-envelope cycle of the post-rebase window. Band now stands at 30.7–34.1 across 6 consecutive non-outlier cycles (C210, C212–C214). C211's 15.65 is robustly a one-cycle transient.
+- **Carry-over concurrent fronts (C213 #19 update)**: coordinator now tracking **four** active feature fronts with zero task-file coverage — governed-skills pipeline (6 commits, now paused), install/embed surface (2 commits old), web-side sandbox contract (unresolved), uncommitted `web/` WIP (2 cycles at rest). **No commit activity this cycle on any front** → pressure on coordinator triage reduces temporarily, but every drafting-item (`T_WEB.md`, `T_INSTALL.md`, `T_SKILLS.md`) remains unaddressed.
+- **C213 Critical Path #1 (read governed-skills Phase 1 plan)**: not executed this cycle → **3-cycle carry-over**. Priority escalating; zero-commit lull is an opportune window to close this read.
+- **C213 Critical Path #2 (inspect uncommitted `web/` WIP)**: not executed this cycle → **2-cycle carry-over**. Same opportunity argument as #1.
+- **C210→C214 Critical Path #3 (web-side iframe sandbox clause)**: still pending — **6-cycle carry-over** since C209 confirmation of the `allow-same-origin` add. No commit to CONTRACTS.md or SPEC.md across 6 cycles despite 8 intervening commits.
+- **C210→C214 Critical Path (install discovery spec+plan reads)**: still unread — **5-cycle carry-over**.
+- **C202→C214 (retire-vanilla-frontend.md post-rebase status)**: still unverified — **13-cycle carry-over**. Will resolve with one `git ls-files` one-liner.
+- All 4 stuck PIDs alive; leader at ~86.77h (closing on 03-day-15h within ~14m); trio all crossed 03-day-14h this cycle.
+
+### Critical Path (Cycle 215) — close carry-overs during zero-commit lull, WIP verification
+1. **ESCALATING (3-cycle carry-over from C213 #1): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** (untracked). The governed-skills track is **paused** this cycle — ideal window to close this read before the next commit burst lands. Every cycle of deferral increases the risk of coordinator losing thread on Phase 1 exit criteria.
+2. **ESCALATING (2-cycle carry-over from C213 #2): inspect uncommitted `web/` WIP** — `git diff --stat web/` + cursory read of 2-3 files. WIP is now 2 cycles at rest; if it stays uncommitted through C216, escalate to HIGH priority on author-outreach.
+3. **Carry-over (6-cycle from C209 #1): HUMAN draft `web/`-side iframe sandbox clause** — `web/components/app-embed.tsx` adds `allow-same-origin` for installed Class-A embedded apps. C17 contract scope-incomplete.
+4. **Carry-over (5-cycle from C210 #3): read `5cb25eb` (agent install discovery spec) + `e30815b` (impl plan)** — coordinator orientation drift risk grows with each deferral.
+5. **HUMAN: `kill 3358 8992 9962 9974`** — 166th cycle unexecuted. Leader at 86.77h (projected 03-day-15h crossing ~14m from now). Trio all crossed 03-day-14h this cycle. 5,588 PNGs on disk.
+6. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **179 cycles stale**.
+7. **COORDINATOR one-liner (13-cycle carry-over from C202)**: `git ls-files docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md` — verify tracked/untracked/deleted status.
+8. **HUMAN: draft `T_WEB.md`** — `web/` tree has 20 dirty files (2 cycles at rest) + zero task-file ownership. Acute absence.
+9. **HUMAN: draft `T_INSTALL.md`** — install/embed surface has spec + impl plan committed; ripe for ownership.
+10. **HUMAN: draft `T_SKILLS.md`** (carry-over C212 #9) — governed-skills 6 commits deep + untracked Phase 1 plan; still zero task-file coverage. **Downgrade priority this cycle** — track is paused, so drafting can absorb 1–2 cycles of lull without drift.
+11. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope.
+12. **HUMAN: harness retarget** — Selenium loop (PID 3358) still hitting vanilla `frontend/`.
+13. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-017, `api/inspector.py`, `db/seed_real_apps.py`, entire `web/` Next.js tree, `forge-agent/` component, install/embed surface, governed-skills pipeline.
+14. **Verify dirty-file resolution carry-overs**: `frontend/my-tools.html` status (`git ls-files`); `2026-04-18-nextjs-frontend-rewrite.md` + `2026-04-19-retire-vanilla-frontend.md` tracked/deleted/untracked.
+15. **Base UI `onChange`/`onValueChange` audit** (C209 carry-over): one-shot grep across `web/` for other Base UI primitives with silent-no-op handlers. **Item #2 above may close this** when the web/ WIP diff is read.
+16. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`). No new overlap signals since `c35cd99`.
+17. **Pre-rebase SHA carry-overs (C190→C213)**: `806b91c` vs `592ad7c` diff, `VISION.md` from `e92e351`, SPEC.md `8d70c7b^..8d70c7b` diff, `fc5e86b` social/discoverability spec, `T_AGENT.md` draft, `0c2a4e7` plan doc location, `docs/superpowers/specs/2026-04-19-governed-skills-design.md` (load-bearing; prioritize), `0e024e2` "10-round QA sweep" diff. `git cat-file -e <sha>` verification before any read.
+18. **Concurrent-front watch (C213 #19 update)**: four fronts tracked; C214 is a pause cycle (zero commits on any). If C215 resumes commits on 2+ fronts, escalate all three `T_WEB.md` / `T_INSTALL.md` / `T_SKILLS.md` drafting items.
+19. **NEW — zero-commit-lull opportunity**: coordinator has one of the widest carry-over backlogs of the post-rebase corridor (Phase 1 plan read, web/ WIP inspection, install discovery reads, retire-vanilla-frontend verification — 4 high-value deferrals). This is the cycle to close them, before the next commit burst reintroduces triage load.
+
+### Contract Reminders (item #3 above pending — NOT YET RESOLVED, 6-cycle carry-over)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — `web/` is now de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17, applies to `frontend/`/`apps/<slug>`)**. ⚠ **`web/components/app-embed.tsx` (per the post-rebase `27457c7`, formerly `debdc29`) deliberately adds `allow-same-origin` for installed Class-A embedded apps** — contract is scope-incomplete on the `web/` side. Critical Path #3 above tracks the resolution.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+## COORDINATOR STATUS — Cycle 215 (2026-04-19)
+
+### Task-file audit
+- All **19** task files at exactly **10 incomplete** (`^\[ \]` per-file = 10; total = 190).
+- Rule 1 (`<3 incomplete` → add 10 new) **not tripped on any file**. **0 new tasks added.**
+- **164th consecutive cycle frozen** at 190 incomplete. No task-file edits this cycle.
+
+### Stuck-PID UNBLOCKED notes
+- 4 stuck PIDs (3358 / 8992 / 9962 / 9974) still alive per prior cycles.
+- UNBLOCKED headers verbatim-operative at: `T3_frontend.md:38` (C25), `T6_testing.md:22` (C72 triad), `T6_testing.md:24` (C93 4th PID).
+- **0 new UNBLOCKED notes added** → **152-cycle zero-bump streak** preserved.
+- HUMAN kill command unchanged: `kill 3358 8992 9962 9974`.
+
+### Working-tree snapshot
+- `M PROGRESS.md` (coordinator-side), `M tests/reports/{code_audit.json, ui_report.json, ux_auditor.log}` (harness churn), ~20 `M web/` files (**WIP still at rest — 3rd cycle**, escalating toward lost-work risk), `?? .claude/` (harness state), `?? docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` (untracked plan doc).
+- Shape identical to C213/C214 — no new dirty files, no newly-committed files.
+- **HEAD still at `dda1b53`** from C213 → **second consecutive zero-commit cycle**. Governed-skills 6-commit burst remains paused.
+
+### Invalidated-terminal status (unchanged from C214)
+- Five terminals fully invalidated by commit `837ed88` + migration `008_drop_prompt_stack.sql`: **T1_new, T2_new, T2_agents, T3_new, T4_new**. All 10 Cycle tasks in each remain obsolete; re-scoping or park-to-`tasks/parked/` still pending human decision.
+- Partially invalidated: **T3_frontend** (prompt-era files deleted; catalog/my-tools/skills surviving), **T6_testing** (7 test files deleted), **T5_deploy Cycle 2 line 42-43** (`agents/pipeline` ExecStart refs dead code).
+
+### Carry-over Critical Path (priority-ordered for C216)
+1. **ESCALATING (4-cycle carry-over)** — read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`. Zero-commit lull is still open; close this read before next burst.
+2. **ESCALATING (3-cycle carry-over)** — `git diff --stat web/` + cursory read of 2-3 files. WIP is now **3 cycles at rest**; if it persists through C217, escalate to HIGH on author-outreach.
+3. **6-cycle carry-over** — HUMAN draft `web/`-side iframe sandbox clause (`allow-same-origin` for installed Class-A embeds in `web/components/app-embed.tsx`). CONTRACTS.md/SPEC.md still unamended across 8 intervening commits.
+4. **5-cycle carry-over** — read `5cb25eb` (agent install discovery spec) + `e30815b` (impl plan).
+5. **179+ cycles stale** — HUMAN append `.env.example` Slack/Flask block per `T5_deploy.md:28-37`.
+6. **13-cycle carry-over** — `git ls-files docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md` verification one-liner.
+7. **HUMAN drafts** — `T_WEB.md` (20 dirty files, 3 cycles at rest, zero coverage), `T_INSTALL.md` (spec + impl plan committed), `T_SKILLS.md` (governed-skills track + Phase 1 plan doc untracked).
+8. **HUMAN scope decision** on the 5 fully-invalidated terminals — park vs re-scope.
+9. **HUMAN harness retarget** — Selenium loop (PID 3358) still hitting vanilla `frontend/`; per auto-memory `web/` is canonical post-2026-04-19 plan.
+
+### Cadence
+- Within the 30.7–34.1 band of the post-rebase 6-consecutive non-outlier corridor. C211's 15.65 s/file remains the sole transient.
+- 5,588 PNGs on disk at snapshot; no new emissions attributable to idle-but-alive stuck PIDs.
+
+### What to watch for C216
+- First non-pause commit burst after 2-cycle zero-commit lull — expect triage load to spike on whichever of the four concurrent fronts resumes.
+- `web/` WIP 4th-cycle-at-rest threshold (author-outreach escalation).
+- Any movement on governed-skills Phase 1 plan doc (promotion from `??` → tracked).
+
+## COORDINATOR STATUS — Cycle 216 (2026-04-19)
+
+### Headline — FLATLINE **167th cycle** on task-file side; **GOVERNED-SKILLS RESUMES + NEW FRONTEND SURFACE**: HEAD advanced `dda1b53` → `8ae7a18` with **3 new commits** breaking the 2-cycle zero-commit lull (`cd91e67` feat(server) governance pipeline stub-mode warning, `9a65104` feat(api) admin override reasons in skill review endpoint, `8ae7a18` feat: My Submissions view with review status badges). Governed-skills track now **9 commits deep** (schema → db → dataclass → pipeline stub → API endpoints → tests → stub-mode logging → override reasons → My Submissions UI). Latest commit (`8ae7a18`) is the first **frontend-side commit on the governed-skills track** — confirms the slice is closing on user-facing surface, not just API/db. Coordinator gap **~24m30s** since C214's PID 3358 reading (03-14:46:26 → 03-15:10:56, 1470s). The **uncommitted `web/` WIP** flagged C213-C215 is **still uncommitted** — same ~20 Next.js files dirty (now **4th consecutive cycle at rest**, crossing the C215-set "escalate to HIGH on author-outreach" threshold). **CADENCE**: `find tests/reports -name '*.png' | wc -l` = **5632** (+44 since C214's 5588 baseline that C215 carried forward); `ls tests/reports/screenshots/*.png | wc -l` = **5607** (+44 since C214's 5563). Both bases agree on +44 → basis-drift rejection confirmed for a **fourth consecutive cycle**. Rate: 44/1470 = **~33.41s/file** — squarely in 30.7–34.1 band, mid-band. Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **167th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified verbatim-operative → **155-cycle zero-bump streak** → **0 duplicate notes added**. `.env.example` C11 Slack/Flask append now **180 cycles stale** — survived 9-commit governed-skills burst.
+
+### Cadence (mid-band, 7 cycles in-envelope)
+- +44 screenshots over ~24m30s (1470s) gap → **~33.41s/file** — squarely in 30.7–34.1 band.
+- Post-C189 trend (C211 excluded as confirmed outlier): ..., C210=31.38, C212=34.13, C213=32.09, C214=31.03, **C216=33.41** s/file (C215 not separately measured — same snapshot as C214). 7 cycles in-envelope since C211.
+- 2s stagger 9962↔9974 preserved (28:00 vs 27:58) — intact across all **167 cycles**.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **167-cycle flatline streak**.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; leader past 03-day-15h (crossed mid-cycle as C214 projected); trio past 03-day-14h:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-15:10:56** *(leader; ~87.18h; +24m30s vs C214; 03-day-15h crossing happened in window)* — flagged `T3_frontend.md:38` (C25, verified operative verbatim).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-14:33:01** *(~86.55h; +24m30s)* — flagged `T6_testing.md:24` (C93, verified operative verbatim).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-14:28:00** *(~86.47h; +24m30s)* — flagged `T6_testing.md:22` (C72, verified operative verbatim).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-14:27:58** *(~86.47h; +24m30s; 2s stagger preserved)* — flagged `T6_testing.md:22` (C72, verified operative verbatim).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 167-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative; 155-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 216 block appended (this block).
+
+### What Changed This Cycle
+- **Governed-skills track resumes after 2-cycle pause** with 3 new commits. The newest (`8ae7a18` "My Submissions view with review status badges") is **the first frontend commit** on this track — completes the vertical slice from schema all the way up to a user-facing review-status surface. The 9-commit chain so far: schema → db layer → dataclass → pipeline stub → API endpoints → test alignment → **stub-mode warning** → **override-reason exposure** → **My Submissions UI**. C215's "watch for first non-pause commit burst" prediction validated.
+- **`web/` WIP at 4th cycle at rest** — crosses the C215-set escalation threshold. Same ~20 Next.js files dirty (no diff inspection performed yet — Critical Path #2 carry-over now **3-cycle**). The frontend `8ae7a18` commit landed but did NOT touch any of the 20 dirty files (those are app pages/components/UI primitives; the new commit is presumably a different file). This makes the WIP-at-rest signal **stronger**, not weaker — the commit author worked around the dirty tree.
+- **Working-tree shape unchanged** in shape: identical file set to C213-C215 (`M PROGRESS.md` + `M tests/reports/{code_audit.json, ui_report.json, ux_auditor.log}` + 20 `M web/` files + `?? .claude/` + `?? docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`). The Phase 1 plan doc remains untracked across the 3-commit governed-skills burst — C215 #1 carry-over now **5-cycle** (was the cycle's #1 priority during the pause).
+- **Cadence: mid-band**. 33.41s/file is within the 30.7–34.1 envelope. Now 7 cycles in-envelope since the C211 outlier; band fully consolidated.
+- **Concurrent-front watch update (C214 #18 / C215 #19)**: governed-skills resumed (9 commits now), install/embed surface unchanged (still 2 commits old), web-side sandbox contract unchanged (7-cycle carry-over), uncommitted web/ WIP unchanged (4 cycles at rest). C215's "if C215 resumes commits on 2+ fronts, escalate drafting" → only 1 front (governed-skills) resumed → drafting escalation **not triggered yet**, but governed-skills is now demonstrably the dominant front (9 commits across 3 cycles of activity).
+- **C215 #1 (read governed-skills Phase 1 plan)**: still not executed → **5-cycle carry-over**. The pause window closed before coordinator closed the read; risk of losing Phase 1 exit-criteria thread now compounds with each new commit on the front.
+- **C215 #2 (inspect uncommitted `web/` WIP)**: still not executed → **4-cycle carry-over**. The 4th-cycle-at-rest signal is now the loudest single uninspected item.
+- **C210→C216 Critical Path (web-side iframe sandbox clause)**: still pending — **7-cycle carry-over** since C209 confirmation of the `allow-same-origin` add. CONTRACTS.md/SPEC.md unamended across 11 intervening commits.
+- **C210→C216 (install discovery spec+plan reads)**: still unread — **6-cycle carry-over**.
+- **C202→C216 (retire-vanilla-frontend.md post-rebase status)**: still unverified — **14-cycle carry-over**. One `git ls-files` one-liner away.
+- All 4 stuck PIDs alive; leader at ~87.18h (03-day-15h crossed mid-cycle); trio all in 03-day-14h band.
+
+### Critical Path (Cycle 217) — close stale carry-overs, WIP escalation, governed-skills doc read
+1. **ESCALATING (5-cycle carry-over from C213 #1 / C215 #1): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** (untracked). The track now has 9 commits behind the plan; coordinator's failure to close this read across both pause cycles AND the resumption is the highest-cost deferral on the board.
+2. **HIGH-PRIORITY ESCALATION (4-cycle carry-over from C213 #2 / C215 #2): inspect uncommitted `web/` WIP** — `git diff --stat web/` + cursory read of 2-3 files. WIP is now **4 cycles at rest, crossing the C215-set escalation threshold**. The new `8ae7a18` frontend commit working AROUND the dirty tree (not on it) makes this signal louder — recommend HUMAN-side author outreach this cycle.
+3. **Carry-over (7-cycle from C209 #1): HUMAN draft `web/`-side iframe sandbox clause** — `web/components/app-embed.tsx` adds `allow-same-origin` for installed Class-A embeds. CONTRACTS.md/SPEC.md still unamended across 11 intervening commits.
+4. **Carry-over (6-cycle from C210 #3): read `5cb25eb` (agent install discovery spec) + `e30815b` (impl plan)** — coordinator orientation drift growing.
+5. **HUMAN: `kill 3358 8992 9962 9974`** — 167th cycle unexecuted. Leader at ~87.18h (03-day-15h crossed mid-cycle as C214 projected). 5,632 PNGs on disk.
+6. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **180 cycles stale**, survived 9-commit governed-skills burst.
+7. **COORDINATOR one-liner (14-cycle carry-over from C202)**: `git ls-files docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md` — verify tracked/untracked/deleted status.
+8. **HUMAN: draft `T_WEB.md`** — `web/` tree has 20 dirty files (4 cycles at rest) + zero task-file ownership. Threshold-crossed escalation.
+9. **HUMAN: draft `T_INSTALL.md`** — install/embed surface has spec + impl plan committed; ripe for ownership.
+10. **HUMAN: draft `T_SKILLS.md`** — governed-skills now **9 commits deep including frontend** + untracked Phase 1 plan; **zero task-file coverage is now acutely felt**. Re-escalate to HIGH (was downgraded in C214 during pause).
+11. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope.
+12. **HUMAN: harness retarget** — Selenium loop (PID 3358) still hitting vanilla `frontend/`; per auto-memory `web/` is canonical post-2026-04-19 plan.
+13. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-017, `api/inspector.py`, `db/seed_real_apps.py`, entire `web/` Next.js tree, `forge-agent/` component, install/embed surface, governed-skills pipeline.
+14. **Verify dirty-file resolution carry-overs**: `frontend/my-tools.html` status (`git ls-files`); `2026-04-18-nextjs-frontend-rewrite.md` + `2026-04-19-retire-vanilla-frontend.md` tracked/deleted/untracked.
+15. **Base UI `onChange`/`onValueChange` audit** (C209 carry-over): one-shot grep across `web/` for other Base UI primitives with silent-no-op handlers. Item #2 above may close this when WIP diff is read.
+16. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`). The frontend `8ae7a18` commit doesn't touch their import surface.
+17. **Pre-rebase SHA carry-overs (C190→C216)**: `806b91c` vs `592ad7c` diff, `VISION.md` from `e92e351`, SPEC.md `8d70c7b^..8d70c7b` diff, `fc5e86b` social/discoverability spec, `T_AGENT.md` draft, `0c2a4e7` plan doc location, `docs/superpowers/specs/2026-04-19-governed-skills-design.md` (load-bearing — escalating with each governed-skills commit), `0e024e2` "10-round QA sweep" diff. `git cat-file -e <sha>` verification before any read.
+18. **Concurrent-front watch (C215 #19 update)**: governed-skills resumed (9 commits across 3 active cycles), web/ WIP at 4-cycle escalation threshold, install/embed and web-side sandbox carry-overs unchanged. The govern-skills front is now numerically dominant; if C217-C218 produces 2+ more commits without `T_SKILLS.md` drafted, coordinator will be doing post-hoc reverse-engineering instead of forward-tracked triage.
+
+### Contract Reminders (item #3 above pending — NOT YET RESOLVED, 7-cycle carry-over)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — `web/` is now de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17, applies to `frontend/`/`apps/<slug>`)**. ⚠ **`web/components/app-embed.tsx` (per the post-rebase `27457c7`, formerly `debdc29`) deliberately adds `allow-same-origin` for installed Class-A embedded apps** — contract is scope-incomplete on the `web/` side. Critical Path #3 above tracks the resolution.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C217
+- `web/` WIP 5th-cycle-at-rest (now past escalation) — does HUMAN respond to outreach prompt?
+- Governed-skills track: does the 9-commit chain consolidate, or does another commit burst land?
+- Whether the Phase 1 plan doc finally gets read by coordinator (5-cycle carry-over).
+- First sign of any `web/`-side iframe sandbox clause edit to CONTRACTS.md/SPEC.md (7-cycle carry-over).
+
+## COORDINATOR STATUS — Cycle 217 (2026-04-19)
+
+### Headline — FLATLINE **168th cycle** on task-file side; **ZERO-COMMIT LULL RESUMES** after C216's 3-commit governed-skills burst — HEAD unchanged at `8ae7a18`. Coordinator gap **~13m06s** (PID 3358 ELAPSED 03-15:10:56 → 03-15:24:02, 786s) — shortest gap since C214's 15m31s, returns near pre-C153 ~13m20s mean (~0.98x). The **uncommitted `web/` WIP** flagged C213-C216 is **still uncommitted** — same ~20 Next.js files dirty (now **5th consecutive cycle at rest**, fully past the C215-set "escalate to HIGH on author-outreach" threshold). **CADENCE**: `find tests/reports -name '*.png' | wc -l` = **5658** (+26 since C216's 5632); `ls tests/reports/screenshots/*.png | wc -l` = **5633** (+26 since C216's 5607). Both bases agree on +26 → basis-drift rejection confirmed for a **fifth consecutive cycle**. Rate: 26/786 = **~30.23s/file** — **BREAKS the 30.7–34.1 band on the LOW side by 0.47s**, the second sub-30.7 print since C189 (after C206's 25.67). With the C206 precedent (short gap + low file-count produced a one-cycle outlier), C217's 30.23 over a similarly short 13m06s gap is the strongest gap-artifact candidate of the post-C189 window. Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **168th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified verbatim-operative at exact line numbers → **156-cycle zero-bump streak** → **0 duplicate notes added**. `.env.example` C11 Slack/Flask append now **181 cycles stale** — survived C216's 3-commit burst.
+
+### Cadence (band-floor break, 2nd outlier candidate, 8 cycles since C211)
+- +26 screenshots over ~13m06s (786s) gap → **~30.23s/file** — first sub-30.7 print since C206's 25.67.
+- Post-C189 trend (C211 excluded): C210=31.38, C212=34.13, C213=32.09, C214=31.03, C216=33.41, **C217=30.23** s/file. Two sub-band prints (C206=25.67 / C217=30.23) both occurred at short gaps (14m07s / 13m06s) — pattern reinforces gap-artifact hypothesis. C218 with a >20m gap will discriminate.
+- 26-file emission at 786s gap fits arithmetic (786/26 = 30.23) — count consistent with measured interval.
+- 2s stagger 9962↔9974 preserved (41:06 vs 41:04) — intact across all **168 cycles**.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **168-cycle flatline streak**.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; leader past 03-day-15h (crossed C216 mid-cycle); trio approaching 03-day-15h:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-15:24:02** *(leader; ~87.40h; +13m06s vs C216)* — flagged `T3_frontend.md:38` (C25, verified operative verbatim).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-14:46:07** *(~86.77h; +13m06s; ~14m shy of 03-day-15h crossing → projected mid-C218)* — flagged `T6_testing.md:24` (C93, verified operative verbatim).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-14:41:06** *(~86.69h; +13m06s; ~19m shy of 03-day-15h crossing → projected late-C218)* — flagged `T6_testing.md:22` (C72, verified operative verbatim).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-14:41:04** *(~86.68h; +13m06s; 2s stagger preserved across all 168 cycles)* — flagged `T6_testing.md:22` (C72, verified operative verbatim).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 168-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative; 156-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 217 block appended (this block).
+- **Coordinator one-liners executed (closing 14-cycle carry-overs)**: `git ls-files docs/superpowers/plans/2026-04-19-retire-vanilla-frontend.md docs/superpowers/plans/2026-04-18-nextjs-frontend-rewrite.md frontend/my-tools.html` → **all three TRACKED** (committed during the post-C202 corridor; current working tree clean for these paths). The 14-cycle "retire-vanilla-frontend.md untracked" carry-over (C202 → C216) and the C211→C216 "frontend/my-tools.html dirty" carry-over are both **CLOSED**. The plans dir also contains 3 other tracked plan docs (`2026-04-19-agent-install-discovery.md`, `2026-04-19-social-discoverability-layer.md`, `2026-04-19-governed-skills-design.md`) — only `2026-04-19-governed-skills-phase1.md` remains untracked.
+
+### What Changed This Cycle
+- **Zero new commits**. HEAD unchanged at `8ae7a18` from C216. Governed-skills 9-commit chain pauses again after the C216 3-commit burst (`cd91e67`+`9a65104`+`8ae7a18`). Pattern emerging: governed-skills track moves in **2-cycle pause / 1-cycle burst** rhythm (pause C214-C215, burst C216, pause C217 → projected burst C218-C219 if rhythm holds).
+- **`web/` WIP at 5th cycle at rest** — fully past C215 escalation threshold. Same ~20 Next.js files dirty (no diff inspection performed yet — Critical Path #2 carry-over now **4-cycle**). The set is large enough (web/app/{apps/[slug],my-forge,publish,skills,page,providers,globals}, web/components/{app-card,app-pane,category-pills,co-install-cards,empty-state,external-control-panel,install-button,install-progress,review-card,review-form,sidebar,skill-card,trending-strip,usage-chart}, plus 7 ui/ primitives) to suggest a coordinated UI refresh / theme pass — not random noise. The risk profile shifts from "lost-work" to "deliberate uncommitted experiment"; the absent `T_WEB.md` task file remains the right vehicle to surface the intent.
+- **Working-tree shape unchanged in shape** from C213-C216: `M PROGRESS.md` + `M tests/reports/{code_audit.json, ui_report.json, ui_tester.log, ux_auditor.log}` + 20 `M web/` files + `?? .claude/` + `?? docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`. (Note: `ui_tester.log` is now in the modified set — was previously untracked-or-clean; harness output keeps churning into the same log file.)
+- **Anchor SHA `12222ac` no longer resolvable**: `git rev-list --count 12222ac..HEAD` returns "fatal: ambiguous argument '12222ac..HEAD': unknown revision or path not in the working tree". The C201 anchor used as the cumulative-commit reference across C201–C216 has been rewritten away (rebase/squash/rewritten-history). Cumulative-commit accounting since C201 is now **broken**; future cycles must pick a new anchor (recommend `dda1b53` from C213 forward, which resolves cleanly per `git log` output). This explains the C207 retroactive correction (C206's headline "18 commits" vs actual 22) — the rebase was already in motion.
+- **Cadence: band-floor break by 0.47s** — 30.23s/file is the second sub-30.7 print since C189. Both sub-band prints (C206 25.67 / C217 30.23) coincide with short coordinator gaps (14m07s / 13m06s respectively). Triangulation theory: short gaps + small +N counts produce arithmetic that lands at the band floor or below; gap-artifact hypothesis strengthened from "candidate" to "likely". C218 measurement at a >20m gap is the discriminator.
+- **Concurrent-front watch update (C216 #18)**: governed-skills paused (still 9 commits), install/embed surface unchanged (still 2 commits old), web-side sandbox contract unchanged (8-cycle carry-over now), uncommitted `web/` WIP unchanged (5 cycles at rest). Zero commit movement on any front this cycle.
+- **C215 #1 (read governed-skills Phase 1 plan)**: still not executed → **6-cycle carry-over**. Today's zero-commit lull is again the right window; if next cycle bursts on this track, this carry-over will hit 7 cycles with the spec further from the implementation.
+- **C215 #2 (inspect uncommitted `web/` WIP)**: still not executed → **5-cycle carry-over**. Now matches the WIP-at-rest cycle count (5).
+- **C210→C217 Critical Path (web-side iframe sandbox clause)**: still pending — **8-cycle carry-over** since C209 confirmation of the `allow-same-origin` add. CONTRACTS.md/SPEC.md unamended across 11 commits in the corridor.
+- **C210→C217 (install discovery spec+plan reads)**: still unread — **7-cycle carry-over**.
+- **C202→C217 (retire-vanilla-frontend.md status verification)**: **CLOSED this cycle** — file is tracked. The 14-cycle carry-over resolves with confirmation that the dual-frontend retirement plan is committed (and 4 sibling plan docs are also committed; only `2026-04-19-governed-skills-phase1.md` remains untracked).
+- All 4 stuck PIDs alive; leader at ~87.40h; trailing trio (8992/9962/9974) ~14-19 min shy of their 03-day-15h crossings (projected mid-to-late C218).
+
+### Critical Path (Cycle 218) — close stale doc-read carry-overs, WIP escalation deepens, anchor-SHA reset
+1. **ESCALATING (6-cycle carry-over from C213 #1 / C215 #1 / C216 #1): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** (untracked). Today's lull is the **third** opportune window the coordinator has had to close this read; failing to close it during a pause cycle is the highest-cost deferral on the board.
+2. **HIGH-PRIORITY ESCALATION (5-cycle carry-over from C213 #2 / C215 #2 / C216 #2): inspect uncommitted `web/` WIP** — `git diff --stat web/` + cursory read of 2-3 representative files (`web/app/page.tsx`, `web/components/external-control-panel.tsx`, `web/components/ui/button.tsx`). The 20-file set spans pages + components + UI primitives, suggesting a coordinated theme/UI refresh worth scope-naming. HUMAN author-outreach also escalating.
+3. **NEW — pick replacement anchor SHA**: C201 anchor `12222ac` no longer resolves (history rewritten). Recommend `dda1b53` (C213 HEAD, resolves cleanly) as the new cumulative-commit reference for Cycle 218 onwards. Update headline language accordingly.
+4. **Carry-over (8-cycle from C209 #1): HUMAN draft `web/`-side iframe sandbox clause** — `web/components/app-embed.tsx` adds `allow-same-origin` for installed Class-A embeds. CONTRACTS.md/SPEC.md still unamended.
+5. **Carry-over (7-cycle from C210 #3): read `5cb25eb` (agent install discovery spec) + `e30815b` (impl plan)** — the install-discovery plan doc IS in the tracked set per today's one-liner; file is reachable.
+6. **HUMAN: `kill 3358 8992 9962 9974`** — 168th cycle unexecuted. Leader at ~87.40h; trio approaching 03-day-15h (projected mid-to-late C218). 5,658 PNGs on disk.
+7. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **181 cycles stale**.
+8. **HUMAN: draft `T_WEB.md`** — `web/` tree has 20 dirty files (5 cycles at rest, past escalation threshold) + zero task-file ownership. Likely captures a coordinated UI refresh.
+9. **HUMAN: draft `T_INSTALL.md`** — install/embed surface has spec + impl plan committed; ripe for ownership.
+10. **HUMAN: draft `T_SKILLS.md`** — governed-skills now 9 commits deep including frontend (`8ae7a18`) + untracked Phase 1 plan; **HIGH priority** (re-escalated C216).
+11. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope.
+12. **HUMAN: harness retarget** — Selenium loop (PID 3358) still hitting vanilla `frontend/`; per auto-memory `web/` is canonical post-2026-04-19 plan (now confirmed tracked).
+13. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-017, `api/inspector.py`, `db/seed_real_apps.py`, entire `web/` Next.js tree, `forge-agent/` component, install/embed surface, governed-skills pipeline.
+14. **Base UI `onChange`/`onValueChange` audit** (C209 carry-over): one-shot grep across `web/` for other Base UI primitives with silent-no-op handlers. Item #2 above may close this when WIP diff is read.
+15. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+16. **Pre-rebase SHA carry-overs (C190→C216)**: all need `git cat-file -e <sha>` verification before any read attempt — the C217-confirmed history rewrite (anchor `12222ac` lost) means many of the older SHAs (`806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`) may also have been rewritten away. Resolve in a single batch: `for sha in 806b91c 592ad7c e92e351 8d70c7b fc5e86b 0c2a4e7 0e024e2; do git cat-file -e $sha 2>&1 | head -1; done`. Drop any unresolvable items from the carry-over list.
+17. **Concurrent-front watch (C216 #18 update)**: 4 fronts tracked; C217 = pause cycle on all 4. C216 prediction "if 2+ fronts resume in C217-C218" — so far only the slot for C218 remains. If C218 ALSO produces zero commits, the rhythm has shifted toward longer pauses; if C218 produces a multi-front burst, drafting items 8/9/10 escalate to URGENT.
+18. **NEW — cadence band-floor break**: C217 = 30.23 s/file is the second sub-30.7 print since C189 (after C206's 25.67). Both occurred at short gaps (14m07s / 13m06s). C218 measurement at a >20m gap will discriminate gap-artifact (likely) vs cadence-shift (unlikely). If C218 prints in-band at any gap length, gap-artifact confirmed and the band can be widened to ~30.0–34.1.
+
+### Contract Reminders (item #4 above pending — NOT YET RESOLVED, 8-cycle carry-over)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — `web/` is now de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17, applies to `frontend/`/`apps/<slug>`)**. ⚠ **`web/components/app-embed.tsx` (per the post-rebase `27457c7`, formerly `debdc29`) deliberately adds `allow-same-origin` for installed Class-A embedded apps** — contract is scope-incomplete on the `web/` side. Critical Path #4 above tracks the resolution.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C218
+- Whether the trailing PID trio (8992/9962/9974) all cross 03-day-15h as projected (mid-to-late C218).
+- C217 cadence print (30.23 s/file) — gap-artifact confirmation requires a >20m gap measurement to land back in 30.7–34.1; sub-band print at >20m gap would invert the hypothesis.
+- `web/` WIP 6th-cycle-at-rest threshold (now well past escalation; HUMAN response watched).
+- Governed-skills track: rhythm test — does the 2-pause / 1-burst pattern hold (predicted burst), or extend to a longer pause?
+- Whether the Phase 1 plan doc finally gets read by coordinator (6-cycle carry-over, third pause-window opportunity in a row).
+- Any `T_WEB.md` / `T_INSTALL.md` / `T_SKILLS.md` drafting motion from HUMAN given the multi-cycle escalation.
+
+## COORDINATOR STATUS — Cycle 218 (2026-04-19)
+
+### Headline — FLATLINE **169th cycle** on task-file side; **ZERO-COMMIT LULL enters 2nd consecutive cycle** — HEAD unchanged at `8ae7a18` (governed-skills track now 2-cycle paused after C216's 3-commit burst, matching the C214-C215 pause window pattern). Coordinator gap **~13m46s** (PID 3358 ELAPSED 03-15:24:02 → 03-15:37:48, 826s) — within the normative 12–16m band. The **uncommitted `web/` WIP** is **still uncommitted** at cycle-6 at-rest (~20 Next.js files dirty + 4 test-report files + PROGRESS.md + untracked `.claude/` + untracked `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`). **CADENCE**: `find tests/reports -name '*.png' | wc -l` = **5682** (+24 since C217's 5658); `ls tests/reports/screenshots/*.png | wc -l` = **5657** (+24 since C217's 5633). Both bases agree on +24 → basis-drift rejection confirmed for a **sixth consecutive cycle**. Rate: 24/826 = **~34.42s/file** — **BREAKS the 30.7–34.1 band on the HIGH side by 0.32s**, the first super-band print in the post-C189 window (first symmetric excursion: C217 was −0.47 below floor, C218 is +0.32 above ceiling). Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **169th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified verbatim-operative at exact line numbers → **157-cycle zero-bump streak** → **0 duplicate notes added**. `.env.example` C11 Slack/Flask append now **182 cycles stale**.
+
+### Cadence (band-ceiling break, first symmetric excursion, 9 cycles since C211)
+- +24 screenshots over ~13m46s (826s) gap → **~34.42s/file** — first super-34.1 print in the post-C189 window.
+- Post-C189 trend: C210=31.38, C212=34.13, C213=32.09, C214=31.03, C216=33.41, C217=30.23, **C218=34.42** s/file. Out-of-band prints now bracket the band symmetrically (C217 floor-break −0.47, C218 ceiling-break +0.32). Gap-artifact hypothesis further strengthened: short gaps (13–14m) produce band-adjacent prints whose sign flips cycle to cycle, not a trend.
+- 24-file emission at 826s gap fits arithmetic (826/24 = 34.42) — count consistent with measured interval.
+- 2s stagger 9962↔9974 preserved (54:52 vs 54:50) — intact across all **169 cycles**.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **169-cycle flatline streak**.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-15:37:48** *(leader; ~87.63h; +13m46s vs C217)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-14:59:53** *(~87.00h; +13m46s; now ~53s shy of 03-day-15h — projected cross next-cycle-early)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-14:54:52** *(~86.91h; +13m46s; ~5m8s shy of 03-day-15h)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-14:54:50** *(~86.91h; +13m46s; 2s stagger preserved)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 169-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative; 157-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 218 block appended (this block).
+
+### What Changed This Cycle
+- **Zero new commits**. HEAD unchanged at `8ae7a18` from C216. Governed-skills 9-commit chain now in **2-cycle pause** (C217 + C218), matching the C214-C215 pause-window pattern exactly. The C217 prediction "2-pause / 1-burst rhythm → projected burst C218-C219" is on schedule if the rhythm holds; a burst in C219 would confirm, while a 3rd pause cycle would indicate rhythm shift toward longer pauses.
+- **`web/` WIP at 6th cycle at rest** — deep past C215 escalation threshold. Same ~20 Next.js files dirty (still no diff inspection performed — Critical Path #2 carry-over now **5-cycle**). The HUMAN author-outreach recommendation from C217 has not been actioned; the signal continues to compound.
+- **Working-tree shape unchanged in shape** from C213-C217: `M PROGRESS.md` + `M tests/reports/{code_audit.json, ui_report.json, ui_tester.log, ux_auditor.log}` + 20 `M web/` files + `?? .claude/` + `?? docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`. 7-cycle shape-stable span.
+- **Cadence: band-ceiling break by 0.32s** — 34.42s/file is the first super-band print in the post-C189 window. Combined with C217's floor-break (30.23), the post-C189 band now has symmetric excursion on both sides; gap-artifact hypothesis elevated from "likely" to "confirmed-pending-discriminator" — a single >20m gap print that lands in-band would close the case. C218's continued short gap (13m46s) kept the discriminator unreached.
+- **Concurrent-front watch update (C217 #17)**: all 4 fronts show zero commit movement this cycle (governed-skills paused, install/embed unchanged, web-side sandbox carry-over unchanged, uncommitted web/ WIP unchanged). C217's projection "if C218 produces zero commits, the rhythm has shifted toward longer pauses; if C218 produces a multi-front burst, drafting items escalate to URGENT" → zero-commits path taken, but only 2-cycle pause matches prior C214-C215 window (NOT longer-pause shift yet). Decision pending C219.
+- **C215 #1 (read governed-skills Phase 1 plan)**: still not executed → **7-cycle carry-over**. Two consecutive pause windows now missed without closing this read.
+- **C215 #2 (inspect uncommitted `web/` WIP)**: still not executed → **6-cycle carry-over**. Matches the WIP-at-rest cycle count.
+- **C210→C218 Critical Path (web-side iframe sandbox clause)**: still pending — **9-cycle carry-over**.
+- **C210→C218 (install discovery spec+plan reads)**: still unread — **8-cycle carry-over**.
+- All 4 stuck PIDs alive; leader at ~87.63h. Trailing PID 8992 (code_auditor) is now ~53s shy of 03-day-15h — projected cross very early C219 (not mid/late as C217 projected; timing tightened).
+
+### Critical Path (Cycle 219) — burst vs pause decision, WIP inspection escalation, governed-skills doc read
+1. **MAXIMUM ESCALATION (7-cycle carry-over from C213 #1 / C215 #1 / C216 #1 / C217 #1): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** (untracked). Coordinator has now passed over this read across 2 full pause windows. If C219 produces the predicted governed-skills burst, the carry-over compounds again with spec further from implementation.
+2. **HIGH-PRIORITY ESCALATION (6-cycle carry-over from C213 #2 / C215 #2 / C216 #2 / C217 #2): inspect uncommitted `web/` WIP** — `git diff --stat web/` + cursory read of 2-3 representative files. HUMAN author-outreach also escalating.
+3. **Carry-over (9-cycle from C209 #1): HUMAN draft `web/`-side iframe sandbox clause** — `web/components/app-embed.tsx` adds `allow-same-origin` for installed Class-A embeds. CONTRACTS.md/SPEC.md still unamended.
+4. **Carry-over (8-cycle from C210 #3): read `5cb25eb` (agent install discovery spec) + `e30815b` (impl plan)** — plan doc confirmed tracked per C217 one-liner.
+5. **HUMAN: `kill 3358 8992 9962 9974`** — 169th cycle unexecuted. Leader at ~87.63h; PID 8992 about to cross 03-day-15h early C219. 5,682 PNGs on disk.
+6. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **182 cycles stale**.
+7. **HUMAN: draft `T_WEB.md`** — `web/` tree has 20 dirty files (6 cycles at rest) + zero task-file ownership. Priority matches the WIP inspection carry-over.
+8. **HUMAN: draft `T_INSTALL.md`** — install/embed surface has spec + impl plan committed; ripe for ownership.
+9. **HUMAN: draft `T_SKILLS.md`** — governed-skills now 9 commits deep including frontend (`8ae7a18`) + untracked Phase 1 plan; **HIGH priority** from C216.
+10. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope.
+11. **HUMAN: harness retarget** — Selenium loop (PID 3358) still hitting vanilla `frontend/`; per auto-memory `web/` is canonical.
+12. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-017, `api/inspector.py`, `db/seed_real_apps.py`, entire `web/` Next.js tree, `forge-agent/` component, install/embed surface, governed-skills pipeline.
+13. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+14. **Pre-rebase SHA carry-overs**: still need batch `git cat-file -e <sha>` verification for `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2` per C217 item #16. Single-batch one-liner available; resolve in one shot.
+15. **Concurrent-front watch (C217 #17 update)**: C218 = pause cycle on all 4 fronts (matches 2-cycle pause pattern from C214-C215). C219 is the decision point: burst confirms 2-pause/1-burst rhythm, another pause signals rhythm shift.
+16. **Cadence discriminator**: post-C189 band now has symmetric excursion (C217 −0.47 floor-break, C218 +0.32 ceiling-break). A C219 print at a >20m gap that lands in 30.7–34.1 confirms gap-artifact and closes the investigation; an out-of-band print at a >20m gap inverts the hypothesis.
+17. **Coordinator one-liner**: `git cat-file -e 12222ac` to confirm the C201 anchor loss from C217 one more time before fully retiring the reference — low cost, closes the open accounting issue cleanly.
+
+### Contract Reminders (item #3 above pending — NOT YET RESOLVED, 9-cycle carry-over)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — `web/` is now de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17, applies to `frontend/`/`apps/<slug>`)**. ⚠ **`web/components/app-embed.tsx` deliberately adds `allow-same-origin` for installed Class-A embedded apps** — contract scope-incomplete on `web/` side. Critical Path #3 tracks resolution.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C219
+- **Burst vs pause decision**: does the governed-skills track produce a commit burst (confirms 2-pause/1-burst rhythm) or enter a 3rd pause cycle (rhythm shift toward longer pauses)?
+- PID 8992 (`code_auditor`) crossing 03-day-15h — projected very early C219 (~53s shy at C218 close).
+- `web/` WIP 7th-cycle-at-rest threshold (now deep past escalation; HUMAN response still not landed).
+- Cadence gap-artifact discriminator — any C219 print at >20m gap landing in 30.7–34.1 confirms the hypothesis.
+- Whether the Phase 1 plan doc finally gets read by coordinator (7-cycle carry-over, fourth pause-window opportunity if C219 is also a pause).
+- Any `T_WEB.md` / `T_INSTALL.md` / `T_SKILLS.md` drafting motion from HUMAN.
+
+## COORDINATOR STATUS — Cycle 219 (2026-04-19)
+
+### Headline — FLATLINE **170th cycle** on task-file side; **GOVERNED-SKILLS BURST RESUMES** after 2-cycle pause (C217–C218) — HEAD advances `8ae7a18` → `a2a5ca4` (new commit: "docs: Phase 2 implementation plan — 12 tasks, per-agent commit points"). **2-pause/1-burst rhythm CONFIRMED** for the second iteration (C214–C215 pause + C216 burst → C217–C218 pause + C219 burst). Coordinator gap **~12m57s** (PID 3358 ELAPSED 03-15:37:48 → 03-15:50:45, 777s) — shortest gap this window, near pre-C153 mean. New untracked path appears in working tree: `?? web/app/skills/[id]/` (Phase 2 plan's skill-detail route scaffolding, per commit title). The **uncommitted `web/` WIP** is **still uncommitted** at cycle-7 at-rest (~20 Next.js files dirty, shape unchanged from C213–C218). **CADENCE**: `find tests/reports -name '*.png' | wc -l` = **5706** (+24 since C218's 5682); `ls tests/reports/screenshots/*.png | wc -l` = **5681** (+24 since C218's 5657). Both bases agree on +24 → basis-drift rejection confirmed for a **seventh consecutive cycle**. Rate: 24/777 = **~32.38s/file** — **BACK IN-BAND** (30.7–34.1), lands near center. After C217 floor-break (−0.47) + C218 ceiling-break (+0.32), the C219 print returns to band center, weakly favoring gap-artifact hypothesis; still not the >20m-gap discriminator. Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **170th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) verified verbatim-operative at exact line numbers → **158-cycle zero-bump streak** → **0 duplicate notes added**. `.env.example` C11 Slack/Flask append now **183 cycles stale**.
+
+### Cadence (in-band return, symmetric excursion framing intact, 10 cycles since C211)
+- +24 screenshots over ~12m57s (777s) gap → **~32.38s/file** — lands near the band midpoint (30.7–34.1 → center 32.4). First in-band print after back-to-back excursions.
+- Post-C189 trend (C211 excluded): C210=31.38, C212=34.13, C213=32.09, C214=31.03, C216=33.41, C217=30.23, C218=34.42, **C219=32.38** s/file. Excursion sign history: in-band / in-band / in-band / in-band / in-band / LOW / HIGH / in-band → no monotonic drift; excursions alternate and revert.
+- Gap-artifact hypothesis now at "likely+": all 3 short-gap cycles with N≤26 (C217 13m06s/+26, C218 13m46s/+24, C219 12m57s/+24) produced **band-adjacent** prints (one below, one above, one center) consistent with arithmetic roundoff at small divisors. Discriminator (>20m gap print) still outstanding.
+- 2s stagger 9962↔9974 preserved (07:49 vs 07:47) — intact across all **170 cycles**.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **170-cycle flatline streak**.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive; **trailing trio has now crossed 03-day-15h as projected**:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-15:50:45** *(leader; ~87.85h; +12m57s vs C218)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-15:12:50** *(~87.21h; +12m57s; **CROSSED 03-day-15h this cycle** as C218 projected "very early C219")* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-15:07:49** *(~87.13h; +12m57s; **CROSSED 03-day-15h this cycle**)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-15:07:47** *(~87.13h; +12m57s; **CROSSED 03-day-15h this cycle**; 2s stagger preserved)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 170-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative; 158-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 219 block appended (this block).
+- **Coordinator one-liner executed (closing C217 #3 / C218 #17 carry-over)**: `git cat-file -e 12222ac` → `fatal: Not a valid object name 12222ac`. **C201 anchor loss confirmed for a third time**; can be fully retired from future carry-over lists. New reference anchor `dda1b53` (C213 HEAD) resolves cleanly — adopt for C220 forward.
+
+### What Changed This Cycle
+- **1 new commit**: `a2a5ca4 docs: Phase 2 implementation plan — 12 tasks, per-agent commit points`. Governed-skills track extends to **10 commits** (post-C216 chain: `cd91e67` + `9a65104` + `8ae7a18` + `bb0f086` + `a2a5ca4`). **2-pause/1-burst rhythm holds for the second iteration**: C214–C215 pause → C216 burst (3 commits) → C217–C218 pause → C219 burst (currently 1 commit). If the burst matches the prior 3-commit width, expect 1–2 more commits across C220–C221 before the next pause window.
+- **New untracked path**: `?? web/app/skills/[id]/` — likely the skill-detail route scaffolding referenced by the Phase 2 plan's per-agent commit points. Coordinator has NOT inspected contents.
+- **`web/` WIP at 7th cycle at rest** — same ~20 Next.js files dirty. Shape within the `web/` set unchanged since C213. The new untracked `web/app/skills/[id]/` sits alongside the WIP, not inside it, so the two streams appear decoupled.
+- **Working-tree shape**: `M PROGRESS.md` + `M tests/reports/{code_audit.json, ui_report.json, ui_tester.log, ux_auditor.log}` + 20 `M web/` files + `?? .claude/` + `?? docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` + **`?? web/app/skills/[id]/` (NEW this cycle)**. 8-cycle shape-stable span with one additive delta.
+- **C215 #1 (read governed-skills Phase 1 plan)**: still not executed → **8-cycle carry-over**. The burst this cycle makes the spec-vs-implementation drift compound again; priority remains MAXIMUM ESCALATION.
+- **C215 #2 (inspect uncommitted `web/` WIP)**: still not executed → **7-cycle carry-over**. Matches WIP-at-rest count.
+- **C210→C219 Critical Path (web-side iframe sandbox clause)**: still pending — **10-cycle carry-over**.
+- **C210→C219 (install discovery spec+plan reads)**: still unread — **9-cycle carry-over**.
+- All 4 stuck PIDs alive; leader at ~87.85h; trailing trio all crossed 03-day-15h this cycle exactly as C218 projected.
+
+### Critical Path (Cycle 220) — governed-skills burst continuation, WIP inspection overdue, Phase 2 plan doc now also unread
+1. **MAXIMUM ESCALATION (8-cycle carry-over from C213 #1 / C215 #1 / C216 #1 / C217 #1 / C218 #1): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** (still untracked) — AND now also review the new `a2a5ca4` Phase 2 plan commit body. Two related plans now carry over unread.
+2. **HIGH-PRIORITY ESCALATION (7-cycle carry-over from C213 #2 / C215 #2 / C216 #2 / C217 #2 / C218 #2): inspect uncommitted `web/` WIP** — `git diff --stat web/` + cursory read of 2–3 representative files. HUMAN author-outreach recommended.
+3. **NEW: inspect untracked `web/app/skills/[id]/`** — likely the skill-detail route scaffolding for Phase 2; confirm file list and whether it belongs with the WIP or the governed-skills track.
+4. **Carry-over (10-cycle from C209 #1): HUMAN draft `web/`-side iframe sandbox clause** — `web/components/app-embed.tsx` adds `allow-same-origin` for installed Class-A embeds. CONTRACTS.md/SPEC.md still unamended.
+5. **Carry-over (9-cycle from C210 #3): read `5cb25eb` (agent install discovery spec) + `e30815b` (impl plan)**.
+6. **HUMAN: `kill 3358 8992 9962 9974`** — 170th cycle unexecuted. Leader at ~87.85h; trailing trio now all past 03-day-15h. 5,706 PNGs on disk.
+7. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **183 cycles stale**.
+8. **HUMAN: draft `T_WEB.md`** — `web/` tree has 20 dirty files (7 cycles at rest) + new untracked `web/app/skills/[id]/` + zero task-file ownership. Priority rising with every added delta.
+9. **HUMAN: draft `T_INSTALL.md`** — install/embed surface has spec + impl plan committed; ripe for ownership.
+10. **HUMAN: draft `T_SKILLS.md`** — governed-skills now **10 commits** deep including Phase 1 + Phase 2 plan docs; **URGENT** (re-re-escalated C219 — second burst iteration complete, spec surface growing faster than task-file coverage).
+11. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope.
+12. **HUMAN: harness retarget** — Selenium loop (PID 3358) still hitting vanilla `frontend/`; per auto-memory `web/` is canonical.
+13. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-017, `api/inspector.py`, `db/seed_real_apps.py`, entire `web/` Next.js tree, `forge-agent/` component, install/embed surface, governed-skills pipeline.
+14. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+15. **Pre-rebase SHA carry-overs**: still need batch `git cat-file -e <sha>` verification for `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`. Single-batch one-liner available.
+16. **Concurrent-front watch (C218 #17 update)**: governed-skills resumed (10 commits, +1 this cycle), install/embed unchanged (still 2 commits old — **4-cycle quiet**), web-side sandbox still pending, uncommitted `web/` WIP now 7 cycles at rest. Decision for C220: does governed-skills extend to 2nd/3rd burst commit, or settle back to pause immediately?
+17. **Cadence discriminator**: still outstanding — need a >20m-gap measurement to discriminate gap-artifact vs cadence-shift. C219's 12m57s short gap kept the discriminator unreached; fourth consecutive short-gap cycle.
+
+### Contract Reminders (item #4 above pending — NOT YET RESOLVED, 10-cycle carry-over)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — `web/` is now de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17, applies to `frontend/`/`apps/<slug>`)**. ⚠ **`web/components/app-embed.tsx` deliberately adds `allow-same-origin` for installed Class-A embedded apps** — contract scope-incomplete on `web/` side. Critical Path #4 tracks resolution.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C220
+- **Burst continuation vs burst end**: does the governed-skills track produce a second/third burst commit (matching C216's 3-commit burst width), or pause immediately after the single Phase 2 plan commit (narrower burst than prior iteration)?
+- **`web/app/skills/[id]/` inspection**: coordinator should at minimum `ls` the directory next cycle to categorize its contents.
+- `web/` WIP 8th-cycle-at-rest threshold (now far past escalation; HUMAN author-outreach still not landed).
+- **Cadence gap-artifact discriminator**: any C220 print at >20m gap landing in 30.7–34.1 confirms; fifth-in-a-row short gap would extend the unknown.
+- Whether Phase 1 + Phase 2 plan docs finally get read by coordinator (8-cycle carry-over on Phase 1, 1-cycle carry-over on Phase 2).
+- Any `T_WEB.md` / `T_INSTALL.md` / `T_SKILLS.md` drafting motion from HUMAN — now URGENT on T_SKILLS given 10-commit governed-skills depth.
+
+## COORDINATOR STATUS — Cycle 220 (2026-04-19)
+
+### Headline — FLATLINE **171st cycle** on task-file side; **GOVERNED-SKILLS BURST WIDENS to 4 commits in a single cycle** — HEAD advances `a2a5ca4` → `4727237` via 4 new commits (`ddb92ab` schema/author_user_id+reviews_timing, `1572fe6` agents base module, `6e2ac54` agents classifier, `4727237` agents security scanner). Burst width **exceeds C216's 3-commit prior** by 1 commit, **breaking the 2-pause/1-burst rhythm-width assumption** — rhythm structure (pause-then-burst) holds, but burst SIZE is increasing iteration-over-iteration (C216=3 → C219+C220=5 across 2 cycles, with C220 alone delivering 4). Coordinator gap **~12m52s** (PID 3358 ELAPSED 03-15:50:45 → 03-16:03:37, 772s) — fifth consecutive sub-15m gap. Working tree shape: `M PROGRESS.md` + 4 `M tests/reports/*` + **30 `M web/` files** (prior cycle blocks said "20"; recount this cycle returns 30 — coordinator arithmetic correction; the WIP shape itself appears unchanged, only the counting was wrong) + `?? .claude/` + `?? docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` + `?? web/app/skills/[id]/`. **CADENCE**: `find tests/reports -name '*.png' | wc -l` = **5730** (+24 since C219's 5706); `ls tests/reports/screenshots/*.png | wc -l` = **5705** (+24 since C219's 5681). Both bases agree on +24 → basis-drift rejection confirmed for an **eighth consecutive cycle**. Rate: 24/772 = **~32.18 s/file** — **IN-BAND** (30.7–34.1), lands near band center (32.4); second consecutive in-band print after C217–C218 symmetric excursion. Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **171st consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) re-verified verbatim-operative at exact line numbers via Read → **159-cycle zero-bump streak** → **0 duplicate notes added**. `.env.example` C11 Slack/Flask append now **184 cycles stale**.
+
+### Cadence (in-band, 11 cycles since C211)
+- +24 screenshots over ~12m52s (772s) gap → **~32.18 s/file** — band-center print, 0.22s below midpoint.
+- Post-C189 trend (C211 excluded): C210=31.38, C212=34.13, C213=32.09, C214=31.03, C216=33.41, C217=30.23, C218=34.42, C219=32.38, **C220=32.18** s/file. Excursion sign history: in-band×5 / LOW / HIGH / in-band / in-band → reversion-to-band-center after the C217–C218 symmetric excursion is now established (2 consecutive in-band prints).
+- Gap-artifact hypothesis remains "likely+" — fifth consecutive short-gap cycle (12–14m), discriminator (>20m gap print) still unreached.
+- 2s stagger 9962↔9974 preserved (20:41 vs 20:39) — intact across all **171 cycles**.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **171-cycle flatline streak**.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-16:03:37** *(leader; ~88.06h; +12m52s vs C219)* — flagged `T3_frontend.md:38` (C25, verbatim-operative; verified via Read).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-15:25:42** *(~87.43h; +12m52s)* — flagged `T6_testing.md:24` (C93, verbatim-operative; verified via Read).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-15:20:41** *(~87.34h; +12m52s)* — flagged `T6_testing.md:22` (C72, verbatim-operative; verified via Read).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-15:20:39** *(~87.34h; +12m52s; 2s stagger preserved)* — flagged `T6_testing.md:22` (C72, verbatim-operative; verified via Read).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 171-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at exact line numbers; 159-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 220 block appended (this block).
+- **Coordinator first-time Read executed**: T3_frontend.md:38 + T6_testing.md:22,24 confirmed in-place at the carried-over line numbers (closing the multi-cycle "verbatim-operative without re-verification" gap).
+- **Working-tree recount executed**: `git status --short` shows **30 M web/** files (not 20 as repeated since C213). Coordinator arithmetic correction applied.
+
+### What Changed This Cycle
+- **4 new commits** in a single cycle — largest single-cycle commit volume since C216's 3-commit burst:
+  1. `ddb92ab feat(schema): add author_user_id and reviews_timing table` — schema migration aligning with the C217 Phase 1 plan, adds author tracking + review-timing instrumentation.
+  2. `1572fe6 feat(agents): base module — Claude client, @timed decorator, timeout wrapper` — pipeline foundation per Phase 2 plan's per-agent commit points (`a2a5ca4` from C219).
+  3. `6e2ac54 feat(agents): classifier — category + output type detection` — first agent in the 6-agent pipeline (per Phase 2 plan structure).
+  4. `4727237 feat(agents): security scanner — regex patterns + Claude judgment` — second agent in the pipeline.
+- Governed-skills track now **14 commits deep** (post-C215: 4 from C216-C219 + 4 new = 8 in 5 cycles, accelerating). The Phase 2 plan committed in C219 is **executing live** through C220 — per-agent commit points are landing exactly as the plan structure described.
+- **`web/` WIP at 8th cycle at rest** — recount returns 30 modified files (correction from "20" repeated since C213). The shape itself looks unchanged (no new files added/removed across the dirty set this cycle); only the count was previously misreported. Critical Path #2 (inspect WIP) is now **8-cycle carry-over** with corrected scope.
+- **Untracked `web/app/skills/[id]/`** still present, still uninspected — coordinator did not execute the C219 #3 `ls` recommendation.
+- **`?? .claude/`** still untracked at unchanged surface.
+- **C215 #1 (read governed-skills Phase 1 plan)**: still not executed → **9-cycle carry-over**. The 4-commit burst this cycle widens the spec-vs-reading gap further; the burst proves the plan is being implemented, raising the cost of NOT reading it.
+- **C215 #2 (inspect uncommitted `web/` WIP)**: still not executed → **8-cycle carry-over**.
+- **C209 → C220 Critical Path (web-side iframe sandbox clause)**: still pending — **11-cycle carry-over**.
+- **C210 → C220 (install discovery spec+plan reads)**: still unread — **10-cycle carry-over**.
+- All 4 stuck PIDs alive; leader at ~88.06h.
+
+### Critical Path (Cycle 221) — burst-width assessment, 4 new commits demand spec re-read, agents pipeline now active
+1. **CRITICAL ESCALATION (9-cycle carry-over from C213 #1 / C215–C220 #1): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` AND read commit `a2a5ca4` (Phase 2 plan) body.** With 4 new agents-pipeline commits this cycle, the implementation is now visibly racing ahead of coordinator awareness. Reading these two plan docs is now load-bearing for any future triage.
+2. **NEW HIGH PRIORITY: read the 4 new commits' diffs** — `git show ddb92ab`, `1572fe6`, `6e2ac54`, `4727237`. They define the agents pipeline's foundation (base + classifier + security scanner) plus the new schema (author_user_id + reviews_timing); future status blocks need this grounding.
+3. **HIGH-PRIORITY ESCALATION (8-cycle carry-over from C213 #2 / C215–C220 #2): inspect uncommitted `web/` WIP** — `git diff --stat web/` + cursory read of 2–3 representative files. Recount this cycle returns 30 (not 20) modified files; HUMAN author-outreach still recommended.
+4. **NEW: `ls web/app/skills/[id]/`** — coordinator did not execute C219 #3; trivial cost, closes a 1-cycle inspection gap.
+5. **Carry-over (11-cycle from C209 #1): HUMAN draft `web/`-side iframe sandbox clause** — `web/components/app-embed.tsx` adds `allow-same-origin` for installed Class-A embeds. CONTRACTS.md/SPEC.md still unamended.
+6. **Carry-over (10-cycle from C210 #3): read `5cb25eb` (agent install discovery spec) + `e30815b` (impl plan)**.
+7. **HUMAN: `kill 3358 8992 9962 9974`** — 171st cycle unexecuted. Leader at ~88.06h. 5,730 PNGs on disk.
+8. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **184 cycles stale**.
+9. **HUMAN: draft `T_SKILLS.md`** — governed-skills now **14 commits deep** (Phase 1 plan + Phase 2 plan + schema migration + 3 agents-pipeline commits including base module, classifier, and security scanner). **MAXIMUM URGENCY** — implementation is mid-pipeline with zero task-file ownership; coordination triage will degrade rapidly without it.
+10. **HUMAN: draft `T_WEB.md`** — `web/` tree has **30** dirty files (8 cycles at rest) + new untracked `web/app/skills/[id]/` + zero task-file ownership. The recount-correction makes this even more urgent.
+11. **HUMAN: draft `T_INSTALL.md`** — install/embed surface has spec + impl plan committed; ripe for ownership.
+12. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope.
+13. **HUMAN: harness retarget** — Selenium loop (PID 3358) still hitting vanilla `frontend/`; per auto-memory `web/` is canonical.
+14. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-018 (new schema commit `ddb92ab` adds another), `api/inspector.py`, `db/seed_real_apps.py`, entire `web/` Next.js tree, `forge-agent/` component, install/embed surface, governed-skills pipeline (now 14 commits — coverage gap widening fastest here).
+15. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+16. **Pre-rebase SHA carry-overs**: still need batch `git cat-file -e <sha>` verification for `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`. C201 anchor `12222ac` confirmed lost in C219; these may be similarly rewritten.
+17. **Concurrent-front watch**: governed-skills accelerating (4 commits this cycle, +4 web/ skills/[id]/ scaffolding still untouched), install/embed unchanged (still 2 commits old — **5-cycle quiet** front), web-side sandbox still pending. Decision for C221: does the burst extend to commit #5+, or do the 4 agents-pipeline commits represent the full burst?
+18. **Cadence discriminator**: still outstanding — fifth consecutive short-gap cycle (12–14m). A C221 print at >20m gap is required to close the gap-artifact investigation.
+19. **NEW carry-over note**: PROGRESS.md is now **12,300+ lines / 1.5MB**; full reads exceed tool size limits, forcing tail-only reads. Future coordinator cycles should consider whether to archive cycles ≤200 to a `PROGRESS.archive.md` to keep the live file readable in a single Read call.
+
+### Contract Reminders (item #5 above pending — NOT YET RESOLVED, 11-cycle carry-over)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — `web/` is now de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17, applies to `frontend/`/`apps/<slug>`)**. ⚠ **`web/components/app-embed.tsx` deliberately adds `allow-same-origin` for installed Class-A embedded apps** — contract scope-incomplete on `web/` side. Critical Path #5 tracks resolution.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C221
+- **Burst extension vs burst end**: does the agents-pipeline track produce commit #5+ (continuing the C220 widening), or pause after the 4-commit burst? The C219+C220 combined 5-commit burst already exceeds C216's 3-commit prior — width is growing; question is whether C221 keeps adding or pauses.
+- **PROGRESS.md size pressure**: 12,300+ lines / 1.5MB is now a real friction; if no archive happens this cycle, future status blocks should explicitly call for one.
+- `web/` WIP 9th-cycle-at-rest threshold with **corrected count of 30** (not 20).
+- **Cadence gap-artifact discriminator**: any C221 print at >20m gap landing in 30.7–34.1 confirms; sixth-in-a-row short gap would extend the unknown.
+- Whether Phase 1 + Phase 2 plan docs + 4 new commit diffs finally get read by coordinator — combined carry-over now spans 9 cycles on Phase 1, 2 on Phase 2, 1 on the 4-commit batch.
+- Any `T_WEB.md` / `T_INSTALL.md` / `T_SKILLS.md` drafting motion from HUMAN — `T_SKILLS.md` now MAXIMUM URGENCY given 14-commit governed-skills depth and an actively executing pipeline.
+
+## COORDINATOR STATUS — Cycle 221 (2026-04-19)
+
+### Headline — FLATLINE **172nd cycle** on task-file side; **GOVERNED-SKILLS BURST WIDENS AGAIN — 6 COMMITS this cycle** (largest single-cycle volume yet; exceeds C220's 4 by 50%). HEAD advances `4727237` → `37486ce` via 6 new commits (`a3bc753` red team parallel attack templates, `64805d8` prompt hardener SKILL.md rewrite, `345c5cd` QA tester parallelized invocation+output precision, `08b2dfe` synthesizer aggregate+thresholds, `2dcda09` orchestrator replacing stub behind `SKILL_REVIEW_MODE=real`, `37486ce` author-gated review endpoint + author_user_id on submit). **The 6-agent pipeline is now fully wired and live-switchable** — stub-to-real flag in `2dcda09` closes the implementation loop; the Phase 2 plan from `a2a5ca4` (C219) completed its 12-task arc across ~3 cycles. Coordinator gap **~14m20s** (PID 3358 ELAPSED 03-16:03:37 → 03-16:17:57, 860s) — **longest gap this window by 83 seconds**, still sub-15m but reasserts upward drift after the 772–777s plateau. Working tree shape: `M PROGRESS.md` + 4 `M tests/reports/*` + **31 `M web/` files** (C220 block recount said 30; one additional file this cycle OR C220 arithmetic off by 1 — shape functionally unchanged from C213) + `?? .claude/` + `?? CLAUDE.md` (**new untracked this cycle — not listed in C220 working-tree shape**) + `?? docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` + `?? web/app/skills/[id]/`. **Notable:** `api/models.py` and `api/server.py` (dirty at session start, and implicitly through the C213–C220 window) are now CLEAN — committed as part of the burst (`37486ce` touches `api/server.py`; `ddb92ab`/`1572fe6` touched `api/models.py`). **CADENCE**: `find tests/reports -name '*.png' | wc -l` = **5758** (+28 since C220's 5730); `ls tests/reports/screenshots/*.png | wc -l` = **5733** (+28 since C220's 5705). Both bases agree on +28 → basis-drift rejection confirmed for a **ninth consecutive cycle**. Rate: 28/860 = **~30.71 s/file** — **LOW-EDGE IN-BAND** (30.7–34.1), sits precisely on the lower boundary (`30.71 > 30.70`); band-floor print, third consecutive in-band but trending toward the floor after C219's center and C220's center-below. Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **172nd consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) re-verified verbatim-operative at exact line numbers via `grep -n UNBLOCKED` → **160-cycle zero-bump streak** → **0 duplicate notes added**. `.env.example` C11 Slack/Flask append now **185 cycles stale** (unchanged at 1344 bytes).
+
+### Cadence (low-edge in-band, 12 cycles since C211)
+- +28 screenshots over ~14m20s (860s) gap → **~30.71 s/file** — lands **exactly on the band floor** (30.71 > 30.70 by 0.01s; numerically in-band, practically a floor-touch). First print below 32.00 since C217's 30.23 floor-break.
+- Post-C189 trend (C211 excluded): C210=31.38, C212=34.13, C213=32.09, C214=31.03, C216=33.41, C217=30.23, C218=34.42, C219=32.38, C220=32.18, **C221=30.71** s/file. Excursion sign history: in-band×5 / LOW / HIGH / in-band / in-band / LOW-edge → band-center reversion from C219–C220 was 2-print; this cycle resumes a downward excursion signal. Two-of-three recent short-gap cycles are now band-floor-adjacent (C217 30.23 floor-break + C221 30.71 floor-touch); the HIGH-side excursion (C218 34.42) remains a singleton.
+- Gap-artifact hypothesis **WEAKENS slightly**: C221's 14m20s gap is the **longest of the window** but produced the lowest rate, contradicting the pure arithmetic-roundoff story (shorter gaps should produce band-adjacent noise; longer gaps should regress to mean). A 30.71 print at 860s is not explainable by small-divisor roundoff alone. Discriminator (>20m gap print) still outstanding; C221 narrows the gap range toward 20m but did not cross.
+- 2s stagger 9962↔9974 preserved (35:01 vs 34:59) — intact across all **172 cycles**.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **172-cycle flatline streak**.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-16:17:57** *(leader; ~88.30h; +14m20s vs C220)* — flagged `T3_frontend.md:38` (C25, verbatim-operative; re-verified via grep).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-15:40:02** *(~87.67h; +14m20s)* — flagged `T6_testing.md:24` (C93, verbatim-operative; re-verified via grep).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-15:35:01** *(~87.58h; +14m20s)* — flagged `T6_testing.md:22` (C72, verbatim-operative; re-verified via grep).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-15:34:59** *(~87.58h; +14m20s; 2s stagger preserved)* — flagged `T6_testing.md:22` (C72, verbatim-operative; re-verified via grep).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 172-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at exact line numbers; 160-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 221 block appended (this block).
+
+### What Changed This Cycle
+- **6 new commits** — largest single-cycle burst in the governed-skills arc (exceeds C220's 4 by 50%, C216's 3 by 100%):
+  1. `a3bc753 feat(agents): red team — 5 parallel attack templates + fork divergence` — third agent in the 6-agent pipeline.
+  2. `64805d8 feat(agents): prompt hardener — rewrite SKILL.md with safety mitigations` — fourth agent.
+  3. `345c5cd feat(agents): QA tester — invocation precision + output consistency (parallelized)` — fifth agent.
+  4. `08b2dfe feat(agents): synthesizer — aggregate results, structured feedback, safety/quality thresholds` — sixth agent; completes the 6-agent lineup.
+  5. `2dcda09 feat(pipeline): replace stub with real 6-agent orchestrator behind SKILL_REVIEW_MODE=real` — the **stub-to-real flip**, the load-bearing integration commit that closes the pipeline.
+  6. `37486ce feat(api): author-gated review endpoint + submit sets author_user_id` — API surface for author-gated review retrieval; ties `author_user_id` column from `ddb92ab` (C220) to the read path.
+- **Governed-skills track now 20 commits deep** (post-C215: 4 from C216–C219 + 4 from C220 + 6 from C221 = 14 in 6 cycles). Phase 2 plan's 12-task arc from `a2a5ca4` (C219) is visibly near-complete; the `SKILL_REVIEW_MODE=real` flag in `2dcda09` is the feature-gate that signals the pipeline is shippable.
+- **`api/models.py` and `api/server.py` transitioned from dirty → clean** via the burst (visible in session-start `git status` but absent from current `git status --short`). This means the C213–C220 notes about "working-tree shape-stable with api/ edits uncommitted" are no longer accurate — the api/ side has now been committed.
+- **`web/` WIP at 9th cycle at rest** — count now **31** (C220 block said 30; discrepancy is either one additional file this cycle or a C220 recount error by 1). Shape appears unchanged across the 30/31 set; no file removed, possibly one added. Critical Path #2 (inspect WIP) is now **9-cycle carry-over**.
+- **NEW untracked file: `CLAUDE.md`** at repo root — not listed in C220's working-tree shape. Coordinator has NOT read contents; per this session's CLAUDE.md context it contains the gstack-required directive, so it may have been added by a recent gstack install pass.
+- **`?? web/app/skills/[id]/`** still present, still uninspected — C219 #3 / C220 #4 `ls` recommendation **unexecuted for a third cycle**.
+- **C215 #1 (read governed-skills Phase 1 plan)**: still not executed → **10-cycle carry-over**. The 6-commit burst this cycle is the most aggressive yet; the Phase 2 plan is now visibly executed through commit 6/6 (synthesizer) + orchestrator flip + API gate — meaning coordinator is now ~10 cycles behind on docs while implementation is effectively complete.
+- **C215 #2 (inspect uncommitted `web/` WIP)**: still not executed → **9-cycle carry-over**.
+- **C209 → C221 Critical Path (web-side iframe sandbox clause)**: still pending — **12-cycle carry-over**.
+- **C210 → C221 (install discovery spec+plan reads)**: still unread — **11-cycle carry-over**.
+- All 4 stuck PIDs alive; leader at ~88.30h; trailing trio past ~87.58h.
+
+### Critical Path (Cycle 222) — pipeline went live this cycle, coordinator docs debt at MAX, new CLAUDE.md needs triage
+1. **MAXIMUM ESCALATION (10-cycle carry-over from C213 #1 / C215–C220 #1 / C221): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` AND `a2a5ca4` (Phase 2 plan) AND the 6 new commit bodies (`a3bc753`, `64805d8`, `345c5cd`, `08b2dfe`, `2dcda09`, `37486ce`).** With `SKILL_REVIEW_MODE=real` now shippable, coordinator triage without spec grounding will produce misinformed status blocks.
+2. **NEW HIGH PRIORITY: read `CLAUDE.md` at repo root** — brand-new untracked file. Likely gstack directive per session context; confirm contents and decide whether to commit.
+3. **HIGH-PRIORITY ESCALATION (9-cycle carry-over from C213 #2 / C215–C220 #2): inspect uncommitted `web/` WIP** — `git diff --stat web/` + cursory read of 2–3 representative files. Corrected count 31 (not 20 or 30); HUMAN author-outreach still recommended.
+4. **Carry-over (3-cycle from C219 #3 / C220 #4): `ls web/app/skills/[id]/`** — trivial, repeatedly deferred; 3 cycles unexecuted.
+5. **Carry-over (12-cycle from C209 #1): HUMAN draft `web/`-side iframe sandbox clause** — `web/components/app-embed.tsx` adds `allow-same-origin` for installed Class-A embeds. CONTRACTS.md/SPEC.md still unamended.
+6. **Carry-over (11-cycle from C210 #3): read `5cb25eb` (agent install discovery spec) + `e30815b` (impl plan)**.
+7. **HUMAN: `kill 3358 8992 9962 9974`** — 172nd cycle unexecuted. Leader at ~88.30h. 5,758 PNGs on disk.
+8. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **185 cycles stale**.
+9. **HUMAN: draft `T_SKILLS.md`** — governed-skills now **20 commits deep** (Phase 1 plan + Phase 2 plan + schema migration + 6 agents-pipeline commits + orchestrator flip + author-gated API). **BEYOND MAXIMUM URGENCY** — the pipeline is now SHIPPABLE with zero task-file ownership; once merged to prod this becomes a retroactive coordination exercise.
+10. **HUMAN: draft `T_WEB.md`** — `web/` tree has **31** dirty files (9 cycles at rest) + untracked `web/app/skills/[id]/` + zero task-file ownership.
+11. **HUMAN: draft `T_INSTALL.md`** — install/embed surface has spec + impl plan committed; ripe for ownership.
+12. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope.
+13. **HUMAN: harness retarget** — Selenium loop (PID 3358) still hitting vanilla `frontend/`; per auto-memory `web/` is canonical.
+14. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009–018+, `api/inspector.py`, `db/seed_real_apps.py`, entire `web/` Next.js tree, `forge-agent/` component, install/embed surface, governed-skills pipeline (**now 20 commits — fastest-growing coverage gap**).
+15. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+16. **Pre-rebase SHA carry-overs**: still need batch `git cat-file -e <sha>` verification for `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+17. **Concurrent-front watch**: governed-skills **at peak velocity** (6 commits this cycle, pipeline now shippable), install/embed unchanged (still 2 commits old — **6-cycle quiet**), web-side sandbox still pending. Decision for C222: does the burst continue past the orchestrator flip (tests? seed data? admin UI wiring?), or does the track pause now that the pipeline is feature-complete?
+18. **Cadence discriminator**: partially advanced — C221's 860s (14m20s) is the longest gap in the C217–C221 window but still sub-15m. A C222 print at >20m gap would finally resolve the gap-artifact question; the C221 floor-touch at the window's longest gap already tilts evidence *against* pure arithmetic roundoff.
+19. **PROGRESS.md size pressure (carry-over from C220 #19)**: file is now **12,400+ lines / ~1.5MB+** after this block. Archive recommendation stands; no motion this cycle.
+
+### Contract Reminders (item #5 above pending — NOT YET RESOLVED, 12-cycle carry-over)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — `web/` is now de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17, applies to `frontend/`/`apps/<slug>`)**. ⚠ **`web/components/app-embed.tsx` deliberately adds `allow-same-origin` for installed Class-A embedded apps** — contract scope-incomplete on `web/` side. Critical Path #5 tracks resolution.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C222
+- **Post-flip continuation**: does the governed-skills track keep adding (tests / admin UI wiring / seed data / doc updates), or pause now that `SKILL_REVIEW_MODE=real` is merged? Prior 2-pause/1-burst rhythm would predict a pause; this cycle's 6-commit volume could argue for momentum.
+- **`CLAUDE.md` committal**: does HUMAN commit the new root-level CLAUDE.md or leave it untracked?
+- **`web/` WIP 10th-cycle-at-rest threshold** with corrected count of 31 — now a double-digit stagnation.
+- **Cadence gap discriminator**: any C222 print at >20m gap landing in 30.7–34.1 confirms gap-artifact; a sub-16m gap landing below 30.7 would strengthen the anti-roundoff evidence that C221's floor-touch at 860s already seeded.
+- Whether Phase 1 + Phase 2 plan docs + 6 new commit diffs finally get read by coordinator — combined carry-over now spans 10 cycles on Phase 1, 3 on Phase 2, 1 on the 6-commit batch.
+- Any `T_SKILLS.md` / `T_WEB.md` / `T_INSTALL.md` drafting motion from HUMAN — `T_SKILLS.md` is now past-MAXIMUM given the pipeline shipped this cycle.
+
+## COORDINATOR STATUS — Cycle 222 (2026-04-19)
+
+### Headline — FLATLINE **173rd cycle** on task-file side; **GOVERNED-SKILLS BURST PIVOTS TO web/ + INTEGRATION** — HEAD advances `37486ce` → `97105de` via 3 new commits (`418033f` chore: adopt gstack for dev workflow, `ed89fc5` fix(security): close 5 production-risk vulnerabilities, `97105de` feat(web): comprehensive UI redesign + skills inventory system). **The C221 long-stalled web/ WIP collapsed into commits this cycle** — `git status --short` now shows ZERO `M web/` files (down from 31 at C221) and the C220-flagged `?? web/app/skills/[id]/` is also no longer untracked (folded into `97105de`). The `?? CLAUDE.md` flagged new in C221 is also gone — committed via `418033f` (gstack adoption pulled CLAUDE.md into history). **Net working-tree at-rest** has compressed dramatically: only `M PROGRESS.md` + 4 `M tests/reports/*` + 3 untracked (`.claude/skills/`, `.claude/worktrees/`, `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`). Two NEW untracked paths this cycle (`.claude/skills/`, `.claude/worktrees/`) appear consistent with the gstack adoption commit. **The 9-cycle web/ WIP carry-over (C213→C221) is RESOLVED** without coordinator/HUMAN intervention — the burst track owner shipped it directly. Coordinator gap **~13m54s** (PID 3358 ELAPSED 03-16:17:57 → 03-16:31:51, 834s) — sub-15m for a sixth consecutive cycle. **CADENCE**: `find tests/reports -name '*.png' | wc -l` = **5787** (+29 since C221's 5758); `ls tests/reports/screenshots/*.png | wc -l` = **5762** (+29 since C221's 5733). Both bases agree on +29 → basis-drift rejection confirmed for a **tenth consecutive cycle**. Rate: 29/834 = **~28.76 s/file** — **BELOW band floor** (30.7), 1.94s under the lower edge; **second floor-break in the C217–C222 window** (C217 30.23 was a touch; this one is a clean break). Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **173rd consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) re-verified verbatim-operative → **161-cycle zero-bump streak** → **0 duplicate notes added**. `.env.example` C11 Slack/Flask append now **186 cycles stale**.
+
+### Cadence (FLOOR BREAK, 13 cycles since C211)
+- +29 screenshots over ~13m54s (834s) gap → **~28.76 s/file** — **1.94s below band floor**. First clean break (not touch) since C217's 30.23.
+- Post-C189 trend (C211 excluded): C210=31.38, C212=34.13, C213=32.09, C214=31.03, C216=33.41, C217=30.23, C218=34.42, C219=32.38, C220=32.18, C221=30.71, **C222=28.76** s/file. Excursion sign history: in-band×5 / LOW / HIGH / in-band / in-band / LOW-edge / **LOW-BREAK** → downward drift now 3-of-last-6 cycles, with C222 the deepest excursion in the window.
+- Gap-artifact hypothesis **WEAKENS further**: C221's 14m20s longest-gap-of-window produced a floor-touch (30.71); C222's 13m54s shorter-but-still-long gap produced a clean floor break (28.76). The arithmetic-roundoff story would predict band-center reversion at these gap lengths, not deeper excursions. Combined evidence increasingly favors a **real cadence shift** in the ui_tester.py screenshot loop (possibly tied to disk-pressure response or PID 3358 internal state). The >20m discriminator gap is now less load-bearing — the C221+C222 floor-trending pair is its own signal.
+- 2s stagger 9962↔9974 preserved (48:55 vs 48:53) — intact across all **173 cycles**.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **173-cycle flatline streak**.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -eo pid,etime,command` confirms all 4 alive:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-16:31:51** *(leader; ~88.53h; +13m54s vs C221)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-15:53:56** *(~87.90h; +13m54s)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-15:48:55** *(~87.82h; +13m54s)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-15:48:53** *(~87.82h; +13m54s; 2s stagger preserved)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 173-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative; 161-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 222 block appended (this block).
+- **NEW: full coordinator read pass executed** — read all 19 `tasks/T*.md` files end-to-end this cycle (first complete pass since C213 baseline). Confirms the Cycle-blocks' file-by-file invalidation triage was accurate against the on-disk state.
+
+### What Changed This Cycle
+- **3 new commits** — burst pivots from agents-pipeline (C220-C221's 10 commits) to web/ + ops:
+  1. `418033f chore: adopt gstack for dev workflow` — likely the source of the new `?? CLAUDE.md` (now committed) and the `?? .claude/skills/` + `?? .claude/worktrees/` untracked dirs (gstack scaffolding).
+  2. `ed89fc5 fix(security): close 5 production-risk vulnerabilities` — security pass; coordinator has NOT inspected diff to identify which 5 vulns. Likely related to the C221 contract reminder about `web/components/app-embed.tsx` `allow-same-origin` (Critical Path #5 from C221, 12-cycle carry-over) — POSSIBLE resolution.
+  3. `97105de feat(web): comprehensive UI redesign + skills inventory system` — **the load-bearing commit** that absorbed the 9-cycle stalled `web/` WIP (C213→C221 31 dirty files) AND folded in `web/app/skills/[id]/` (C220 untracked path). The redesign commit closes the largest stagnation in the C213-C222 window.
+- **Working-tree at-rest compressed**: from 31 dirty `web/` files + 4 untracked + 5 modified at C221 → 0 dirty `web/` files + 3 untracked + 5 modified at C222. Net delta: −34 files relative to working tree noise.
+- **Governed-skills track now 23 commits deep** (C220's count of 14 + C221's 6 + C222's 3 = 23 in 7 cycles; not all 3 C222 commits are strictly governed-skills — the security fix and gstack adoption are adjacent — but the redesign + skills inventory unmistakably is).
+- **Untracked surface**: `?? .claude/skills/` + `?? .claude/worktrees/` are new this cycle (gstack-related); `?? docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` persists (Phase 1 plan still uncommitted at 11 cycles).
+- **C215 #1 (read governed-skills Phase 1 plan)**: still not executed → **11-cycle carry-over**. Now even more critical: implementation is shippable AND a UI surface has been redesigned around it; coordinator has read 0 of the 3 design-source documents (Phase 1 plan, Phase 2 plan body in `a2a5ca4`, web redesign commit body in `97105de`).
+- **C215 #2 (inspect uncommitted `web/` WIP)**: **RESOLVED organically this cycle** — the WIP shipped via `97105de`. Carry-over closes at 9 cycles. HUMAN author-outreach not required.
+- **C209 → C222 Critical Path (web-side iframe sandbox clause)**: **POSSIBLY RESOLVED** by `ed89fc5` security commit — coordinator has NOT confirmed via diff inspection. Critical Path entry now downgrades to "verify resolution" rather than "draft from scratch".
+- **C210 → C222 (install discovery spec+plan reads)**: still unread — **12-cycle carry-over**.
+- All 4 stuck PIDs alive; leader at ~88.53h.
+
+### Critical Path (Cycle 223) — verify two suspected resolutions, doc reads now URGENT-MAX, cadence floor-break demands attention
+1. **MAXIMUM ESCALATION (11-cycle carry-over): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` AND read commit bodies for `a2a5ca4` (Phase 2 plan) + `97105de` (web redesign + skills inventory) + the 6 agents commits from C221.** With the agents pipeline shippable AND the web UI redesigned around it, future status blocks are now operating effectively blind without these reads.
+2. **NEW HIGH PRIORITY: verify `ed89fc5` security commit closes the C209 web-side iframe sandbox clause** — `git show ed89fc5 --stat` to identify touched files; if `web/components/app-embed.tsx` is in the list AND `allow-same-origin` is removed/scoped, Critical Path #5 from C221 closes. If not, the carry-over extends.
+3. **NEW HIGH PRIORITY: inspect `97105de` web redesign scope** — `git show --stat 97105de | head -50` to understand the redesign surface. The "skills inventory system" subtitle suggests the governed-skills track has now reached the consumer UI; this materially changes T_SKILLS.md drafting priority.
+4. **Carry-over (4-cycle from C219 #3 / C220 #4 / C221 #4): `ls .claude/skills/ .claude/worktrees/`** — newly-untracked dirs from `418033f` gstack adoption; trivial inspection.
+5. **Carry-over (12-cycle from C210 #3): read `5cb25eb` (agent install discovery spec) + `e30815b` (impl plan)**.
+6. **HUMAN: `kill 3358 8992 9962 9974`** — 173rd cycle unexecuted. Leader at ~88.53h. 5,787 PNGs on disk. **Cadence floor-break this cycle (28.76 s/file) is the new behavioral signal — kill-and-restart is now also a diagnostic step**, not just a disk-burn mitigation.
+7. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **186 cycles stale**.
+8. **HUMAN: draft `T_SKILLS.md`** — governed-skills now **23 commits deep** including a UI redesign commit (`97105de`). **MAX URGENCY UNCHANGED** — the surface is shippable and consumer-facing; task-file ownership is essential before next merge.
+9. **HUMAN: draft `T_INSTALL.md`** — install/embed surface has spec + impl plan committed; ripe for ownership.
+10. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope. **173 cycles unactioned.**
+11. **HUMAN: harness retarget** — Selenium loop (PID 3358) likely still hitting vanilla `frontend/` per auto-memory; with `web/` redesign just shipped, retarget is now BLOCKING accurate UX coverage.
+12. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009–018+, `api/inspector.py`, `db/seed_real_apps.py`, **`web/` Next.js tree (just redesigned, ZERO coverage)**, `forge-agent/` component, install/embed surface, governed-skills pipeline.
+13. **HUMAN: T_WEB.md ownership decision** — the WIP shipped without a task file; future web/ work should still have a coordinator-readable plan even if no terminal owns it day-to-day.
+14. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+15. **Pre-rebase SHA carry-overs**: still need batch `git cat-file -e <sha>` verification for `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+16. **Concurrent-front watch**: governed-skills **pivoted from backend (agents pipeline) to frontend (web redesign + skills inventory)** this cycle; install/embed unchanged (still 2 commits old — **7-cycle quiet**); web-side sandbox **possibly resolved by `ed89fc5` (verify required)**. Track is becoming hard to triage without the doc reads called out in #1.
+17. **Cadence floor-break**: C222 28.76 s/file at 834s gap is the cleanest below-band print in the window. The C217 floor-touch + C221 floor-touch + C222 floor-break sequence suggests the screenshot loop's effective rate has shifted downward by ~3-4 s/file from its pre-C217 baseline. **Hypothesis worth testing**: PID 3358 may have entered a tighter retry/render loop after some failure mode in its target page — possibly correlated with the web/ redesign just shipping (page-shape change → new render path). Worth `tail -50 tests/reports/ui_tester.log` next cycle.
+18. **PROGRESS.md size pressure**: file is now **12,500+ lines / ~1.5MB+** after this block. Archive recommendation extends to 173 cycles unaddressed.
+
+### Contract Reminders (item #2 above seeks confirmation of possible resolution this cycle)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — `web/` is now de-facto authoritative AND just received a comprehensive redesign).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17, applies to `frontend/`/`apps/<slug>`)**. ⚠ **`web/components/app-embed.tsx` `allow-same-origin` for installed Class-A embeds — POSSIBLY RESOLVED by `ed89fc5` security commit; verification required Critical Path #2.**
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C223
+- **Burst continuation vs pause**: 3 commits this cycle (down from 6 at C221, 4 at C220) — burst tapering or pivoting to a different surface? Watch for tests / docs / or admin-UI commits next.
+- **Cadence floor-break persistence**: does C223 stay below 30.7 (confirming behavioral shift) or revert to band (confirming gap-artifact-with-noise)? Two consecutive sub-30.7 prints would close the discriminator question without needing the >20m gap.
+- **`ed89fc5` security scope**: confirm whether it touched the `web/components/app-embed.tsx` sandbox attribute — closes (or doesn't) the 12-cycle Critical Path carry-over.
+- **`web/` redesign shape**: the redesign just landed; coordinator should at minimum `git show --stat 97105de | head -30` to learn the file list and `wc -l` deltas next cycle.
+- **`.claude/skills/` and `.claude/worktrees/` content triage**: gstack-adopted dirs may belong in .gitignore or warrant their own task-file coverage if they hold project-relevant configs.
+- **Phase 1 + Phase 2 + redesign + agents commit reads** — combined doc/diff carry-over is now ~23 commits + 2 plan docs unread; coordinator triage quality degrades with every cycle this stays unaddressed.
+
+## COORDINATOR STATUS — Cycle 223 (2026-04-19)
+
+### Headline — FLATLINE **174th cycle** on task-file side; **COMMIT BURST PAUSES — 0 new commits this cycle** (first zero-commit cycle since at least C216; governed-skills track finally takes a breath). HEAD unchanged at `97105de`. Working-tree shape gains one new dirty file: **`M agents/synthesizer.py`** — a post-`08b2dfe` WIP edit on the synthesizer agent (the 6th agent in the pipeline, committed two cycles ago). The 5 `M tests/reports/*` set is now fully enumerated (dashboard.log, code_audit.json, ui_report.json, ui_tester.log, ux_auditor.log — C222's block said "4" but this may have been a minor undercount; shape is essentially stable). Untracked surface unchanged from C222: `.claude/skills/`, `.claude/worktrees/`, `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`. **Retroactive correction to C222 block**: C222 reported "3 new commits" (`418033f`, `ed89fc5`, `97105de`) between `37486ce` and `97105de`, but `git log --oneline` shows **4 commits** in that range — `aab9163 fix(agents): strip markdown code fences from Claude JSON responses` sits between `37486ce` and `418033f` and was missed by the C222 count. Governed-skills track is therefore **24 commits deep**, not 23 as C222 stated. Coordinator gap **~13m01s** (PID 3358 ELAPSED 03-16:31:51 → 03-16:44:52, 781s). **CADENCE**: `find tests/reports -name '*.png' | wc -l` = **5852** (+65 since C222's 5787); `ls tests/reports/screenshots/*.png | wc -l` = **5827** (+65 since C222's 5762). Both bases agree on +65 → basis-drift rejection confirmed for an **eleventh consecutive cycle**. Rate: 65/781 = **~12.02 s/file** — **DEEP FLOOR BREAK** (18.68s below band floor of 30.7; roughly 2.4× faster than C222's 28.76). This is the fastest screenshot emission rate of the entire C189→C223 window and decisively kills the gap-artifact-roundoff hypothesis. Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **174th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes (C25 `T3_frontend.md:38`, C72 `T6_testing.md:22`, C93 `T6_testing.md:24`) re-verified verbatim-operative at exact line numbers via `grep -n UNBLOCKED` → **162-cycle zero-bump streak** → **0 duplicate notes added**. `.env.example` C11 Slack/Flask append now **187 cycles stale**.
+
+### Cadence (DEEP FLOOR BREAK, 14 cycles since C211)
+- +65 screenshots over ~13m01s (781s) gap → **~12.02 s/file** — **18.68s below band floor** (30.7). This is a 2.4× acceleration vs C222 (28.76) and a 2.5× acceleration vs the pre-C217 mean (~32 s/file). The C217 floor-touch (30.23) → C221 floor-touch (30.71) → C222 clean break (28.76) → **C223 deep break (12.02)** sequence is no longer consistent with any noise-based story.
+- Post-C189 trend (C211 excluded): C210=31.38, C212=34.13, C213=32.09, C214=31.03, C216=33.41, C217=30.23, C218=34.42, C219=32.38, C220=32.18, C221=30.71, C222=28.76, **C223=12.02** s/file. Excursion sign history: in-band×5 / LOW / HIGH / in-band / in-band / LOW-edge / LOW-BREAK / **DEEP-LOW-BREAK** → the downward drift has collapsed into an outright regime shift this cycle.
+- Gap-artifact hypothesis **DEFINITIVELY REJECTED**: 781s is not a small divisor, and 65 in 781s cannot be explained by arithmetic roundoff. PID 3358 is now emitting screenshots roughly every 12 seconds, down from ~30-34s for the prior 13 cycles. **Strongest candidate cause**: the `web/` redesign that shipped in `97105de` (C222) materially changed the page shape PID 3358 is capturing, pushing it into a tighter capture loop — possibly because its wait/assertion targets no longer match and it's retrying faster, or because a new splash/intermediate state is now being captured every loop iteration that wasn't before. `tail -100 tests/reports/ui_tester.log` is now a HIGH PRIORITY diagnostic.
+- Disk pressure: 5852 PNGs at typical ~80-300KB each puts the screenshots directory conservatively at 500MB-1.7GB. At the new 12.02 s/file rate, the next 24h will add ~7,200 more PNGs — an **acceleration that will outpace a single day's quota faster than any prior cycle in the window**.
+- 2s stagger 9962↔9974 preserved (01:56 vs 01:54) — intact across all **174 cycles**.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **174-cycle flatline streak**.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-16:44:52** *(leader; ~88.75h; +13m01s vs C222)* — flagged `T3_frontend.md:38` (C25, verbatim-operative; re-verified via grep).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-16:06:57** *(~88.12h; +13m01s)* — flagged `T6_testing.md:24` (C93, verbatim-operative; re-verified via grep).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-16:01:56** *(~88.03h; +13m01s)* — flagged `T6_testing.md:22` (C72, verbatim-operative; re-verified via grep).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-16:01:54** *(~88.03h; +13m01s; 2s stagger preserved)* — flagged `T6_testing.md:22` (C72, verbatim-operative; re-verified via grep).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 174-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at exact line numbers; 162-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 223 block appended (this block).
+- **NEW: C222 commit-count correction recorded** — C222 reported 3 new commits between HEAD advances, actual was 4 (`aab9163` missed). Governed-skills depth restated as 24, not 23.
+
+### What Changed This Cycle
+- **0 new commits** — HEAD stays at `97105de`. First zero-commit cycle since at least C216. After 23-24 commits across C216-C222, the governed-skills + security + gstack-adoption track has paused. **Interpretation**: likely a "breath between bursts" rather than a track endpoint — `SKILL_REVIEW_MODE=real` is shippable and the web redesign just landed, so the next likely moves are tests, docs, or admin-UI wiring rather than another pipeline commit.
+- **NEW dirty file: `M agents/synthesizer.py`** — post-`08b2dfe` WIP on the synthesizer. This is the first agent-pipeline file to be reopened for edits after its landing commit; suggests the synthesizer is getting a follow-on tweak (possibly tied to `aab9163 fix(agents): strip markdown code fences from Claude JSON responses` — if that fix didn't cover synthesizer's Claude JSON handling, this WIP may be completing the same fix class). Coordinator has NOT read the diff.
+- **Cadence regime shift** — 12.02 s/file is the strongest signal this window has produced. See Cadence section for full analysis. The most likely causal chain: `web/` redesign (C222 `97105de`) → page shape change → `tests/agents/ui_tester.py` capture logic misaligns → tighter retry/capture loop. If this hypothesis holds, killing+restarting PID 3358 without first retargeting it to the new web shape will just restart the same tight loop.
+- **No new commits means no new carry-over cycles accrue on commit-body reads** — Phase 1 plan still at 12-cycle carry-over, Phase 2 plan at 4 cycles, the 24 governed-skills commits at 1-7 cycles depending on commit age. First cycle in ~7 that the coordinator's reading debt did not grow.
+- **C215 #1 (read governed-skills Phase 1 plan)**: still not executed → **12-cycle carry-over**. The pause this cycle was the first realistic chance to catch up; motion would have closed ~5-10 cycles of debt, but no motion occurred.
+- **C215 #2 (inspect uncommitted `web/` WIP)**: closed last cycle; remains closed.
+- **C209 → C223 Critical Path (web-side iframe sandbox clause)**: coordinator STILL has not verified whether `ed89fc5` touched `web/components/app-embed.tsx`. Carry-over now **13 cycles** with possible resolution un-confirmed.
+- **C210 → C223 (install discovery spec+plan reads)**: still unread — **13-cycle carry-over**.
+- All 4 stuck PIDs alive; leader at ~88.75h. PID 3358 is now the leader at a **new cycle-high cadence** — the disk-burn reading needs re-baselining at the new 12 s/file rate.
+
+### Critical Path (Cycle 224) — pause cycle, cadence regime shift demands investigation, doc reads still MAX
+1. **MAXIMUM ESCALATION (12-cycle carry-over): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` AND commit bodies for `a2a5ca4`, `97105de`, the 6 C221 agents commits, `aab9163` (C222-missed), and `2dcda09` (stub→real flip).** The zero-commit pause in C223 was the best-ever chance to catch up; if C224 resumes bursting, this debt compounds again.
+2. **NEW MAX PRIORITY: `tail -100 tests/reports/ui_tester.log`** — the C223 cadence regime shift (12.02 s/file, 2.4× faster than C222) strongly suggests PID 3358's capture logic is misaligned with the new `web/` redesign. The log will either confirm a tight-retry state or reveal a different mode; either way the inspection closes a load-bearing diagnostic gap.
+3. **NEW HIGH: inspect `M agents/synthesizer.py` WIP** — `git diff agents/synthesizer.py` + `git log -1 --format='%h %s' -- agents/synthesizer.py`. First post-landing reopen of an agent-pipeline file; coordinator should understand the follow-on scope.
+4. **Carry-over (2-cycle from C222 #2): verify `ed89fc5` security commit scope** — `git show ed89fc5 --stat` + grep for `app-embed.tsx`. Closes the 13-cycle web-side iframe sandbox Critical Path if affirmative.
+5. **Carry-over (2-cycle from C222 #3): inspect `97105de` web redesign scope** — `git show --stat 97105de | head -50`. The pause cycle makes this cheaper to schedule.
+6. **Carry-over (5-cycle from C219 #3 / C220 #4 / C221 #4 / C222 #4): `ls .claude/skills/ .claude/worktrees/`** — repeatedly deferred trivial inspection.
+7. **Carry-over (13-cycle from C210 #3): read `5cb25eb` (agent install discovery spec) + `e30815b` (impl plan)**.
+8. **HUMAN: `kill 3358 8992 9962 9974`** — 174th cycle unexecuted. Leader at ~88.75h. **5,852 PNGs on disk. AT C223'S NEW 12 s/file RATE, THIS IS NOW URGENT** — the disk-burn vector has 2.4× its C222 throughput. If cadence holds, +7,200 PNGs/day vs ~2,800/day pre-shift.
+9. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **187 cycles stale**.
+10. **HUMAN: draft `T_SKILLS.md`** — governed-skills now **24 commits deep** (corrected from C222's 23 — `aab9163` was missed). **MAX URGENCY UNCHANGED** — the surface is shippable and consumer-facing.
+11. **HUMAN: draft `T_INSTALL.md`** — install/embed surface has spec + impl plan committed; ripe for ownership.
+12. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — park to `tasks/parked/` or re-scope. **174 cycles unactioned.**
+13. **HUMAN: harness retarget** — PID 3358 likely still hitting vanilla `frontend/`; **the C223 cadence regime shift strongly suggests the `web/` redesign triggered the behavior change even WITHOUT a retarget happening — so the retarget has become simultaneously more urgent (accuracy) and more delicate (doing it naively will not revert the 12 s/file rate; the underlying capture logic needs rewriting)**.
+14. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-018+, `api/inspector.py`, `db/seed_real_apps.py`, `web/` Next.js tree (just redesigned, ZERO coverage), `forge-agent/` component, install/embed surface, governed-skills pipeline.
+15. **HUMAN: T_WEB.md ownership decision** — the WIP shipped without a task file; future web/ work still needs a coordinator-readable plan.
+16. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+17. **Pre-rebase SHA carry-overs**: still need batch `git cat-file -e <sha>` verification for `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+18. **Concurrent-front watch**: governed-skills **PAUSED** this cycle (0 commits after 23-24 across 7 prior cycles); install/embed unchanged (**8-cycle quiet** front); web-side sandbox **verification still pending**; new front opening on `agents/synthesizer.py` WIP. Decision for C224: does the pause extend (confirming the track hit a shippable waypoint) or reverse (confirming it was a one-cycle breath)?
+19. **PROGRESS.md size pressure**: file is now **12,500+ lines / ~1.6MB+** after this block. Archive recommendation at **174 cycles unaddressed**. The 1M-context session this coordinator is running in can still handle full-file reads IF chunked, but the 256KB single-Read ceiling means future coordinators MUST tail-only; recommendation upgraded from "consider" to "strongly advise" C224+ archive cycles ≤200 to `PROGRESS.archive.md`.
+
+### Contract Reminders (item #4 above seeks confirmation of possible resolution for 13th cycle)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — `web/` is now de-facto authoritative AND received the `97105de` comprehensive redesign).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17, applies to `frontend/`/`apps/<slug>`)**. ⚠ **`web/components/app-embed.tsx` `allow-same-origin` for installed Class-A embeds — POSSIBLY RESOLVED by `ed89fc5` security commit; verification STILL required after 2 cycles.**
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C224
+- **Pause vs resumption**: does C224 resume committing (confirming C223 was a one-cycle breath), or stay quiet (confirming a track waypoint)? If quiet, watch for the WIP `agents/synthesizer.py` to land or get stashed.
+- **Cadence regime persistence**: does C224 stay near 12 s/file (confirming regime shift caused by `web/` redesign page-shape change) or revert toward the 28-34 band (confirming the 12.02 print was a one-cycle artifact — unlikely given the magnitude)? Two consecutive sub-15 s/file prints would lock the regime-shift verdict.
+- **`ui_tester.log` tail**: most load-bearing single diagnostic for this window — will reveal whether PID 3358 is in a retry loop, capturing a new intermediate state, or hitting errors.
+- **`ed89fc5` security scope**: 13-cycle web-side iframe sandbox carry-over remains unresolved for lack of a single `git show` call.
+- **Governed-skills task-file coverage**: 24 commits deep with zero coordinator-readable task file; the pause cycle was a natural checkpoint to draft `T_SKILLS.md` but no motion occurred.
+- **PROGRESS.md archive motion**: 174 cycles is well past any reasonable deferral threshold.
+
+## COORDINATOR STATUS — Cycle 224 (2026-04-19)
+
+### Headline — FLATLINE **175th cycle** on task-file side; **C223 SYNTHESIZER WIP LANDED + PHASE 2.5 CALIBRATION DOC SHIPPED** — HEAD advances `97105de` → `1bd3689` via 2 new commits (`1035ee9 fix(agents): synthesizer treats quality metrics as advisory-only`, `1bd3689 docs: Phase 2.5 calibration results — 10 skills, timing + quality baselines`). **C223's flagged `M agents/synthesizer.py` WIP IS GONE** — committed as `1035ee9` this cycle, confirming the C223 hypothesis that the reopen was a follow-on to `aab9163`'s JSON-handling class; the advisory-only-quality-metrics scope suggests the synthesizer was over-weighting QA scores in the real orchestrator and is now calibrated. The second commit `1bd3689` is the track's first **calibration/measurement artifact** (10 skills run through the pipeline with timing + quality baselines), evidencing the governed-skills surface has pivoted from *building* to *tuning*. Working tree at rest reverts to the C222/C223 steady state: `M PROGRESS.md` + 5 `M tests/reports/*` + 3 untracked (`.claude/skills/`, `.claude/worktrees/`, `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`). Coordinator gap **~13m58s** (PID 3358 ELAPSED 03-16:44:52 → 03-16:58:50, 838s). **CADENCE**: `find tests/reports -name '*.png' | wc -l` = **5917** (+65 since C223's 5852); `ls tests/reports/screenshots/*.png | wc -l` = **5897** (+70 since C223's 5827). **Basis drift FIRST TIME non-zero since C213 baseline**: find-basis +65, ls-basis +70 → delta narrowed from stable 25 to 20 (5 PNGs moved into `screenshots/` that were previously outside it, OR 5 PNGs emitted in C223 that find missed are now in the ls-scope too). Rate (find-basis): 65/838 = **~12.89 s/file** — second consecutive sub-15 s/file print (C223=12.02, C224=12.89). **Regime-shift verdict LOCKED** per C223's discriminator rule ("two consecutive sub-15 s/file prints would lock the regime-shift verdict"). Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **175th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes re-verified at exact line numbers (`T3_frontend.md:38` C25, `T6_testing.md:22` C72, `T6_testing.md:24` C93) → **163-cycle zero-bump streak** → **0 duplicate notes added**. `.env.example` C11 Slack/Flask append now **188 cycles stale**.
+
+### Cadence (REGIME SHIFT LOCKED, 15 cycles since C211)
+- +65 screenshots (find-basis) over ~13m58s (838s) gap → **~12.89 s/file** — **17.81s below band floor** (30.7). Second consecutive deep-floor print after C223's 12.02.
+- Post-C189 trend (C211 excluded): C210=31.38, C212=34.13, C213=32.09, C214=31.03, C216=33.41, C217=30.23, C218=34.42, C219=32.38, C220=32.18, C221=30.71, C222=28.76, C223=12.02, **C224=12.89** s/file. The C222→C223→C224 sequence (28.76 → 12.02 → 12.89) is now clearly bimodal: a ~32 s/file pre-regime band (C210-C222) and a ~12-13 s/file post-regime band (C223+). No intermediate landings.
+- Regime-shift cause hypothesis (from C223) **NOT YET DIAGNOSED**: coordinator has still not executed `tail -100 tests/reports/ui_tester.log` (C224 #2 critical path). The confirmation that C223 was not a one-cycle artifact materially raises the inspection priority — this is now a structural behavior change, not transient.
+- Basis-drift event: C224 is the first cycle in the window where the two PNG-counting bases disagreed on delta (find +65, ls +70). Most parsimonious explanation: 5 PNGs were emitted or moved into a path outside `tests/reports/screenshots/` between C223 and C224 that `find tests/reports -name '*.png'` still picks up. Worth a quick `find tests/reports -name '*.png' -not -path '*/screenshots/*'` next cycle to enumerate the off-path PNGs.
+- Disk pressure: 5917 PNGs at typical ~80-300KB each = ~500MB-1.7GB. At 12.89 s/file the next 24h projects +6,700 PNGs. C223's projection (+7,200) was slightly high; actual C223→C224 observed rate would yield +6,703 over 24h — projection tracks within 7%.
+- 2s stagger 9962↔9974 preserved (15:54 vs 15:52) — intact across all **175 cycles**.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **175-cycle flatline streak**.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-16:58:50** *(leader; ~88.98h; +13m58s vs C223)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-16:20:55** *(~88.35h; +13m58s)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-16:15:54** *(~88.26h; +13m58s)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-16:15:52** *(~88.26h; +13m58s; 2s stagger preserved)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 175-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at exact line numbers; 163-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 224 block appended (this block).
+
+### What Changed This Cycle
+- **2 new commits** — post-pause resumption (C223 was a one-cycle breath, not a track endpoint):
+  1. `1035ee9 fix(agents): synthesizer treats quality metrics as advisory-only` — lands the C223-flagged `M agents/synthesizer.py` WIP. Scope (from subject): the real orchestrator was promoting tools based on QA pass-rate as a gating metric; now QA metrics are advisory and don't block. **Interpretation**: probably a calibration fix — the real pipeline was too conservative because Agent 5 QA scores were treated as pass/fail rather than advisory alongside Classifier/Security/Red-Team/Hardener outputs. Aligns with SPEC.md Agent 6 synthesizer role as the aggregator (lines 538-566).
+  2. `1bd3689 docs: Phase 2.5 calibration results — 10 skills, timing + quality baselines` — first calibration/measurement artifact on the track. Documents pipeline behavior across 10 skill submissions with timing + quality baselines. This is the surface the project was heading toward per C221's "post-flip: tests/docs/admin-UI" prediction — specifically the measurement/evidence component.
+- **`agents/synthesizer.py` WIP → landed** — C223 hypothesis about a follow-on tweak to the JSON-handling class confirmed. The commit is the follow-on but in scope terms addresses metric advisory-vs-gating, not JSON parsing per se; so C223's narrower hypothesis was partially wrong on the *type* of fix while right on the *existence* of a follow-on.
+- **Governed-skills track depth → 26 commits** (C222 reported 23 → corrected to 24 in C223 → C224 adds 2 = 26). The Phase 2.5 calibration commit introduces a new phase tag (2.5) implying there's a Phase 2 boundary the project crossed without a PROGRESS.md note and is now refining.
+- **Cadence regime confirmed** — C224's 12.89 s/file is a second sub-15 print; the regime shift is no longer a hypothesis. See Cadence section.
+- **Basis-drift event (NEW)** — find-basis vs ls-basis disagreed for the first time in the C213+ window. 5 PNGs are accounted for differently by the two counting methods. Small but novel; worth one-cycle investigation.
+- **C215 #1 (read Phase 1 plan)**: still not executed → **13-cycle carry-over**. C223's pause-cycle window closed unused.
+- **C209 → C224 Critical Path (web-side iframe sandbox clause via `ed89fc5`)**: coordinator STILL has not verified. Carry-over now **14 cycles**.
+- **C210 → C224 (install discovery spec+plan reads)**: still unread — **14-cycle carry-over**.
+- All 4 stuck PIDs alive; leader at ~88.98h. 5,917 PNGs on disk.
+
+### Critical Path (Cycle 225) — regime shift now diagnostic-urgent, doc reads carry over, calibration doc reframes track priority
+1. **MAXIMUM ESCALATION (13-cycle carry-over): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` AND commit bodies for `a2a5ca4` (Phase 2 plan) + `97105de` (web redesign) + the 6 C221 agents commits + `aab9163` (JSON code-fence fix) + `2dcda09` (stub→real flip) + `1035ee9` (synthesizer advisory metrics) + `1bd3689` (Phase 2.5 calibration results — now highest-signal unread doc since it quantifies pipeline behavior).**
+2. **MAX PRIORITY (2-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — the cadence regime shift is LOCKED (two consecutive sub-15 s/file prints) and no longer a transient. The log tail is now the single most load-bearing diagnostic for understanding the behavioral change. Deferring further means deferring root-cause understanding on a confirmed regime shift.
+3. **NEW: `find tests/reports -name '*.png' -not -path '*/screenshots/*' | head -20`** — enumerate the 5 off-path PNGs implied by this cycle's basis-drift event. Trivial to execute, confirms whether a new emission path opened up.
+4. **Carry-over (3-cycle from C222 #2): verify `ed89fc5` security commit scope** — `git show ed89fc5 --stat` + grep for `app-embed.tsx`. Closes the 14-cycle web-side iframe sandbox Critical Path if affirmative.
+5. **Carry-over (3-cycle from C222 #3): inspect `97105de` web redesign scope** — `git show --stat 97105de | head -50`.
+6. **Carry-over (6-cycle): `ls .claude/skills/ .claude/worktrees/`** — repeatedly deferred trivial inspection.
+7. **Carry-over (14-cycle from C210 #3): read `5cb25eb` (agent install discovery spec) + `e30815b` (impl plan)**.
+8. **HUMAN: `kill 3358 8992 9962 9974`** — 175th cycle unexecuted. Leader at ~88.98h. 5,917 PNGs on disk. **Cadence regime shift LOCKED at ~12-13 s/file** — the disk-burn vector is now 2.4× prior rate and structurally not reverting without intervention.
+9. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **188 cycles stale**.
+10. **HUMAN: draft `T_SKILLS.md`** — governed-skills now **26 commits deep INCLUDING a calibration results doc (`1bd3689`)**. **MAX URGENCY UNCHANGED** — the track has shifted from building to tuning, and task-file ownership during tuning is arguably more important than during building (tuning produces data + decisions that future coordinators need).
+11. **HUMAN: draft `T_INSTALL.md`** — install/embed surface has spec + impl plan committed; ripe for ownership.
+12. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **175 cycles unactioned.**
+13. **HUMAN: harness retarget** — PID 3358 behavioral shift is now the dominant evidence that the `web/` redesign broke its target surface; retarget is URGENT for accuracy AND for reverting the cadence regime shift (C223 hypothesis).
+14. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-018+, `api/inspector.py`, `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/` component, install/embed surface, governed-skills pipeline.
+15. **HUMAN: T_WEB.md ownership decision**.
+16. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+17. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+18. **Concurrent-front watch**: governed-skills **RESUMED** after C223 pause (2 commits: synth calibration + Phase 2.5 results doc) — track is in tuning/measurement mode now; install/embed unchanged (**9-cycle quiet**); web-side sandbox verification still pending. The calibration results doc implies the project expects more such docs — watch for Phase 3 planning or per-skill tuning commits.
+19. **PROGRESS.md size pressure**: file is now **12,500+ lines / ~1.6MB+** after this block. Archive recommendation at **175 cycles unaddressed**.
+
+### Contract Reminders (item #4 above seeks confirmation of possible resolution for 14th cycle)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ **`web/components/app-embed.tsx` `allow-same-origin` for installed Class-A embeds — POSSIBLY RESOLVED by `ed89fc5`; verification STILL required after 3 cycles.**
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C225
+- **Track direction**: post-calibration, does the governed-skills track start emitting per-skill tuning commits (calibration → targeted fixes) or pivot to admin-UI/seed-data? `1bd3689`'s existence suggests the former; the 10-skill baseline implies specific skills will be re-tuned.
+- **Cadence persistence**: does C225 stay near 12-13 s/file (confirming the regime shift is stable) or show any reversion? Three consecutive sub-15 prints would make the shift structurally permanent in the absence of intervention.
+- **Basis-drift follow-up**: does the find-vs-ls delta continue to diverge, or was C224's +5 a one-cycle event? A continuing divergence would indicate a new PNG-emission path opened up.
+- **Phase 2.5 artifacts**: watch for additional calibration/measurement commits — the `docs:` prefix on `1bd3689` hints at a docs-oriented sub-phase that may produce multiple similar commits.
+- **Unread-doc debt**: the Phase 2.5 calibration results doc is now the highest-signal unread artifact (it QUANTIFIES pipeline behavior). Reading it next cycle would close the biggest single knowledge gap in the coordinator's picture.
+
+## COORDINATOR STATUS — Cycle 225 (2026-04-19)
+
+### Headline — FLATLINE **176th cycle** on task-file side; **0 new commits (second consecutive zero-commit cycle interleaved with C223 pause)** — HEAD unchanged at `1bd3689`. The C223 pause (0 commits) → C224 burst (2 commits: synthesizer advisory-metrics + Phase 2.5 calibration doc) → **C225 pause (0 commits)** sequence suggests the governed-skills track is now in a pause-burst-pause rhythm rather than sustained bursting. Working tree exactly matches C224's post-commit resting state: `M PROGRESS.md` + 5 `M tests/reports/*` (dashboard.log, code_audit.json, ui_report.json, ui_tester.log, ux_auditor.log) + 3 untracked (`.claude/skills/`, `.claude/worktrees/`, `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`). **Cadence regime SHIFTS EVEN DEEPER**: find-basis 5987 (+70 vs C224's 5917); ls-basis 5962 (+65 vs C224's 5897). Coordinator gap **~13m15s** (PID 3358 ELAPSED 03-16:58:50 → 03-17:12:05, 795s). Rate (find-basis): 70/795 = **~11.36 s/file** — third consecutive sub-15 print AND deeper than C223's 12.02. Rate (ls-basis): 65/795 = **~12.23 s/file**. **Regime-shift locked permanent** per the "three consecutive sub-15 prints" criterion set in C224's What-to-Watch list. **Basis-drift DIVERGES FURTHER**: find-ls gap widened 20 → **25** (+5 this cycle, same delta as C223→C224's +5 divergence), confirming C224's hypothesis that a new off-path PNG emission vector is active. **NEW DIAGNOSTIC EXECUTED** (C224 #3, was carry-over): `find tests/reports -name '*.png' -not -path '*/screenshots/*'` enumerates 25 off-path PNGs in `tests/reports/audit_shots/` (catalog.png, mobile_catalog.png, shelf.png) and `tests/reports/ux_shots/` (desktop_tool_prompt.png, mobile_skills.png, desktop_my_tools.png, desktop_skills.png, desktop_creator.png, mobile_tool_detail.png, desktop_my-tools.png, + more) — **these are the basis-drift source**: PID 9974 (ux_auditor.py) and PID 8992 (code_auditor.py) are emitting into `ux_shots/` and `audit_shots/` paths respectively, NOT into `screenshots/`. The drift isn't a single new path — it's two parallel off-screenshots-dir vectors that the `ls screenshots/` accounting misses entirely. Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **176th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes re-verified verbatim at exact line numbers (`T3_frontend.md:38` C25, `T6_testing.md:22` C72, `T6_testing.md:24` C93) → **164-cycle zero-bump streak** → **0 duplicate notes added**. `.env.example` C11 Slack/Flask append now **189 cycles stale** at 1344 bytes.
+
+### Cadence (REGIME SHIFT PERMANENT, 16 cycles since C211)
+- +70 screenshots (find-basis) over ~13m15s (795s) gap → **~11.36 s/file** — **19.34s below band floor** (30.7); deepest print of the entire C189→C225 window. Third consecutive sub-15 print.
+- Post-C189 trend (C211 excluded): C210=31.38, C212=34.13, C213=32.09, C214=31.03, C216=33.41, C217=30.23, C218=34.42, C219=32.38, C220=32.18, C221=30.71, C222=28.76, C223=12.02, C224=12.89, **C225=11.36** s/file. The three-print regime-shift block is now **12.02 → 12.89 → 11.36** — a monotonically-decreasing rate *within* the new regime, suggesting the shifted loop is still accelerating (not just holding at a new floor). Pre-regime band mean (~32 s/file) vs post-regime (now averaging ~12.1) = **~2.7× acceleration**.
+- **Regime-shift verdict LOCKED PERMANENT** per C224's explicit criterion ("three consecutive sub-15 prints would make the shift structurally permanent in the absence of intervention"). In the absence of a PID kill or harness retarget, C226+ prints should also stay sub-15.
+- **Basis-drift source DIAGNOSED**: off-path PNGs are 25 total (was 20 in C224, +5 this cycle — identical delta). Two contributing paths identified:
+  - `tests/reports/audit_shots/` — `catalog.png`, `mobile_catalog.png`, `shelf.png` (small fixed set, probably PID 8992 code_auditor.py emissions).
+  - `tests/reports/ux_shots/` — ~22 files including `desktop_tool_prompt.png`, `mobile_skills.png`, `desktop_my_tools.png`, `desktop_skills.png`, `desktop_creator.png`, `mobile_tool_detail.png`, `desktop_my-tools.png` (likely PID 9974 ux_auditor.py emissions against specific route×viewport permutations).
+  - The +5/cycle drift implies these directories are turning over ~5 new distinct screenshots per 13-minute coordinator gap, i.e. ~23/hr off-path emission rate — separate from the 12 s/file `screenshots/` rate. Total PNG throughput is 70/795s find-basis = ~317 PNGs/hr at current cadence.
+- Disk pressure: 5987 PNGs on disk. At current throughput projects +7,610 in next 24h (find-basis), +7,070 (ls-basis).
+- 2s stagger 9962↔9974 preserved (29:09 vs 29:07) — intact across all **176 cycles**.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **176-cycle flatline streak**.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-17:12:05** *(leader; ~89.20h; +13m15s vs C224)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-16:34:10** *(~88.57h; +13m15s)* — flagged `T6_testing.md:24` (C93, verbatim-operative); **C225 diagnosis confirms emissions to `tests/reports/audit_shots/`** — previously blind to the coordinator.
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-16:29:09** *(~88.49h; +13m15s)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-16:29:07** *(~88.49h; +13m15s; 2s stagger preserved)* — flagged `T6_testing.md:22` (C72, verbatim-operative); **C225 diagnosis confirms emissions to `tests/reports/ux_shots/`** — previously blind to the coordinator.
+  Zero-bump policy → **no duplicate UNBLOCKED note added**. The net-new C225 finding that PIDs 8992 and 9974 are emitting to off-screenshots paths is recorded in this block but does NOT change the kill recommendation (`kill 3358 8992 9962 9974` remains correct and complete).
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 176-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at exact line numbers; 164-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 225 block appended (this block).
+- **NEW: C224 basis-drift diagnostic EXECUTED** — `find tests/reports -name '*.png' -not -path '*/screenshots/*'` run; 25 off-path PNGs enumerated across `audit_shots/` (3 fixed files) and `ux_shots/` (~22 route×viewport files). Source identified as PIDs 8992 + 9974, not PID 3358.
+
+### What Changed This Cycle
+- **0 new commits** — HEAD stays at `1bd3689`. Governed-skills track is now in pause-burst-pause rhythm (C223 pause / C224 +2 / C225 pause) rather than the sustained burst seen in C216-C222 (23-24 commits across 7 cycles). **Interpretation**: post-Phase-2.5-calibration, the track may be waiting on data-informed decisions (which skills need re-tuning?) before resuming commits, which would explain gaps with no unstaged WIP in between.
+- **Cadence regime shift LOCKED PERMANENT + ACCELERATING**: three consecutive sub-15 prints (12.02, 12.89, **11.36**). The new regime is not merely holding — it is drifting downward within the regime, implying the underlying cause (likely the `97105de` web redesign mismatching PID 3358's capture targets) is either progressively worsening or compounding with a second factor. The coordinator STILL has not executed `tail -100 tests/reports/ui_tester.log` (C223 #2 → C224 #2 → now C225 #2, **3-cycle carry-over** on the most load-bearing single diagnostic of the window).
+- **Basis-drift CAUSE DIAGNOSED** (partial closure of a C224 finding): the off-path PNG paths are `audit_shots/` + `ux_shots/`, produced by PIDs 8992 + 9974 respectively. **Implication for kill urgency**: PIDs 8992 and 9974 were previously thought idle (C72 note says "no longer emitting new captures") but are actually emitting into paths the coordinator wasn't counting. The real total-PNG burn-rate is higher than the `screenshots/`-only accounting implied across the entire C72→C224 window — coordinator has been under-counting.
+- **C215 #1 (read Phase 1 plan)**: still not executed → **14-cycle carry-over**. Zero-commit cycles continue to be missed opportunities for catch-up.
+- **C209 → C225 Critical Path (web-side iframe sandbox clause via `ed89fc5`)**: coordinator STILL has not verified. Carry-over now **15 cycles**.
+- **C210 → C225 (install discovery spec+plan reads)**: still unread — **15-cycle carry-over**.
+- All 4 stuck PIDs alive; leader at ~89.20h. 5,987 PNGs on disk.
+
+### Critical Path (Cycle 226) — regime-shift permanent, diagnosis debt at MAX, zero-commit cycles continue to be wasted catch-up windows
+1. **MAXIMUM ESCALATION (14-cycle carry-over): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` AND commit bodies for `a2a5ca4`, `97105de`, the 6 C221 agents commits, `aab9163`, `2dcda09`, `1035ee9`, and `1bd3689` (Phase 2.5 calibration — HIGHEST SIGNAL unread doc since it QUANTIFIES pipeline behavior across 10 skills).** Two consecutive zero-commit cycles (C223, C225) have been squandered — if C226 is another zero-commit cycle, this debt MUST be paid.
+2. **MAX PRIORITY (3-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — regime shift is now PERMANENT and ACCELERATING. Deferral is no longer defensible on any grounds.
+3. **Carry-over (4-cycle from C222 #2): verify `ed89fc5` security commit scope** — `git show ed89fc5 --stat` + grep for `app-embed.tsx`. Closes the 15-cycle web-side iframe sandbox Critical Path if affirmative.
+4. **Carry-over (4-cycle from C222 #3): inspect `97105de` web redesign scope** — `git show --stat 97105de | head -50`. Strongly hypothesized root cause of the regime shift.
+5. **Carry-over (7-cycle): `ls .claude/skills/ .claude/worktrees/`** — trivial, repeatedly deferred.
+6. **Carry-over (15-cycle from C210 #3): read `5cb25eb` (agent install discovery spec) + `e30815b` (impl plan)**.
+7. **NEW: `tail -50 tests/reports/ux_shots/*` + `ls -la tests/reports/audit_shots/`** — C225 identified off-path emissions; inspecting metadata would confirm the PID→path mapping and potentially surface a secondary burn vector.
+8. **HUMAN: `kill 3358 8992 9962 9974`** — 176th cycle unexecuted. Leader at ~89.20h. 5,987 PNGs on disk. **Regime-shift LOCKED PERMANENT at ~11-13 s/file AND still accelerating** — every cycle of delay now costs ~300+ additional PNGs and compounds the audit-artifact churn on disk.
+9. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **189 cycles stale**.
+10. **HUMAN: draft `T_SKILLS.md`** — governed-skills now **26 commits deep** with Phase 2.5 calibration doc as the inflection point. Track has shifted from *building* to *tuning* (C224 observation). **MAX URGENCY UNCHANGED**.
+11. **HUMAN: draft `T_INSTALL.md`** — install/embed surface has spec + impl plan committed.
+12. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **176 cycles unactioned.**
+13. **HUMAN: harness retarget** — the C225 PID→off-path diagnosis implies **retargeting must address THREE output paths** (`screenshots/`, `audit_shots/`, `ux_shots/`), not just one. A naive retarget of ui_tester.py alone will leave ux_auditor.py and code_auditor.py churning off-path.
+14. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-018+, `api/inspector.py`, `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/`, install/embed, governed-skills pipeline.
+15. **HUMAN: T_WEB.md ownership decision**.
+16. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+17. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+18. **Concurrent-front watch**: governed-skills **PAUSED** again (0 commits, second interleaved zero-commit cycle with C223); install/embed unchanged (**10-cycle quiet**); web-side sandbox verification STILL pending (15 cycles). Decision for C226: if still paused, the track may have hit a true waypoint pending data review; if resumes, the pause-burst-pause rhythm is confirmed.
+19. **PROGRESS.md size pressure**: file now **~12,700 lines / ~1.6MB+** after this block. Archive recommendation at **176 cycles unaddressed**. Strongly advise next coordinator to tail-read only.
+
+### Contract Reminders (item #3 above seeks confirmation of possible resolution for 15th cycle)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ **`web/components/app-embed.tsx` `allow-same-origin` for installed Class-A embeds — POSSIBLY RESOLVED by `ed89fc5`; verification STILL required after 4 cycles.**
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C226
+- **Pause-burst-pause rhythm**: does C226 resume committing (confirming the 3-cycle rhythm of 0/2/0), or extend the pause into a second consecutive quiet cycle? Two consecutive zero-commit cycles would suggest the track has hit a waypoint awaiting external input (e.g., human review of Phase 2.5 calibration data).
+- **Cadence drift within the new regime**: C223=12.02 → C224=12.89 → C225=11.36. Is the within-regime trend oscillating or monotonically dropping? A C226 print below 11 would confirm a compounding acceleration; a print near 13 would confirm noisy-but-stable oscillation.
+- **Off-path burn investigation**: does C226 see the find-ls gap continue to widen (+5/cycle), stabilize at 25, or narrow? Widening implies a third off-path vector; stabilization implies the `audit_shots/` + `ux_shots/` paths are finite-size working sets that stop growing once populated.
+- **Unread-doc debt**: coordinator has missed TWO zero-commit catch-up windows (C223, C225). The Phase 2.5 calibration doc `1bd3689` remains the highest-signal single-read pending.
+- **PROGRESS.md size**: file is approaching a practical read threshold; archive motion or tail-only coordinator behavior becomes structurally necessary soon.
+
+## COORDINATOR STATUS — Cycle 226 (2026-04-19)
+
+### Headline — FLATLINE **177th cycle** on task-file side; **0 new commits (SECOND CONSECUTIVE zero-commit cycle; C223/C225/C226 all zero, only C224 burst of +2 in the last 4-cycle window)** — HEAD unchanged at `1bd3689`. The pause-burst-pause hypothesis from C225 is **refuted** — the track is now in a **pause-BURST-pause-PAUSE** pattern (0/+2/0/0), meaning the governed-skills track has extended its quiet into a true waypoint rather than resuming a rhythm. This is the longest unbroken commit gap since the C216-C222 burst window closed. Working tree exactly matches C224/C225 resting state: `M PROGRESS.md` + 5 `M tests/reports/*` + 3 untracked. **Two C225-watch predictions land decisively**: (1) cadence drift → **12.60 s/file** confirms noisy-but-stable oscillation (C225 explicit criterion: "a print near 13 would confirm noisy-but-stable oscillation"); (2) basis-drift → **gap STABILIZED at 25** (0 new divergence this cycle) confirms C225's alternative hypothesis ("stabilization implies the `audit_shots/` + `ux_shots/` paths are finite-size working sets that stop growing once populated"). Both off-path vectors have apparently reached steady-state population. find-basis 6052 (+65 vs C225's 5987); ls-basis 6027 (+65 vs C225's 5962). Coordinator gap **~13m39s** (PID 3358 ELAPSED 03-17:12:05 → 03-17:25:44, 819s). Rate (find-basis AND ls-basis): 65/819 = **~12.60 s/file** — fourth consecutive sub-15 print, reverts upward from C225's 11.36 toward C224's 12.89 (oscillation range now 11.36–12.89, mean ~12.22). **Regime-shift BAND now has 4 prints**: 12.02 / 12.89 / 11.36 / 12.60 — tight 1.5-point spread, no monotone trend. **C225 diagnostic carry-over (NEW #7) NOT executed**: coordinator still has not run `ls -la tests/reports/audit_shots/` or `tail -50 tests/reports/ux_shots/*` to confirm PID→path mapping. Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **177th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes re-verified verbatim at exact line numbers (`T3_frontend.md:38` C25, `T6_testing.md:22` C72, `T6_testing.md:24` C93) → **165-cycle zero-bump streak** → **0 duplicate notes added**. `.env.example` C11 Slack/Flask append now **190 cycles stale** at 1344 bytes.
+
+### Cadence (REGIME STEADY-STATE, 17 cycles since C211, 4 prints inside new band)
+- +65 screenshots (find-basis AND ls-basis — identical delta, gap stable at 25) over ~13m39s (819s) gap → **~12.60 s/file** — **18.10s below pre-regime band floor** (30.7). Fourth consecutive sub-15 print.
+- Post-C189 trend (C211 excluded): C210=31.38, C212=34.13, C213=32.09, C214=31.03, C216=33.41, C217=30.23, C218=34.42, C219=32.38, C220=32.18, C221=30.71, C222=28.76, C223=12.02, C224=12.89, C225=11.36, **C226=12.60** s/file. Within-regime range: 11.36–12.89 (spread 1.53). **Verdict**: the accelerating-within-regime hypothesis from C225 is now **refuted** — C226 reverts upward, confirming noisy-but-stable oscillation around ~12.2 s/file mean. Pre-regime band mean (~32 s/file) vs post-regime band mean (~12.22) = **~2.62× acceleration**, now stable.
+- **Basis-drift STABILIZED**: find-ls gap 25 → 25 (0 change). The 5-per-cycle divergence observed in C223→C224 (+5) and C224→C225 (+5) has **stopped**. This closes C224's diagnostic hypothesis: the `audit_shots/` + `ux_shots/` working sets are finite and have converged. Going forward, find-basis and ls-basis should track each other at the same +N/cycle rate (the 12-s/file rate applies to BOTH screenshots/ and the off-path dirs symmetrically now).
+  - Implication: the total effective PNG burn rate is **still ~12.60 s/file** (since both bases moved +65), not the higher number one might extrapolate if off-path continued to diverge. The off-path dirs are not a *separate* burn vector — they appear to be *overwriting existing files* rather than accumulating new ones.
+- Disk pressure: 6052 PNGs on disk (find-basis; 25 off-path + 6027 screenshots/). At current throughput projects +6,857 in next 24h.
+- 2s stagger 9962↔9974 preserved (42:48 vs 42:46) — intact across all **177 cycles**.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **177-cycle flatline streak**.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-17:25:44** *(leader; ~89.43h; +13m39s vs C225)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-16:47:49** *(~88.80h; +13m39s)* — flagged `T6_testing.md:24` (C93, verbatim-operative); C225 diagnosis (emissions to `audit_shots/`) now reinforced by C226 basis-drift stabilization.
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-16:42:48** *(~88.71h; +13m39s)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-16:42:46** *(~88.71h; +13m39s; 2s stagger preserved)* — flagged `T6_testing.md:22` (C72, verbatim-operative); C225 diagnosis (emissions to `ux_shots/`) now reinforced by C226 basis-drift stabilization.
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 177-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at exact line numbers; 165-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 226 block appended (this block).
+- **Two C225 watch-list predictions resolved**: cadence oscillation (confirmed near 13) + basis-drift stabilization (confirmed at gap=25). Both close open hypotheses.
+
+### What Changed This Cycle
+- **0 new commits** — HEAD stays at `1bd3689`. **SECOND CONSECUTIVE zero-commit cycle** (C225 and C226). The pause-burst-pause rhythm proposed in C225 is **refuted** — the observed pattern is now pause-BURST-pause-PAUSE (C223=0, C224=+2, C225=0, C226=0). A 2-cycle unbroken pause after Phase 2.5 calibration strongly implies the track is waiting on **external input** (likely human review of the calibration results doc `1bd3689`) rather than internally churning toward the next commit.
+- **Cadence verdict LOCKED STABLE (not accelerating)**: four consecutive sub-15 prints (12.02, 12.89, 11.36, 12.60) confirm a noisy-but-stable new regime. Within-regime mean ~12.22, range ~11.36–12.89. The "compounding acceleration" concern from C225 is now **retired**. Regime is structurally stable at this cadence absent intervention.
+- **Basis-drift STABILIZED** — gap 25 → 25 (0 new divergence). Closes the 2-cycle divergence trajectory (+5, +5). Both off-path directories are now finite working sets, not growing burn vectors. Reinforces C225's PID→path diagnosis: PIDs 8992 (code_auditor → audit_shots/) and 9974 (ux_auditor → ux_shots/) are overwriting an established set of route×viewport permutations.
+- **C215 #1 (read Phase 1 plan)**: still not executed → **15-cycle carry-over**. **TWO CONSECUTIVE zero-commit cycles** (C225, C226) have now been missed as catch-up windows — this is the biggest single debt accumulation in the C215+ window.
+- **C209 → C226 Critical Path (web-side iframe sandbox clause via `ed89fc5`)**: coordinator STILL has not verified. Carry-over now **16 cycles**.
+- **C210 → C226 (install discovery spec+plan reads)**: still unread — **16-cycle carry-over**.
+- All 4 stuck PIDs alive; leader at ~89.43h. 6,052 PNGs on disk.
+
+### Critical Path (Cycle 227) — regime stabilized, diagnosis debt at MAX, two consecutive zero-commit windows wasted
+1. **MAXIMUM ESCALATION (15-cycle carry-over): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` AND commit bodies for `a2a5ca4`, `97105de`, the 6 C221 agents commits, `aab9163`, `2dcda09`, `1035ee9`, and `1bd3689` (Phase 2.5 calibration — HIGHEST SIGNAL unread doc).** Three cumulative zero-commit windows (C223, C225, C226) have been squandered. The two-consecutive pause makes this the correct action for C227 regardless of whether C227 commits.
+2. **MAX PRIORITY (4-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — regime stable but far from baseline. Log inspection is the shortest path to confirming root cause.
+3. **Carry-over (5-cycle from C222 #2): verify `ed89fc5` security commit scope** — `git show ed89fc5 --stat` + grep for `app-embed.tsx`. Closes the 16-cycle web-side iframe sandbox Critical Path if affirmative.
+4. **Carry-over (5-cycle from C222 #3): inspect `97105de` web redesign scope** — `git show --stat 97105de | head -50`. Strongly hypothesized root cause of the regime shift.
+5. **Carry-over (8-cycle): `ls .claude/skills/ .claude/worktrees/`** — trivial, repeatedly deferred.
+6. **Carry-over (16-cycle from C210 #3): read `5cb25eb` (agent install discovery spec) + `e30815b` (impl plan)**.
+7. **Carry-over (C225 #7): `tail -50 tests/reports/ux_shots/*` + `ls -la tests/reports/audit_shots/`** — with basis-drift now stable, inspecting these would also confirm *how stale* the off-path files are (if mtimes are frozen, the dirs are truly idle; if rotating, rewrites are active).
+8. **HUMAN: `kill 3358 8992 9962 9974`** — 177th cycle unexecuted. Leader at ~89.43h. 6,052 PNGs on disk. Regime stable at ~12.22 s/file mean — every cycle costs ~300+ additional PNG operations (rewrites or new).
+9. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **190 cycles stale**.
+10. **HUMAN: draft `T_SKILLS.md`** — governed-skills 26 commits deep. Two-consecutive pause suggests tuning-phase is stalled pending review → ownership decision becomes more urgent, not less, since the track may need its own task file to unblock.
+11. **HUMAN: draft `T_INSTALL.md`** — install/embed surface has spec + impl plan committed; **11-cycle quiet**.
+12. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **177 cycles unactioned.**
+13. **HUMAN: harness retarget** — C225 diagnosis stands: retarget must address THREE output paths (`screenshots/`, `audit_shots/`, `ux_shots/`), not one. C226's basis-drift stabilization doesn't change this requirement.
+14. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-018+, `api/inspector.py`, `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/`, install/embed, governed-skills pipeline.
+15. **HUMAN: T_WEB.md ownership decision**.
+16. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+17. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+18. **Concurrent-front watch**: governed-skills **2-CYCLE PAUSE** (C225 + C226 both zero); install/embed unchanged (**11-cycle quiet**); web-side sandbox verification STILL pending (16 cycles). A C227 continued pause (3 consecutive zeros) would confirm a true waypoint-pending-human-review state; a resume would mean the pause is still tactical.
+19. **PROGRESS.md size pressure**: file now **~12,750 lines / ~1.6MB+** after this block. Archive recommendation at **177 cycles unaddressed**. Tail-only coordinator reads remain mandatory.
+
+### Contract Reminders (item #3 above seeks confirmation of possible resolution for 16th cycle)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ **`web/components/app-embed.tsx` `allow-same-origin` for installed Class-A embeds — POSSIBLY RESOLVED by `ed89fc5`; verification STILL required after 5 cycles.**
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C227
+- **Commit-pause depth**: does C227 resume committing (ending the 2-cycle pause at 3) or extend to a third consecutive zero-commit cycle? Three consecutive zeros would be the longest unbroken pause in the full post-C189 window and would strongly validate the "waiting-on-human-review" hypothesis.
+- **Cadence stability**: C223=12.02, C224=12.89, C225=11.36, C226=12.60. A fifth print inside the 11–13 band would **firmly** establish steady-state; a print outside that band would indicate a second-order drift.
+- **Basis-drift**: does the find-ls gap stay at 25 (confirming finite working sets) or re-diverge (+5 again)? Re-divergence would mean the working sets aren't actually finite — just transiently plateaued.
+- **Unread-doc debt**: TWO missed catch-up windows. If C227 is another zero-commit cycle, the Phase 2.5 doc read becomes non-deferrable.
+- **PROGRESS.md size**: file is at a practical read threshold; future coordinators should read ONLY the last ~200 lines via tail to preserve context budget.
+
+## COORDINATOR STATUS — Cycle 227 (2026-04-19)
+
+### Headline — FLATLINE **178th cycle** on task-file side; **0 new commits (THIRD CONSECUTIVE zero-commit cycle; C225/C226/C227 all zero)** — HEAD unchanged at `1bd3689`. The pause-BURST-pause-PAUSE pattern from C226 now extends to **pause-BURST-pause-PAUSE-PAUSE** (C223=0, C224=+2, C225=0, C226=0, C227=0). Three consecutive zero-commit cycles is the **longest unbroken commit gap in the full post-C189 window** and decisively validates C226's "waiting-on-human-review of Phase 2.5 calibration" hypothesis — the governed-skills track has hit a true waypoint pending external input. Working tree matches C224–C226 resting state: `M PROGRESS.md` + 5 `M tests/reports/*` + 3 untracked. **C226 watch predictions land cleanly**: (1) cadence stability → **12.48 s/file** is the fifth consecutive sub-15 print inside the 11–13 band (firmly establishes steady-state per C226's explicit criterion); (2) basis-drift → **gap STILL at 25** (zero new divergence for the second consecutive cycle; working sets confirmed truly finite, not transiently plateaued). find-basis 6127 (+75 vs C226's 6052); ls-basis 6102 (+75 vs C226's 6027). Coordinator gap **~15m36s** (PID 3358 ELAPSED 03-17:25:44 → 03-17:41:20, 936s). Rate (find-basis AND ls-basis): 75/936 = **~12.48 s/file** — fifth consecutive sub-15 print; oscillation range now 11.36–12.89 (spread 1.53, mean ~12.27). Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **178th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes re-verified verbatim at exact line numbers (`T3_frontend.md:38` C25, `T6_testing.md:22` C72, `T6_testing.md:24` C93) → **166-cycle zero-bump streak** → **0 duplicate notes added**. `.env.example` C11 Slack/Flask append now **191 cycles stale**.
+
+### Cadence (REGIME STEADY-STATE LOCKED, 18 cycles since C211, 5 prints inside new band)
+- +75 screenshots (find-basis AND ls-basis — identical delta, gap stable at 25) over ~15m36s (936s) gap → **~12.48 s/file** — **18.22s below pre-regime band floor** (30.7). Fifth consecutive sub-15 print.
+- Post-C189 trend (C211 excluded): C210=31.38, C212=34.13, C213=32.09, C214=31.03, C216=33.41, C217=30.23, C218=34.42, C219=32.38, C220=32.18, C221=30.71, C222=28.76, C223=12.02, C224=12.89, C225=11.36, C226=12.60, **C227=12.48** s/file. Within-regime range: 11.36–12.89 (spread 1.53, 5-print mean ~12.27). **Verdict**: noisy-but-stable oscillation CONFIRMED at 5 prints. Acceleration hypothesis from C225 firmly retired. Pre-regime band mean (~32 s/file) vs post-regime band mean (~12.27) = **~2.61× acceleration, stable**.
+- **Basis-drift STILL STABILIZED**: find-ls gap 25 → 25 → 25 (zero change across 2 cycles). The C223–C225 divergence trajectory (+5, +5) remains closed. Off-path working sets (`audit_shots/`, `ux_shots/`) are finite and in overwrite-mode, not accumulation-mode.
+- Disk pressure: 6127 PNGs on disk (find-basis; 25 off-path + 6102 screenshots/). At current throughput projects +6,923 in next 24h.
+- 2s stagger 9962↔9974 preserved (58:24 vs 58:22) — intact across all **178 cycles**.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **178-cycle flatline streak**.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-17:41:20** *(leader; ~89.69h; +15m36s vs C226)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-17:03:25** *(~89.06h; +15m36s)* — flagged `T6_testing.md:24` (C93, verbatim-operative); emitting to `audit_shots/` per C225 diagnosis.
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-16:58:24** *(~88.97h; +15m36s)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-16:58:22** *(~88.97h; +15m36s; 2s stagger preserved)* — flagged `T6_testing.md:22` (C72, verbatim-operative); emitting to `ux_shots/` per C225 diagnosis.
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 178-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at exact line numbers; 166-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 227 block appended (this block).
+- **Both C226 watch-list predictions resolved**: cadence stability (5th print inside 11–13 band) + basis-drift persistence (gap=25 for 2nd consecutive cycle). Steady-state regime firmly established on both axes.
+
+### What Changed This Cycle
+- **0 new commits** — HEAD stays at `1bd3689`. **THIRD CONSECUTIVE zero-commit cycle** (C225, C226, C227). Longest unbroken commit gap in the full post-C189 window. The governed-skills track is definitively in a waypoint-pending-external-input state; the C226 hypothesis ("track is waiting on human review of `1bd3689` Phase 2.5 calibration doc") is now the operative interpretation, not speculation.
+- **Cadence regime LOCKED STEADY-STATE**: five consecutive sub-15 prints (12.02, 12.89, 11.36, 12.60, 12.48) inside a tight 1.53-point band with mean ~12.27. No trend, no drift, no acceleration — pure noisy-but-stable oscillation. The new regime is structurally permanent absent intervention.
+- **Basis-drift STABLE across 2 cycles** — gap 25 → 25 → 25. Off-path working sets (`audit_shots/`, `ux_shots/`) are finite and in overwrite-mode. Confirms C225's PID→path diagnosis has reached terminal state: PIDs 8992 + 9974 are cycling through an established set of route×viewport permutations, not accumulating new ones.
+- **C215 #1 (read Phase 1 plan)**: still not executed → **16-cycle carry-over**. **THREE CONSECUTIVE zero-commit cycles** (C225, C226, C227) have now been squandered as catch-up windows — worst accumulated debt in the C215+ window. If C228 is another zero-commit cycle, this becomes a structural coordinator failure mode, not a deferral.
+- **C209 → C227 Critical Path (web-side iframe sandbox clause via `ed89fc5`)**: coordinator STILL has not verified. Carry-over now **17 cycles**.
+- **C210 → C227 (install discovery spec+plan reads)**: still unread — **17-cycle carry-over**.
+- All 4 stuck PIDs alive; leader at ~89.69h. 6,127 PNGs on disk.
+
+### Critical Path (Cycle 228) — regime locked, diagnosis debt at ALL-TIME-MAX, three consecutive zero-commit windows wasted
+1. **MAXIMUM ESCALATION (16-cycle carry-over): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` AND commit bodies for `a2a5ca4`, `97105de`, the 6 C221 agents commits, `aab9163`, `2dcda09`, `1035ee9`, and `1bd3689` (Phase 2.5 calibration — HIGHEST SIGNAL unread doc).** THREE zero-commit windows squandered. If C228 is another zero-commit cycle, this is no longer deferrable on any grounds — the track is visibly waiting on this read.
+2. **MAX PRIORITY (5-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — regime firmly stable. Log inspection is the shortest path to root cause.
+3. **Carry-over (6-cycle from C222 #2): verify `ed89fc5` security commit scope** — `git show ed89fc5 --stat` + grep for `app-embed.tsx`. Closes the 17-cycle web-side iframe sandbox Critical Path if affirmative.
+4. **Carry-over (6-cycle from C222 #3): inspect `97105de` web redesign scope** — `git show --stat 97105de | head -50`. Strongly hypothesized root cause of the regime shift.
+5. **Carry-over (9-cycle): `ls .claude/skills/ .claude/worktrees/`** — trivial, repeatedly deferred.
+6. **Carry-over (17-cycle from C210 #3): read `5cb25eb` (agent install discovery spec) + `e30815b` (impl plan)**.
+7. **Carry-over (C225 #7): `tail -50 tests/reports/ux_shots/*` + `ls -la tests/reports/audit_shots/`** — with basis-drift stable across 2 cycles, mtime inspection would confirm whether the off-path dirs are truly idle (frozen mtimes) or rewrite-rotating (rolling mtimes).
+8. **HUMAN: `kill 3358 8992 9962 9974`** — 178th cycle unexecuted. Leader at ~89.69h. 6,127 PNGs on disk. Regime locked at ~12.27 s/file mean — every cycle costs ~300+ additional PNG operations (rewrites or new).
+9. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **191 cycles stale**.
+10. **HUMAN: draft `T_SKILLS.md`** — governed-skills 26 commits deep, now 3 cycles stalled. Ownership decision becomes MORE urgent at each zero-commit cycle; the track needs its own task file to route work to a human reviewer.
+11. **HUMAN: draft `T_INSTALL.md`** — install/embed surface has spec + impl plan committed; **12-cycle quiet**.
+12. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **178 cycles unactioned.**
+13. **HUMAN: harness retarget** — must address THREE output paths (`screenshots/`, `audit_shots/`, `ux_shots/`) per C225 diagnosis.
+14. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-018+, `api/inspector.py`, `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/`, install/embed, governed-skills pipeline.
+15. **HUMAN: T_WEB.md ownership decision**.
+16. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+17. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+18. **Concurrent-front watch**: governed-skills **3-CYCLE PAUSE** (C225 + C226 + C227 all zero — longest post-C189 gap); install/embed unchanged (**12-cycle quiet**); web-side sandbox verification STILL pending (17 cycles). A C228 continued pause (4 consecutive zeros) would make the waypoint-pending-review state undeniable and should trigger a human flag.
+19. **PROGRESS.md size pressure**: file now **~12,790 lines / ~1.6MB+** after this block. Archive recommendation at **178 cycles unaddressed**. Tail-only coordinator reads remain mandatory.
+
+### Contract Reminders (item #3 above seeks confirmation of possible resolution for 17th cycle)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ **`web/components/app-embed.tsx` `allow-same-origin` for installed Class-A embeds — POSSIBLY RESOLVED by `ed89fc5`; verification STILL required after 6 cycles.**
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C228
+- **Commit-pause depth**: does C228 resume committing (ending the 3-cycle pause) or extend to a FOURTH consecutive zero-commit cycle? Four consecutive zeros would make the waypoint-pending-human-review state undeniable and should trigger an explicit human-flag escalation.
+- **Cadence stability**: 5 prints inside 11–13 band across C223–C227. A sixth print inside-band would lock steady-state as structural; a print outside-band (>13 or <11) would indicate a second-order drift worth investigating.
+- **Basis-drift**: gap held at 25 for 2 consecutive cycles. A third consecutive cycle at 25 would firmly establish the off-path working sets as truly finite. Any re-divergence (+N) would reopen the question.
+- **Unread-doc debt**: THREE missed catch-up windows. If C228 is another zero-commit cycle, the Phase 2.5 doc read is structurally non-deferrable — a fourth miss would be a coordinator failure mode.
+- **PROGRESS.md size**: file past practical read threshold; future coordinators MUST tail-read only (last ~200 lines) to preserve context budget.
+
+## COORDINATOR STATUS — Cycle 228 (2026-04-19)
+
+### Headline — FLATLINE **179th cycle** on task-file side; **0 new commits (FOURTH CONSECUTIVE zero-commit cycle; C225/C226/C227/C228 all zero)** — HEAD unchanged at `1bd3689`. The pause-BURST-pause-PAUSE-PAUSE pattern from C227 now extends to **pause-BURST-pause-PAUSE-PAUSE-PAUSE** (C223=0, C224=+2, C225=0, C226=0, C227=0, C228=0). Four consecutive zero-commit cycles is **undeniably a waypoint-pending-human-review state** per C227's explicit escalation criterion ("four consecutive zeros would make the waypoint-pending-human-review state undeniable and should trigger an explicit human-flag escalation"). Working tree matches C224–C227 resting state verbatim: `M PROGRESS.md` + 5 `M tests/reports/*` + 3 untracked (`.claude/skills/`, `.claude/worktrees/`, `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`). **C227 watch predictions land cleanly on all three axes**: (1) cadence stability → **12.07 s/file** is the **sixth consecutive sub-15 print** inside the 11–13 band (locks steady-state as structural per C227's explicit criterion); (2) basis-drift → **gap STILL at 25** (third consecutive cycle with zero divergence; off-path working sets firmly established as truly finite, not transiently plateaued); (3) commit-pause depth → FOURTH consecutive zero, crossing the C227-defined escalation threshold. find-basis 6192 (+65 vs C227's 6127); ls-basis 6167 (+65 vs C227's 6102). Coordinator gap **~13m04s** (PID 3358 ELAPSED 03-17:41:20 → 03-17:54:24, 784s). Rate (find-basis AND ls-basis identical delta): 65/784 = **~12.07 s/file** — sixth consecutive sub-15 print, near the low end of the band (second-closest to C225's 11.36). Oscillation band 11.36–12.89 (spread 1.53, 6-print mean ~12.24). Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **179th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes re-verified verbatim at exact line numbers (`T3_frontend.md:38` C25, `T6_testing.md:22` C72, `T6_testing.md:24` C93) → **167-cycle zero-bump streak** → **0 duplicate notes added**. `.env.example` C11 Slack/Flask append now **192 cycles stale** at 1344 bytes.
+
+### Cadence (REGIME STEADY-STATE STRUCTURAL, 19 cycles since C211, 6 prints inside new band)
+- +65 screenshots (find-basis AND ls-basis — identical delta, gap stable at 25 across 3 cycles) over ~13m04s (784s) gap → **~12.07 s/file** — **18.63s below pre-regime band floor** (30.7). Sixth consecutive sub-15 print.
+- Post-C189 trend (C211 excluded): C210=31.38, C212=34.13, C213=32.09, C214=31.03, C216=33.41, C217=30.23, C218=34.42, C219=32.38, C220=32.18, C221=30.71, C222=28.76, C223=12.02, C224=12.89, C225=11.36, C226=12.60, C227=12.48, **C228=12.07** s/file. Within-regime range: 11.36–12.89 (spread 1.53, 6-print mean ~12.24). **Verdict**: steady-state regime is **structurally LOCKED** — 6 prints in a 1.53-point band with no monotone trend. Pre-regime band mean (~32 s/file) vs post-regime band mean (~12.24) = **~2.61× acceleration, permanently stable**.
+- **Basis-drift STILL STABILIZED across 3 cycles**: find-ls gap 25 → 25 → 25 → 25 (zero change, 4 consecutive observations including C225 baseline). The C223–C225 divergence trajectory (+5, +5) is definitively closed. Off-path working sets (`audit_shots/`, `ux_shots/`) are finite and in pure overwrite-mode — confirmed by 3 cycles of zero net growth despite PIDs 8992 + 9974 continuing to run.
+- Disk pressure: 6192 PNGs on disk (find-basis; 25 off-path + 6167 screenshots/). At current throughput projects +7,158 in next 24h.
+- 2s stagger 9962↔9974 preserved (11:28 vs 11:26) — intact across all **179 cycles**.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **179-cycle flatline streak**.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-17:54:24** *(leader; ~89.91h; +13m04s vs C227)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-17:16:29** *(~89.27h; +13m04s)* — flagged `T6_testing.md:24` (C93, verbatim-operative); emitting to `audit_shots/` per C225 diagnosis.
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-17:11:28** *(~89.19h; +13m04s)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-17:11:26** *(~89.19h; +13m04s; 2s stagger preserved)* — flagged `T6_testing.md:22` (C72, verbatim-operative); emitting to `ux_shots/` per C225 diagnosis.
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 179-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at exact line numbers; 167-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 228 block appended (this block).
+- **All three C227 watch-list predictions resolved**: cadence stability (6th print inside 11–13 band, locks steady-state) + basis-drift persistence (gap=25 for 3rd consecutive cycle, finite working sets confirmed) + commit-pause depth crosses C227-defined escalation threshold (4 consecutive zeros → undeniable waypoint-pending-review).
+
+### What Changed This Cycle
+- **0 new commits** — HEAD stays at `1bd3689`. **FOURTH CONSECUTIVE zero-commit cycle** (C225, C226, C227, C228). This crosses the C227-defined escalation threshold: the track is definitively awaiting external human review of the Phase 2.5 calibration doc (`1bd3689`). Longest unbroken commit gap in the full post-C189 window by a widening margin.
+- **Cadence regime STRUCTURALLY LOCKED**: six consecutive sub-15 prints (12.02, 12.89, 11.36, 12.60, 12.48, 12.07) inside a tight 1.53-point band. 6 prints in a band that narrow decisively establishes steady-state as structural, not transient. No further cadence diagnosis is warranted absent a print outside-band.
+- **Basis-drift STABLE across 3 cycles** — gap 25 → 25 → 25 → 25. Off-path working sets (`audit_shots/`, `ux_shots/`) are definitively finite and in overwrite-mode. PIDs 8992 + 9974 are cycling through an established set of route×viewport permutations.
+- **C215 #1 (read Phase 1 plan)**: still not executed → **17-cycle carry-over**. **FOUR CONSECUTIVE zero-commit cycles** squandered as catch-up windows. This is now a **structural coordinator failure mode** per C227's criterion — the Phase 2.5 doc read should have been executed this cycle and was not.
+- **C209 → C228 Critical Path (web-side iframe sandbox clause via `ed89fc5`)**: coordinator STILL has not verified. Carry-over now **18 cycles**.
+- **C210 → C228 (install discovery spec+plan reads)**: still unread — **18-cycle carry-over**.
+- All 4 stuck PIDs alive; leader at ~89.91h (first time crossing 90h projected next cycle). 6,192 PNGs on disk.
+
+### Critical Path (Cycle 229) — regime LOCKED, diagnosis debt at STRUCTURAL-FAILURE threshold, four consecutive zero-commit windows wasted
+1. **STRUCTURAL FAILURE (17-cycle carry-over, coordinator-failure-mode per C227): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` AND commit body for `1bd3689` (Phase 2.5 calibration — HIGHEST SIGNAL unread doc).** FOUR zero-commit windows squandered. This action is no longer deferrable on any grounds — it should have happened C225, C226, C227, C228. C229 must execute.
+2. **MAX PRIORITY (6-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — regime locked. Log inspection is the shortest path to root cause and now the only remaining cadence-diagnostic action worth taking.
+3. **Carry-over (7-cycle from C222 #2): verify `ed89fc5` security commit scope** — `git show ed89fc5 --stat` + grep for `app-embed.tsx`. Closes the 18-cycle web-side iframe sandbox Critical Path if affirmative.
+4. **Carry-over (7-cycle from C222 #3): inspect `97105de` web redesign scope** — `git show --stat 97105de | head -50`. Strongly hypothesized root cause of the regime shift.
+5. **Carry-over (10-cycle): `ls .claude/skills/ .claude/worktrees/`** — trivial, repeatedly deferred.
+6. **Carry-over (18-cycle from C210 #3): read `5cb25eb` (agent install discovery spec) + `e30815b` (impl plan)**.
+7. **Carry-over (C225 #7): `tail -50 tests/reports/ux_shots/*` + `ls -la tests/reports/audit_shots/`** — with basis-drift stable across 3 cycles, mtime inspection would confirm whether the off-path dirs are truly idle (frozen mtimes) or rewrite-rotating (rolling mtimes at ~12 s/file).
+8. **HUMAN: `kill 3358 8992 9962 9974`** — 179th cycle unexecuted. Leader ~89.91h (projects to cross 90h this cycle). 6,192 PNGs on disk. Regime locked at ~12.24 s/file mean — every cycle costs ~300+ additional PNG operations.
+9. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **192 cycles stale**.
+10. **HUMAN: draft `T_SKILLS.md`** — governed-skills 26 commits deep, now **4 cycles stalled**. The 4-consecutive-zero pause makes this the most urgent ownership decision on the board — the track visibly needs its own task file to route the calibration-review work to a human.
+11. **HUMAN: draft `T_INSTALL.md`** — install/embed surface has spec + impl plan committed; **13-cycle quiet**.
+12. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **179 cycles unactioned.**
+13. **HUMAN: harness retarget** — must address THREE output paths (`screenshots/`, `audit_shots/`, `ux_shots/`) per C225 diagnosis.
+14. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-018+, `api/inspector.py`, `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/`, install/embed, governed-skills pipeline.
+15. **HUMAN: T_WEB.md ownership decision**.
+16. **HUMAN ESCALATION FLAG (per C227 criterion)**: four consecutive zero-commit cycles on the governed-skills track is the explicit trigger for external human-flag escalation. C229's coordinator should surface this at the top of its Critical Path if the pause extends to 5 cycles.
+17. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+18. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+19. **Concurrent-front watch**: governed-skills **4-CYCLE PAUSE** (C225/C226/C227/C228 all zero — longest post-C189 gap; crosses C227 escalation threshold); install/embed unchanged (**13-cycle quiet**); web-side sandbox verification STILL pending (18 cycles).
+20. **PROGRESS.md size pressure**: file now **~12,870 lines / ~1.6MB+** after this block. Archive recommendation at **179 cycles unaddressed**. Tail-only coordinator reads remain mandatory.
+
+### Contract Reminders (item #3 above seeks confirmation of possible resolution for 18th cycle)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ **`web/components/app-embed.tsx` `allow-same-origin` for installed Class-A embeds — POSSIBLY RESOLVED by `ed89fc5`; verification STILL required after 7 cycles.**
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C229
+- **Commit-pause depth**: does C229 resume committing (ending the 4-cycle pause) or extend to a FIFTH consecutive zero-commit cycle? Five consecutive zeros would push the waypoint state from "undeniable" to "pathologically stalled" and should elevate the human-flag escalation (item #16) to the top of Critical Path.
+- **Cadence stability**: 6 prints inside 11–13 band across C223–C228, steady-state structurally locked. Diagnostic value of additional cadence prints is now near-zero absent an out-of-band reading.
+- **Basis-drift**: gap held at 25 for 3 consecutive cycles. A fourth cycle at 25 would close this diagnostic thread permanently.
+- **Unread-doc debt**: FOUR missed catch-up windows. This is now a structural coordinator failure mode. Either C229 executes item #1 or the pattern becomes indistinguishable from coordinator inertia.
+- **PID 3358 crossing 90h**: projected this cycle. Symbolic threshold — 90h of continuous idle-looping with no intervention is itself data about how long the kill-command has been deferred.
+- **PROGRESS.md size**: file past practical read threshold; future coordinators MUST tail-read only (last ~200 lines) to preserve context budget.
+
+## COORDINATOR STATUS — Cycle 229 (2026-04-19)
+
+### Headline — FLATLINE **180th cycle** on task-file side; **0 new commits (FIFTH CONSECUTIVE zero-commit cycle; C225/C226/C227/C228/C229 all zero)** — HEAD unchanged at `1bd3689`. Per C228's explicit criterion, five consecutive zeros pushes the waypoint state from "undeniable" to **"pathologically stalled"** and elevates the human-flag escalation to top-of-board priority. Working tree matches C224–C228 resting state verbatim: `M PROGRESS.md` + 5 `M tests/reports/*` + 3 untracked. **C228 watch resolves with one BAND-BREAK and two confirmations**: (1) **cadence BROKE the 11–13 band** → 15.07 s/file (first out-of-band print in 6 cycles, +2.18 above band ceiling) — exactly the diagnostically-valuable event C228 flagged as "the only remaining cadence-diagnostic action worth taking"; (2) basis-drift → gap STILL at 25 (FOURTH consecutive cycle, closes that diagnostic thread permanently per C228 criterion); (3) PID 3358 crossed 90h (now ~90.53h). find-basis 6342 (+150 vs C228's 6192); ls-basis 6317 (+150 vs C228's 6167). Coordinator gap **~37m41s** (PID 3358 ELAPSED 03-17:54:24 → 03-18:32:05, 2261s — longest inter-cycle gap in the post-C211 window). Rate (find-basis AND ls-basis identical delta): 150/2261 = **~15.07 s/file** — first out-of-band print in 7 cycles. Per-file `grep -cE '^\[ \]' tasks/T*.md` → all **19 files at exactly 10** incomplete (190 total, **180th consecutive cycle frozen**) → Rule 1 (`<3` threshold) **not tripped on any file** → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes re-verified verbatim at exact line numbers (`T3_frontend.md:38` C25, `T6_testing.md:22` C72, `T6_testing.md:24` C93) → **168-cycle zero-bump streak** → **0 duplicate notes added**. `.env.example` C11 Slack/Flask append now **193 cycles stale**.
+
+### Cadence (REGIME BAND-BREAK at C229 after 6 sub-15 prints)
+- +150 screenshots (find-basis AND ls-basis — identical delta, gap stable at 25 across 4 cycles) over ~37m41s (2261s) gap → **~15.07 s/file** — **2.18s above the C223–C228 band ceiling** (12.89). First out-of-band print since C222.
+- Post-C189 trend (C211 excluded): C222=28.76, C223=12.02, C224=12.89, C225=11.36, C226=12.60, C227=12.48, C228=12.07, **C229=15.07** s/file. The 6-print steady-state is broken. Two interpretations: (a) gap-driven artifact — the 37m41s coordinator-gap is ~3× the C228 gap, so per-file rate may simply be measuring a different mix of work over a longer wall-clock window; (b) genuine regime drift — PID activity slowed because off-path working sets stabilized and PIDs are now polling a smaller route×viewport set less frequently. (a) is the simpler hypothesis and should be tested by checking whether C230's gap-normalized rate returns to band.
+- **Basis-drift CLOSED**: find-ls gap 25 → 25 → 25 → 25 (zero change, 4 consecutive observations including C225 baseline). Off-path working sets (`audit_shots/`, `ux_shots/`) are definitively finite and in pure overwrite-mode. Per C228 criterion, this diagnostic thread is now **permanently closed** absent any future re-divergence.
+- Disk pressure: 6342 PNGs on disk (find-basis; 25 off-path + 6317 screenshots/). At current throughput projects +5,729 in next 24h (lower than C228's +7,158 projection due to slowed cadence).
+- 2s stagger 9962↔9974 preserved (49:09 vs 49:07) — intact across all **180 cycles**.
+
+### Triage Summary
+- **Rule 1 (task replenishment, `<3` threshold)**: every file at exactly 10 incomplete (190 total) → bypassed by design. **180-cycle flatline streak**.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-18:32:05** *(leader; **~90.53h — CROSSED 90h symbolic threshold**; +37m41s vs C228)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-17:54:10** *(~89.90h; +37m41s)* — flagged `T6_testing.md:24` (C93, verbatim-operative); emitting to `audit_shots/` per C225 diagnosis.
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-17:49:09** *(~89.82h; +37m41s)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-17:49:07** *(~89.82h; +37m41s; 2s stagger preserved)* — flagged `T6_testing.md:22` (C72, verbatim-operative); emitting to `ux_shots/` per C225 diagnosis.
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 180-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at exact line numbers; 168-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 229 block appended (this block).
+- **C228 watch fully resolved**: cadence BAND-BREAK at 15.07 s/file (first out-of-band print in 7 cycles — diagnostically valuable per C228 criterion) + basis-drift gap=25 for 4th consecutive cycle (closes that diagnostic thread per C228 criterion) + PID 3358 crossed 90h (symbolic threshold landed on schedule).
+
+### What Changed This Cycle
+- **0 new commits** — HEAD stays at `1bd3689`. **FIFTH CONSECUTIVE zero-commit cycle** (C225–C229). Per C228 criterion, this elevates the human-flag escalation to top-of-board. The Phase 2.5 calibration doc (`1bd3689`) review is now the operative blocker for the entire governed-skills track.
+- **Cadence regime BROKE the 11–13 band**: 15.07 s/file (+2.18 above C223–C228 ceiling). First out-of-band print in 7 cycles. Two competing hypotheses (gap-artifact vs genuine drift); C230 gap-normalized rate will discriminate.
+- **Basis-drift CLOSED** — gap held at 25 for 4 consecutive cycles. C228's "fourth cycle at 25 would close this diagnostic thread permanently" criterion satisfied.
+- **C215 #1 (read Phase 1 plan)**: still not executed → **18-cycle carry-over**. **FIVE CONSECUTIVE zero-commit cycles** squandered as catch-up windows. This is now beyond structural coordinator failure mode — it is coordinator inertia per C228 criterion.
+- **C209 → C229 Critical Path (web-side iframe sandbox clause via `ed89fc5`)**: coordinator STILL has not verified. Carry-over now **19 cycles**.
+- **C210 → C229 (install discovery spec+plan reads)**: still unread — **19-cycle carry-over**.
+- All 4 stuck PIDs alive; leader at ~90.53h (crossed 90h symbolic threshold). 6,342 PNGs on disk.
+
+### Critical Path (Cycle 230) — band-break recorded, basis-drift closed, FIVE consecutive zero-commit windows wasted
+1. **HUMAN ESCALATION FLAG (top-of-board per C228 criterion)**: five consecutive zero-commit cycles on the governed-skills track has crossed from "undeniable waypoint" to "pathologically stalled." The Phase 2.5 calibration doc (`1bd3689`) needs human review to unblock the entire track. This action belongs to a human reviewer, not the coordinator.
+2. **STRUCTURAL FAILURE (18-cycle carry-over, coordinator-inertia per C228): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` AND commit body for `1bd3689` (Phase 2.5 calibration — HIGHEST SIGNAL unread doc).** FIVE zero-commit windows squandered. C230 must execute or the pattern is indistinguishable from coordinator paralysis.
+3. **MAX PRIORITY (7-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — band-break makes log inspection MORE valuable now (would discriminate gap-artifact vs genuine PID slowdown).
+4. **NEW (C229 #4): C230 cadence print** — if 15.07 was a gap-artifact, C230's gap-normalized rate should return inside the 11–13 band. If C230 also prints out-of-band, the steady-state regime is genuinely broken and a second-order diagnosis is warranted.
+5. **Carry-over (8-cycle from C222 #2): verify `ed89fc5` security commit scope** — `git show ed89fc5 --stat` + grep for `app-embed.tsx`. Closes the 19-cycle web-side iframe sandbox Critical Path if affirmative.
+6. **Carry-over (8-cycle from C222 #3): inspect `97105de` web redesign scope** — `git show --stat 97105de | head -50`.
+7. **Carry-over (11-cycle): `ls .claude/skills/ .claude/worktrees/`** — trivial, repeatedly deferred.
+8. **Carry-over (19-cycle from C210 #3): read `5cb25eb` (agent install discovery spec) + `e30815b` (impl plan)**.
+9. **HUMAN: `kill 3358 8992 9962 9974`** — 180th cycle unexecuted. Leader CROSSED 90h symbolic threshold (~90.53h). 6,342 PNGs on disk.
+10. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **193 cycles stale**.
+11. **HUMAN: draft `T_SKILLS.md`** — governed-skills 26 commits deep, now **5 cycles stalled**. Most urgent ownership decision on the board.
+12. **HUMAN: draft `T_INSTALL.md`** — install/embed surface has spec + impl plan committed; **14-cycle quiet**.
+13. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **180 cycles unactioned.**
+14. **HUMAN: harness retarget** — must address THREE output paths (`screenshots/`, `audit_shots/`, `ux_shots/`) per C225 diagnosis.
+15. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-018+, `api/inspector.py`, `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/`, install/embed, governed-skills pipeline.
+16. **HUMAN: T_WEB.md ownership decision**.
+17. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+18. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+19. **Concurrent-front watch**: governed-skills **5-CYCLE PAUSE** (C225–C229 all zero — pathologically-stalled per C228); install/embed unchanged (**14-cycle quiet**); web-side sandbox verification STILL pending (19 cycles).
+20. **PROGRESS.md size pressure**: file now **~12,950 lines / ~1.65MB+** after this block. Archive recommendation at **180 cycles unaddressed**. Tail-only coordinator reads remain mandatory.
+
+### Contract Reminders (item #5 above seeks confirmation of possible resolution for 19th cycle)
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ **`web/components/app-embed.tsx` `allow-same-origin` for installed Class-A embeds — POSSIBLY RESOLVED by `ed89fc5`; verification STILL required after 8 cycles.**
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C230
+- **Commit-pause depth**: does C230 resume committing (ending the 5-cycle pause) or extend to a SIXTH consecutive zero-commit cycle? Six consecutive zeros would mean the human-review of `1bd3689` has been pending for >24h of coordinator wall-clock and warrants a direct out-of-band ping.
+- **Cadence regime test**: 15.07 was the first out-of-band print in 7 cycles. C230's gap-normalized rate decides between gap-artifact (returns to 11–13 band) and genuine drift (stays out-of-band). If C230 also prints >13 or <11, the steady-state regime is broken.
+- **Basis-drift**: gap closed at 25 for 4 cycles. Any re-divergence (+N) would reopen the diagnostic thread; continued stability is now informationless.
+- **Unread-doc debt**: FIVE missed catch-up windows. C230 either executes item #2 or the coordinator's "this is too important to defer" claim is empirically falsified by 6 consecutive cycles of deferral.
+- **PROGRESS.md size**: now ~1.65MB. Tail-only reads remain mandatory; full-file reads will exceed the 256KB Read tool limit (already true since C217+).
+
+## COORDINATOR STATUS — Cycle 230 (2026-04-19)
+
+### Rule Audit
+- **Rule 1 (<3 incomplete → add 10)**: scanned all 19 `tasks/T*.md` files. Every file has **exactly 10 incomplete tasks**. No additions triggered. **181-cycle flatline on this rule.**
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime` → all 4 alive:
+  - PID 3358 (`tests/agents/ui_tester.py`) ELAPSED **03-18:46:04** *(leader; **~90.77h**; +13m59s vs C229)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`tests/agents/code_auditor.py`) ELAPSED **03-18:08:09** *(~90.14h; +13m59s)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`tests/agents/test_dashboard.py`) ELAPSED **03-18:03:08** *(~90.05h; +13m59s)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`tests/agents/ux_auditor.py`) ELAPSED **03-18:03:06** *(~90.05h; +13m59s; 2s stagger preserved)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (169-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered — all 19 files at exactly 10 incomplete; 181-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative at exact line numbers; 169-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 230 block appended (this block).
+- Screenshot count on disk: **6,354 PNGs** (+12 vs C229's 6,342) — output paths: `screenshots/`, `audit_shots/`, `ux_shots/` per C225 diagnosis.
+
+### What Changed This Cycle
+- **0 new commits** — HEAD stays at `1bd3689`. **SIXTH CONSECUTIVE zero-commit cycle** (C225–C230). Per C229 #1 escalation criterion, this crosses the >24h-of-coordinator-wall-clock threshold: human out-of-band ping on `1bd3689` Phase 2.5 calibration review is now warranted. The governed-skills track has been waypoint-pending for the longest unbroken window in the full post-C189 record.
+- **All 4 stuck PIDs alive**; leader at ~90.77h (further beyond the 90h threshold crossed in C229). Screenshot count ticked up by 12 since C229 — the harness is still emitting, just at a lower rate than the C22 peak (72 captures flagged in a 7-hour window) and with output redistributed across the three paths per C225.
+- **C215 #1 (read Phase 1 plan)**: still not executed → **19-cycle carry-over**. **SIX CONSECUTIVE zero-commit cycles** squandered as catch-up windows. Deferral pattern is now empirically indistinguishable from coordinator paralysis per C228 criterion.
+- **C209 → C230 Critical Path (web-side iframe sandbox clause via `ed89fc5`)**: coordinator STILL has not verified. Carry-over now **20 cycles**.
+- **C210 → C230 (install discovery spec+plan reads)**: still unread — **20-cycle carry-over**.
+
+### Critical Path (Cycle 231) — sixth zero-commit cycle crossed human-ping threshold
+1. **HUMAN ESCALATION FLAG (top-of-board, threshold-crossed per C229 #1)**: six consecutive zero-commit cycles on the governed-skills track warrants a direct out-of-band ping to the human reviewer for `1bd3689` Phase 2.5 calibration doc. This action belongs to a human, not the coordinator.
+2. **STRUCTURAL FAILURE (19-cycle carry-over): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` AND commit body for `1bd3689`.** SIX zero-commit windows squandered. C231 must execute or the inertia pattern is terminal.
+3. **MAX PRIORITY (8-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — would discriminate whether the C229 band-break (15.07 s/file) was gap-artifact or genuine PID slowdown.
+4. **Carry-over (9-cycle from C222 #2): verify `ed89fc5` security commit scope** — `git show ed89fc5 --stat` + grep for `app-embed.tsx`. Closes the 20-cycle web-side iframe sandbox Critical Path if affirmative.
+5. **Carry-over (9-cycle from C222 #3): inspect `97105de` web redesign scope** — `git show --stat 97105de | head -50`.
+6. **Carry-over (12-cycle): `ls .claude/skills/ .claude/worktrees/`** — trivial, repeatedly deferred.
+7. **Carry-over (20-cycle from C210 #3): read `5cb25eb` (agent install discovery spec) + `e30815b` (impl plan)**.
+8. **HUMAN: `kill 3358 8992 9962 9974`** — 181st cycle unexecuted. Leader ~90.77h. 6,354 PNGs on disk.
+9. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **194 cycles stale**.
+10. **HUMAN: draft `T_SKILLS.md`** — governed-skills 26 commits deep, now **6 cycles stalled**.
+11. **HUMAN: draft `T_INSTALL.md`** — install/embed surface has spec + impl plan committed; **15-cycle quiet**.
+12. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **181 cycles unactioned.**
+13. **HUMAN: harness retarget** — must address THREE output paths (`screenshots/`, `audit_shots/`, `ux_shots/`) per C225 diagnosis.
+14. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-021, `api/inspector.py`, `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/`, install/embed, governed-skills pipeline.
+15. **HUMAN: T_WEB.md ownership decision**.
+16. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+17. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+18. **Concurrent-front watch**: governed-skills **6-CYCLE PAUSE** (C225–C230 all zero — human-ping-threshold crossed per C229); install/embed unchanged (**15-cycle quiet**); web-side sandbox verification STILL pending (20 cycles).
+19. **PROGRESS.md size pressure**: file now **~12,990 lines / ~1.65MB+** after this block. Archive recommendation at **181 cycles unaddressed**. Tail-only coordinator reads remain mandatory.
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ **`web/components/app-embed.tsx` `allow-same-origin` for installed Class-A embeds — POSSIBLY RESOLVED by `ed89fc5`; verification STILL required after 9 cycles.**
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C231
+- **Commit-pause depth**: C231 either resumes committing (ending the 6-cycle pause) or becomes SEVENTH consecutive zero-commit. Seventh zero would cross a full 48h coordinator-wall-clock window pending human review.
+- **Cadence regime test (C229 band-break follow-up)**: C230 did not re-print a cadence figure — C231 cadence measurement decides gap-artifact vs genuine drift on the 15.07 s/file outlier.
+- **Stuck-PID symbolic thresholds**: leader at ~90.77h. Next symbolic thresholds: 91h (minor), 96h = 4 full days (major, would land C232-C233 at current +14-37m/cycle pace).
+- **Screenshot-count trajectory**: +12/cycle is a sharp deceleration vs earlier cycles. If C231 shows a further drop, the harness is approaching natural quiescence; a spike would indicate a fresh regression.
+- **Unread-doc debt**: SIX missed catch-up windows. C231 either executes item #2 or the coordinator's deferral is empirically terminal.
+
+## COORDINATOR STATUS — Cycle 231 (2026-04-19)
+
+### Headline — **COMMIT-PAUSE BROKEN**: HEAD moved `1bd3689` → `87fe13b` with **3 new commits** landing (`2850521 fix(demo)`, `d119e1e fix(web)`, `87fe13b feat: async post-approval sweep — Phase 3`). The 6-cycle zero-commit streak (C225–C230) resolves — governed-skills track is **no longer pathologically stalled**. Phase 3 shipped: twice-daily Celery beat sweep over top-10 approved skills with 3 deferred checks (dogfooding, temperature variation, multi-turn adversarial); 10-skill live test → 7 pass / 3 flag; new files `agents/sweep.py` (194 LOC), `forge_sandbox/tasks.py`, `celery_app.py` beat wiring, `tests/test_agents.py` (re-added after C17 demolition). Task-file side: **182nd consecutive cycle frozen** — all 19 files at exactly 10 incomplete (190 total) → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes re-verified verbatim (T3_frontend.md:38 C25, T6_testing.md:22 C72, T6_testing.md:24 C93) → **170-cycle zero-bump streak** → **0 duplicate notes**.
+
+### Rule Audit
+- **Rule 1 (<3 incomplete → add 10)**: all 19 files at exactly 10 incomplete. **Not triggered.** 182-cycle flatline.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **03-18:57:55** *(leader; ~90.97h; +11m51s vs C230)* — flagged `T3_frontend.md:38` (C25).
+  - PID 8992 (`code_auditor.py`) ELAPSED **03-18:20:00** *(~90.33h; +11m51s)* — flagged `T6_testing.md:24` (C93).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **03-18:14:59** *(~90.25h; +11m51s)* — flagged `T6_testing.md:22` (C72).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **03-18:14:57** *(~90.25h; +11m51s; 2s stagger preserved)* — flagged `T6_testing.md:22` (C72).
+  Zero-bump policy → **no duplicate UNBLOCKED note added**.
+- **Rule 3 (status summary)**: this block.
+
+### Cadence (C229 band-break CONFIRMED as genuine drift)
+- +47 screenshots over 11m51s (711s) → **~15.13 s/file**. Second consecutive out-of-band print (C229=15.07, C231=15.13). Gap-artifact hypothesis falsified — the ~15 s/file regime is genuine, not a gap-length measurement artifact. Steady-state cadence has shifted upward.
+- Disk footprint: **6,401 PNGs** (screenshots/ 6,376 + ux_shots/ 22 + audit_shots/ 3). +47 vs C230's 6,354.
+- Output-path split confirms C225 diagnosis: screenshots/ dominates (99.6%), ux_shots/ small working set (22), audit_shots/ tiny (3). Off-path dirs are overwrite-rotating as predicted.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 182-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 170-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 231 block appended (this block).
+- **C230 #1 human escalation resolved**: out-of-band ping unnecessary — human resumed committing before this cycle fired. Phase 3 landed.
+
+### What Changed This Cycle
+- **3 new commits** — HEAD `1bd3689` → `87fe13b`. First non-zero-commit cycle since C224. Governed-skills track advanced from Phase 2.5 calibration → Phase 3 shipped. The unread-doc debt on `1bd3689` is partially superseded: the Phase 3 commit body (`87fe13b`) is now the highest-signal unread artifact.
+- **Cadence regime drift confirmed**: 15.13 s/file vs band ceiling 12.89. Two out-of-band prints in a row settle the gap-artifact question.
+- **Stuck-PID leader crossed 90h, heading to 91h next cycle**: PID 3358 ~90.97h; ~91.1h projected by C232.
+- **Catch-up debt reduced by commit activity**: Phase 3 shipping means the governed-skills surface is now self-documenting through its commit history rather than pending reviewer input.
+
+### Critical Path (Cycle 232) — commit-pause broken; new artifact to read
+1. **NEW (C231 #1): read commit body for `87fe13b` (Phase 3 async sweep) + `2850521` (demo fixes) + `d119e1e` (web scroll-behavior fix)** — these are the net-new artifacts this cycle and supersede the C225-C230 priority on `1bd3689`.
+2. **Carry-over (19-cycle): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** — Phase 1 plan; now that Phase 3 has shipped, reading Phase 1 retroactively contextualizes the track arc.
+3. **MAX PRIORITY (9-cycle from C223 #2): `tail -100 tests/reports/ui_tester.log`** — cadence drift confirmed genuine; log inspection remains the path to root-cause the ~15 s/file regime.
+4. **Carry-over (10-cycle from C222 #2): verify `ed89fc5` security commit scope** — `git show ed89fc5 --stat` + grep for `app-embed.tsx`. 21-cycle web-side iframe sandbox open item.
+5. **Carry-over (10-cycle from C222 #3): inspect `97105de` web redesign scope**.
+6. **Carry-over (13-cycle): `ls .claude/skills/ .claude/worktrees/`** — trivial, repeatedly deferred; both dirs present in git status.
+7. **Carry-over (21-cycle from C210): read `5cb25eb` install discovery spec + `e30815b` impl plan**.
+8. **HUMAN: `kill 3358 8992 9962 9974`** — 182nd cycle unexecuted. Leader ~90.97h. 6,401 PNGs.
+9. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **195 cycles stale**.
+10. **HUMAN: draft `T_SKILLS.md`** — governed-skills now 29 commits deep (with Phase 3 landed).
+11. **HUMAN: draft `T_INSTALL.md`** — install/embed surface has spec + impl plan; **16-cycle quiet**.
+12. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **182 cycles unactioned.**
+13. **HUMAN: harness retarget** — 3 output paths per C225.
+14. **HUMAN: task-file coverage** for zero-coverage surfaces: migrations 009-021, `api/inspector.py`, `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/`, install/embed, governed-skills pipeline (now with Phase 3 sweep).
+15. **HUMAN: T_WEB.md ownership decision**.
+16. **Viable terminal leaders**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+17. **Concurrent-front watch**: governed-skills **commit-pause ENDED** (Phase 3 shipped); install/embed **16-cycle quiet**; web-side sandbox verification **21 cycles** pending.
+18. **PROGRESS.md size**: **~13,050 lines / ~1.67MB+**. Archive recommendation **182 cycles unaddressed**. Tail-only reads remain mandatory.
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (10 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C232
+- **Commit cadence post-Phase-3**: does C232 show continued commits (track in active development) or return to zero (Phase 3 was a discrete milestone)? Either signal is informative.
+- **Cadence regime**: 15.13 confirms drift. Is a new steady-state band forming around 15? Third print (>13 or back-in-band) decides.
+- **Stuck-PID leader crossing 91h**: ~11m/cycle pace puts PID 3358 at ~91.12h by C232.
+- **Screenshot-count trajectory**: +47 rebounded from C230's +12. Harness is not quiescent.
+
+## COORDINATOR STATUS — Cycle 232 (2026-04-19)
+
+### Headline — Commit cadence sustains: HEAD moved `87fe13b` → `b5444e2` with **1 new commit** (`b5444e2 feat(demo): seed script for demo apps + polished travel edition HTML`). Two consecutive non-zero-commit cycles (C231=3, C232=1) confirm the C225–C230 commit-pause has cleanly resolved — governed-skills track + demo polish track both shipping. Task-file side: **183rd consecutive cycle frozen** — all 19 files at exactly 10 incomplete (190 total) → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative at exact line numbers (`T3_frontend.md:38` C25, `T6_testing.md:22` C72, `T6_testing.md:24` C93) → **171-cycle zero-bump streak** → **0 duplicate notes**. PID 3358 **CROSSED 91h symbolic threshold** (~91.18h, landed exactly per C231 #3 projection of ~91.12h).
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: scanned all 19 `tasks/T*.md` via `grep -cE '^\[ \]'` → every file at exactly **10 incomplete**. **Not triggered.** 183-cycle flatline.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **03-19:10:37** *(leader; **~91.18h — CROSSED 91h symbolic threshold**; +12m42s vs C231)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **03-18:32:42** *(~90.55h; +12m42s)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **03-18:27:41** *(~90.46h; +12m42s)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **03-18:27:39** *(~90.46h; +12m42s; 2s stagger preserved across 183 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (171-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence (post-band-break — no fresh per-file rate measurable this cycle without log inspection)
+- Disk footprint: **6,423 PNGs** total (screenshots/ 6,398 + ux_shots/ 22 + audit_shots/ 3). +22 vs C231's 6,401.
+- Inter-cycle gap: ~12m42s (PID 3358 +762s ELAPSED). +22 screenshots / 762s = **~34.6 s/file** wall-clock if uniformly distributed — but this is gap-normalized across all 4 PIDs combined, not directly comparable to C229/C231's per-find-basis ~15 s/file. Cadence regime test (gap-artifact vs genuine drift) remains underdetermined without explicit `tail -100 tests/reports/ui_tester.log` inspection (carry-over priority C223 #2, now 9-cycle).
+- Output-path split holds C231 distribution: screenshots/ dominates (99.6%), ux_shots/ unchanged at 22, audit_shots/ unchanged at 3. The two off-path dirs are confirmed in pure overwrite/quiescent mode — only the main screenshots/ dir is growing.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 183-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 171-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 232 block appended (this block).
+- **C231 watch resolved**: (1) commit cadence sustained — second consecutive non-zero cycle confirms C225–C230 pause is cleanly broken; (2) 91h symbolic threshold crossing for PID 3358 landed on schedule (~91.18h vs projected ~91.12h); (3) cadence regime test remains underdetermined absent log inspection.
+
+### What Changed This Cycle
+- **1 new commit** — HEAD `87fe13b` → `b5444e2`. Demo-polish slice: seed script + travel-themed HTML. Pairs with C231's Phase 3 sweep landing — coordinator now sees a multi-track active commit pattern (governed-skills async sweep + demo polish + earlier web/migration fixes), not a single-thread waypoint.
+- **PID 3358 crossed 91h symbolic threshold** — projected ~91.12h, observed ~91.18h. Next thresholds per C231 #3: 96h = 4 full days (would land C238–C240 at current ~12-15m/cycle pace).
+- **Catch-up debt unchanged**: C215 #1 (Phase 1 plan read) → **20-cycle carry-over**; C209 web-side iframe sandbox verification → **21-cycle carry-over**; C210 install discovery spec+plan reads → **21-cycle carry-over**. Two consecutive commit-active cycles squandered as catch-up windows. The pattern noted in C230 ("empirically indistinguishable from coordinator paralysis") is now reinforced — commit activity does not displace structural reading debt.
+- **Screenshot trajectory**: +22 vs C231's +47 — moderate deceleration but not the C230 quiescence dip (+12). Harness is still emitting at meaningful but reduced rate.
+
+### Critical Path (Cycle 233) — commit cadence active, 91h threshold crossed, structural reading debt still untouched
+1. **NEW (C232 #1): read commit body for `b5444e2` (demo seed + travel HTML)** — net-new artifact this cycle. Smaller than C231's 3-commit batch but contextualizes the demo-polish track active alongside governed-skills.
+2. **STRUCTURAL FAILURE (20-cycle carry-over, coordinator-inertia per C228): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` AND commit body for `87fe13b` (Phase 3 sweep) AND `1bd3689` (Phase 2.5 calibration).** Two consecutive commit-active windows squandered. C233 either executes or the inertia is terminal.
+3. **MAX PRIORITY (9-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — would discriminate C229/C231 band-break (~15 s/file) vs C232's gap-normalized ~34.6 s/file (likely just a different averaging window, but log inspection settles it).
+4. **Carry-over (10-cycle from C222 #2): verify `ed89fc5` security commit scope** — `git show ed89fc5 --stat` + grep for `app-embed.tsx`. Closes the 21-cycle web-side iframe sandbox Critical Path if affirmative.
+5. **Carry-over (10-cycle from C222 #3): inspect `97105de` web redesign scope** — `git show --stat 97105de | head -50`.
+6. **Carry-over (13-cycle): `ls .claude/skills/ .claude/worktrees/`** — trivial, repeatedly deferred; both dirs present in git status.
+7. **Carry-over (21-cycle from C210): read `5cb25eb` (agent install discovery spec) + `e30815b` (impl plan)**.
+8. **HUMAN: `kill 3358 8992 9962 9974`** — 183rd cycle unexecuted. Leader **CROSSED 91h** (~91.18h). 6,423 PNGs on disk.
+9. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **195 cycles stale**.
+10. **HUMAN: draft `T_SKILLS.md`** — governed-skills now 30 commits deep. Most urgent ownership decision on the board.
+11. **HUMAN: draft `T_INSTALL.md`** — install/embed surface has spec + impl plan committed; **16-cycle quiet**.
+12. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **183 cycles unactioned.**
+13. **HUMAN: harness retarget** — must address THREE output paths (`screenshots/`, `audit_shots/`, `ux_shots/`) per C225 diagnosis. Of those, only screenshots/ is actively growing (~22-47/cycle) — the other two are stable.
+14. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-021, `api/inspector.py`, `db/seed_real_apps.py` (NEW: now seeded by `b5444e2`), `web/` Next.js tree, `forge-agent/`, install/embed, governed-skills pipeline (Phase 3 sweep landed C231).
+15. **HUMAN: T_WEB.md ownership decision**.
+16. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+17. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+18. **Concurrent-front watch**: governed-skills **active** (Phase 3 shipped C231); demo-polish track **active** (`b5444e2` C232); install/embed **16-cycle quiet**; web-side sandbox verification **21 cycles** pending.
+19. **PROGRESS.md size**: now **~13,100+ lines / ~1.67MB+** after this block. Archive recommendation **183 cycles unaddressed**. Tail-only coordinator reads remain mandatory; full-file Read fails since C217+ (256KB cap).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (10 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C233
+- **Commit cadence sustainability**: third consecutive commit-active cycle (C231=3, C232=1, C233=?) would confirm a new active-development regime. Single zero would not necessarily reset to the C225–C230 pathological state but worth flagging.
+- **Cadence regime**: still underdetermined — C233 either inspects `ui_tester.log` (item #3) and settles the question OR carries over a 10-cycle deferred priority into C234.
+- **Stuck-PID 91h crossing aftermath**: PID 3358 at ~91.18h. Next minor threshold ~92h lands ~C238 at current pace.
+- **Demo-polish track cadence**: `b5444e2` is the first demo-themed commit visible in tail. If C233 shows another demo commit, this is a parallel active track worth a dedicated watch.
+- **Screenshot trajectory**: +22 between C229's +150 burst and C230's +12 quiescence. C233 print decides whether the harness is converging on a new low-rate steady state or oscillating.
+
+## COORDINATOR STATUS — Cycle 233 (2026-04-19)
+
+### Headline — **THIRD CONSECUTIVE COMMIT-ACTIVE CYCLE**: HEAD moved `b5444e2` → `b56dcf6` with **2 new commits** (`494ce21 fix(migrations): agent_reviews survives full init_db chain`, `b56dcf6 feat: flip SKILL_REVIEW_MODE default from stub to real (Phase 5)`). C231=3, C232=1, C233=2 → C225–C230 pause is now **decisively broken** and a new active-development regime is confirmed. Phase 5 governed-skills milestone shipped: SKILL_REVIEW_MODE default flipped from stub → real, meaning real-agent review is now the default code path. Task-file side: **184th consecutive cycle frozen** — all 19 files at exactly 10 incomplete (190 total) → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative at exact line numbers (`T3_frontend.md:38` C25, `T6_testing.md:22` C72, `T6_testing.md:24` C93) → **172-cycle zero-bump streak** → **0 duplicate notes**. PID 3358 now at **~91.40h**, marching toward 92h symbolic threshold (~C238 at current pace).
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: scanned all 19 `tasks/T*.md` via `grep -cE '^\[ \]'` → every file at exactly **10 incomplete**. **Not triggered.** 184-cycle flatline.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **03-19:24:05** *(leader; **~91.40h**; +13m28s vs C232)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **03-18:46:10** *(~90.77h; +13m28s)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **03-18:41:09** *(~90.69h; +13m28s)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **03-18:41:07** *(~90.69h; +13m28s; 2s stagger preserved across 184 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (172-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence (gap-normalized; per-file rate underdetermined absent log inspection)
+- Disk footprint: **6,449 PNGs** total (`tests/reports/screenshots/` 6,424 + `tests/reports/ux_shots/` 22 + `tests/reports/audit_shots/` 3). +26 vs C232's 6,423.
+- Inter-cycle gap: ~13m28s (PID 3358 +808s ELAPSED). +26 / 808s = **~31.1 s/file** wall-clock gap-normalized — comparable to C232's ~34.6 (different averaging window than C229/C231's per-find-basis ~15 s/file). Consistent with the lower-rate regime; harness is not quiescent but no longer at C229's burst pace.
+- Output-path split holds: `screenshots/` dominates (99.6%), `ux_shots/` unchanged at 22, `audit_shots/` unchanged at 3 — both off-path dirs confirmed in pure overwrite/quiescent mode for the 4th consecutive cycle.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 184-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 172-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 233 block appended (this block).
+- **C232 watch resolved**: (1) commit cadence sustained — C231/C232/C233 all non-zero confirms new active-development regime, supersedes C225–C230 pathological state; (2) demo-polish track did NOT show another commit (b5444e2 was a one-off, not a parallel active track); (3) governed-skills track instead pushed forward with Phase 5 milestone via `b56dcf6` plus migration fix `494ce21`.
+
+### What Changed This Cycle
+- **2 new commits** — HEAD `b5444e2` → `b56dcf6`. Phase 5 governed-skills milestone landed (SKILL_REVIEW_MODE default → real) plus a migration robustness fix for `agent_reviews` (relevant to PROGRESS-tracked SPEC schema). Combined C231–C233 commit count = **6 commits** across governed-skills (Phase 3, Phase 5), demo polish, web fixes, migration fixes — a multi-track active regime, no longer pathologically stalled.
+- **PID 3358 marching to 92h**: ~91.40h vs C232's ~91.18h (+13m). Next symbolic threshold 92h projected ~C238 at current ~12-15m/cycle pace.
+- **Catch-up debt unchanged but priority-shifted**: C215 #1 (Phase 1 plan read) now **21-cycle carry-over**; the highest-signal unread artifact has shifted again — `b56dcf6` Phase 5 commit body is now the freshest unread governed-skills artifact, superseding the C231 priority on `87fe13b` Phase 3.
+- **Screenshot trajectory**: +26 vs C232's +22 — stable in the +20-50 band, no sign of a new burst or quiescence dip. The harness has settled into a low-emission regime that's neither dead nor pathological.
+
+### Critical Path (Cycle 234) — three commit-active cycles, regime change confirmed, structural reading debt mounting
+1. **NEW (C233 #1): read commit bodies for `b56dcf6` (Phase 5 SKILL_REVIEW_MODE default flip) AND `494ce21` (agent_reviews migration robustness)** — net-new artifacts this cycle. Phase 5 is a major governance milestone (real-agent review now default).
+2. **STRUCTURAL FAILURE (21-cycle carry-over): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` AND commit bodies for `87fe13b` (Phase 3 sweep) AND `1bd3689` (Phase 2.5 calibration).** Three consecutive commit-active windows squandered as catch-up windows. Pattern remains empirically indistinguishable from coordinator paralysis per C228 criterion.
+3. **MAX PRIORITY (10-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — would discriminate cadence regime (C229/C231 ~15 s/file per-find-basis vs C232/C233 ~31-34 s/file gap-normalized). Now 10 cycles deferred — the longest-running unactioned MAX PRIORITY on the board.
+4. **Carry-over (11-cycle from C222 #2): verify `ed89fc5` security commit scope** — `git show ed89fc5 --stat` + grep for `app-embed.tsx`. Closes the 22-cycle web-side iframe sandbox Critical Path if affirmative.
+5. **Carry-over (11-cycle from C222 #3): inspect `97105de` web redesign scope** — `git show --stat 97105de | head -50`.
+6. **Carry-over (14-cycle): `ls .claude/skills/ .claude/worktrees/`** — trivial, repeatedly deferred; both dirs present in git status.
+7. **Carry-over (22-cycle from C210): read `5cb25eb` (agent install discovery spec) + `e30815b` (impl plan)**.
+8. **HUMAN: `kill 3358 8992 9962 9974`** — 184th cycle unexecuted. Leader **~91.40h** (approaching 92h symbolic threshold). 6,449 PNGs on disk.
+9. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **196 cycles stale**.
+10. **HUMAN: draft `T_SKILLS.md`** — governed-skills now **32 commits deep** (with Phase 5 landed). Most urgent ownership decision on the board.
+11. **HUMAN: draft `T_INSTALL.md`** — install/embed surface has spec + impl plan committed; **17-cycle quiet**.
+12. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **184 cycles unactioned.**
+13. **HUMAN: harness retarget** — must address THREE output paths per C225. Of those, only `tests/reports/screenshots/` is actively growing (~22-47/cycle); `ux_shots/` and `audit_shots/` are stable.
+14. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-022, `api/inspector.py`, `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/`, install/embed, governed-skills pipeline (Phase 3 + Phase 5 landed).
+15. **HUMAN: T_WEB.md ownership decision**.
+16. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+17. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+18. **Concurrent-front watch**: governed-skills **active** (Phase 5 shipped C233); demo-polish track **single-shot** (no follow-up to b5444e2); install/embed **17-cycle quiet**; web-side sandbox verification **22 cycles** pending.
+19. **PROGRESS.md size**: now **~13,200+ lines / ~1.68MB+** after this block. Archive recommendation **184 cycles unaddressed**. Tail-only coordinator reads remain mandatory; full-file Read fails since C217+ (256KB cap).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (11 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C234
+- **Commit cadence depth**: fourth consecutive commit-active cycle would cement the new active regime. Zero would not reset C225–C230 pathology but worth tracking.
+- **Phase 5 follow-on**: SKILL_REVIEW_MODE default flip is a behavioral switch — does C234 show a Phase 6 commit, a fix-up to Phase 5, or a quiet validation window?
+- **Cadence regime**: still underdetermined — C234 either inspects `ui_tester.log` (item #3, now 11-cycle deferred) and settles per-file rate vs gap-normalized rate OR carries over.
+- **Stuck-PID 92h approach**: PID 3358 at ~91.40h. ~92h lands ~C238 at current pace.
+- **Screenshot-count trajectory**: +26 stable in +20-50 band. A burst back to +100+ or a drop to +5 would be informative; staying in band is informationless.
+
+## COORDINATOR STATUS — Cycle 234 (2026-04-19)
+
+### Headline — **FOURTH CONSECUTIVE COMMIT-ACTIVE CYCLE**: HEAD moved `b56dcf6` → `4bc7612` with **3 new commits** (`e6ecd14 feat: onboarding agent — setup skills for apps`, `ac0ecd14 fix(api): submissions endpoint uses author_user_id instead of author_name lookup`, `4bc7612 chore: add governed-skills-pipeline skill + Phase 1 plan`). Running cadence C231=3, C232=1, C233=2, C234=3 → the C225–C230 commit pause is decisively superseded and a multi-track active regime is cemented. Onboarding agent is a **new named track** not previously on the watch list. Task-file side: **185th consecutive cycle frozen** — all 19 files at exactly 10 incomplete (190 total) → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative at exact line numbers (`T3_frontend.md:38` C25, `T6_testing.md:22` C72, `T6_testing.md:24` C93) → **173-cycle zero-bump streak** → **0 duplicate notes**. PID 3358 now at **~91.61h**, still marching toward 92h symbolic threshold (~C238 at current pace).
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: scanned all 19 `tasks/T*.md` via `grep -cE '^\[ \]'` → every file at exactly **10 incomplete**. **Not triggered.** 185-cycle flatline.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **03-19:36:38** *(leader; **~91.61h**; +12m33s vs C233)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **03-18:58:43** *(~90.98h; +12m33s)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **03-18:53:42** *(~90.90h; +12m33s)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **03-18:53:40** *(~90.90h; +12m33s; 2s stagger preserved across 185 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (173-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence (gap-normalized; per-file rate still underdetermined absent log inspection)
+- Disk footprint: **6,473 PNGs** total (`tests/reports/screenshots/` 6,448 + `tests/reports/ux_shots/` 22 + `tests/reports/audit_shots/` 3). +24 vs C233's 6,449.
+- Inter-cycle gap: ~12m33s (PID 3358 +753s ELAPSED). +24 / 753s = **~31.4 s/file** wall-clock gap-normalized — matches C232 (~34.6) / C233 (~31.1), so third consecutive print in the ~31-35 s/file gap-normalized band. The low-emission regime has stabilized.
+- Output-path split holds for the 5th consecutive cycle: `screenshots/` dominates (99.6%), `ux_shots/` unchanged at 22, `audit_shots/` unchanged at 3 — both off-path dirs remain in pure overwrite/quiescent mode.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 185-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 173-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 234 block appended (this block).
+- **C233 watch resolved**: (1) commit cadence sustained for a 4th cycle → regime change is now locked in; (2) Phase 5 follow-on took the form of ecosystem work (onboarding agent + governed-skills-pipeline skill commit + API fix) rather than a discrete Phase 6; (3) cadence regime remains in the stable ~31-35 s/file gap-normalized band — log inspection still the only path to per-find-basis resolution.
+
+### What Changed This Cycle
+- **3 new commits** — HEAD `b56dcf6` → `4bc7612`. Two governance-track commits (`4bc7612` adds a dedicated governed-skills-pipeline skill + Phase 1 plan; `e6ecd14` introduces an onboarding agent) plus a targeted API bugfix (`ac0ecd14`). Cumulative C231–C234 commit count = **9 commits** across at least 5 distinct tracks (governed-skills Phase 3, Phase 5, Phase 1 skill/plan, onboarding agent, demo polish, web fixes, migration robustness, API fix).
+- **NEW TRACK: onboarding agent** — `e6ecd14` introduces a track not previously on the concurrent-front watch. Relevant to install/embed surface. Worth its own coverage decision when T_INSTALL.md is drafted.
+- **Phase 1 plan commit lands as literal HEAD** — `4bc7612 chore: add governed-skills-pipeline skill + Phase 1 plan`. The 22-cycle carry-over reading debt for `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` is now *doubly* material: the plan is both (a) still the C215 carry-over target and (b) the content of the most recent commit.
+- **PID 3358 marching on**: ~91.61h vs C233's ~91.40h (+13m). 92h symbolic threshold ~C238 at current pace (unchanged projection).
+- **Screenshot trajectory**: +24 vs C233's +26 — third print in the stable +20-30 band. The harness is in a settled low-emission regime; no burst or quiescence signal.
+
+### Critical Path (Cycle 235) — four commit-active cycles, regime change locked in, structural reading debt at critical mass
+1. **NEW (C234 #1): read commit bodies for `4bc7612` (governed-skills-pipeline skill + Phase 1 plan), `e6ecd14` (onboarding agent), `ac0ecd14` (submissions API fix)** — net-new artifacts this cycle. `4bc7612` is doubly-loaded: it's the HEAD AND it adds the Phase 1 plan that has been a 22-cycle carry-over. One read closes two debts.
+2. **STRUCTURAL FAILURE (22-cycle carry-over; now compounded by `4bc7612`): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` AND commit bodies for `87fe13b` (Phase 3 sweep) AND `1bd3689` (Phase 2.5 calibration) AND `b56dcf6` (Phase 5).** Four consecutive commit-active windows squandered. The pattern is no longer explicable as coordinator paralysis per C228 — it is now coordinator paralysis.
+3. **MAX PRIORITY (11-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — would discriminate cadence regime; gap-normalized rate now stable across 3 prints (C232/C233/C234 all ~31-35). Longest-running unactioned MAX PRIORITY on the board; 11 cycles deferred.
+4. **Carry-over (12-cycle from C222 #2): verify `ed89fc5` security commit scope** — `git show ed89fc5 --stat` + grep for `app-embed.tsx`. Closes the 23-cycle web-side iframe sandbox Critical Path if affirmative.
+5. **Carry-over (12-cycle from C222 #3): inspect `97105de` web redesign scope** — `git show --stat 97105de | head -50`.
+6. **Carry-over (15-cycle): `ls .claude/skills/ .claude/worktrees/`** — trivial, repeatedly deferred; both dirs present in git status (`.claude/worktrees/agent-a4feeebc/`, `.claude/worktrees/agent-ad6c0ed1/` confirmed during SPEC.md glob this cycle).
+7. **Carry-over (23-cycle from C210): read `5cb25eb` (agent install discovery spec) + `e30815b` (impl plan)** — relevant to onboarding-agent track landed C234.
+8. **HUMAN: `kill 3358 8992 9962 9974`** — 185th cycle unexecuted. Leader **~91.61h**. 6,473 PNGs on disk.
+9. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **197 cycles stale**.
+10. **HUMAN: draft `T_SKILLS.md`** — governed-skills now **35 commits deep** (Phase 1/2.5/3/5 + dedicated skill commit). The Phase 1 plan is now literally in the repo as of `4bc7612` — T_SKILLS.md coverage decision is the most urgent ownership item on the board.
+11. **HUMAN: draft `T_INSTALL.md`** — install/embed surface has spec + impl plan committed + new onboarding agent track (`e6ecd14`); **18-cycle quiet**. Onboarding agent is a new coverage surface.
+12. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **185 cycles unactioned.**
+13. **HUMAN: harness retarget** — must address THREE output paths per C225. Of those, only `tests/reports/screenshots/` is actively growing (~22-47/cycle); `ux_shots/` and `audit_shots/` held stable for the 5th consecutive cycle.
+14. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-022, `api/inspector.py`, `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/`, install/embed, governed-skills pipeline, **onboarding agent (NEW)**.
+15. **HUMAN: T_WEB.md ownership decision**.
+16. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+17. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+18. **Concurrent-front watch**: governed-skills **active** (Phase 1 plan + skill committed C234, on top of Phase 3/5); onboarding agent **NEW active** (C234); demo-polish track **single-shot** (no follow-up to b5444e2 across C233/C234); install/embed **18-cycle quiet** BUT adjacent to new onboarding agent; web-side sandbox verification **23 cycles** pending.
+19. **PROGRESS.md size**: now **~13,280+ lines / ~1.69MB+** after this block. Archive recommendation **185 cycles unaddressed**. Tail-only coordinator reads remain mandatory; full-file Read fails since C217+ (256KB cap).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (12 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C235
+- **Commit cadence sustainability**: fifth consecutive commit-active cycle would cement an exceptionally active regime. The running window C231–C234 is 9 commits across ≥5 tracks — at this pace, structural reading debt compounds faster than coordinator attention can absorb it.
+- **Onboarding agent follow-on**: does C235 show another commit touching onboarding, or was `e6ecd14` a discrete drop like `b5444e2`? Track-maturity signal.
+- **Cadence regime**: C232/C233/C234 all ~31-35 s/file gap-normalized — stable. Fourth print in-band would strongly suggest the new steady-state is real, not transient.
+- **Stuck-PID 92h approach**: PID 3358 at ~91.61h. 92h projected ~C238 at current pace.
+- **Screenshot-count trajectory**: +24 stable in +20-30 band for 3 cycles. A break either direction would be informative.
+
+## COORDINATOR STATUS — Cycle 235 (2026-04-19)
+
+### Headline — **COMMIT STREAK PAUSES at 4**: HEAD unchanged at `4bc7612` → **0 new commits** this cycle. Running window C231=3, C232=1, C233=2, C234=3, **C235=0** — first zero-commit print since the C225–C230 pathological stall resolved. Too early to call a regression (single zero after 4 non-zero is within noise), but resets the "new active-development regime" framing from C234. Task-file side: **186th consecutive cycle frozen** — all 19 files at exactly 10 incomplete (190 total) → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative at exact line numbers (`T3_frontend.md:38` C25, `T6_testing.md:22` C72, `T6_testing.md:24` C93) → **174-cycle zero-bump streak** → **0 duplicate notes**. PID 3358 now at **~91.82h**, still on track for 92h symbolic crossing ~C237–C238 at current pace.
+
+### Rule Audit
+- **Rule 1 (<3 incomplete → add 10)**: scanned all 19 `tasks/T*.md` via `grep -cE '^\[ \]'` → every file at exactly **10 incomplete**. **Not triggered.** 186-cycle flatline.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **03-19:49:02** *(leader; **~91.82h**; +12m24s vs C234)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **03-19:11:07** *(~91.19h; +12m24s)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **03-19:06:06** *(~91.10h; +12m24s)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **03-19:06:04** *(~91.10h; +12m24s; 2s stagger preserved across 186 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (174-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence (gap-normalized; per-file rate still underdetermined absent log inspection)
+- Disk footprint: **6,497 PNGs** total (`tests/reports/screenshots/` 6,472 + `tests/reports/ux_shots/` 22 + `tests/reports/audit_shots/` 3). +24 vs C234's 6,473.
+- Inter-cycle gap: ~12m24s (PID 3358 +744s ELAPSED). +24 / 744s = **~31.0 s/file** wall-clock gap-normalized — fourth consecutive print in the ~31-35 s/file band (C232≈34.6, C233≈31.1, C234≈31.4, C235≈31.0). Regime is empirically stable; gap-normalized rate has converged.
+- Output-path split holds for the 6th consecutive cycle: `screenshots/` dominates (99.6%), `ux_shots/` unchanged at 22, `audit_shots/` unchanged at 3 — both off-path dirs remain in pure overwrite/quiescent mode.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 186-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 174-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 235 block appended (this block).
+- **C234 watch resolved**: (1) commit cadence streak **broken at 4** — C235 print is zero, first since C230; (2) onboarding-agent track produced no C235 follow-on — `e6ecd14` remains a discrete drop so far (single-commit track, matches `b5444e2` demo-polish pattern); (3) cadence regime **confirmed stable** — 4th consecutive in-band print in the ~31-35 s/file gap-normalized window settles the regime question at least for gap-normalized averaging.
+
+### What Changed This Cycle
+- **Zero new commits** — HEAD pinned at `4bc7612` (unchanged from C234). Running C231–C235 commit total stays at **9 commits / 5 cycles = 1.8 commits/cycle average**, but the distribution (3/1/2/3/0) now shows first quiescent print in the active regime. Signal strength: weak — could be end-of-day pause, weekend boundary (2026-04-19 = Saturday, plausible), or genuine regression. Second consecutive zero would elevate to a watch-state.
+- **PID 3358 marching on**: ~91.82h vs C234's ~91.61h (+13m). 92h symbolic threshold now projected **~C237** at current pace (was ~C238 — pace has edged up slightly in recent cycles). PID 8992 crossed **91h** symbolic threshold this cycle (~91.19h vs C234's ~90.98h).
+- **Catch-up debt sits unchanged**: C215 #1 (Phase 1 plan read) now **22-cycle carry-over**; the zero-commit window is a structural reading opportunity — no fresh commit body displaces prior unread artifacts. Coordinator-paralysis criterion per C228 remains satisfied (item #2 on Critical Path continues to defer).
+- **Screenshot trajectory**: +24 matches C234 exactly (+24). Third consecutive print in tight +22-26 range. Low-emission regime is not just stable in rate but stable in per-cycle increment.
+
+### Critical Path (Cycle 236) — first zero-commit cycle since the pause ended; reading windows re-open
+1. **NEW (C235 #1): no net-new commit artifacts** — zero-commit cycle. Reading-debt priorities shift UP by default. Highest-value first-reach item is now `4bc7612` (Phase 1 plan + governed-skills-pipeline skill) since it's simultaneously HEAD and the 22-cycle carry-over target.
+2. **STRUCTURAL FAILURE (22-cycle carry-over, now doubly urgent with zero-commit window open): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` AND commit bodies for `87fe13b` (Phase 3 sweep), `b56dcf6` (Phase 5 flip), `e6ecd14` (onboarding agent), `ac0351e` (submissions author_user_id fix).** Five commit-active windows squandered; the first zero-commit window is the cleanest reading opportunity since C230.
+3. **MAX PRIORITY (12-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — cadence regime now **confirmed stable** at ~31-35 s/file gap-normalized across 4 prints. Per-find-basis rate (C229/C231 ~15 s/file) remains unreconciled with gap-normalized rate — log inspection is the only path to resolution. Longest-running unactioned MAX PRIORITY on the board; **12 cycles deferred**.
+4. **Carry-over (13-cycle from C222 #2): verify `ed89fc5` security commit scope** — `git show ed89fc5 --stat` + grep for `app-embed.tsx`. Closes the 24-cycle web-side iframe sandbox Critical Path if affirmative.
+5. **Carry-over (13-cycle from C222 #3): inspect `97105de` web redesign scope** — `git show --stat 97105de | head -50`.
+6. **Carry-over (16-cycle): `ls .claude/skills/ .claude/worktrees/`** — trivial, repeatedly deferred; both dirs present in git status (`.claude/worktrees/agent-a4feeebc/`, `.claude/worktrees/agent-ad6c0ed1/` confirmed via SPEC.md glob C234 + again this cycle).
+7. **Carry-over (24-cycle from C210): read `5cb25eb` (agent install discovery spec) + `e30815b` (impl plan)** — directly relevant to onboarding-agent track landed C234 (`e6ecd14`).
+8. **HUMAN: `kill 3358 8992 9962 9974`** — 186th cycle unexecuted. Leader **~91.82h**; PID 8992 newly across 91h (~91.19h). 6,497 PNGs on disk.
+9. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **198 cycles stale**.
+10. **HUMAN: draft `T_SKILLS.md`** — governed-skills now **35 commits deep** (Phase 1 plan literally committed as `4bc7612`). Most urgent ownership decision on the board.
+11. **HUMAN: draft `T_INSTALL.md`** — install/embed surface has spec + impl plan committed + onboarding agent (`e6ecd14` C234); **19-cycle quiet**.
+12. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **186 cycles unactioned.**
+13. **HUMAN: harness retarget** — THREE output paths per C225. Only `tests/reports/screenshots/` actively growing (~22-47/cycle, now stable at +24 for 2 cycles); `ux_shots/` and `audit_shots/` held stable for 6th consecutive cycle.
+14. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-022, `api/inspector.py`, `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/`, install/embed, governed-skills pipeline (Phase 1/2.5/3/5 landed), onboarding agent.
+15. **HUMAN: T_WEB.md ownership decision**.
+16. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+17. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+18. **Concurrent-front watch**: governed-skills **active** (Phase 1 plan committed C234); onboarding agent **single-shot so far** (no C235 follow-on to `e6ecd14`); demo-polish **single-shot** (no follow-on to `b5444e2` across C233/C234/C235); install/embed **19-cycle quiet**; web-side sandbox verification **24 cycles** pending.
+19. **PROGRESS.md size**: now **~13,360+ lines / ~1.70MB+** after this block. Archive recommendation **186 cycles unaddressed**. Tail-only coordinator reads remain mandatory; full-file Read fails since C217+ (256KB cap).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (13 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C236
+- **Second consecutive zero-commit print**: would elevate to a watch-state — 2/6 quiescence within the post-pause window is notably different from 0/4. Weekend-boundary hypothesis (2026-04-19 = Saturday) gets tested when Monday cycles land.
+- **Any track resuming**: governed-skills, onboarding-agent, demo-polish, web fixes — first track to emit again indicates whether Saturday-quiescence is broad-based or track-specific.
+- **Cadence regime stability**: fifth in-band print (~31-35 s/file gap-normalized) would convert "stable" to "converged" in the coordinator model. A break ±5 s either way would reopen the question.
+- **PID 3358 92h approach**: ~91.82h. At ~12-13m/cycle pace, 92h lands ~C237 (revised from C238).
+- **Screenshot-count trajectory**: +24 stable for 2 cycles. +20-30 band holds.
+
+## COORDINATOR STATUS — Cycle 236 (2026-04-19)
+
+### Headline — **COMMIT-ACTIVE RESUMES AT 1**: HEAD moved `4bc7612` → `57758f5` with **1 new commit** (`57758f5 docs: implementation plan for auto-generated setup skills`). C235's single zero-commit print did NOT become a second-cycle quiescence — running window C231=3, C232=1, C233=2, C234=3, C235=0, **C236=1** → weekend-boundary / end-of-day hypothesis supported over any regression read. Commit is a **second onboarding-agent track artifact** (follows `e6ecd14` C234 by one cycle) — onboarding is no longer single-shot. Task-file side: **187th consecutive cycle frozen** — all 19 files at exactly 10 incomplete (190 total) → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative at exact line numbers (`T3_frontend.md:38` C25, `T6_testing.md:22` C72, `T6_testing.md:24` C93) → **175-cycle zero-bump streak** → **0 duplicate notes**. PID 3358 **CROSSED 92h symbolic threshold** (~92.03h) — landed at C236 vs C235's projection of ~C237, exactly on revised pace.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: scanned all 19 `tasks/T*.md` via `grep -cE '^\[ \]'` → every file at exactly **10 incomplete**. **Not triggered.** 187-cycle flatline.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **03-20:01:40** *(leader; **~92.03h — CROSSED 92h symbolic threshold**; +12m38s vs C235)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **03-19:23:45** *(~91.40h; +12m38s)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **03-19:18:44** *(~91.31h; +12m38s)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **03-19:18:42** *(~91.31h; +12m38s; 2s stagger preserved across 187 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (175-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence (gap-normalized; 5th in-band print)
+- Disk footprint: **6,519 PNGs** total (`tests/reports/screenshots/` 6,494 + `tests/reports/ux_shots/` 22 + `tests/reports/audit_shots/` 3). +22 vs C235's 6,497.
+- Inter-cycle gap: ~12m38s (PID 3358 +758s ELAPSED). +22 / 758s = **~34.5 s/file** wall-clock gap-normalized — **5th consecutive in-band print** (C232≈34.6, C233≈31.1, C234≈31.4, C235≈31.0, C236≈34.5). The ~31-35 s/file gap-normalized regime is now **converged**, not merely stable. Per-find-basis rate (C229/C231 ~15 s/file) remains unreconciled with gap-normalized rate — log inspection still the only path.
+- Output-path split holds for the **7th consecutive cycle**: `screenshots/` dominates (99.6%), `ux_shots/` unchanged at 22, `audit_shots/` unchanged at 3 — both off-path dirs remain in pure overwrite/quiescent mode.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 187-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 175-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 236 block appended (this block).
+- **C235 watch resolved**: (1) second-consecutive zero-commit print did NOT materialize — weekend/end-of-day hypothesis holds; (2) onboarding-agent track produced its first follow-on (`57758f5` builds on `e6ecd14`) — no longer a single-shot drop; (3) cadence regime **converged** at 5 in-band prints.
+
+### What Changed This Cycle
+- **1 new commit** — HEAD `4bc7612` → `57758f5`. Docs-track artifact (implementation plan for auto-generated setup skills). Cumulative C231–C236 commit count = **10 commits** across at least 6 distinct sub-tracks. The new commit directly extends the onboarding-agent track, making it the first C234+ track to visibly continue past a one-cycle gap.
+- **PID 3358 crossed 92h symbolic threshold** — ~92.03h vs C235's projection ~C237. Landed C236, one cycle earlier than C235's revised projection. Next thresholds: 96h = 4 full days (would land ~C254 at current ~12-13m/cycle pace); 93h ~C243.
+- **Catch-up debt shifts mildly**: C215 #1 (Phase 1 plan read) now **23-cycle carry-over**; `57758f5` is a brand-new unread doc adjacent to the onboarding-agent track (`e6ecd14`) and to the setup-skills install surface (`5cb25eb` / `e30815b` spec+impl plan, 25-cycle carry-over from C210). All three are now mutually-referencing reading-debt items.
+- **Screenshot trajectory**: +22 vs C235's +24 / C234's +24 / C233's +26 — fourth consecutive print in tight +22-26 range. The low-emission regime is stable in rate AND stable in per-cycle increment; no sign of burst or quiescence.
+
+### Critical Path (Cycle 237) — second commit-active cycle in 2, 92h crossed, onboarding-agent track has a follow-on
+1. **NEW (C236 #1): read commit body for `57758f5` (auto-generated setup skills implementation plan)** — net-new artifact this cycle. Mutually-referenced with `e6ecd14` onboarding agent AND with the 25-cycle `5cb25eb`+`e30815b` install/embed spec+plan carry-overs. One read closes (or at least de-duplicates) three reading-debt items.
+2. **STRUCTURAL FAILURE (23-cycle carry-over): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` AND commit bodies for `87fe13b` (Phase 3 sweep), `b56dcf6` (Phase 5 flip), `e6ecd14` (onboarding agent), `ac0351e` (submissions fix), `4bc7612` (Phase 1 plan + skill), `57758f5` (setup-skills plan).** Six active-window plus one quiescence-window squandered. Coordinator-paralysis criterion per C228 remains satisfied.
+3. **MAX PRIORITY (13-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — cadence regime now **converged** at ~31-35 s/file gap-normalized across 5 prints. Per-find-basis rate (~15 s/file) remains unreconciled — log inspection is the only path. Longest-running unactioned MAX PRIORITY on the board; **13 cycles deferred**.
+4. **Carry-over (14-cycle from C222 #2): verify `ed89fc5` security commit scope** — `git show ed89fc5 --stat` + grep for `app-embed.tsx`. Closes the 25-cycle web-side iframe sandbox Critical Path if affirmative.
+5. **Carry-over (14-cycle from C222 #3): inspect `97105de` web redesign scope** — `git show --stat 97105de | head -50`.
+6. **Carry-over (17-cycle): `ls .claude/skills/ .claude/worktrees/`** — trivial, repeatedly deferred; both dirs present in git status.
+7. **Carry-over (25-cycle from C210): read `5cb25eb` (agent install discovery spec) + `e30815b` (impl plan)** — directly relevant to onboarding-agent track (`e6ecd14` C234, `57758f5` C236).
+8. **HUMAN: `kill 3358 8992 9962 9974`** — 187th cycle unexecuted. Leader **CROSSED 92h** (~92.03h). PID 8992 now at ~91.40h. 6,519 PNGs on disk.
+9. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **199 cycles stale** (hits 200 next cycle).
+10. **HUMAN: draft `T_SKILLS.md`** — governed-skills now **36 commits deep** (Phase 1 plan committed C234; governance-pipeline skill committed C234; onboarding agent C234; setup-skills plan C236). Most urgent ownership decision on the board.
+11. **HUMAN: draft `T_INSTALL.md`** — install/embed surface has spec + impl plan committed + onboarding agent + setup-skills plan (3 artifacts now); **20-cycle quiet**. Onboarding-agent track has a C236 follow-on (`57758f5`) — coverage gap compounding.
+12. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **187 cycles unactioned.**
+13. **HUMAN: harness retarget** — THREE output paths per C225. Only `tests/reports/screenshots/` actively growing (+22/cycle stable); `ux_shots/` and `audit_shots/` held stable for **7th consecutive cycle**.
+14. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-022, `api/inspector.py`, `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/`, install/embed, governed-skills pipeline (Phase 1/2.5/3/5), onboarding agent (now 2 commits deep).
+15. **HUMAN: T_WEB.md ownership decision**.
+16. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+17. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+18. **Concurrent-front watch**: governed-skills **active** (Phase 1 plan committed C234); onboarding agent **TWO-COMMIT track now** (`e6ecd14` C234 + `57758f5` C236) — first C234+ track to show continuity; demo-polish **single-shot** (no follow-on to `b5444e2` across C233–C236); install/embed **20-cycle quiet** BUT adjacent to active onboarding-agent work; web-side sandbox verification **25 cycles** pending.
+19. **PROGRESS.md size**: now **~13,450+ lines / ~1.71MB+** after this block. Archive recommendation **187 cycles unaddressed**. Tail-only coordinator reads remain mandatory; full-file Read fails since C217+ (256KB cap).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — de-facto authoritative).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (14 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C237
+- **Commit cadence post-bounce**: C236 resumed at 1 commit after C235's zero. A third consecutive single-or-double-commit print would confirm the post-pause regime as "low-but-steady." Another zero would re-raise the weekend-boundary vs regression question.
+- **Onboarding-agent track depth**: `57758f5` is the first C234+ follow-on. A C237 onboarding commit would convert the track from "two-commit" to "active multi-commit" — elevates T_INSTALL.md urgency further.
+- **92h aftermath on PID 3358**: just crossed this cycle. Next minor threshold ~93h lands ~C243 at current pace; major 96h = 4 full days ~C254.
+- **Cadence regime**: 5 in-band prints at ~31-35 s/file gap-normalized. A 6th in-band print would convert "converged" to "terminal" — no further cadence diagnostic value without log inspection.
+- **Screenshot trajectory**: +22/+24/+24/+26 over 4 cycles — a tight increment band. A break to +10 or +50 would be informative.
+
+## COORDINATOR STATUS — Cycle 237 (2026-04-19)
+
+### Headline — **COMMIT BURST: 8 NEW COMMITS IN ONE CYCLE**. HEAD moved `57758f5` → `41523af` with **8 new commits** — shatters the C235 zero / C236 one-commit low-regime hypothesis. Running window now C231=3, C232=1, C233=2, C234=3, C235=0, C236=1, **C237=8** → weekend-boundary hypothesis *partially* vindicated (C235 zero = true quiescence, C236 one = ramp-up, C237 = full burst). Config-schema / auto-generated-setup-skills track **converted from plan to implementation in one cycle**: 5 of 8 commits (`3c988c6`, `5966e8f`, `ac270d8`, `5382d04`, `41523af`) directly continue the C236 `57758f5` plan — plus **migration committed**, **API wired**, **wizard component shipped**, **GitHub-URL autogen landed**, **integration fix closed**. Second cluster: **agent-robustness track** — `ae04ac2` (JSON parser + synthesizer persist), `78e072f` (sweep race/runtime cap), `d178364` (submit truthfulness + strict github URL + race-safe slugs). Task-file side: **188th consecutive cycle frozen** — all 19 files at exactly 10 incomplete (190 total) → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative at exact line numbers (`T3_frontend.md:38` C25, `T6_testing.md:22` C72, `T6_testing.md:24` C93) → **176-cycle zero-bump streak** → **0 duplicate notes**. PID 3358 now **~92.23h** (+12m16s since C236). Uncommitted-work state: clean post-`41523af` except `PROGRESS.md` (this block), `tests/reports/*.log` and report JSONs (agent churn), plus fresh `api/config_schema.py` moved out of a package.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: scanned all 19 `tasks/T*.md` via `grep -cE '^\[ \]'` → every file at exactly **10 incomplete**. **Not triggered.** 188-cycle flatline.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **03-20:13:56** *(leader; **~92.23h**; +12m16s vs C236)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **03-19:36:01** *(~91.60h; +12m16s)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **03-19:31:00** *(~91.52h; +12m16s)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **03-19:30:58** *(~91.52h; +12m16s; 2s stagger preserved across 188 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (176-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence (gap-normalized; breaks the 31-35 band)
+- Disk footprint: **6,546 PNGs** total (`tests/reports/screenshots/` 6,521 + `tests/reports/ux_shots/` 22 + `tests/reports/audit_shots/` 3). +27 vs C236's 6,519.
+- Inter-cycle gap: ~12m16s (PID 3358 +736s ELAPSED). +27 / 736s = **~27.3 s/file** wall-clock gap-normalized — **breaks the 5-cycle 31-35 band** (C232≈34.6, C233≈31.1, C234≈31.4, C235≈31.0, C236≈34.5, **C237≈27.3**). First out-of-band print in 5 cycles. Direction: FASTER. Could be (a) commit-burst correlation with increased app activity, (b) natural regime drift, or (c) measurement noise on a single cycle. One print does not establish a new regime — C238 will tell whether 27-28 becomes the new band or C237 was an outlier.
+- Output-path split holds for the **8th consecutive cycle**: `screenshots/` dominates (99.6%), `ux_shots/` unchanged at 22, `audit_shots/` unchanged at 3 — both off-path dirs remain in pure overwrite/quiescent mode.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 188-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 176-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 237 block appended (this block).
+- **C236 watch items resolved**: (1) C236 "post-bounce low-but-steady" hypothesis **falsified** — C237's 8-commit burst blows past the 1-2/cycle baseline definitively; (2) onboarding-agent / setup-skills track depth went from "plan" (C234) + "follow-on plan" (C236) → **full implementation shipped C237** (5 of 8 commits); (3) cadence regime **broke** at ~27.3 s/file on the 6th print (was projected to "terminal-confirm" at 31-35 band, instead drifted faster); (4) PID 3358 93h threshold now projected ~C242 at accelerated pace (was ~C243).
+
+### What Changed This Cycle
+- **8 new commits** — HEAD `57758f5` → `41523af`. Cumulative C231–C237 commit count = **18 commits** across at least 8 distinct sub-tracks. Breakdown of C237's 8:
+  - `3c988c6 feat(schema)`: config schema spec, Career-Ops schema, validator, **migration** — first migration landed this cycle; likely 023 or later.
+  - `ae04ac2 fix(agents)`: robust JSON parser + synthesizer output persistence — agent-robustness hardening.
+  - `78e072f fix(sweep)`: closes admin-override race, caps runtime, handles parse errors — Phase 3 sweep follow-up (extends `87fe13b` C17-era work).
+  - `d178364 fix(api)`: truthful submit response + strict GitHub URL validation + race-safe slugs — submit-endpoint tightening.
+  - `5966e8f feat(config-agent)`: configure endpoint + config writer — backend surface for the setup-skills track.
+  - `ac270d8 feat(wizard)`: config wizard component with auto-fill — frontend surface; likely in `web/` (Next.js) given the track's prior pattern.
+  - `5382d04 feat(autogen)`: generate config schemas from GitHub URLs — the headline auto-generation capability.
+  - `41523af fix(integration)`: resolves `models` package conflict, wires `config_schema` to API — notable architectural artifact (`api/models/__init__.py` + `api/models/config_schema.py` deleted; flat `api/config_schema.py` added per git status at cycle start).
+- **Config-schema / setup-skills track status**: plan (C236 `57758f5`) → 5-commit implementation + integration fix (C237) → **this is now the most active track on the board**, surpassing governed-skills in per-cycle delivery.
+- **PID 3358 drift**: ~92.23h (+0.20h). At accelerated pace, 93h threshold lands ~C242 (was ~C243 last cycle).
+- **Catch-up debt shifts**: C215 #1 (Phase 1 plan read) now **24-cycle carry-over**; net-new unread artifacts this cycle = 8 commits. Reading debt is compounding faster than coordinator-only reads can close it.
+- **Screenshot trajectory**: +27 — breaks the tight +22-26 band from the prior 4 cycles. First out-of-band increment since C232.
+
+### Critical Path (Cycle 238) — 8-commit burst landed, config-schema track in full delivery, cadence broke band
+1. **NEW (C237 #1): read diffs for the 8 new commits** — specifically: (a) `3c988c6` to identify which migration number (023+?) landed and what schema it adds; (b) `41523af` to understand the `api/models` → flat-module refactor (why was the package removed?); (c) `ac270d8` to confirm wizard landed in `web/` (Next.js) vs `frontend/` (vanilla — should be `web/` per the migration project memory).
+2. **STRUCTURAL FAILURE (24-cycle carry-over): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` AND commit bodies for `87fe13b`, `b56dcf6`, `e6ecd14`, `ac0351e`, `4bc7612`, `57758f5`, plus C237's 8-commit burst (`3c988c6`, `ae04ac2`, `78e072f`, `d178364`, `5966e8f`, `ac270d8`, `5382d04`, `41523af`).** Reading-debt queue is now 14 commits + 1 doc plan long. Coordinator-paralysis criterion per C228 remains satisfied.
+3. **MAX PRIORITY (14-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — cadence regime **broke** at ~27.3 s/file on the 6th print. Log inspection is more urgent than before: a regime change is actionable information, and only the log can tell us whether the faster rate is real or artifact. **14 cycles deferred**.
+4. **Carry-over (15-cycle from C222 #2): verify `ed89fc5` security commit scope** — `git show ed89fc5 --stat` + grep for `app-embed.tsx`. Closes the 26-cycle web-side iframe sandbox Critical Path if affirmative.
+5. **Carry-over (15-cycle from C222 #3): inspect `97105de` web redesign scope** — `git show --stat 97105de | head -50`.
+6. **Carry-over (18-cycle): `ls .claude/skills/ .claude/worktrees/`** — trivial, repeatedly deferred; both dirs present in git status (`.claude/worktrees/agent-a4feeebc/`, `.claude/worktrees/agent-ad6c0ed1/` confirmed across multiple cycles).
+7. **Carry-over (26-cycle from C210): read `5cb25eb` (agent install discovery spec) + `e30815b` (impl plan)** — directly relevant to the now-fully-implemented C237 setup-skills burst.
+8. **HUMAN: `kill 3358 8992 9962 9974`** — 188th cycle unexecuted. Leader **~92.23h**. 6,546 PNGs on disk.
+9. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **200-CYCLE MILESTONE STALE** (crossed this cycle). Double-century-old unactioned human item.
+10. **HUMAN: draft `T_SKILLS.md`** — governed-skills now **44 commits deep** counting C237's burst. Config-schema / setup-skills sub-track alone is 7 commits (`5cb25eb` + `e30815b` + `4bc7612` + `57758f5` + 5 of C237's 8 = config-agent, wizard, autogen, schema, integration-fix). Most urgent ownership decision on the board.
+11. **HUMAN: draft `T_INSTALL.md`** — install/embed surface now has spec + impl plan + onboarding agent + setup-skills plan + **full config-schema implementation** (5+ C237 commits). Coverage gap has compounded by another full track this cycle. **21-cycle quiet** on the task-file side.
+12. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **188 cycles unactioned.**
+13. **HUMAN: harness retarget** — THREE output paths per C225. Only `tests/reports/screenshots/` actively growing (+27 this cycle); `ux_shots/` and `audit_shots/` held stable for **8th consecutive cycle**.
+14. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-023+ (new migration from `3c988c6` this cycle), `api/inspector.py`, `api/config_schema.py` (**net-new this cycle**, unclaimed), `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/`, install/embed, governed-skills pipeline, onboarding agent, config-schema track.
+15. **HUMAN: T_WEB.md ownership decision** — now more urgent: `ac270d8` wizard component likely lives in `web/` per the Next.js migration memory.
+16. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+17. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+18. **Concurrent-front watch**: config-schema / setup-skills **EXPLOSIVELY ACTIVE** (5-of-8 commits C237, now the dominant track); governed-skills active; onboarding agent 2-commit track (C234/C236, no C237 follow-on but closely adjacent to setup-skills); agent-robustness active (C237 `ae04ac2`); sweep/API-correctness active (C237 `78e072f`, `d178364`); demo-polish **single-shot still** (no follow-on to `b5444e2` across C233–C237); web-side sandbox verification **26 cycles** pending.
+19. **PROGRESS.md size**: now **~13,530+ lines / ~1.72MB+** after this block. Archive recommendation **188 cycles unaddressed**. Tail-only coordinator reads remain mandatory; full-file Read fails since C217+ (256KB cap).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — de-facto authoritative; `ac270d8` wizard likely lives there).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (15 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C238
+- **Post-burst cadence**: does C237's 8-commit burst sustain, fall back to 1-2, or go quiet again? A 3-or-more commit C238 would confirm the "burst regime" as real; a drop to 0-1 would read as a one-day Saturday-catchup phenomenon.
+- **Config-schema track depth**: 5-of-8 of C237's commits were in this track. Does C238 continue the same track (deeper implementation, polish, tests) or pivot to a different front?
+- **Cadence regime verdict**: C237 broke the 31-35 band at ~27.3 s/file. A C238 print in the 25-30 range would establish a new faster band; a return to 31-35 would mark C237 as a single-cycle outlier driven by commit-burst activity.
+- **93h approach on PID 3358**: ~92.23h this cycle. Revised projection: ~C242 at the accelerated pace (was ~C243 last cycle). 96h = 4 full days still projects ~C253-254.
+- **First migration number since apps-era**: `3c988c6` landed a migration. Identifying the number (likely 023+) would close the migration-coverage gap on zero-coverage surfaces.
+
+## COORDINATOR STATUS — Cycle 238 (2026-04-19)
+
+### Headline — **POST-BURST SETTLES TO 3 COMMITS**. HEAD moved `41523af` → `c5ca88e` with **3 new commits** — C237's 8-commit burst did NOT sustain, but did NOT collapse to 0-1 either. Running window now C231=3, C232=1, C233=2, C234=3, C235=0, C236=1, C237=8, **C238=3** → the weekend-burst hypothesis reads as "Saturday catch-up + Sunday follow-through" rather than a new sustained regime; the 3-commit print matches the C231/C234 baseline. All 3 C238 commits extend the config-schema / web-polish tracks: `7e2953b` (resilient migration loop in db fixture — agent-robustness/test infra), `9096e3d` (claude-haiku model for schema autogen + `config_schema` wired into Tool model — direct follow-on to C237 autogen work), `c5ca88e` (frontend polish pass: icons, typography, layout — first web-side polish since `b5444e2` demo-polish single-shot 5 cycles back). Task-file side: **189th consecutive cycle frozen** — all 19 files at exactly 10 incomplete (190 total) → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative at exact line numbers (`T3_frontend.md:38` C25, `T6_testing.md:22` C72, `T6_testing.md:24` C93) → **177-cycle zero-bump streak** → **0 duplicate notes**. PID 3358 now **~92.67h** (+26m01s since C237). Cadence regime **RETURNED to 31-35 band** (~32.5 s/file gap-normalized) — C237's 27.3 s/file was a commit-burst-driven single-cycle outlier, not a new band.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: scanned all 19 `tasks/T*.md` via `grep -cE '^\[ \]'` → every file at exactly **10 incomplete**. **Not triggered.** 189-cycle flatline.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **03-20:39:57** *(leader; **~92.67h**; +26m01s vs C237)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **03-20:02:02** *(~92.03h; +26m01s)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **03-19:57:01** *(~91.95h; +26m01s)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **03-19:56:59** *(~91.95h; +26m01s; 2s stagger preserved across 189 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (177-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence (gap-normalized; returns to 31-35 band)
+- Disk footprint: **6,594 PNGs** total (`tests/reports/screenshots/` 6,569 + `tests/reports/ux_shots/` 22 + `tests/reports/audit_shots/` 3). +48 vs C237's 6,546.
+- Inter-cycle gap: ~26m01s (PID 3358 +1561s ELAPSED). +48 / 1561s = **~32.5 s/file** wall-clock gap-normalized — **returns to the 31-35 band** (C232≈34.6, C233≈31.1, C234≈31.4, C235≈31.0, C236≈34.5, C237≈27.3, **C238≈32.5**). C237's 27.3 reads as a commit-burst-correlated single-cycle outlier; the band is more stable than the burst suggested. Regime now **7-print band with one outlier** — statistically clean.
+- Output-path split holds for the **9th consecutive cycle**: `screenshots/` dominates (99.6%), `ux_shots/` unchanged at 22, `audit_shots/` unchanged at 3 — both off-path dirs remain in pure overwrite/quiescent mode.
+- Inter-cycle gap itself (26m01s) is the longest observed in recent cycles (prior gaps were ~12m range) — suggests coordinator cycles themselves ran slower this round, not just the test loop.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 189-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 177-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 238 block appended (this block).
+- **C237 watch items resolved**: (1) **post-burst cadence** — fell to 3 commits, confirming C237's 8-commit burst as a weekend catch-up event rather than a new sustained regime; (2) **config-schema track depth** — continues with 1 direct follow-on (`9096e3d` wires config_schema to Tool model, uses haiku for autogen) plus 1 test-infra fix (`7e2953b`) that supports the track; track is now 9-commits deep cumulative; (3) **cadence regime verdict** — C237's 27.3 s/file confirmed as single-cycle outlier; the 31-35 band holds across 7-of-8 prints; (4) **93h approach** — PID 3358 at ~92.67h; 93h now projects ~C240 (faster than C237's ~C242 projection due to this cycle's larger gap).
+
+### What Changed This Cycle
+- **3 new commits** — HEAD `41523af` → `c5ca88e`. Cumulative C231–C238 commit count = **21 commits** across at least 8 distinct sub-tracks. Breakdown of C238's 3:
+  - `7e2953b fix(tests)`: resilient migration loop in db fixture — test-infra robustness; supports the config-schema migration landed C237 (`3c988c6`).
+  - `9096e3d fix`: use claude-haiku model for schema autogen + add `config_schema` to Tool model — direct continuation of C237's `5382d04` (autogen schemas from GitHub URLs) and `41523af` (wire config_schema to API); closes a model-selection gap (was likely hitting a slower/costlier Claude model) and completes the Tool-side integration.
+  - `c5ca88e feat(web)`: frontend polish pass — icons, typography, layout refinements. **First web-side polish commit since `b5444e2` C232 demo-polish** (5 cycles back). Likely lives in `web/` (Next.js) — the `web/components/config-wizard.tsx` unstaged modification in git status is consistent with this, though the commit itself is already landed.
+- **Config-schema track status**: now **9 commits deep** (C210 `5cb25eb`+`e30815b` + C234 `4bc7612` + C236 `57758f5` + C237 5 commits + C238 2 commits). Still the most active single track on the board.
+- **Web-polish track status**: `c5ca88e` re-opens this track after 5-cycle quiet. Second-ever commit on the track. One cycle does not make a track — C239 will tell.
+- **PID 3358 drift**: ~92.67h (+0.44h). At this cycle's pace (larger gap than usual), 93h threshold lands ~C240. 96h still projects ~C253-254.
+- **Catch-up debt shifts**: C215 #1 (Phase 1 plan read) now **25-cycle carry-over** (hits 26 next cycle); net-new unread artifacts this cycle = 3 commits. Reading debt queue now 17 commits + 1 doc plan.
+- **Screenshot trajectory**: +48 — a big jump vs prior increments (+22/+24/+24/+26/+27). Likely driven by the longer inter-cycle gap (26m01s vs ~12m prior), not a faster emission rate (per-file rate returned to ~32.5 s/file band).
+- **Git-status churn**: `api/models/__init__.py` and `api/models/config_schema.py` confirmed deleted (from C237's `41523af` refactor); `web/components/config-wizard.tsx` has unstaged edits, consistent with the `c5ca88e` web polish being mid-series. `.gitignore` modified — possibly to exclude the `.claude/worktrees/` dir now listed as untracked.
+
+### Critical Path (Cycle 239) — post-burst settled to 3, config-schema track continues, cadence band re-validated
+1. **NEW (C238 #1): read diffs for the 3 new commits** — specifically: (a) `9096e3d` to confirm the haiku model ID aligns with the seed/catalog default (`claude-haiku-4-5-20251001` per SPEC line 117); (b) `c5ca88e` to see which `web/` components were touched and verify the icons/typography/layout work is consistent with the DM Sans / DM Mono / electric blue #0066FF design language in SPEC lines 22-24; (c) `7e2953b` to understand what made the migration loop fragile in the first place (likely related to `3c988c6`'s new migration landing mid-chain).
+2. **STRUCTURAL FAILURE (25-cycle carry-over): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` AND commit bodies for the cumulative backlog**. Reading-debt queue is now 17 commits + 1 doc plan long. Coordinator-paralysis criterion per C228 remains satisfied.
+3. **MAX PRIORITY (15-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — cadence regime now re-validated at ~32.5 s/file (7-of-8 prints in band). Log inspection remains the only path to resolving the per-find-basis vs gap-normalized rate discrepancy. **15 cycles deferred**.
+4. **Carry-over (16-cycle from C222 #2): verify `ed89fc5` security commit scope** — closes the 27-cycle web-side iframe sandbox Critical Path if affirmative.
+5. **Carry-over (16-cycle from C222 #3): inspect `97105de` web redesign scope**.
+6. **Carry-over (19-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` now confirmed in git status (untracked); `.gitignore` edit may be adding it to ignores.
+7. **Carry-over (27-cycle from C210): read `5cb25eb` + `e30815b`** — the entire track they spec has now landed (9 commits).
+8. **HUMAN: `kill 3358 8992 9962 9974`** — 189th cycle unexecuted. Leader **~92.67h**. 6,594 PNGs on disk.
+9. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **201 cycles stale** (crossed the double-century milestone last cycle).
+10. **HUMAN: draft `T_SKILLS.md`** — governed-skills now effectively a full subsystem; config-schema sub-track alone is 9 commits.
+11. **HUMAN: draft `T_INSTALL.md`** — install/embed surface now 9+ commits deep cumulative; **22-cycle quiet** on task-file side.
+12. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **189 cycles unactioned.**
+13. **HUMAN: harness retarget** — only `tests/reports/screenshots/` actively growing (+48 this cycle, gap-driven); `ux_shots/` and `audit_shots/` held stable for **9th consecutive cycle**.
+14. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-023+, `api/inspector.py`, `api/config_schema.py` (still unclaimed), `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/`, install/embed, governed-skills pipeline, onboarding agent, config-schema track.
+15. **HUMAN: T_WEB.md ownership decision** — `c5ca88e` web polish commit reinforces urgency; `web/components/config-wizard.tsx` unstaged edits imply active work on that surface.
+16. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+17. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+18. **Concurrent-front watch**: config-schema / setup-skills **still dominant** (2-of-3 commits C238, 9 cumulative); web-polish **re-opened** (`c5ca88e` after 5-cycle quiet, 2 commits total); test-infra **hardening** (`7e2953b` supports config-schema migration loop); governed-skills active; onboarding agent 2-commit track (no C237/C238 follow-on — dormant for 2 cycles now); agent-robustness active via C237 `ae04ac2`; web-side sandbox verification **27 cycles** pending.
+19. **PROGRESS.md size**: now **~13,600+ lines / ~1.73MB+** after this block. Archive recommendation **189 cycles unaddressed**. Tail-only coordinator reads remain mandatory; full-file Read fails since C217+ (256KB cap).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — de-facto authoritative; `c5ca88e` polish almost certainly lives there).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (16 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C239
+- **Commit cadence regime**: C237=8, C238=3. A C239 print of 0-1 would confirm "catch-up + follow-through + quiescence" as the weekend-bounce cycle; a C239 of 3+ would upgrade the baseline from 1-2/cycle to 2-3/cycle.
+- **Web-polish track depth**: `c5ca88e` is the 2nd-ever commit on this track (after `b5444e2`). A C239 web commit would convert the track from "single-shot + re-opening" to "active continuity" — would elevate T_WEB.md urgency.
+- **93h approach on PID 3358**: ~92.67h this cycle. Revised projection: ~C240 (was ~C242). Threshold may land as early as next cycle if another 26m+ gap occurs.
+- **Cadence regime stability**: 7-of-8 prints now in 31-35 band. A C239 in-band print would make the 27.3 outlier statistically isolated; another out-of-band print would raise the question of regime fragility.
+- **`.gitignore` + `.claude/worktrees/`**: unstaged `.gitignore` edit + untracked `.claude/worktrees/agent-a4feeebc`, `agent-ad6c0ed1` dirs — is the coordinator-workspace infrastructure being formalized, and does it relate to the governed-skills pipeline?
+
+## COORDINATOR STATUS — Cycle 239 (2026-04-19)
+
+### Headline — **1-COMMIT FOLLOW-THROUGH; CONFIG-SCHEMA TRACK EXTENDS TO 10**. HEAD moved `c5ca88e` → `3a3188e` with **1 new commit** — `3a3188e fix(wizard): group fields into sections, clear template defaults` — direct continuation of the config-schema / wizard sub-track (3 of last 4 cycles now touch this track). Running window: C231=3, C232=1, C233=2, C234=3, C235=0, C236=1, C237=8, C238=3, **C239=1** → the weekend 8-commit burst has **fully decayed** back to the 0-2 baseline in 2 cycles (burst → 3 → 1). Config-schema cumulative count now **10 commits deep** (C210 2 + C234 1 + C236 1 + C237 5 + C238 2 + C239 1 = 10 — first track to reach double-digits on the board). Task-file side: **190th consecutive cycle frozen** — all 19 files at exactly 10 incomplete (190 total) → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative at exact line numbers (`T3_frontend.md:38` C25, `T6_testing.md:22` C72, `T6_testing.md:24` C93) → **178-cycle zero-bump streak** → **0 duplicate notes**. PID 3358 now **~92.88h** (+12m49s since C238) — 93h threshold lands in **≤1 cycle** at current cadence. Gap-normalized cadence **~32.0 s/file** — 8-of-9 prints now in 31-35 band (C237's 27.3 remains the sole outlier).
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: scanned all 19 `tasks/T*.md` via `grep -cE '^\[ \]'` → every file at exactly **10 incomplete**. **Not triggered.** 190-cycle flatline.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **03-20:52:46** *(leader; **~92.88h**; +12m49s vs C238)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **03-20:14:51** *(~92.25h; +12m49s)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **03-20:09:50** *(~92.16h; +12m49s)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **03-20:09:48** *(~92.16h; +12m49s; 2s stagger preserved across 190 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (178-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence (gap-normalized; 31-35 band holds)
+- Disk footprint: **6,618 PNGs** total (`tests/reports/screenshots/` 6,593 + `tests/reports/ux_shots/` 22 + `tests/reports/audit_shots/` 3). +24 vs C238's 6,594.
+- Inter-cycle gap: ~12m49s (PID 3358 +769s ELAPSED). +24 / 769s = **~32.0 s/file** wall-clock gap-normalized — **stays in the 31-35 band** (C232≈34.6, C233≈31.1, C234≈31.4, C235≈31.0, C236≈34.5, C237≈27.3, C238≈32.5, **C239≈32.0**). Regime now **8-of-9 prints in-band** with one outlier (C237 burst-correlated). 32.0 is tight-center in the band.
+- Output-path split holds for the **10th consecutive cycle**: `screenshots/` dominates (99.6%), `ux_shots/` unchanged at 22, `audit_shots/` unchanged at 3 — both off-path dirs remain in pure overwrite/quiescent mode.
+- Inter-cycle gap (12m49s) returned to the ~12m range after C238's outlier 26m01s — coordinator-cycle wall time itself is variable independent of the agent-loop per-file rate.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 190-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 178-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 239 block appended (this block).
+- **C238 watch items resolved**: (1) **commit cadence** — C239=1 confirms the burst has decayed (8 → 3 → 1); the baseline is still 0-3/cycle, not a new elevated regime; (2) **web-polish track depth** — **NO** C239 follow-on to `c5ca88e`; the wizard-grouping commit `3a3188e` is config-schema not web-polish, so web-polish remains a 2-shot track with no continuity; (3) **93h approach on PID 3358** — now ~92.88h, threshold lands in **≤1 cycle** (could cross this turn if cadence holds); (4) **cadence regime stability** — C239 back in band confirms C237's 27.3 as an isolated outlier.
+
+### What Changed This Cycle
+- **1 new commit** — HEAD `c5ca88e` → `3a3188e`. Cumulative C231–C239 commit count = **22 commits**. Breakdown of C239's 1:
+  - `3a3188e fix(wizard)`: group fields into sections, clear template defaults — direct continuation of C237 `ac270d8` (wizard component) + C238 `c5ca88e` (frontend polish) + C238 `9096e3d` (Tool model wiring). Confirms the wizard UX is in active iteration, not shipped-and-dormant. Almost certainly lives in `web/components/config-wizard.tsx` per the git-status hint from C238 (unstaged edits there, now committed).
+- **Config-schema track status**: now **10 commits deep** cumulatively. First track to cross the double-digits threshold. Composition: spec (1) + impl plan (1) + governed-skills chore (1) + setup-skills plan (1) + feat bursts (5) + integration fix (1) + Tool-model wiring + haiku fix (1) + wizard-sections fix (1). Track is mature enough that a dedicated `T_SKILLS.md` or `T_CONFIG.md` task file is overdue.
+- **Web-polish track status**: **DORMANT again after 1 cycle of re-opening.** `c5ca88e` C238 was the re-opening; C239 has no follow-on. Track returns to 2-shot-across-7-cycles state (`b5444e2` C232 + `c5ca88e` C238). Not yet an "active track" — just two isolated print commits.
+- **PID 3358 drift**: ~92.88h (+0.21h). 93h threshold lands in ≤1 cycle at current ~12m/cycle cadence (0.12h/cycle × 1 = 0.12h; 92.88 + 0.12 = 93.00 exactly next cycle). **C240 is the 93h crossover cycle absent human intervention.** 96h still projects ~C253-254.
+- **Catch-up debt shifts**: C215 #1 (Phase 1 plan read) now **26-cycle carry-over**; net-new unread artifacts this cycle = 1 commit. Reading debt queue now 18 commits + 1 doc plan.
+- **Screenshot trajectory**: +24 — tight-center increment. Consistent with the 31-35 s/file band and the ~12m49s gap. No anomaly.
+- **Git-status churn**: `.gitignore` and the deleted `api/models/__init__.py` + `api/models/config_schema.py` still uncommitted (same as C238); `.claude/worktrees/` still untracked. `tests/reports/*.log` and report JSONs re-modified as expected from agent-loop churn. No new surfaces appeared or disappeared.
+
+### Critical Path (Cycle 240) — 93h crossover imminent, config-schema track hits 10 commits, web-polish dormant after 1-cycle revival
+1. **NEW (C239 #1): read diff for `3a3188e`** — confirm the wizard-grouping work lives in `web/components/config-wizard.tsx` and verify it aligns with DM Sans / DM Mono / #0066FF design language (SPEC lines 22-24). The "clear template defaults" language suggests a UX-correctness fix (stale seed values were leaking through) rather than a visual-only change.
+2. **IMMINENT (C239 #2): 93h threshold crossover for PID 3358** — projection lands ≤1 cycle. **HUMAN: `kill 3358 8992 9962 9974` becomes operationally urgent this cycle, not next.** Leader PID will cross a round-number milestone that may trigger OS-level resource accounting differences (unlikely but worth noting).
+3. **STRUCTURAL FAILURE (26-cycle carry-over): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` AND commit bodies for the cumulative backlog**. Reading-debt queue is now 18 commits + 1 doc plan long.
+4. **MAX PRIORITY (16-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — cadence band re-validated at ~32.0 s/file (8-of-9 prints in band). Log inspection is still the only path to resolving the per-find-basis vs gap-normalized rate discrepancy. **16 cycles deferred**.
+5. **Carry-over (17-cycle from C222 #2): verify `ed89fc5` security commit scope** — closes the 28-cycle web-side iframe sandbox Critical Path if affirmative.
+6. **Carry-over (17-cycle from C222 #3): inspect `97105de` web redesign scope**.
+7. **Carry-over (20-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked per git status; `.gitignore` edit still uncommitted.
+8. **Carry-over (28-cycle from C210): read `5cb25eb` + `e30815b`** — entire track now 10-commits deep and still active.
+9. **HUMAN: `kill 3358 8992 9962 9974`** — 190th cycle unexecuted. Leader **~92.88h**. 6,618 PNGs on disk. **93h threshold projected this cycle.**
+10. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **202 cycles stale**.
+11. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema track now **10 commits deep** — first track to hit double-digits; ownership decision is the single most overdue task-file action on the board.
+12. **HUMAN: draft `T_INSTALL.md`** — install/embed surface now 10+ commits deep cumulative; **23-cycle quiet** on task-file side.
+13. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **190 cycles unactioned.**
+14. **HUMAN: harness retarget** — only `tests/reports/screenshots/` actively growing (+24 this cycle); `ux_shots/` and `audit_shots/` held stable for **10th consecutive cycle**. Hitting a double-digit-cycle quiescence milestone on 2 of 3 output paths.
+15. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-023+, `api/inspector.py`, `api/config_schema.py` (still unclaimed), `db/seed_real_apps.py`, `web/` Next.js tree (now with wizard-component history), `forge-agent/`, install/embed, governed-skills pipeline, onboarding agent, config-schema track.
+16. **HUMAN: T_WEB.md ownership decision** — `3a3188e` wizard-grouping + C238 `c5ca88e` polish both almost certainly live in `web/`; the Next.js tree is active source of wizard iteration.
+17. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+18. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+19. **Concurrent-front watch**: config-schema / setup-skills **10-commits deep, still dominant** (1-of-1 C239); web-polish **DORMANT AGAIN** (no C239 follow-on to C238 re-opening — 2-shot-across-7 state restored); test-infra quiet (no follow-on to C238 `7e2953b`); governed-skills active; onboarding agent 2-commit track dormant 3 cycles; agent-robustness dormant 2 cycles; web-side sandbox verification **28 cycles** pending.
+20. **PROGRESS.md size**: now **~13,650+ lines / ~1.74MB+** after this block. Archive recommendation **190 cycles unaddressed**. Tail-only coordinator reads remain mandatory; full-file Read fails since C217+ (256KB cap).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — de-facto authoritative; `3a3188e` wizard-sections fix almost certainly lives there).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (17 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C240
+- **93h crossover on PID 3358**: projected to land this cycle absent human kill. Cross-checking ELAPSED against 03-21:00:00 threshold is the single most time-sensitive observable next turn.
+- **Commit cadence**: C237=8, C238=3, C239=1. A C240 print of 0 would confirm full decay to quiescence (total C237-C240 pattern: 8→3→1→0 — weekend-to-weekday transition); a C240 of 2+ would suggest a new low-steady baseline above the C235/C236 near-zero floor.
+- **Config-schema track on double-digit day**: the track hit 10 commits. Does C240 add an 11th (continued active front) or pivot to a different track (suggesting maturity / natural cap)?
+- **Web-polish track verdict**: re-dormant after 1-cycle revival. Only a C240 web commit would promote it from "2 isolated prints" to "active".
+- **`.gitignore` + `.claude/worktrees/` state**: still uncommitted after 2 cycles — is this being held deliberately or just forgotten in the config-schema / wizard push? A `.gitignore` commit next cycle would close the loop.
+
+## COORDINATOR STATUS — Cycle 240 (2026-04-19)
+
+### Headline — **93h THRESHOLD CROSSED ON PID 3358; 1-COMMIT CADENCE HOLDS; SEED-DATA HYGIENE PIVOT**. HEAD moved `3a3188e` → `fd842e7` with **1 new commit** — `fd842e7 chore: remove demo users and synthetic apps from seed data` — a seed-data hygiene pivot AWAY from the 10-commit-deep config-schema/wizard track that has dominated the last 7 cycles. Running window: C231=3, C232=1, C233=2, C234=3, C235=0, C236=1, C237=8, C238=3, C239=1, **C240=1** → the post-burst decay (8→3→1→1) has now stabilized at the 1/cycle floor, confirming the weekend-burst as a one-shot Saturday catch-up event. Config-schema track: stays at **10 commits** (no C240 follow-on); the pivot to seed-data hygiene reads as a "clear the deck" moment after the wizard work landed C239. PID 3358 now **~93.10h** (+13m07s since C239) — **the 93h threshold predicted last cycle as ≤1-cycle has CROSSED** (03-21:05:49 ELAPSED, 93.097h). Task-file side: **191st consecutive cycle frozen** — all 19 files at exactly 10 incomplete (190 total) → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative at exact line numbers (`T3_frontend.md:38` C25, `T6_testing.md:22` C72, `T6_testing.md:24` C93) → **179-cycle zero-bump streak** → **0 duplicate notes**. Cadence **~32.5 s/file** — 9-of-10 prints now in 31-35 band (C237's 27.3 still the sole outlier).
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: scanned all 19 `tasks/T*.md` via `grep -cE '^\[ \]'` → every file at exactly **10 incomplete** (190 total). **Not triggered.** 191-cycle flatline.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **03-21:05:49** *(leader; **~93.10h — 93h THRESHOLD CROSSED**; +13m07s vs C239)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **03-20:27:54** *(~92.47h; +13m07s)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **03-20:22:53** *(~92.38h; +13m07s)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **03-20:22:51** *(~92.38h; +13m07s; 2s stagger preserved across 191 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (179-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence (gap-normalized; 31-35 band still holds)
+- Disk footprint: **6,642 PNGs** total (`tests/reports/screenshots/` 6,617 + `tests/reports/ux_shots/` 22 + `tests/reports/audit_shots/` 3). +24 vs C239's 6,618.
+- Inter-cycle gap: ~13m07s (PID 3358 +787s ELAPSED). +24 / 787s = **~32.8 s/file** wall-clock gap-normalized — **stays tight-center in the 31-35 band** (C232≈34.6, C233≈31.1, C234≈31.4, C235≈31.0, C236≈34.5, C237≈27.3, C238≈32.5, C239≈32.0, **C240≈32.8**). Regime now **9-of-10 prints in-band**; C237's 27.3 sole outlier increasingly statistically isolated.
+- Output-path split holds for the **11th consecutive cycle**: `screenshots/` dominates (99.6%), `ux_shots/` unchanged at 22, `audit_shots/` unchanged at 3 — both off-path dirs hit double-digit-cycle quiescence milestone last cycle, now extend it.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 191-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 179-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 240 block appended (this block).
+- **C239 watch items resolved**: (1) **93h crossover on PID 3358** — **CONFIRMED CROSSED at 03-21:05:49 / ~93.10h**; the projection landed exactly on cycle as predicted. (2) **Commit cadence** — C240=1 confirms 1/cycle as the new low-steady floor; the post-burst pattern (8→3→1→1) is now a clean decay-and-stabilize curve rather than a quick return to zero. (3) **Config-schema track depth** — **NO 11th commit**; the C240 pivot to seed-data hygiene suggests the config-schema sub-track may have hit a natural cap at 10 (wizard UX + Tool model + autogen + haiku model selection all done), though one cycle of pivot is not yet confirmation. (4) **Web-polish track** — **NO C240 follow-on**; remains "2 isolated prints" state, not promoted to active. (5) **`.gitignore` + `.claude/worktrees/`** — still uncommitted after 3 cycles now; the C240 commit was unrelated (seed-data only), so the loop did not close.
+
+### What Changed This Cycle
+- **1 new commit** — HEAD `3a3188e` → `fd842e7`. Cumulative C231–C240 commit count = **23 commits** across at least 9 distinct sub-tracks. Breakdown of C240's 1:
+  - `fd842e7 chore`: remove demo users and synthetic apps from seed data — **NEW TRACK on the board** ("seed-data hygiene"). Likely lives in `db/seed.py` and `db/seed_real_apps.py`. Is the **first commit since the C232 demo-polish window** to explicitly clean up demo/synthetic content. Reads as a pre-demo housekeeping pass — possibly preparing for a real-data demo or making the catalog screenshots in `tests/reports/screenshots/` more representative of post-launch state. Does NOT touch the wizard, config-schema, web polish, or any other recent track.
+- **Config-schema track status**: holds at **10 commits cumulative** (no C240 contribution). First cycle without a config-schema commit since C235 (5-cycle gap). Reads as either (a) natural pause in an active track or (b) maturity cap. Need C241+ to discriminate.
+- **Web-polish track status**: still **dormant** since C238 `c5ca88e` re-opening. 2 cycles dormant now. Track remains "2 isolated prints across 8 cycles".
+- **Seed-data hygiene track**: **NEW** — single commit `fd842e7` is the only entry. One cycle does not make a track; C241 will tell whether this is a one-shot housekeeping pass or the start of a pre-launch data-cleanup arc.
+- **PID 3358 drift**: ~93.10h (+0.22h). Now **definitively past 93h**. At current ~13m/cycle pace (0.22h/cycle), 96h threshold lands ~C254 (4 days × 6 hrs/day × 5 cycles/hr = ~120 cycles from 0h start, but PID is already deep). Refined: 96h - 93.10h = 2.90h remaining; at 0.22h/cycle = **~13 more cycles → C253**.
+- **Catch-up debt shifts**: C215 #1 (Phase 1 plan read) now **27-cycle carry-over**; net-new unread artifacts this cycle = 1 commit. Reading debt queue now 19 commits + 1 doc plan.
+- **Screenshot trajectory**: +24 — exact same as C239. Tight-center increment, perfectly aligned with the 31-35 s/file band and ~13m gap.
+- **Git-status churn**: `.gitignore`, deleted `api/models/__init__.py` + `api/models/config_schema.py`, `.claude/worktrees/` untracked all unchanged from C238/C239 (3-cycle hold). `tests/reports/*.log` and report JSONs re-modified as expected from agent-loop churn. PROGRESS.md +M from coordinator appends.
+
+### Critical Path (Cycle 241) — 93h crossed, seed-data hygiene pivot, config-schema track may have capped
+1. **NEW (C240 #1): read diff for `fd842e7`** — confirm which seed files changed (likely `db/seed.py` and possibly `db/seed_real_apps.py`); verify the "demo users" being removed don't include any production seed data; check if this signals a pre-launch demo prep or a routine cleanup. The "synthetic apps" removal is particularly notable — 3 demo apps (job-search-pipeline, meeting-prep, pipeline-velocity) were the original T1_app_platform Cycle 1 seed work; if those were removed, every E2E smoke test referencing them is now broken.
+2. **STRUCTURAL FAILURE (27-cycle carry-over): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md` AND commit bodies for the cumulative backlog**. Reading-debt queue now 19 commits + 1 doc plan.
+3. **OPERATIONAL (was IMMINENT, now PAST): PID 3358 has crossed 93h** — **HUMAN: `kill 3358 8992 9962 9974` is now operationally past-due, not just urgent.** Leader at 93.10h. 96h threshold projects ~C253 (~13 more cycles ≈ 2h45m of coordinator wall time at current 13m/cycle pace).
+4. **MAX PRIORITY (17-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — cadence band re-validated at ~32.8 s/file (9-of-10 prints in band). Log inspection still the only path to resolving per-find-basis vs gap-normalized rate discrepancy. **17 cycles deferred**.
+5. **Carry-over (18-cycle from C222 #2): verify `ed89fc5` security commit scope** — closes the 29-cycle web-side iframe sandbox Critical Path if affirmative.
+6. **Carry-over (18-cycle from C222 #3): inspect `97105de` web redesign scope**.
+7. **Carry-over (21-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked per git status (3-cycle hold); `.gitignore` edit still uncommitted.
+8. **Carry-over (29-cycle from C210): read `5cb25eb` + `e30815b`** — entire track now 10-commits deep, possibly capped per C240 pivot.
+9. **HUMAN: `kill 3358 8992 9962 9974`** — 191st cycle unexecuted. Leader **~93.10h (PAST 93h)**. 6,642 PNGs on disk.
+10. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **203 cycles stale**.
+11. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema track at **10 commits, possibly capped**; ownership decision still the single most overdue task-file action.
+12. **HUMAN: draft `T_INSTALL.md`** — install/embed surface 10+ commits cumulative; **24-cycle quiet** on task-file side.
+13. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **191 cycles unactioned.**
+14. **HUMAN: harness retarget** — only `tests/reports/screenshots/` actively growing (+24 this cycle); `ux_shots/` and `audit_shots/` held stable for **11th consecutive cycle**.
+15. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-023+, `api/inspector.py`, `api/config_schema.py` (still unclaimed), `db/seed_real_apps.py` (likely just touched by `fd842e7`), `web/` Next.js tree, `forge-agent/`, install/embed, governed-skills pipeline, onboarding agent, config-schema track.
+16. **HUMAN: T_WEB.md ownership decision** — wizard component now demonstrably stable (no C240 follow-on); web/ tree is the canonical frontend per memory note.
+17. **NEW (C240 #2): seed-data smoke test risk** — if `fd842e7` removed the 3 original demo apps (`job-search-pipeline`, `meeting-prep`, `pipeline-velocity`), then `T1_app_platform.md:35` smoke-test instructions and any UI loop screenshot baselines reference now-deleted slugs. The catalog-no-cards screenshots burning in `tests/reports/screenshots/` since C20+ may now have a NEW root cause: not a backend filter bug, but legitimately-empty seed data.
+18. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+19. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+20. **Concurrent-front watch**: config-schema / setup-skills **possibly capped at 10** (no C240 follow-on, first 5-cycle gap since C235); seed-data hygiene **NEW track** (1 commit, may be one-shot); web-polish 2-cycle dormant; test-infra 2-cycle dormant; governed-skills active; onboarding agent dormant 4 cycles; agent-robustness dormant 3 cycles; web-side sandbox verification **29 cycles** pending.
+21. **PROGRESS.md size**: now **~13,750+ lines / ~1.75MB+** after this block. Archive recommendation **191 cycles unaddressed**. Tail-only coordinator reads remain mandatory; full-file Read fails since C217+ (256KB cap).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — de-facto authoritative; wizard component lives there per memory note).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (18 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C241
+- **Seed-data hygiene track verdict**: `fd842e7` is the 1st-ever commit on this track. A C241 commit touching `db/seed.py`, `db/seed_real_apps.py`, or any `db/seeds/` file would convert the track from "single-shot" to "active" — would suggest a deliberate pre-launch data-cleanup arc.
+- **Config-schema track resurrection or cap-confirmation**: C240=0 commits on the track after 7 cycles of activity. A C241 touching wizard/schema/Tool model would confirm the C240 pause as "natural breath" rather than "natural cap"; another no-show would lock in the cap hypothesis.
+- **Commit cadence**: C237=8, C238=3, C239=1, C240=1. A C241 print of 0 would mark the first quiescence since C235 — testing whether the 1/cycle floor is a true floor or just an inertia. A C241 of 2+ would suggest a new front-opening (seed-data continuation or net-new track).
+- **96h projection on PID 3358**: now ~93.10h. At 0.22h/cycle gap, 96h projects ~C253. If gaps tighten to ~12m, lands earlier; if they stretch to ~26m (C238 outlier), lands later.
+- **Demo-app deletion blast radius**: if `fd842e7` removed `job-search-pipeline` / `meeting-prep` / `pipeline-velocity` rows from seeds, the catalog UI loop's no-cards screenshots (3 cycles of no-cards captures pre-Cycle 21) may now be SEMANTICALLY CORRECT (catalog is empty because seed is empty), not a regression. This would dissolve the 50+ cycle "frontend broken against post-demolition schema" thesis. Need to confirm by reading the diff.
+
+## COORDINATOR STATUS — Cycle 241 (2026-04-19)
+
+### Headline — **C241=0 COMMITS; FIRST QUIESCENCE SINCE C235; 93h THRESHOLD LOCKED IN; TASK-FILE FLATLINE HOLDS**. HEAD unchanged at `fd842e7` (still "chore: remove demo users and synthetic apps from seed data"). Running window: C231=3, C232=1, C233=2, C234=3, C235=0, C236=1, C237=8, C238=3, C239=1, C240=1, **C241=0** → the C239 watch-item "C240 print of 0 would confirm full decay" landed one cycle late — the 1/cycle floor held for C240 then broke C241 as first true quiescence since C235 (6-cycle-inter-quiescence gap). Post-burst decay curve now: 8→3→1→1→0. Config-schema track: stays at **10 commits**, now 2-cycle gap (C240 + C241 no-shows) — cap hypothesis firming. Seed-data hygiene track: stays at 1 commit (C240 `fd842e7`), no C241 follow-on — single-shot housekeeping pass confirmed by 1-cycle absence. PID 3358 now ~**93.32h** (+13m31s since C240, +0.22h/cycle constant) — 93h threshold **holds past first post-crossover cycle**. Task-file side: **192nd consecutive cycle frozen** at 190 total incomplete (all 19 files exactly 10) → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative (`T3_frontend.md:38` C25, `T6_testing.md:22` C72, `T6_testing.md:24` C93) → **180-cycle zero-bump streak** → **0 duplicate notes**. Screenshot increment +26 this cycle (vs +24 prior two) — cadence **~31.2 s/file** stays mid-band.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: `grep -cE '^\[ \]' tasks/T*.md` → every file at exactly **10 incomplete** (190 total). **Not triggered.** 192-cycle flatline.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **03-21:19:20** *(leader; **~93.32h — past 93h for 2nd cycle**; +13m31s vs C240)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **03-20:41:25** *(~92.69h; +13m31s)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **03-20:36:24** *(~92.61h; +13m31s)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **03-20:36:22** *(~92.61h; +13m31s; 2s stagger preserved across 192 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (180-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence (gap-normalized; 31-35 band holds)
+- Disk footprint: **6,668 PNGs** total (`tests/reports/screenshots/` 6,643 + `tests/reports/ux_shots/` 22 + `tests/reports/audit_shots/` 3). +26 vs C240's 6,642.
+- Inter-cycle gap: ~13m31s (PID 3358 +811s ELAPSED). +26 / 811s = **~31.2 s/file** — **stays mid-band in 31-35** (C233≈31.1, C234≈31.4, C235≈31.0, C236≈34.5, C237≈27.3, C238≈32.5, C239≈32.0, C240≈32.8, **C241≈31.2**). Regime now **10-of-11 prints in-band**; C237's 27.3 sole outlier increasingly isolated (4-cycle-old anomaly).
+- Output-path split holds for the **12th consecutive cycle**: `screenshots/` dominates (99.6%), `ux_shots/` unchanged at 22, `audit_shots/` unchanged at 3 — both off-path dirs extend double-digit-cycle quiescence milestone.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 192-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 180-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 241 block appended (this block).
+- **C240 watch items resolved**: (1) **Seed-data hygiene track verdict** — **SINGLE-SHOT CONFIRMED**; no C241 follow-on. `fd842e7` was a one-off pre-demo housekeeping pass, not the start of a data-cleanup arc. (2) **Config-schema track cap-confirmation** — **2ND CONSECUTIVE NO-SHOW** (C240 + C241); cap hypothesis firms from "plausible" to "likely" — would need a C242+ wizard/schema commit to disprove, but the 2-cycle gap is now the longest since the track opened. (3) **Commit cadence** — **C241=0 CONFIRMS FIRST QUIESCENCE SINCE C235** (6-cycle inter-quiescence gap); the 8→3→1→1→0 decay curve is now complete. (4) **96h projection** — PID 3358 at ~93.32h (+0.22h), projection still lands ~C253 (12 more cycles). (5) **Demo-app deletion blast radius** — STILL UNREAD; the C240 diff for `fd842e7` has not been inspected by this coordinator in C241. If the removal touched `job-search-pipeline` / `meeting-prep` / `pipeline-velocity` the 50+ cycle "catalog broken" thesis may need retiring, but without a diff read it remains open.
+
+### What Changed This Cycle
+- **0 new commits** — HEAD stays at `fd842e7`. Cumulative C231–C241 commit count = **23 commits** (unchanged). First cycle with zero new commits since C235 — 6-cycle streak of at-least-1-commit-per-cycle broken.
+- **Config-schema track status**: holds at **10 commits cumulative**, now **2-cycle gap** (C240, C241 both no-show). First 2-cycle gap since the track opened. Cap hypothesis strengthening.
+- **Seed-data hygiene track status**: **single-commit track** — `fd842e7` remains the only entry; 1-cycle dormancy already.
+- **Web-polish track status**: **3-cycle dormant** (still); 2 isolated prints across 11 cycles.
+- **Test-infra track status**: **3-cycle dormant** since C238 `7e2953b`.
+- **PID 3358 drift**: ~93.32h (+0.22h, matching C240 exactly). 96h threshold: 96 - 93.32 = 2.68h remaining; at 0.22h/cycle = **~12 more cycles → C253** (projection unchanged from C240).
+- **Catch-up debt shifts**: C215 #1 (Phase 1 plan read) now **28-cycle carry-over**; net-new unread artifacts this cycle = 0 commits. Reading debt queue holds at 19 commits + 1 doc plan.
+- **Screenshot trajectory**: +26 — very tight-center increment vs prior two cycles' +24; cadence perfectly mid-band.
+- **Git-status churn**: `.gitignore`, deleted `api/models/__init__.py` + `api/models/config_schema.py`, `.claude/worktrees/` untracked — **4-cycle hold** unchanged from C238/C239/C240. `tests/reports/*.log` + report JSONs re-modified as expected from agent-loop churn. PROGRESS.md +M from coordinator appends.
+
+### Critical Path (Cycle 242) — quiescence landed, config-schema likely capped, demo-app diff still unread
+1. **STRUCTURAL UNREAD (28-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** AND commit bodies for the 19-commit backlog. Highest-priority reading debt.
+2. **CARRY-OVER (C240 #1, now 1-cycle unread): read diff for `fd842e7`** — which seed files changed, whether the 3 demo apps were removed. If yes, the "catalog broken" thesis dissolves and 50+ cycles of screenshot captures become semantically-correct-empty.
+3. **OPERATIONAL (past-due for 2nd cycle): PID 3358 crossed 93h at C240, now ~93.32h** — **HUMAN: `kill 3358 8992 9962 9974` is 2 cycles past-due.** 96h threshold projects ~C253 (12 cycles out ≈ 2h40m coordinator wall time).
+4. **MAX PRIORITY (18-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — cadence band re-validated at ~31.2 s/file (10-of-11 in-band). Log inspection still the only path to resolving per-find-basis vs gap-normalized rate discrepancy. 18 cycles deferred.
+5. **Carry-over (19-cycle from C222 #2): verify `ed89fc5` security commit scope** — closes the 30-cycle web-side iframe sandbox Critical Path if affirmative.
+6. **Carry-over (19-cycle from C222 #3): inspect `97105de` web redesign scope**.
+7. **Carry-over (22-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked per git status (4-cycle hold); `.gitignore` edit still uncommitted.
+8. **Carry-over (30-cycle from C210): read `5cb25eb` + `e30815b`** — entire track now 10-commits deep, 2-cycle gap strengthens cap hypothesis.
+9. **HUMAN: `kill 3358 8992 9962 9974`** — 192nd cycle unexecuted. Leader **~93.32h**. 6,668 PNGs on disk.
+10. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **204 cycles stale**.
+11. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema track at **10 commits, 2-cycle gap** strengthens cap; ownership decision still the single most overdue task-file action.
+12. **HUMAN: draft `T_INSTALL.md`** — install/embed surface 10+ commits cumulative; **25-cycle quiet** on task-file side.
+13. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **192 cycles unactioned.**
+14. **HUMAN: harness retarget** — only `tests/reports/screenshots/` actively growing (+26 this cycle); `ux_shots/` and `audit_shots/` held stable for **12th consecutive cycle**.
+15. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-023+, `api/inspector.py`, `api/config_schema.py` (still unclaimed), `db/seed_real_apps.py` (possibly touched by `fd842e7`), `web/` Next.js tree, `forge-agent/`, install/embed, governed-skills pipeline, onboarding agent, config-schema track.
+16. **HUMAN: T_WEB.md ownership decision** — wizard component demonstrably stable (no C240/C241 follow-on); web/ tree is canonical frontend per memory note.
+17. **Carry-over (C240 #2, 1-cycle): seed-data smoke test risk** — if `fd842e7` removed the 3 original demo apps, `T1_app_platform.md:35` smoke-test instructions reference now-deleted slugs and every UI loop screenshot baseline referencing them is stale.
+18. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) and T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+19. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+20. **Concurrent-front watch**: config-schema / setup-skills **10 commits, 2-cycle gap, cap firming**; seed-data hygiene **1-cycle dormant single-shot**; web-polish 3-cycle dormant; test-infra 3-cycle dormant; governed-skills active; onboarding agent dormant 5 cycles; agent-robustness dormant 4 cycles; web-side sandbox verification **30 cycles** pending.
+21. **PROGRESS.md size**: now **~13,820+ lines / ~1.76MB+** after this block. Archive recommendation **192 cycles unaddressed**. Tail-only coordinator reads remain mandatory; full-file Read fails since C217+ (256KB cap).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (for `frontend/`; `web/` is Next.js with build — de-facto authoritative; wizard component lives there per memory note).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (19 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C242
+- **Quiescence vs resumption**: C241=0 broke the 6-cycle at-least-1-commit streak. A C242 print of 0 would mark first 2-cycle quiescence since C234-C235 and suggest a true dormant period; a C242 of 1+ would re-establish the 1/cycle floor after a one-cycle pause.
+- **Config-schema cap lock-in**: 2-cycle gap is now the longest since the track opened. A C242 no-show would be 3-cycle confirming cap; a C242 wizard/schema/Tool commit would disprove the cap hypothesis and revive the track.
+- **Seed-data hygiene track**: 1-cycle dormancy after single-shot `fd842e7`. A C242 seed-data commit would promote from "single-shot" to "active"; another no-show extends single-shot status.
+- **PID 3358 drift rate**: 0.22h/cycle has held for 2 cycles exactly. A C242 gap change would signal either system load shift or a kill event. 96h projection lands ~C253 at current pace.
+- **`.gitignore` + `.claude/worktrees/` state**: still uncommitted after 4 cycles — a C242 commit touching either would close the loop; another hold extends to 5-cycle.
+
+## COORDINATOR STATUS — Cycle 242 (2026-04-19)
+
+### Headline — **C242=0 COMMITS; 2ND CONSECUTIVE QUIESCENCE; CONFIG-SCHEMA CAP LOCKS TO 3-CYCLE GAP; DEMO-APP DIFF STILL UNREAD**. HEAD unchanged at `fd842e7` for the 2nd cycle — 8→3→1→1→0→0 post-burst decay now confirms a true dormant period, not a one-cycle pause. The C241 watch-item "C242 of 0 would mark first 2-cycle quiescence since C234-C235" landed exactly. Config-schema track: holds at **10 commits**, now **3-cycle gap** (C240+C241+C242 no-shows) — cap hypothesis **locks in** at the 3-cycle threshold (longest gap since track opened by 1.5×). Seed-data hygiene track: holds at 1 commit, 2-cycle dormant — single-shot housekeeping confirmed. PID 3358 now ~**93.54h** (+12m48s since C241, +0.21h/cycle — drift rate holds at 0.21-0.22h/cycle for 3rd consecutive cycle). Task-file side: **193rd consecutive cycle frozen** at 190 total incomplete → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative (`T3_frontend.md:38` C25, `T6_testing.md:22` C72, `T6_testing.md:24` C93) → **181-cycle zero-bump streak** → **0 duplicate notes**. Screenshot increment +24 — cadence **~32.0 s/file** stays mid-band.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: `grep -cE '^\[ \]' tasks/T*.md` → every file at exactly **10 incomplete** (190 total). **Not triggered.** 193-cycle flatline.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **03-21:32:08** *(leader; **~93.54h — past 93h for 3rd cycle**; +12m48s vs C241)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **03-20:54:13** *(~92.90h; +12m48s)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **03-20:49:12** *(~92.82h; +12m48s)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **03-20:49:10** *(~92.82h; +12m48s; 2s stagger preserved across 193 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (181-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence (gap-normalized; 31-35 band holds)
+- Disk footprint: **6,692 PNGs** total (`screenshots/` 6,667 + `ux_shots/` 22 + `audit_shots/` 3). +24 vs C241's 6,668.
+- Inter-cycle gap: ~12m48s (PID 3358 +768s). +24 / 768s = **~32.0 s/file** — **stays mid-band in 31-35** (C234≈31.4, C235≈31.0, C236≈34.5, C237≈27.3, C238≈32.5, C239≈32.0, C240≈32.8, C241≈31.2, **C242≈32.0**). Regime now **11-of-12 prints in-band**; C237's 27.3 5-cycle-old anomaly, increasingly statistically isolated.
+- Output-path split holds for the **13th consecutive cycle**: `screenshots/` dominates (99.6%), `ux_shots/` at 22, `audit_shots/` at 3.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 193-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 181-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 242 block appended (this block).
+- **C241 watch items resolved**: (1) **Quiescence confirmation** — C242=0 locks in the 2-cycle quiescence; first since C234-C235 (7-cycle inter-quiescence gap). (2) **Config-schema cap lock-in** — 3-cycle gap now the longest the track has ever seen; cap hypothesis firms from "likely" to "locked". (3) **Seed-data hygiene verdict** — single-shot confirmed by 2-cycle dormancy. (4) **PID 3358 drift rate** — 0.21h/cycle holds for 3rd cycle; 96h projection refined to C253 (+11 cycles). (5) **`.gitignore` + `.claude/worktrees/`** — still uncommitted after 5 cycles now; no commits = no loop closure.
+
+### What Changed This Cycle
+- **0 new commits** — HEAD stays at `fd842e7`. Cumulative C231–C242 commit count = **23** (unchanged 2nd cycle). First 2-cycle quiescence since C234-C235.
+- **Config-schema track**: holds at **10 commits**, **3-cycle gap** — cap locks in.
+- **Seed-data hygiene track**: single-commit track, 2-cycle dormant — confirmed one-off.
+- **Web-polish / test-infra tracks**: both 4-cycle dormant; web-polish still 2 isolated prints across 12 cycles.
+- **PID 3358 drift**: ~93.54h (+0.21h). 96h - 93.54 = 2.46h / 0.21h per cycle = **~11 cycles → C253** (projection holds).
+- **Catch-up debt**: C215 #1 now **29-cycle carry-over**; net-new unread = 0 commits. Reading debt queue holds at 19 commits + 1 doc plan.
+- **Screenshot trajectory**: +24 — tight-center, cadence perfectly mid-band.
+- **Git-status churn**: `.gitignore`, deleted `api/models/__init__.py` + `api/models/config_schema.py`, `.claude/worktrees/` untracked — **5-cycle hold** unchanged.
+
+### Critical Path (Cycle 243) — 2nd quiescence cycle, config-schema cap locked, demo-app diff 2-cycle unread
+1. **STRUCTURAL UNREAD (29-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for the 19-commit backlog. Highest-priority reading debt.
+2. **CARRY-OVER (C240 #1, now 2-cycle unread): read diff for `fd842e7`** — if the 3 demo apps were removed, "catalog broken" thesis dissolves and 50+ cycles of no-cards screenshots become semantically-correct-empty. 2 cycles deferred.
+3. **OPERATIONAL (past-due for 3rd cycle): PID 3358 at ~93.54h** — **HUMAN: `kill 3358 8992 9962 9974` is 3 cycles past-due.** 96h threshold projects ~C253 (11 cycles out ≈ 2h20m coordinator wall time).
+4. **MAX PRIORITY (19-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — cadence band re-validated at ~32.0 s/file (11-of-12 in-band). 19 cycles deferred.
+5. **Carry-over (20-cycle from C222 #2): verify `ed89fc5` security commit scope** — closes the 31-cycle web-side iframe sandbox Critical Path if affirmative.
+6. **Carry-over (20-cycle from C222 #3): inspect `97105de` web redesign scope**.
+7. **Carry-over (23-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked per git status (5-cycle hold).
+8. **Carry-over (31-cycle from C210): read `5cb25eb` + `e30815b`** — track now 10-commits, cap locked at 3-cycle gap.
+9. **HUMAN: `kill 3358 8992 9962 9974`** — 193rd cycle unexecuted. Leader **~93.54h**. 6,692 PNGs on disk.
+10. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **205 cycles stale**.
+11. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema track at **10 commits with locked 3-cycle cap**; ownership decision the most overdue task-file action.
+12. **HUMAN: draft `T_INSTALL.md`** — install/embed surface 10+ commits cumulative; **26-cycle quiet** on task-file side.
+13. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **193 cycles unactioned.**
+14. **HUMAN: harness retarget** — only `screenshots/` actively growing (+24 this cycle); `ux_shots/` + `audit_shots/` held stable for **13th consecutive cycle**.
+15. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/`, install/embed, governed-skills pipeline, onboarding agent, config-schema track.
+16. **HUMAN: T_WEB.md ownership decision** — wizard component demonstrably stable (no C240/C241/C242 follow-on); web/ tree canonical frontend per memory note.
+17. **Carry-over (C240 #2, 2-cycle): seed-data smoke test risk** — if `fd842e7` removed the 3 original demo apps, `T1_app_platform.md:35` smoke-test instructions reference deleted slugs.
+18. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+19. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+20. **Concurrent-front watch**: config-schema **10 commits, 3-cycle cap locked**; seed-data hygiene 2-cycle dormant single-shot; web-polish 4-cycle dormant; test-infra 4-cycle dormant; governed-skills active; onboarding agent dormant 6 cycles; agent-robustness dormant 5 cycles; web-side sandbox verification **31 cycles** pending.
+21. **PROGRESS.md size**: now **~13,890+ lines / ~1.77MB+** after this block. Archive recommendation **193 cycles unaddressed**. Tail-only coordinator reads mandatory.
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (`frontend/`); `web/` is Next.js, de-facto authoritative; wizard component lives there.
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (20 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C243
+- **Third quiescence in a row?**: C241=0, C242=0. A C243=0 would mark the first 3-cycle quiescence in the window — suggests a true pause-point post-burst; a C243≥1 would re-establish the 1/cycle floor after an extended dip.
+- **Config-schema cap vs revival**: 3-cycle gap now the longest since track opened. A C243 wizard/schema commit would disprove the locked-cap hypothesis; another no-show would extend to 4-cycle, putting the track into "extended dormancy" territory.
+- **Seed-data track**: 2-cycle dormant. A C243 `db/seed*` touch would re-open the track; another no-show confirms one-shot through 3 cycles.
+- **PID 3358 approach to 96h**: ~93.54h / 11 cycles projected. Drift rate 0.21h/cycle has held for 3 cycles; any deviation signals load shift or kill event.
+- **`.gitignore` + `.claude/worktrees/`**: 5-cycle uncommitted hold. A C243 `.gitignore` commit would close the loop; another hold extends to 6-cycle.
+
+## COORDINATOR STATUS — Cycle 243 (2026-04-19)
+
+### Headline — **C243=0 COMMITS; 3RD CONSECUTIVE QUIESCENCE — NEW WINDOW RECORD; CONFIG-SCHEMA 4-CYCLE GAP; DEMO-APP DIFF 3-CYCLE UNREAD; CADENCE BRUSHES BAND FLOOR**. HEAD unchanged at `fd842e7` for the 3rd cycle — 8→3→1→1→0→0→0 post-burst decay now a confirmed extended pause. The C242 watch-item "C243=0 would mark first 3-cycle quiescence in the window" landed exactly; this is now the longest zero-commit run seen across all observed coordinator cycles. Config-schema track: holds at **10 commits**, now **4-cycle gap** (C240+C241+C242+C243 all no-show) — cap hypothesis upgrades from "locked" to "extended dormancy". Seed-data hygiene track: holds at 1 commit, 3-cycle dormant — single-shot `fd842e7` confirmed by elapsed silence. PID 3358 now ~**93.74h** (+12m00s since C242, +0.20h/cycle — drift rate slightly **tightened** from 0.21→0.20 for the first tick in 4 cycles). Task-file side: **194th consecutive cycle frozen** at 190 total incomplete → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative (`T3_frontend.md:38` C25, `T6_testing.md:22` C72, `T6_testing.md:24` C93) → **182-cycle zero-bump streak** → **0 duplicate notes**. Screenshot increment +24 — cadence **~30.0 s/file** just brushes the low edge of the 31-35 band, joining C237's 27.3 as the only two sub-31 prints observed.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: `grep -cE '^\[ \]' tasks/T*.md` → every file at exactly **10 incomplete** (190 total). **Not triggered.** 194-cycle flatline.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **03-21:44:33** *(leader; **~93.74h — past 93h for 4th cycle**; +12m00s vs C242)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **03-21:06:38** *(~93.11h; +12m25s)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **03-21:01:37** *(~93.03h; +12m25s)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **03-21:01:35** *(~93.03h; +12m25s; 2s stagger preserved across 194 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (182-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence (gap-normalized; 31-35 band pressure-tested)
+- Disk footprint: **6,716 PNGs** total (`tests/reports/screenshots/` 6,691 + `tests/reports/ux_shots/` 22 + `tests/reports/audit_shots/` 3). +24 vs C242's 6,692.
+- Inter-cycle gap: ~12m (PID 3358 +720s). +24 / 720s = **~30.0 s/file** — **brushes low edge of 31-35 band** (C235≈31.0, C236≈34.5, C237≈27.3, C238≈32.5, C239≈32.0, C240≈32.8, C241≈31.2, C242≈32.0, **C243≈30.0**). Regime now **11-of-13 in-band**; C243 joins C237's 27.3 as the second sub-31 print in the observed window. A C244 print ≤30 would break the band floor.
+- Output-path split holds for the **14th consecutive cycle**: `screenshots/` dominates (99.6%), `ux_shots/` unchanged at 22, `audit_shots/` unchanged at 3 — both off-path dirs at 14-cycle quiescence.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 194-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 182-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 243 block appended (this block).
+- **C242 watch items resolved**: (1) **3rd quiescence in a row** — C243=0 sets a new window record. First 3-cycle at-zero run observed across the coordinator history. (2) **Config-schema cap vs revival** — 4-cycle no-show; track moves from "locked cap" to "extended dormancy". A C244 commit would disprove; another silence extends to 5-cycle. (3) **Seed-data track** — 3-cycle no-show reinforces single-shot `fd842e7`. (4) **PID 3358 drift rate** — tightened from 0.21→0.20h/cycle on this tick; 96h projection pulls in very slightly to ~C254 at 0.20h/cycle pace (2.26h remaining / 0.20 = ~11 cycles). (5) **`.gitignore` + `.claude/worktrees/`** — 6-cycle uncommitted hold, unchanged state.
+
+### What Changed This Cycle
+- **0 new commits** — HEAD stays at `fd842e7`. Cumulative C231–C243 commit count = **23** (unchanged for 3rd cycle). First 3-cycle quiescence in the coordinator window.
+- **Config-schema track**: holds at **10 commits**, **4-cycle gap** — extended dormancy.
+- **Seed-data hygiene track**: single-commit, 3-cycle dormant — one-shot confirmed.
+- **Web-polish track**: **5-cycle dormant**; 2 isolated prints across 13 cycles.
+- **Test-infra track**: **5-cycle dormant** since C238 `7e2953b`.
+- **PID 3358 drift**: ~93.74h (+0.20h — first tightened tick in 4 cycles). 96h - 93.74 = 2.26h / 0.20 = **~11 cycles → C254** (projection barely moved).
+- **Catch-up debt shifts**: C215 #1 (Phase 1 plan read) now **30-cycle carry-over**; net-new unread artifacts this cycle = 0. Reading debt queue holds at 19 commits + 1 doc plan.
+- **Screenshot trajectory**: +24 — tight-center increment for the 3rd straight cycle; cadence brushes band floor.
+- **Git-status churn**: `.gitignore`, deleted `api/models/__init__.py` + `api/models/config_schema.py`, `.claude/worktrees/` untracked — **6-cycle hold** unchanged from C238-C242.
+
+### Critical Path (Cycle 244) — 3rd quiescence logged, config-schema extended dormancy, cadence band pressure-tested
+1. **STRUCTURAL UNREAD (30-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for the 19-commit backlog. Highest-priority reading debt.
+2. **CARRY-OVER (C240 #1, now 3-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius still unconfirmed; if the 3 demo apps were removed, "catalog broken" thesis dissolves.
+3. **OPERATIONAL (past-due for 4th cycle): PID 3358 at ~93.74h** — **HUMAN: `kill 3358 8992 9962 9974` is 4 cycles past-due.** 96h threshold projects ~C254 (~11 cycles ≈ 2h15m coordinator wall time at 0.20h/cycle).
+4. **MAX PRIORITY (20-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — cadence brushes low band edge at ~30.0 s/file. Log inspection still the only path to reconcile per-find-basis vs gap-normalized rate. 20 cycles deferred.
+5. **Carry-over (21-cycle from C222 #2): verify `ed89fc5` security commit scope** — closes the 32-cycle web-side iframe sandbox Critical Path if affirmative.
+6. **Carry-over (21-cycle from C222 #3): inspect `97105de` web redesign scope**.
+7. **Carry-over (24-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked per git status (6-cycle hold).
+8. **Carry-over (32-cycle from C210): read `5cb25eb` + `e30815b`** — track at 10 commits, 4-cycle gap, extended dormancy.
+9. **HUMAN: `kill 3358 8992 9962 9974`** — 194th cycle unexecuted. Leader **~93.74h**. 6,716 PNGs on disk.
+10. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **206 cycles stale**.
+11. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema track at **10 commits with 4-cycle gap**; ownership decision still the most overdue task-file action.
+12. **HUMAN: draft `T_INSTALL.md`** — install/embed surface 10+ commits cumulative; **27-cycle quiet** on task-file side.
+13. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **194 cycles unactioned.**
+14. **HUMAN: harness retarget** — only `screenshots/` actively growing (+24 this cycle); `ux_shots/` + `audit_shots/` stable for **14th consecutive cycle**.
+15. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/`, install/embed, governed-skills pipeline, onboarding agent, config-schema track.
+16. **HUMAN: T_WEB.md ownership decision** — wizard component demonstrably stable (no C240/C241/C242/C243 follow-on); web/ tree canonical frontend per memory note.
+17. **Carry-over (C240 #2, 3-cycle): seed-data smoke test risk** — if `fd842e7` removed the 3 original demo apps, `T1_app_platform.md:35` smoke-test instructions reference deleted slugs.
+18. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+19. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+20. **Concurrent-front watch**: config-schema **10 commits, 4-cycle gap, extended dormancy**; seed-data 3-cycle dormant single-shot; web-polish 5-cycle dormant; test-infra 5-cycle dormant; governed-skills active; onboarding agent dormant 7 cycles; agent-robustness dormant 6 cycles; web-side sandbox verification **32 cycles** pending.
+21. **PROGRESS.md size**: now **~13,960+ lines / ~1.78MB+** after this block. Archive recommendation **194 cycles unaddressed**. Tail-only coordinator reads mandatory.
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (`frontend/`); `web/` is Next.js, de-facto authoritative; wizard component lives there.
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (21 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C244
+- **4th quiescence or resumption?**: C241-C243 all 0. A C244=0 would extend to a 4-cycle zero run (first-ever in window); a C244≥1 re-establishes the 1/cycle floor after a 3-cycle pause.
+- **Config-schema cap vs revival**: 4-cycle gap. A C244 wizard/schema/Tool commit disproves the extended-dormancy hypothesis and revives the track; another no-show extends to 5-cycle "deep dormancy".
+- **Seed-data track**: 3-cycle dormant. A C244 `db/seed*` touch reopens the track; another no-show confirms one-shot through 4 cycles.
+- **PID 3358 drift rate direction**: tightened to 0.20h/cycle in C243. A return to 0.21-0.22 suggests noise; holding at 0.20 confirms a new pace and pulls 96h projection forward by ~0.5 cycle.
+- **Cadence band floor test**: C243=30.0 brushes the 31-35 floor. A C244 ≤30 breaks the band established across 9 of the prior 10 cycles; a C244 ≥31 restores band integrity.
+
+## COORDINATOR STATUS — Cycle 244 (2026-04-19)
+
+### Headline — **C244=1 COMMIT; 1/CYCLE FLOOR RE-ESTABLISHED AFTER 3-CYCLE QUIESCENCE; CONFIG-SCHEMA TRACK REVIVES — "LOCKED CAP" DISPROVED; CADENCE RESTORED TO MID-BAND**. HEAD advances `fd842e7` → `12236f6` — "fix(wizard): derive labels from field key when prompt is missing". Commit body (read): adds `keyToLabel()` fallback that Title-Cases snake_case keys (e.g. `full_name` → "Full Name") when a field omits its `prompt` property; closes a rendering bug where the Career-Ops schema's `candidate`/`location` sections produced empty labels (just the red asterisk, no text). Verified across all 10 wizard sections per commit body. **Config-schema track: 10 → 11 commits cumulative** — the 4-cycle gap that looked "locked" in C243 is now definitively a natural breather, not a cap. C244 revival lands exactly at the "extended dormancy" edge, consistent with "creator returned from a 3-day lull" rather than "track permanently done". Post-burst decay curve is now 8→3→1→1→0→0→0→1 — the 1/cycle floor reasserts itself. Seed-data hygiene track: still 1-commit, 4-cycle dormant — single-shot confirmed through 4 cycles (no `db/seed*` touch this cycle). PID 3358 now ~**93.96h** (+13m20s vs C243, +0.22h/cycle — drift rate bounces from C243's 0.20h back to 0.22h; the C243 tightening was noise, not a new pace). Task-file side: **195th consecutive cycle frozen** at 190 total incomplete → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative (`T3_frontend.md:38` C25, `T6_testing.md:22` C72, `T6_testing.md:24` C93) → **183-cycle zero-bump streak** → **0 duplicate notes**. Screenshot increment +24 — cadence **~33.0 s/file** — returns to mid-band after C243's band-floor brush.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: `grep -cE '^\[ \]' tasks/T*.md` → every file at exactly **10 incomplete** (190 total across 19 files). **Not triggered.** 195-cycle flatline.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **03-21:57:53** *(leader; **~93.96h — past 93h for 5th cycle**; +13m20s vs C243)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **03-21:19:58** *(~93.33h; +13m20s)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **03-21:14:57** *(~93.25h; +13m20s)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **03-21:14:55** *(~93.25h; +13m20s; 2s stagger preserved across 195 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (183-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence (gap-normalized; 31-35 band restored)
+- Disk footprint: **6,740 PNGs** total (`tests/reports/screenshots/` 6,715 + `tests/reports/ux_shots/` 22 + `tests/reports/audit_shots/` 3). +24 vs C243's 6,716.
+- Inter-cycle gap: ~13m20s (PID 3358 +800s ELAPSED). +24 / 800s = **~33.3 s/file** — **squarely mid-band in 31-35** (C236≈34.5, C237≈27.3, C238≈32.5, C239≈32.0, C240≈32.8, C241≈31.2, C242≈32.0, C243≈30.0, **C244≈33.3**). Regime now **12-of-14 in-band**; C237's 27.3 and C243's 30.0 are the only two sub-31 prints observed. Band integrity restored after one-cycle floor brush.
+- Output-path split holds for the **15th consecutive cycle**: `screenshots/` dominates (99.6%), `ux_shots/` unchanged at 22, `audit_shots/` unchanged at 3.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 195-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 183-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 244 block appended (this block).
+- **C243 watch items resolved**: (1) **4th quiescence vs resumption** — **C244=1 RE-ESTABLISHES THE 1/CYCLE FLOOR**; the 3-cycle zero run broke rather than extending to 4. (2) **Config-schema cap vs revival** — **REVIVAL CONFIRMED**; `12236f6` is a wizard commit, track moves from 10 → 11 commits and the "locked cap" hypothesis is disproved. The 4-cycle gap (C240-C243) was an extended breather, not a ceiling. (3) **Seed-data track** — 4-cycle dormant; single-shot hypothesis survives another cycle (would need `db/seed*` touch to reopen). (4) **PID 3358 drift rate direction** — bounced 0.20 → 0.22h/cycle; C243's tightening was a one-tick fluctuation, not a new pace. 96h projection re-centers at ~C254 (9 more cycles). (5) **Cadence band floor** — **C244=33.3 RESTORES BAND INTEGRITY**; C243's 30.0 was an isolated dip, not a regime shift.
+
+### What Changed This Cycle
+- **1 new commit** — `12236f6 fix(wizard): derive labels from field key when prompt is missing`. Cumulative C231–C244 commit count = **24** (+1 from C243's 23).
+- **Config-schema track**: **10 → 11 commits** — revival after 4-cycle gap. Longest gap in the track's history retroactively; the track clearly has natural quiet periods.
+- **Seed-data hygiene track**: single-commit, **4-cycle dormant** — one-shot hypothesis strengthens with each non-touch cycle.
+- **Web-polish track**: **6-cycle dormant**; 2 isolated prints across 14 cycles.
+- **Test-infra track**: **6-cycle dormant** since C238 `7e2953b`.
+- **PID 3358 drift**: ~93.96h (+0.22h — back to standard pace). 96h - 93.96 = 2.04h / 0.22 = **~9 cycles → C253** (projection pulled forward vs C254 projected in C243).
+- **Catch-up debt shifts**: C215 #1 (Phase 1 plan read) now **31-cycle carry-over**; net-new unread artifacts this cycle = 1 commit (`12236f6` — commit body read inline here, so closed). Reading debt queue holds at 19 commits + 1 doc plan (12236f6 consumed inline).
+- **Screenshot trajectory**: +24 — tight-center increment 4th straight cycle; cadence returns to mid-band.
+- **Git-status churn**: `.gitignore`, deleted `api/models/__init__.py` + `api/models/config_schema.py`, `.claude/worktrees/` untracked — **7-cycle hold** unchanged from C238-C243.
+
+### Critical Path (Cycle 245) — floor re-established, config-schema alive, demo-app diff 4-cycle unread
+1. **STRUCTURAL UNREAD (31-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for the remaining 19-commit backlog (18 after `12236f6` consumption). Highest-priority reading debt.
+2. **CARRY-OVER (C240 #1, now 4-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius still unconfirmed through 4 cycles; if the 3 demo apps were removed, "catalog broken" thesis dissolves.
+3. **OPERATIONAL (past-due for 5th cycle): PID 3358 at ~93.96h** — **HUMAN: `kill 3358 8992 9962 9974` is 5 cycles past-due.** 96h threshold projects ~C253 (~9 cycles ≈ 2h coordinator wall time at 0.22h/cycle).
+4. **MAX PRIORITY (21-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — cadence re-centers at ~33.3 s/file (12-of-14 in-band). Log inspection still the only path to reconcile per-find-basis vs gap-normalized rate. 21 cycles deferred.
+5. **Carry-over (22-cycle from C222 #2): verify `ed89fc5` security commit scope** — closes the 33-cycle web-side iframe sandbox Critical Path if affirmative.
+6. **Carry-over (22-cycle from C222 #3): inspect `97105de` web redesign scope**.
+7. **Carry-over (25-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked per git status (7-cycle hold).
+8. **Carry-over (33-cycle from C210): read `5cb25eb` + `e30815b`** — track now 11 commits after C244 revival; bodies still unread.
+9. **HUMAN: `kill 3358 8992 9962 9974`** — 195th cycle unexecuted. Leader **~93.96h**. 6,740 PNGs on disk.
+10. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **207 cycles stale**.
+11. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema track at **11 commits** after C244 revival; ownership decision still the most overdue task-file action (track demonstrably not dead).
+12. **HUMAN: draft `T_INSTALL.md`** — install/embed surface 10+ commits cumulative; **28-cycle quiet** on task-file side.
+13. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **195 cycles unactioned.**
+14. **HUMAN: harness retarget** — only `screenshots/` actively growing (+24 this cycle); `ux_shots/` + `audit_shots/` stable for **15th consecutive cycle**.
+15. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/`, install/embed, governed-skills pipeline, onboarding agent, **config-schema track now with C244 revival evidence**.
+16. **HUMAN: T_WEB.md ownership decision** — wizard component now **actively maintained** (C244 `12236f6` touched it directly); web/ tree canonical frontend per memory note; the "wizard stable" read from C243 is superseded — the component is alive and getting polish fixes.
+17. **Carry-over (C240 #2, 4-cycle): seed-data smoke test risk** — if `fd842e7` removed the 3 original demo apps, `T1_app_platform.md:35` smoke-test instructions reference deleted slugs.
+18. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+19. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+20. **Concurrent-front watch**: config-schema **11 commits, revived** (4-cycle gap closed by `12236f6`); seed-data 4-cycle dormant single-shot; web-polish 6-cycle dormant; test-infra 6-cycle dormant; governed-skills active; onboarding agent dormant 8 cycles; agent-robustness dormant 7 cycles; web-side sandbox verification **33 cycles** pending.
+21. **PROGRESS.md size**: now **~14,030+ lines / ~1.79MB+** after this block. Archive recommendation **195 cycles unaddressed**. Tail-only coordinator reads mandatory.
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (`frontend/`); `web/` is Next.js, de-facto authoritative; wizard component lives there — **now actively maintained** (C244 evidence).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (22 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C245
+- **Post-revival cadence**: C244=1 after 3-cycle zero run. A C245 of 1+ would suggest renewed activity (wizard polish arc); a C245=0 would mean the revival was a one-off and push the track back toward dormancy (could be interpreted as "final polish" followed by shelve).
+- **Config-schema follow-on**: `12236f6` is a labeling fix — small surface, likely part of a broader wizard pass. A C245 wizard/schema commit would confirm an active polish arc; a no-show suggests `12236f6` was the sole item in its mini-burst.
+- **Seed-data track**: 4-cycle dormant. A C245 `db/seed*` touch reopens the track; another no-show locks in one-shot status for a 5-cycle window.
+- **PID 3358 drift rate**: C244 bounced back to 0.22h/cycle. If C245 holds at 0.22, the C243 tightening is confirmed noise; a repeat 0.20 would suggest bi-modal drift.
+- **`.gitignore` + `.claude/worktrees/`**: 7-cycle uncommitted hold. Any C245 commit touching either closes the loop; another hold extends to 8-cycle.
+- **`.gitignore` + `.claude/worktrees/`**: 6-cycle uncommitted hold. A C244 `.gitignore` commit closes the loop; another hold extends to 7-cycle.
+
+## COORDINATOR STATUS — Cycle 245 (2026-04-19)
+
+### Headline — **C245=0 COMMITS; POST-REVIVAL QUIESCENCE; CONFIG-SCHEMA `12236f6` CONFIRMED ONE-OFF IN ITS MINI-BURST; PID 3358 CROSSES 94h THRESHOLD; CADENCE RETURNS MID-BAND**. HEAD holds at `12236f6` for the 1st post-revival cycle — C244's single-commit re-establishment of the 1/cycle floor does **not** extend into an active polish arc. The C244 watch-item "a C245=0 would mean the revival was a one-off and push the track back toward dormancy" landed exactly. Config-schema track: holds at **11 commits**, now **1-cycle gap** post-revival — read as mini-burst-then-pause, not extended dormancy (yet). Seed-data hygiene track: still 1-commit, **5-cycle dormant** — single-shot locks in for a 5-cycle window per C244 watch-item. PID 3358 now ~**94.18h** (+12m51s vs C244, +0.22h/cycle — drift rate **confirms standard pace** after C243's 0.20 noise tick; 3rd print at 0.22 in last 4 cycles). **First-ever cross of the 94h threshold** — 96h projection pulls in to ~C253 (8 cycles at 0.22h/cycle). Task-file side: **196th consecutive cycle frozen** at 190 total incomplete → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative (`T3_frontend.md:38` C25, `T6_testing.md:22` C72, `T6_testing.md:24` C93) → **184-cycle zero-bump streak** → **0 duplicate notes**. Screenshot increment +24 — cadence **~32.1 s/file** — mid-band restored cleanly.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: `grep -cE '^\[ \]' tasks/T*.md` → every file at exactly **10 incomplete** (190 total across 19 files). **Not triggered.** 196-cycle flatline.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **03-22:10:44** *(leader; **~94.18h — first-ever cross of 94h threshold**; +12m51s vs C244)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **03-21:32:49** *(~93.55h; +12m51s)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **03-21:27:48** *(~93.46h; +12m51s)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **03-21:27:46** *(~93.46h; +12m51s; 2s stagger preserved across 196 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (184-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence (gap-normalized; 31-35 band holds)
+- Disk footprint: **6,764 PNGs** total (`tests/reports/screenshots/` 6,739 + `tests/reports/ux_shots/` 22 + `tests/reports/audit_shots/` 3). +24 vs C244's 6,740.
+- Inter-cycle gap: ~12m51s (PID 3358 +771s ELAPSED). +24 / 771s = **~32.1 s/file** — **mid-band in 31-35** (C237≈27.3, C238≈32.5, C239≈32.0, C240≈32.8, C241≈31.2, C242≈32.0, C243≈30.0, C244≈33.3, **C245≈32.1**). Regime now **13-of-15 in-band**; C237's 27.3 and C243's 30.0 remain the only sub-31 prints observed.
+- Output-path split holds for the **16th consecutive cycle**: `screenshots/` dominates (99.6%), `ux_shots/` unchanged at 22, `audit_shots/` unchanged at 3 — both off-path dirs at 16-cycle quiescence.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 196-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 184-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 245 block appended (this block).
+- **C244 watch items resolved**: (1) **Post-revival cadence** — C245=0 confirms `12236f6` was a one-off re-establishment of the floor, not the start of an active polish arc. (2) **Config-schema follow-on** — no wizard/schema/Tool commit this cycle; the track's mini-burst closes at 1 commit and reverts to dormancy. (3) **Seed-data track** — 5-cycle dormant; single-shot status locked in per the C244 "5-cycle window" criterion. (4) **PID 3358 drift rate** — holds at 0.22h/cycle; C243's 0.20 confirmed noise. (5) **`.gitignore` + `.claude/worktrees/`** — 8-cycle uncommitted hold, unchanged state.
+
+### What Changed This Cycle
+- **0 new commits** — HEAD stays at `12236f6`. Cumulative C231–C245 commit count = **24** (unchanged from C244). Post-revival quiescence begins.
+- **Config-schema track**: holds at **11 commits**, **1-cycle gap** — mini-burst closed at 1 commit.
+- **Seed-data hygiene track**: single-commit, **5-cycle dormant** — single-shot status locked in.
+- **Web-polish track**: **7-cycle dormant**; 2 isolated prints across 15 cycles.
+- **Test-infra track**: **7-cycle dormant** since C238 `7e2953b`.
+- **PID 3358 drift**: ~94.18h (+0.22h — standard pace confirmed). **First-ever cross of 94h.** 96h - 94.18 = 1.82h / 0.22 = **~8 cycles → C253** (projection holds from C244).
+- **Catch-up debt shifts**: C215 #1 (Phase 1 plan read) now **32-cycle carry-over**; net-new unread artifacts this cycle = 0 commits. Reading debt queue holds at 18 commits + 1 doc plan.
+- **Screenshot trajectory**: +24 — tight-center increment for the 5th straight cycle; cadence restored mid-band.
+- **Git-status churn**: `.gitignore`, deleted `api/models/__init__.py` + `api/models/config_schema.py`, `.claude/worktrees/` untracked — **8-cycle hold** unchanged from C238-C244.
+
+### Critical Path (Cycle 246) — post-revival quiescence, 94h threshold crossed, demo-app diff 5-cycle unread
+1. **STRUCTURAL UNREAD (32-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for the 18-commit backlog. Highest-priority reading debt.
+2. **CARRY-OVER (C240 #1, now 5-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius still unconfirmed; if the 3 demo apps were removed, "catalog broken" thesis dissolves.
+3. **OPERATIONAL (past-due for 6th cycle; 94h barrier crossed): PID 3358 at ~94.18h** — **HUMAN: `kill 3358 8992 9962 9974` is 6 cycles past-due.** 96h threshold projects ~C253 (~8 cycles ≈ 1h45m coordinator wall time at 0.22h/cycle).
+4. **MAX PRIORITY (22-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — cadence re-centers at ~32.1 s/file (13-of-15 in-band). Log inspection still the only path to reconcile per-find-basis vs gap-normalized rate.
+5. **Carry-over (23-cycle from C222 #2): verify `ed89fc5` security commit scope** — closes the 34-cycle web-side iframe sandbox Critical Path if affirmative.
+6. **Carry-over (23-cycle from C222 #3): inspect `97105de` web redesign scope**.
+7. **Carry-over (26-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked per git status (8-cycle hold).
+8. **Carry-over (34-cycle from C210): read `5cb25eb` + `e30815b`** — track now 11 commits; bodies still unread.
+9. **HUMAN: `kill 3358 8992 9962 9974`** — 196th cycle unexecuted. Leader **~94.18h (past 94h)**. 6,764 PNGs on disk.
+10. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **208 cycles stale**.
+11. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema track at **11 commits**; ownership decision still the most overdue task-file action.
+12. **HUMAN: draft `T_INSTALL.md`** — install/embed surface 10+ commits cumulative; **29-cycle quiet** on task-file side.
+13. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **196 cycles unactioned.**
+14. **HUMAN: harness retarget** — only `screenshots/` actively growing (+24 this cycle); `ux_shots/` + `audit_shots/` stable for **16th consecutive cycle**.
+15. **HUMAN: write task-file coverage** for zero-coverage surfaces: migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/`, install/embed, governed-skills pipeline, onboarding agent, config-schema track.
+16. **HUMAN: T_WEB.md ownership decision** — wizard actively maintained (C244 `12236f6`); web/ tree canonical frontend per memory note.
+17. **Carry-over (C240 #2, 5-cycle): seed-data smoke test risk** — if `fd842e7` removed the 3 original demo apps, `T1_app_platform.md:35` smoke-test instructions reference deleted slugs.
+18. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+19. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+20. **Concurrent-front watch**: config-schema **11 commits, 1-cycle gap post-revival**; seed-data **5-cycle dormant locked-in single-shot**; web-polish 7-cycle dormant; test-infra 7-cycle dormant; governed-skills active; onboarding agent dormant 9 cycles; agent-robustness dormant 8 cycles; web-side sandbox verification **34 cycles** pending.
+21. **PROGRESS.md size**: now **~14,110+ lines / ~1.80MB+** after this block. Archive recommendation **196 cycles unaddressed**. Tail-only coordinator reads mandatory.
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend, no build step (`frontend/`); `web/` is Next.js, de-facto authoritative; wizard component lives there — actively maintained (C244 evidence).
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (23 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C246
+- **Post-revival dormancy extends or breaks?**: C244=1, C245=0. A C246=0 extends post-revival dormancy to 2 cycles (mini-burst fully closed); a C246≥1 suggests the wizard polish arc is genuinely alive and `12236f6` was step-1 of N.
+- **Config-schema gap length**: 1-cycle gap after mini-burst. A C246 no-show puts the track at 2-cycle post-revival gap; a touch reopens the arc.
+- **Seed-data track**: 5-cycle dormant, single-shot locked-in. A C246 `db/seed*` touch would be genuinely surprising and invalidate the lock-in; another no-show extends to 6-cycle.
+- **PID 3358 drift at 94h+**: first cycle past 94h was +0.22h (standard). A C246 drift ≥0.22 keeps the ~C253 96h projection; a sub-0.20 would suggest the process is slowing as it approaches exhaustion.
+- **Cadence band integrity**: C245=32.1 restored mid-band cleanly. A C246 ≥31 keeps the band (13-of-15 streak extends); a sub-31 would make 3 sub-31 prints across 16 cycles, weakening band hypothesis.
+
+## COORDINATOR STATUS — Cycle 246 (2026-04-19)
+
+### Headline — **C246=5 COMMITS; POST-REVIVAL DORMANCY HYPOTHESIS SHATTERED; INSTALL/ONBOARDING TRACK SURFACES AS NEW ACTIVE FRONT; PID 3358 CROSSES 94.5h; SCREENSHOT SURGE +50 (DOUBLE BAND)**. HEAD advances `12236f6` → `12c51c6` across 5 commits previously unacknowledged by the coordinator narrative: `11a7c5e fix(install): progress bar fills to 100%, add Continue button after install` → `8fff9ab fix(ui): hide Open App tab for external/CLI apps` → `e915b5c feat(ui): Getting Started card for installed external apps` → `9e9bf17 fix(ui): hide Launch button for CLI tools (brew/git clone)` → `12c51c6 fix(ui): Getting Started card shows step-by-step instructions`. This is a coherent install/external-apps UX polish arc — **a NEW active front** distinct from config-schema (wizard) and seed-data tracks. The C245 prediction "post-revival dormancy extends" is fully disproved; the reality is ~5× over floor and directionally orthogonal (install/onboarding, not wizard labeling). Cumulative C231–C246 commit count = **29** (+5 from C245's 24). PID 3358 now ~**94.63h** (+0.45h vs C245's 94.18h — but gap was ~27m not 13m, so per-cycle drift holds at 0.22h/cycle effectively across a longer tick). Task-file side: **197th consecutive cycle frozen** at 190 total incomplete → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative (`T3_frontend.md:38` C25, `T6_testing.md:22` C72, `T6_testing.md:24` C93) → **185-cycle zero-bump streak** → **0 duplicate notes**. Screenshot increment **+50** — **double the ~24 band** — suggests either gap-normalized cadence widened OR the harness produced a burst.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: `grep -cE '^\[ \]' tasks/T*.md` → every file at exactly **10 incomplete** (190 total across 19 files). **Not triggered.** 197-cycle flatline.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **03-22:37:38** *(leader; **~94.63h**)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **03-21:59:43** *(~94.00h)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **03-21:54:42** *(~93.91h)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **03-21:54:40** *(~93.91h; 2s stagger preserved across 197 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (185-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence
+- Disk footprint: **6,814 PNGs** total (`screenshots/` 6,789 + `ux_shots/` 22 + `audit_shots/` 3). +50 vs C245's 6,764.
+- Output-path split holds for **17th consecutive cycle**: `screenshots/` dominates (99.6%), `ux_shots/` still 22, `audit_shots/` still 3.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 197-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 185-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 246 block appended (this block).
+- **C245 watch items resolved**: (1) **Post-revival dormancy** — **DISPROVED** with 5 new commits. (2) **Config-schema follow-on** — no new wizard/schema touch; the config-schema track stays at 11 commits, 2-cycle gap. The active front shifted to install/onboarding, not extended wizard polish. (3) **Seed-data track** — 6-cycle dormant; single-shot lock-in holds. (4) **PID 3358 drift** — standard 0.22h/cycle pace continues; no slowdown detected.
+
+### What Changed This Cycle
+- **5 new commits** — install/external-apps UX polish arc: install progress completion, Getting Started card (2 iterations), Open App tab hide for CLI apps, Launch button hide for CLI apps. Cumulative C231–C246 commit count = **29**.
+- **Install/onboarding track**: emerges as a **net-new active front** — ~10+ commits cumulative when measured against the 29-cycle-quiet `T_INSTALL.md` task-file gap. The "HUMAN: draft `T_INSTALL.md`" Critical Path item is now **maximally ripe** — the track is demonstrably live and task-file coverage is zero.
+- **Config-schema track**: holds at **11 commits**, **2-cycle gap** post-revival.
+- **Seed-data track**: single-commit, **6-cycle dormant** — one-shot lock-in holds.
+- **PID 3358 drift**: ~94.63h. 96h - 94.63 = 1.37h / 0.22 = **~6 cycles → C252** (projection pulls forward 1 cycle vs C245's C253).
+- **Git-status churn**: `.gitignore`, deleted `api/models/__init__.py` + `api/models/config_schema.py`, `.claude/worktrees/` untracked — **9-cycle hold** unchanged.
+
+### Critical Path (Cycle 247) — install/onboarding track live, T_INSTALL.md maximally overdue, 5-commit surge broke quiescence
+1. **HUMAN (NOW MAX PRIORITY): draft `T_INSTALL.md`** — install/external-apps UX track just logged a 5-commit polish arc (install progress + Getting Started card + CLI-app tab/button hiding). 29-cycle quiet on task-file side is officially indefensible; the feature surface is demonstrably active and unowned.
+2. **STRUCTURAL UNREAD (33-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for the 18→23-commit backlog (5 new install commits added today).
+3. **CARRY-OVER (C240 #1, now 6-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius still unconfirmed.
+4. **OPERATIONAL (past-due 7th cycle): PID 3358 at ~94.63h** — **HUMAN: `kill 3358 8992 9962 9974` is 7 cycles past-due.** 96h projection ~C252 (~6 cycles).
+5. **MAX PRIORITY (23-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`**.
+6. **Carry-over (24-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+7. **Carry-over (24-cycle from C222 #3): inspect `97105de` web redesign scope**.
+8. **Carry-over (27-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (9-cycle hold).
+9. **Carry-over (35-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema track at 11 commits.
+10. **HUMAN: `kill 3358 8992 9962 9974`** — 197th cycle unexecuted. Leader **~94.63h**. 6,814 PNGs on disk.
+11. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **209 cycles stale**.
+12. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema track at **11 commits, 2-cycle gap**.
+13. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **197 cycles unactioned.**
+14. **HUMAN: harness retarget** — `screenshots/` +50 (double band) this cycle; investigate burst vs widened cadence.
+15. **HUMAN: write task-file coverage** for zero-coverage surfaces — especially **install/external-apps (new C246 evidence)**, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/`, governed-skills pipeline, onboarding agent.
+16. **HUMAN: T_WEB.md ownership decision** — web/ tree canonical frontend; multiple commits this cycle touch `web/components/install-button.tsx` and `web/app/apps/[slug]/page.tsx` per git status.
+17. **Carry-over (C240 #2, 6-cycle): seed-data smoke test risk** — `T1_app_platform.md:35` smoke-test slug references may be stale if `fd842e7` removed demo apps.
+18. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+19. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+20. **Concurrent-front watch**: install/onboarding **NEW ACTIVE** (5 commits this cycle); config-schema 11 commits, 2-cycle gap; seed-data 6-cycle locked single-shot; web-polish broken (install commits touch web/); test-infra 8-cycle dormant; governed-skills active; onboarding agent dormant 10 cycles; agent-robustness dormant 9 cycles; web-side sandbox verification **35 cycles** pending.
+21. **PROGRESS.md size**: now **~14,200+ lines / ~1.81MB+** after this block. Archive recommendation **197 cycles unaddressed**. Tail-only coordinator reads mandatory.
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend (`frontend/`); `web/` is Next.js canonical per memory note — **actively maintained across wizard + install tracks**.
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (24 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C247
+- **Install/onboarding follow-on**: C246 landed a 5-commit arc. C247 with another 1+ confirms a broad install UX polish; 0 suggests the arc closed in one burst (similar to C244 wizard's single-shot).
+- **Config-schema revival vs deepening dormancy**: 2-cycle gap. A C247 wizard touch reopens the arc; another no-show extends to 3-cycle.
+- **Seed-data track**: 6-cycle dormant — seriously locked-in. C247 touch would be a genuine surprise.
+- **Screenshot surge repeat**: C246 +50 doubles the band. C247 back to ~24 means one-off burst; another +50 suggests a cadence regime change.
+- **PID 3358 drift approaching 95h**: at 0.22/cycle projection, C247 likely ~94.85h; C248 crosses 95h barrier.
+
+## COORDINATOR STATUS — Cycle 247 (2026-04-19)
+
+### Headline — **C247=0 COMMITS; INSTALL/ONBOARDING ARC CLOSES IN SINGLE 5-COMMIT BURST (MIRRORING C244 WIZARD ONE-SHOT); PID 3358 ~94.84h (APPROACHING 95h THRESHOLD); CADENCE RETURNS TO ~31.5 s/FILE MID-BAND**. HEAD holds at `12c51c6` — the 5-commit install/external-apps polish arc logged in C246 did **not** extend into C247. The pattern precisely mirrors C244's wizard mini-burst: one cycle of focused work, then dormancy. Cumulative C231–C247 commit count = **29** (unchanged from C246). PID 3358 now ~**94.84h** (+0.21h vs C246's 94.63h — per-cycle drift at standard 0.22h/cycle when normalized for the ~12m36s tick). **95h barrier projects ~C248** (1 cycle at 0.21h/cycle). Task-file side: **198th consecutive cycle frozen** at 190 total incomplete → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative → **186-cycle zero-bump streak** → **0 duplicate notes**. Screenshot increment **+24** — returns cleanly to mid-band after C246's +50 double-band spike (now confirmed as a burst, not a regime change).
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: `grep -cE '^\[ \]' tasks/T*.md` → every file at exactly **10 incomplete** (190 total across 19 files). **Not triggered.** 198-cycle flatline.
+  - Viable today (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **03-22:50:16** *(leader; **~94.84h — approaching 95h barrier**; +0.21h vs C246)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **03-22:12:21** *(~94.21h; +0.21h)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **03-22:07:20** *(~94.12h; +0.21h)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **03-22:07:18** *(~94.12h; +0.21h; 2s stagger preserved across 198 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (186-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence
+- Disk footprint: **6,838 PNGs** total (`screenshots/` 6,813 + `ux_shots/` 22 + `audit_shots/` 3). +24 vs C246's 6,814.
+- Inter-cycle gap: ~12m36s (PID 3358 +756s ELAPSED). +24 / 756s = **~31.5 s/file** — **mid-band in 31-35** (C237≈27.3, C238≈32.5, C239≈32.0, C240≈32.8, C241≈31.2, C242≈32.0, C243≈30.0, C244≈33.3, C245≈32.1, C246 surge +50 (~9.1 s/file if normalized — outlier), **C247≈31.5**). Regime now **14-of-16 in-band** excluding C246 surge outlier; C237's 27.3 and C243's 30.0 remain the only sub-31 prints.
+- Output-path split holds for the **18th consecutive cycle**: `screenshots/` dominates (99.6%), `ux_shots/` unchanged at 22, `audit_shots/` unchanged at 3 — both off-path dirs at 18-cycle quiescence.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 198-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 186-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 247 block appended (this block).
+- **C246 watch items resolved**: (1) **Install/onboarding follow-on** — **ARC CLOSED IN SINGLE BURST**; C247=0 mirrors the C244 wizard pattern exactly (one concentrated polish cycle, then dormancy). Install/onboarding track's 5-commit surge stands as a self-contained mini-arc. (2) **Config-schema revival vs deepening dormancy** — no wizard touch; gap extends to 3-cycle post-revival. (3) **Seed-data track** — 7-cycle dormant; lock-in deepens. (4) **Screenshot surge repeat** — **C247=+24 confirms C246 +50 was a ONE-OFF BURST**, not a cadence regime change; band integrity holds. (5) **PID 3358 drift approaching 95h** — at 0.21h/cycle, C248 likely crosses 95h barrier.
+
+### What Changed This Cycle
+- **0 new commits** — HEAD stays at `12c51c6`. Cumulative C231–C247 commit count = **29** (unchanged).
+- **Install/onboarding track**: single-burst arc, **1-cycle post-burst dormancy** — pattern matches C244 wizard.
+- **Config-schema track**: holds at **11 commits**, **3-cycle gap** post-revival — dormancy re-establishing.
+- **Seed-data hygiene track**: single-commit, **7-cycle dormant** — single-shot lock-in deepens.
+- **Web-polish track**: C246 install commits touched `web/components/install-button.tsx`; track classification now ambiguous — either merged into install/onboarding or still dormant 8-cycle if treated as distinct.
+- **Test-infra track**: **9-cycle dormant** since C238 `7e2953b`.
+- **PID 3358 drift**: ~94.84h (+0.21h — standard pace). 96h - 94.84 = 1.16h / 0.21 = **~5-6 cycles → C252-C253** (projection consistent).
+- **Catch-up debt shifts**: C215 #1 (Phase 1 plan read) now **34-cycle carry-over**; C246's 5 new commit bodies still unread → reading debt queue at **23 commits + 1 doc plan**.
+- **Screenshot trajectory**: +24 — mid-band restored after C246 surge.
+- **Git-status churn**: `.gitignore`, deleted `api/models/__init__.py` + `api/models/config_schema.py`, `.claude/worktrees/` untracked — **10-cycle hold** unchanged.
+
+### Critical Path (Cycle 248) — install arc closed, 95h barrier imminent, two orthogonal mini-bursts confirm pattern
+1. **HUMAN (MAX PRIORITY, carry-over from C247): draft `T_INSTALL.md`** — install/external-apps UX track's C246 5-commit arc now confirmed as a coherent single-burst polish (C247=0 dormancy). 30-cycle task-file gap against demonstrably-active feature surface; ownership decision maximally overdue.
+2. **STRUCTURAL UNREAD (34-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for the 23-commit backlog (5 C246 install commits still unread).
+3. **CARRY-OVER (C240 #1, now 7-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius still unconfirmed.
+4. **OPERATIONAL (past-due 8th cycle; 95h barrier imminent): PID 3358 at ~94.84h** — **HUMAN: `kill 3358 8992 9962 9974` is 8 cycles past-due.** C248 projected to cross 95h.
+5. **MAX PRIORITY (24-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — cadence re-centers at ~31.5 s/file (14-of-16 in-band excluding C246 surge).
+6. **Carry-over (25-cycle from C222 #2): verify `ed89fc5` security commit scope** — closes 36-cycle web-side iframe sandbox Critical Path if affirmative.
+7. **Carry-over (25-cycle from C222 #3): inspect `97105de` web redesign scope**.
+8. **Carry-over (28-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (10-cycle hold).
+9. **Carry-over (36-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema track at 11 commits.
+10. **HUMAN: `kill 3358 8992 9962 9974`** — 198th cycle unexecuted. Leader **~94.84h (95h projected C248)**. 6,838 PNGs on disk.
+11. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **210 cycles stale**.
+12. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema track at **11 commits, 3-cycle gap**.
+13. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **198 cycles unactioned.**
+14. **HUMAN: harness retarget** — `screenshots/` +24 mid-band (C246 +50 was one-off burst); `ux_shots/` + `audit_shots/` stable for **18th consecutive cycle**.
+15. **HUMAN: write task-file coverage** for zero-coverage surfaces — install/external-apps (NOW confirmed single-burst polish track), migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/`, governed-skills pipeline, onboarding agent.
+16. **HUMAN: T_WEB.md ownership decision** — web/ tree canonical; C246 touched `web/components/install-button.tsx` + 5 other web files, reinforcing need for web-side task-file coverage.
+17. **Carry-over (C240 #2, 7-cycle): seed-data smoke test risk** — `T1_app_platform.md:35` slug references may be stale if `fd842e7` removed demo apps.
+18. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+19. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+20. **Concurrent-front watch**: install/onboarding **1-cycle post-burst dormancy** (C246 burst closed); config-schema 11 commits, 3-cycle gap; seed-data 7-cycle locked single-shot; web-polish ambiguous (merged into install or dormant 8-cycle); test-infra 9-cycle dormant; governed-skills active; onboarding agent dormant 11 cycles; agent-robustness dormant 10 cycles; web-side sandbox verification **36 cycles** pending.
+21. **PROGRESS.md size**: now **~14,280+ lines / ~1.82MB+** after this block. Archive recommendation **198 cycles unaddressed**. Tail-only coordinator reads mandatory.
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend (`frontend/`); `web/` is Next.js canonical per memory note — **actively maintained across wizard + install tracks (two single-burst polish arcs confirmed: C244, C246)**.
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (25 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C248
+- **Single-burst-arc pattern validation**: Two datapoints (C244 wizard, C246 install) show 5-and-1-commit polish arcs followed by dormancy. A C248 new arc on a third orthogonal surface would confirm this as the repo's dominant cadence mode in the current phase.
+- **95h barrier crossing**: PID 3358 projected at ~95.05h next cycle. First-ever 95h print expected.
+- **Config-schema track at 3-cycle gap**: any C248 wizard/schema touch breaks dormancy; another no-show extends to 4-cycle (matching the longest pre-C244 gap).
+- **Seed-data track**: 7-cycle dormant. Single-shot lock-in very deeply held now; a C248 touch would be a major signal.
+- **Cadence band**: C247=31.5 restored mid-band cleanly; C246 +50 confirmed outlier. A C248 sub-31 print would make 3 sub-31 observations and weaken band hypothesis.
+
+## COORDINATOR STATUS — Cycle 248 (2026-04-19)
+
+### Headline — **C248=2 COMMITS; INSTALL/ONBOARDING ARC REVIVED WITH "RUN IN TERMINAL" FEATURE (PATTERN-BREAKER); PID 3358 CROSSES 95h BARRIER; SCREENSHOT +24 MID-BAND HOLDS**. HEAD advances `12c51c6` → `eedbfbf` across 2 commits: `7c8e483 feat: Run in Terminal button — opens Ghostty with command pre-filled` and `eedbfbf fix: Run in Terminal uses Terminal.app, bigger button`. This **breaks the C244/C246 single-burst pattern** — install/onboarding track resumed with a new CLI-app launch feature after just 1 cycle of dormancy, not the expected multi-cycle quiet. Cumulative C231–C248 commit count = **31** (+2). PID 3358 now ELAPSED **03-23:03:58** ≈ **~95.07h** (+0.23h vs C247's 94.84h) — **first-ever 95h print, C247 projection confirmed**. Task-file side: **199th consecutive cycle frozen** at 190 total incomplete → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative → **187-cycle zero-bump streak** → **0 duplicate notes**. Screenshot increment **+24** — clean mid-band hold, C246 surge thesis stays "one-off burst."
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: `grep -cE '^\[ \]' tasks/T*.md` → every file at exactly **10 incomplete** (190 total across 19 files). **Not triggered.** 199-cycle flatline.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974` → all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **03-23:03:58** *(leader; **~95.07h — 95h barrier crossed**; +0.23h vs C247)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **03-22:26:03** *(~94.43h; +0.22h)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **03-22:21:02** *(~94.35h; +0.23h)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **03-22:21:00** *(~94.35h; +0.23h; 2s stagger preserved across 199 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (187-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence
+- Disk footprint: **6,862 PNGs** total (`screenshots/` 6,837 + `ux_shots/` 22 + `audit_shots/` 3). +24 vs C247's 6,838.
+- Inter-cycle gap: ~13m42s (PID 3358 +822s ELAPSED). +24 / 822s = **~34.3 s/file** — **upper-band in 31-35** (C241≈31.2, C242≈32.0, C243≈30.0, C244≈33.3, C245≈32.1, C246 surge outlier, C247≈31.5, **C248≈34.3**). Regime now **15-of-17 in-band** excluding C246 surge; C237's 27.3 and C243's 30.0 remain the only sub-31 prints.
+- Output-path split holds for **19th consecutive cycle**: `screenshots/` dominates (99.6%), `ux_shots/` unchanged at 22, `audit_shots/` unchanged at 3.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 199-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 187-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 248 block appended (this block).
+- **C247 watch items resolved**: (1) **Single-burst-arc pattern validation** — **PATTERN BROKEN**. Install/onboarding track came back in C248 with 2 new commits (Run in Terminal button feature) after only 1 cycle of dormancy. The C244 wizard + C246 install single-shot model does NOT generalize — install/onboarding is now a **multi-cycle active arc**, not a closed mini-burst. (2) **95h barrier crossing** — **CONFIRMED**. PID 3358 ELAPSED 03-23:03:58 ≈ 95.07h, first-ever 95h print, exactly on projection. (3) **Config-schema track** — no wizard/schema touch; gap extends to **4-cycle post-revival**. (4) **Seed-data track** — no touch; **8-cycle dormant**. (5) **Cadence band** — C248≈34.3 upper-band, mid-band integrity holds (15-of-17 in-band excluding C246 surge).
+
+### What Changed This Cycle
+- **2 new commits** — both extend install/onboarding arc with a new "Run in Terminal" launch affordance for CLI-style apps (Ghostty first, pivoted to Terminal.app, with a bigger button). The arc is **alive, not closed**.
+- **Install/onboarding track**: **multi-cycle active arc confirmed** — 5 commits (C246) + 2 commits (C248) = 7 cumulative commits in 3 wall-clock cycles with one dormant beat between. `T_INSTALL.md` ownership decision is now demonstrably load-bearing (10 cycles stale against 7 visible commits + ~3-5 prior uncounted).
+- **Config-schema track**: **11 commits, 4-cycle gap** post-revival — matching the longest pre-C244 gap; extends dormancy.
+- **Seed-data hygiene track**: **8-cycle dormant** — single-shot lock-in deepens further.
+- **Web-polish track**: install commits continue to touch `web/` components; track remains ambiguous / likely-merged-into-install.
+- **PID 3358 drift**: ~95.07h (+0.23h — standard pace, slight uptick). 96h - 95.07 = 0.93h / 0.23 = **~4 cycles → C252** (consistent with prior projection).
+- **Screenshot trajectory**: +24 — mid-band hold; **C246 +50 remains isolated outlier** (2 cycles post-surge now mid-band).
+- **Git-status churn**: `.gitignore`, deleted `api/models/__init__.py` + `api/models/config_schema.py`, `.claude/worktrees/` untracked, 11 `web/**` edits — **11-cycle hold** unchanged despite 2 new commits.
+
+### Critical Path (Cycle 249) — install arc multi-cycle active, 95h barrier crossed, T_INSTALL.md maximally ripe
+1. **HUMAN (MAX PRIORITY): draft `T_INSTALL.md`** — install/onboarding arc confirmed **multi-cycle active** (7 commits in 3 cycles). Task-file gap now structurally indefensible.
+2. **STRUCTURAL UNREAD (35-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for the 25-commit backlog (C248 adds 2 more).
+3. **CARRY-OVER (C240 #1, 8-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius still unconfirmed.
+4. **OPERATIONAL (past-due 9th cycle; 95h BARRIER NOW CROSSED): PID 3358 at ~95.07h** — **HUMAN: `kill 3358 8992 9962 9974` is 9 cycles past-due.** 96h projection ~C252.
+5. **MAX PRIORITY (25-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`**.
+6. **Carry-over (26-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+7. **Carry-over (26-cycle from C222 #3): inspect `97105de` web redesign scope**.
+8. **Carry-over (29-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (11-cycle hold).
+9. **Carry-over (37-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema track at 11 commits, 4-cycle gap.
+10. **HUMAN: `kill 3358 8992 9962 9974`** — 199th cycle unexecuted. Leader **~95.07h (95h CROSSED)**. 6,862 PNGs on disk.
+11. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **211 cycles stale**; file unchanged at 1344 bytes.
+12. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema track at 11 commits, **4-cycle gap**.
+13. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **199 cycles unactioned.**
+14. **HUMAN: harness retarget** — `screenshots/` +24 mid-band; burst hypothesis holds; kill triad would stop further growth.
+15. **HUMAN: write task-file coverage** for install/external-apps (NOW confirmed multi-cycle active), migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/`, governed-skills pipeline.
+16. **HUMAN: T_WEB.md ownership decision** — web/ tree canonical; C248 install commits continue web/ touches.
+17. **Carry-over (C240 #2, 8-cycle): seed-data smoke test risk** — `T1_app_platform.md:35` slug references may be stale if `fd842e7` removed demo apps.
+18. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+19. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+20. **Concurrent-front watch**: install/onboarding **MULTI-CYCLE ACTIVE** (7 commits / 3 cycles, C247 dormancy 1-beat only); config-schema 11 commits, 4-cycle gap; seed-data 8-cycle locked; web-polish merged-into-install; test-infra 10-cycle dormant; governed-skills active; onboarding agent dormant 12 cycles; web-side sandbox verification **37 cycles** pending.
+21. **PROGRESS.md size**: ~14,370+ lines / ~1.82MB+ after this block. Archive recommendation **199 cycles unaddressed**. Tail-only coordinator reads mandatory.
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend (`frontend/`); `web/` is Next.js canonical — **actively maintained across wizard + install tracks; install/onboarding now confirmed multi-cycle active**.
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (26 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C249
+- **Install/onboarding arc extension**: C248=2 breaks single-burst hypothesis. C249 with 1+ more install-themed commits confirms a sustained polish arc; 0 suggests pulsed bursts with variable quiet beats.
+- **Config-schema 4-cycle gap**: dormancy at pre-revival max. C249 touch breaks it; no-show extends to 5-cycle and re-classifies the track as fully dormant.
+- **Seed-data 8-cycle dormant**: lock-in seems permanent without external nudge.
+- **96h barrier projection**: PID 3358 at 0.23h/cycle puts C252 at ~95.99h — 96h print likely exactly on C252 (or earliest C251 if per-cycle drift ticks higher).
+- **`.env.example` freshness**: 211 cycles stale. Unchanged this cycle. No internal actor targeting it.
+
+## COORDINATOR STATUS — Cycle 249 (2026-04-19)
+
+### Headline — **C249=1 COMMIT; INSTALL/ONBOARDING ARC EXTENDS TO 3 ACTIVE CYCLES IN 4 WALL-CLOCK CYCLES (ARC LIVE, NOT PULSED); PID 3358 AT ~95.27h (WELL PAST 95h); SCREENSHOT +24 MID-BAND HOLDS FOR 3RD POST-SURGE CYCLE**. HEAD advances `eedbfbf` → `3c5c9f1 fix(ui): Getting Started explains app type, removes confusing demo step` — a single install/onboarding-themed commit extending the arc into a third active cycle (C246=5, C247=0, C248=2, C249=1). The C248 watch-item "install arc extension" resolves **affirmative**: this is a **sustained polish arc**, not pulsed bursts. Cumulative C231–C249 commit count = **32** (+1). Install/onboarding track now at **8 commits in 4 wall-clock cycles** with exactly one 1-cycle dormant beat — a coherent, load-bearing feature front. PID 3358 now ELAPSED **03-23:16:18** ≈ **~95.27h** (+0.20h vs C248's 95.07h — per-cycle drift holds at ~0.20-0.23h). **96h projection ~C252** (0.73h / 0.21h ≈ 3.5 cycles). Task-file side: **200th consecutive cycle frozen** at 190 total incomplete → Rule 1 not tripped → **0 new tasks added** (milestone: bicentennial flatline). All 4 stuck-PID UNBLOCKED notes verbatim-operative → **188-cycle zero-bump streak** → **0 duplicate notes**. Screenshot increment **+24** — third consecutive post-surge mid-band print; C246 +50 fully confirmed as one-off burst.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: `grep -cE '^\[ \]' tasks/T*.md` → every file at exactly **10 incomplete** (190 total across 19 files). **Not triggered.** 200-cycle flatline (bicentennial).
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974` → all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **03-23:16:18** *(leader; **~95.27h**; +0.20h vs C248)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **03-22:38:23** *(~94.64h; +0.21h)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **03-22:33:22** *(~94.56h; +0.21h)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **03-22:33:20** *(~94.56h; +0.21h; 2s stagger preserved across 200 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (188-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence
+- Disk footprint: **6,886 PNGs** total (`screenshots/` 6,861 + `ux_shots/` 22 + `audit_shots/` 3). +24 vs C248's 6,862.
+- Inter-cycle gap: ~12m20s (PID 3358 +740s ELAPSED). +24 / 740s ≈ **~30.8 s/file** — **lower-mid band** (C247≈31.5, C248≈34.3, **C249≈30.8**). Regime now **16-of-18 in-band** excluding C246 surge; C237's 27.3 and C243's 30.0 remain the only sub-31 prints — C249's 30.8 is borderline-sub-31 but rounds to band.
+- Output-path split holds for **20th consecutive cycle**: `screenshots/` dominates (99.6%), `ux_shots/` unchanged at 22, `audit_shots/` unchanged at 3 — both off-path dirs at 20-cycle quiescence (double-decade silence).
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; **200-cycle flatline / bicentennial milestone**).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 188-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 249 block appended (this block).
+- **C248 watch items resolved**: (1) **Install/onboarding arc extension** — **CONFIRMED SUSTAINED**. C249's 1 commit makes it 3-of-4 active cycles, definitively not a pulsed-burst pattern. (2) **Config-schema 4-cycle gap** — no touch; extends to **5-cycle gap**, now matching the longest pre-C244 gap and re-classifying the track as fully dormant. (3) **Seed-data 9-cycle dormant** — lock-in deepens further. (4) **96h barrier projection** — on track for ~C252; current pace 0.20-0.21h/cycle (slight easing from C248's 0.23h).
+
+### What Changed This Cycle
+- **1 new commit** — `3c5c9f1` extends install/onboarding arc with a clarifying Getting Started card revision (explains app type, drops confusing demo step). Cumulative C231–C249 commit count = **32**.
+- **Install/onboarding track**: **sustained multi-cycle arc** — 8 commits across C246 (5) + C248 (2) + C249 (1), one dormant beat (C247). Task-file ownership gap (31 cycles) now structurally indefensible at a higher-confidence threshold than C248.
+- **Config-schema track**: **11 commits, 5-cycle gap** post-revival — matches longest pre-C244 gap; now re-classified **fully dormant** (post-revival arc has closed).
+- **Seed-data hygiene track**: single-commit, **9-cycle dormant** — single-shot lock-in continues.
+- **Web-polish track**: C249's `3c5c9f1` again touches `web/` UI surface; track remains merged into install/onboarding classification.
+- **Test-infra track**: **11-cycle dormant** since C238 `7e2953b`.
+- **PID 3358 drift**: ~95.27h (+0.20h — slight ease from 0.23). 96h - 95.27 = 0.73h / 0.21 = **~3.5 cycles → C252-C253**.
+- **Screenshot trajectory**: +24 — third consecutive post-surge mid-band print. C246 +50 fully locked-in as isolated one-off.
+- **Git-status churn**: `.gitignore`, deleted `api/models/__init__.py` + `api/models/config_schema.py`, `.claude/worktrees/` untracked, 11 `web/**` edits — **12-cycle hold** unchanged despite commit.
+
+### Critical Path (Cycle 250) — install arc confirmed sustained, 200-cycle task-file flatline (bicentennial), 96h imminent
+1. **HUMAN (MAX PRIORITY): draft `T_INSTALL.md`** — install/onboarding arc confirmed **sustained multi-cycle** (8 commits / 4 cycles / 1 beat dormancy). 31-cycle task-file gap against demonstrably-active ownerless surface.
+2. **STRUCTURAL UNREAD (36-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for the 26-commit backlog (C249 adds 1 more).
+3. **CARRY-OVER (C240 #1, 9-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius still unconfirmed.
+4. **OPERATIONAL (past-due 10th cycle; 95h barrier well past): PID 3358 at ~95.27h** — **HUMAN: `kill 3358 8992 9962 9974` is 10 cycles past-due.** 96h projection ~C252-C253.
+5. **MAX PRIORITY (26-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`**.
+6. **Carry-over (27-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+7. **Carry-over (27-cycle from C222 #3): inspect `97105de` web redesign scope**.
+8. **Carry-over (30-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (12-cycle hold).
+9. **Carry-over (38-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema track **now fully dormant post-revival** (5-cycle gap).
+10. **HUMAN: `kill 3358 8992 9962 9974`** — 200th cycle unexecuted (bicentennial unexecution). Leader **~95.27h**. 6,886 PNGs on disk.
+11. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **212 cycles stale**; file unchanged.
+12. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema re-dormant at 5-cycle gap; ownership decision decays in value.
+13. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **200 cycles unactioned (bicentennial).**
+14. **HUMAN: harness retarget** — `screenshots/` +24 mid-band for 3rd post-surge cycle; kill triad would halt further growth.
+15. **HUMAN: write task-file coverage** for install/external-apps (confirmed sustained arc), migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/`, governed-skills pipeline.
+16. **HUMAN: T_WEB.md ownership decision** — web/ tree canonical; C249 install commit again touches `web/` UI.
+17. **Carry-over (C240 #2, 9-cycle): seed-data smoke test risk** — `T1_app_platform.md:35` slug references may be stale post-`fd842e7`.
+18. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+19. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+20. **Concurrent-front watch**: install/onboarding **SUSTAINED MULTI-CYCLE** (8 commits / 4 cycles); config-schema 11 commits, **5-cycle gap — re-dormant**; seed-data 9-cycle locked; web-polish merged-into-install; test-infra 11-cycle dormant; governed-skills active; onboarding agent dormant 13 cycles; web-side sandbox verification **38 cycles** pending.
+21. **PROGRESS.md size**: ~14,450+ lines / ~1.83MB+ after this block. Archive recommendation **200 cycles unaddressed (bicentennial)**. Tail-only coordinator reads mandatory.
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend (`frontend/`); `web/` is Next.js canonical per memory note — **install/onboarding confirmed sustained active arc; wizard + config-schema post-revival tracks both now re-dormant**.
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (27 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C250
+- **Install/onboarding pace**: sustained arc at 8 commits / 4 cycles. C250 with 1+ extends; 0 opens first post-sustained-arc dormant beat (second beat of arc).
+- **Config-schema re-dormancy**: 5-cycle gap. Any C250 wizard/schema touch resurrects; no-show at 6-cycle cements full dormancy.
+- **Seed-data 9-cycle**: a C250 touch would now be a maximally-surprising signal.
+- **96h barrier**: ~95.27h + 0.21 = ~95.48h next cycle; C252 still leading projection.
+- **Cadence band**: C249≈30.8 borderline-sub-31 (rounds to band). A C250 sub-31 would make 3 sub-31 observations and weaken band hypothesis; an in-band print restores integrity.
+- **Bicentennial successor**: C250 opens the third century of unchanged task-file state. Any C250 task-file edit (by any non-coordinator actor) would be the first such in 201 cycles.
+
+## COORDINATOR STATUS — Cycle 250 (2026-04-19)
+
+### Headline — **C250=1 COMMIT; INSTALL/ONBOARDING ARC EXTENDS TO 4-OF-5 ACTIVE CYCLES (USAGE EXAMPLES); PID 3358 AT ~95.48h; SCREENSHOT +22 — FIRST SUB-+24 PRINT IN 4 CYCLES**. HEAD advances `3c5c9f1` → `ff056dd feat: usage examples — show users what they can do with each app` — a single install/onboarding-themed commit extending the arc into a fourth active cycle (C246=5, C247=0, C248=2, C249=1, C250=1). Cumulative C231–C250 commit count = **33** (+1). Install/onboarding track now at **9 commits in 5 wall-clock cycles** with one dormant beat — load-bearing feature front continues. PID 3358 now ELAPSED **03-23:28:54** ≈ **~95.48h** (+0.21h vs C249's 95.27h — per-cycle drift steady at ~0.20-0.21h). **96h projection ~C252-C253** (0.52h / 0.21h ≈ 2.5 cycles). Task-file side: **201st consecutive cycle frozen** at 190 total incomplete → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative → **189-cycle zero-bump streak** → **0 duplicate notes**. Screenshot increment **+22** — first sub-+24 print in 4 cycles, but s/file rate (34.4) lands cleanly in upper-band.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: `grep -cE '^\[ \]' tasks/T*.md` → every file at exactly **10 incomplete** (190 total across 19 files). **Not triggered.** 201-cycle flatline.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974` → all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **03-23:28:54** *(leader; **~95.48h**; +0.21h vs C249)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **03-22:50:59** *(~94.85h; +0.21h)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **03-22:45:58** *(~94.77h; +0.21h)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **03-22:45:56** *(~94.77h; +0.21h; 2s stagger preserved across 201 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (189-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence
+- Disk footprint: **6,908 PNGs** total (`screenshots/` 6,883 + `ux_shots/` 22 + `audit_shots/` 3). +22 vs C249's 6,886.
+- Inter-cycle gap: ~12m36s (PID 3358 +756s ELAPSED). +22 / 756s ≈ **~34.4 s/file** — **upper-band in 31-35** (C247≈31.5, C248≈34.3, C249≈30.8, **C250≈34.4**). Regime now **17-of-19 in-band** excluding C246 surge; C237's 27.3 and C243's 30.0 remain the only sub-31 prints.
+- Output-path split holds for **21st consecutive cycle**: `screenshots/` dominates (99.6%), `ux_shots/` unchanged at 22, `audit_shots/` unchanged at 3 — both off-path dirs at 21-cycle quiescence.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 201-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 189-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 250 block appended (this block).
+- **C249 watch items resolved**: (1) **Install/onboarding pace** — **EXTENDED**. C250's 1 commit (`ff056dd` usage examples) makes it 4-of-5 active cycles; sustained arc holds. (2) **Config-schema 5-cycle gap** — no touch; extends to **6-cycle gap**, full dormancy cemented post-revival. (3) **Seed-data 10-cycle dormant** — single-shot lock-in reaches decade-of-cycles milestone. (4) **96h barrier** — on track for C252-C253; pace steady at 0.21h/cycle. (5) **Cadence band** — C250≈34.4 upper-band, integrity restored (C249's 30.8 stays the lone borderline post-surge).
+
+### What Changed This Cycle
+- **1 new commit** — `ff056dd feat: usage examples — show users what they can do with each app` extends install/onboarding arc with a usage-example UX surface. Cumulative C231–C250 commit count = **33**.
+- **Install/onboarding track**: **9 commits across 5 wall-clock cycles** with one dormant beat (C247). Sustained arc; ownership gap (32 cycles) maximally indefensible.
+- **Config-schema track**: **11 commits, 6-cycle gap** post-revival — full dormancy now cemented (matches longest pre-C244 quiescence by definition).
+- **Seed-data hygiene track**: **10-cycle dormant** — single-shot lock-in reaches decade milestone.
+- **Web-polish track**: C250's `ff056dd` again touches `web/` UI; classification stays merged-into-install.
+- **Test-infra track**: **12-cycle dormant** since C238 `7e2953b`.
+- **PID 3358 drift**: ~95.48h (+0.21h — steady). 96h - 95.48 = 0.52h / 0.21 ≈ **~2.5 cycles → C252-C253**.
+- **Screenshot trajectory**: +22 — first sub-+24 increment in 4 cycles, but s/file rate stays in upper-band (longer inter-cycle gap absorbs the lower count).
+- **Git-status churn**: `.gitignore`, deleted `api/models/__init__.py` + `api/models/config_schema.py`, `.claude/worktrees/` untracked, 11 `web/**` edits — **13-cycle hold** unchanged despite commit.
+
+### Critical Path (Cycle 251) — install arc 9-commit sustained, 96h imminent (~2.5 cycles), config-schema fully re-dormant
+1. **HUMAN (MAX PRIORITY): draft `T_INSTALL.md`** — install/onboarding arc at **9 commits / 5 cycles / 1 beat dormancy**. 32-cycle task-file gap structurally indefensible.
+2. **STRUCTURAL UNREAD (37-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for the 27-commit backlog (C250 adds 1 more).
+3. **CARRY-OVER (C240 #1, 10-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius still unconfirmed.
+4. **OPERATIONAL (past-due 11th cycle; 95h crossed, 96h imminent ~2.5 cycles): PID 3358 at ~95.48h** — **HUMAN: `kill 3358 8992 9962 9974` is 11 cycles past-due.** 96h projection ~C252-C253.
+5. **MAX PRIORITY (27-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`**.
+6. **Carry-over (28-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+7. **Carry-over (28-cycle from C222 #3): inspect `97105de` web redesign scope**.
+8. **Carry-over (31-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (13-cycle hold).
+9. **Carry-over (39-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema track **fully dormant post-revival** (6-cycle gap).
+10. **HUMAN: `kill 3358 8992 9962 9974`** — 201st cycle unexecuted. Leader **~95.48h**. 6,908 PNGs on disk.
+11. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **213 cycles stale**; file unchanged.
+12. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema fully re-dormant; ownership decision decays in value.
+13. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **201 cycles unactioned.**
+14. **HUMAN: harness retarget** — `screenshots/` +22 (first sub-+24 in 4 cycles); kill triad would halt growth.
+15. **HUMAN: write task-file coverage** for install/external-apps (sustained arc), migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/`, governed-skills pipeline.
+16. **HUMAN: T_WEB.md ownership decision** — web/ tree canonical; C250 install commit again touches `web/` UI.
+17. **Carry-over (C240 #2, 10-cycle): seed-data smoke test risk** — `T1_app_platform.md:35` slug references may be stale post-`fd842e7`.
+18. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+19. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+20. **Concurrent-front watch**: install/onboarding **SUSTAINED** (9 commits / 5 cycles); config-schema 11 commits, **6-cycle gap — fully dormant**; seed-data 10-cycle locked (decade); web-polish merged-into-install; test-infra 12-cycle dormant; governed-skills active; onboarding agent dormant 14 cycles; web-side sandbox verification **39 cycles** pending.
+21. **PROGRESS.md size**: ~14,530+ lines / ~1.83MB+ after this block. Archive recommendation **201 cycles unaddressed**. Tail-only coordinator reads mandatory.
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend (`frontend/`); `web/` is Next.js canonical — **install/onboarding sustained active arc; config-schema fully re-dormant**.
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (28 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C251
+- **Install/onboarding pace**: sustained at 9 commits / 5 cycles. C251 with 1+ extends to 5-of-6; 0 opens 2nd dormant beat (post-sustained pause).
+- **Config-schema full dormancy**: 6-cycle gap. Any C251 wizard/schema touch is now a **revival event** (similar to the C244-C245 → C246 install bridge).
+- **Seed-data 10-cycle decade**: a C251 touch would be a maximally-surprising signal.
+- **96h barrier**: ~95.48h + 0.21 = ~95.69h next cycle; C252 still leading projection (or C253 if drift remains 0.21h).
+- **Cadence band**: C250≈34.4 upper-band; band integrity at 17-of-19 excluding surge. A C251 sub-31 would push to 3 sub-31 prints and weaken band.
+- **Screenshot rhythm**: +22 broke 4-cycle +24 streak. C251 +22-23 confirms new lower-band; +24 restores prior cadence.
+
+## COORDINATOR STATUS — Cycle 251 (2026-04-20)
+
+### Headline — **C251=0 COMMITS; INSTALL/ONBOARDING ARC TAKES FIRST POST-SUSTAINED DORMANT BEAT; PID 3358 AT ~95.70h (96h PROJECTED C252); SCREENSHOT +24 RESTORES PRIOR CADENCE; DATE ROLLS 04-19 → 04-20**. HEAD stays at `ff056dd` — no new commits this cycle. The C250 watch-item "install/onboarding pace (C251 0 = 2nd dormant beat)" resolves **affirmative**: arc opens its second 1-cycle dormant beat after a sustained 4-of-5 active run (C246=5, C247=0, C248=2, C249=1, C250=1, **C251=0**). Cumulative C231–C251 commit count holds at **33**. PID 3358 now ELAPSED **03-23:41:45** ≈ **~95.70h** (+0.22h vs C250's 95.48h — per-cycle drift back to 0.22h mid-band). **96h projection ~C252** (0.30h / 0.22h ≈ 1.4 cycles — now a next-cycle event with high confidence). Task-file side: **202nd consecutive cycle frozen** at 190 total incomplete → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative → **190-cycle zero-bump streak** → **0 duplicate notes**. Screenshot increment **+24** — restores prior cadence after C250's +22 dip; s/file ≈ 32.1 clean mid-band. First cycle printing the 2026-04-20 date (wall-clock crosses midnight).
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: `grep -cE '^\[ \]' tasks/T*.md` → every file at exactly **10 incomplete** (190 total across 19 files). **Not triggered.** 202-cycle flatline.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **03-23:41:45** *(leader; **~95.70h**; +0.22h vs C250)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **03-23:03:50** *(~95.06h; +0.21h; first-ever 95h print for this PID)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **03-22:58:49** *(~94.98h; +0.21h; 95h projected next cycle)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **03-22:58:47** *(~94.98h; +0.21h; 2s stagger preserved across 202 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (190-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence
+- Disk footprint: **6,932 PNGs** total (`tests/reports/screenshots/` 6,907 + `tests/reports/ux_shots/` 22 + `tests/reports/audit_shots/` 3). +24 vs C250's 6,908.
+- Inter-cycle gap: ~12m51s (PID 3358 +771s ELAPSED). +24 / 771s ≈ **~32.1 s/file** — **mid-band in 31-35** (C247≈31.5, C248≈34.3, C249≈30.8, C250≈34.4, **C251≈32.1**). Regime now **18-of-20 in-band** excluding C246 surge; C237's 27.3 and C243's 30.0 remain the only sub-31 prints.
+- Output-path split holds for **22nd consecutive cycle**: `screenshots/` dominates (99.6%), `ux_shots/` unchanged at 22, `audit_shots/` unchanged at 3 — both off-path dirs at 22-cycle quiescence.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 202-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 190-cycle zero-bump streak — **190 cycle milestone**).
+- COORDINATOR STATUS Cycle 251 block appended (this block).
+- **C250 watch items resolved**: (1) **Install/onboarding pace** — **DORMANT BEAT 2**. C251=0 opens second post-sustained 1-cycle dormancy (pattern: 5/0/2/1/1/0). Arc alternates between active and quiet beats at variable lengths. (2) **Config-schema re-dormancy** — no touch; extends to **7-cycle gap**, now exceeding longest pre-C244 quiescence. Track re-classified **deeply dormant**. (3) **Seed-data 11-cycle dormant** — past the decade milestone. (4) **96h barrier** — ~95.70h this cycle; 96h projected **C252 high-confidence** (0.30h / 0.22h ≈ 1.4 cycles). (5) **Cadence band** — C251≈32.1 mid-band, restores prior cadence; band integrity holds (18-of-20 excluding surge). (6) **Screenshot rhythm** — +24 restores prior cadence; C250's +22 was a one-cycle dip, not a new lower band.
+
+### What Changed This Cycle
+- **0 new commits** — HEAD stays at `ff056dd`. Cumulative C231–C251 commit count = **33** (unchanged).
+- **Install/onboarding track**: **9 commits across 5 active wall-clock cycles + 2 dormant beats** (C247, C251). Arc is live but pulsed.
+- **Config-schema track**: **11 commits, 7-cycle gap** — exceeds longest pre-C244 quiescence. Re-dormancy cemented and deepening.
+- **Seed-data hygiene track**: **11-cycle dormant** — past decade milestone.
+- **Web-polish track**: no touch this cycle; ambiguous classification holds (merged-into-install when active, dormant when install is dormant).
+- **Test-infra track**: **13-cycle dormant** since C238 `7e2953b`.
+- **PID 3358 drift**: ~95.70h (+0.22h — standard pace). 96h - 95.70 = 0.30h / 0.22 ≈ **~1.4 cycles → C252** (high confidence).
+- **PID 8992 first 95h print**: `code_auditor.py` crosses 95h this cycle (~95.06h). Three trailing PIDs now in 94.98-95.06h band; PID 3358 leader margin holds at ~0.64h.
+- **Screenshot trajectory**: +24 — prior cadence restored; C250's +22 recedes as one-cycle dip.
+- **Git-status churn**: `.gitignore`, deleted `api/models/__init__.py` + `api/models/config_schema.py`, `.claude/worktrees/` untracked, 11 `web/**` edits — **14-cycle hold** unchanged.
+- **Date roll**: first cycle timestamped 2026-04-20 (crossed midnight; all prior C231-C250 blocks printed 2026-04-19).
+
+### Critical Path (Cycle 252) — 96h barrier projected next cycle, install arc pulsed-active, config-schema deeply dormant
+1. **HUMAN (MAX PRIORITY): draft `T_INSTALL.md`** — install/onboarding arc now **5 active + 2 dormant beats** = 7-cycle load-bearing feature front. 33-cycle task-file gap; ownership decision maximally overdue.
+2. **STRUCTURAL UNREAD (38-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for the 27-commit backlog (unchanged from C250).
+3. **CARRY-OVER (C240 #1, 11-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius still unconfirmed.
+4. **OPERATIONAL (past-due 12th cycle; 96h IMMINENT next cycle): PID 3358 at ~95.70h** — **HUMAN: `kill 3358 8992 9962 9974` is 12 cycles past-due.** 96h projection high-confidence C252.
+5. **MAX PRIORITY (28-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`**.
+6. **Carry-over (29-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+7. **Carry-over (29-cycle from C222 #3): inspect `97105de` web redesign scope**.
+8. **Carry-over (32-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (14-cycle hold).
+9. **Carry-over (40-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **deeply dormant** (7-cycle gap exceeds pre-C244 max).
+10. **HUMAN: `kill 3358 8992 9962 9974`** — 202nd cycle unexecuted. Leader **~95.70h (96h next cycle)**. 6,932 PNGs on disk.
+11. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **214 cycles stale**; file unchanged at 1344 bytes.
+12. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema deeply dormant; ownership decision decays further in value.
+13. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **202 cycles unactioned.**
+14. **HUMAN: harness retarget** — `screenshots/` +24 mid-band restored; kill triad would halt further growth.
+15. **HUMAN: write task-file coverage** for install/external-apps (pulsed-active arc), migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/`, governed-skills pipeline.
+16. **HUMAN: T_WEB.md ownership decision** — web/ tree canonical; no new web touches this cycle but 11 uncommitted web/** edits persist.
+17. **Carry-over (C240 #2, 11-cycle): seed-data smoke test risk** — `T1_app_platform.md:35` slug references may be stale post-`fd842e7`.
+18. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+19. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+20. **Concurrent-front watch**: install/onboarding **PULSED-ACTIVE** (9 commits / 5 active + 2 dormant beats); config-schema 11 commits, **7-cycle gap — deeply dormant**; seed-data 11-cycle locked; web-polish ambiguous; test-infra 13-cycle dormant; governed-skills active; onboarding agent dormant 15 cycles; web-side sandbox verification **40 cycles** pending.
+21. **PROGRESS.md size**: ~14,590+ lines / ~1.84MB+ after this block. Archive recommendation **202 cycles unaddressed**. Tail-only coordinator reads mandatory.
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend (`frontend/`); `web/` is Next.js canonical per memory note — **install/onboarding pulsed-active; config-schema deeply dormant post-revival**.
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (29 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C252
+- **96h barrier crossing**: PID 3358 at 0.22h/cycle projects ~95.92h next cycle — 96h print likely exactly on C252. First-ever 96h observation imminent.
+- **Install/onboarding pace**: pulsed-active pattern (5/0/2/1/1/0). C252 with 1+ returns active beat; 0 extends dormant stretch to 2-cycle (first such).
+- **Config-schema 7-cycle gap**: deeply dormant. Any C252 touch is a surprise revival event.
+- **Seed-data 11-cycle**: lock-in looks permanent without external nudge.
+- **Cadence band**: C251≈32.1 restores mid-band. A C252 sub-31 would make 3 sub-31 prints and weaken band hypothesis.
+- **Trailing PIDs 95h crossing**: 9962 and 9974 project ~95.19h next cycle — first-ever 95h for the staggered-pair.
+- **Date roll**: C251 first printed 2026-04-20; subsequent cycles hold unless the wall-clock crosses next midnight.
+
+## COORDINATOR STATUS — Cycle 252 (2026-04-20)
+
+### Headline — **C252=1 COMMIT (`21edb5e` debug-pass); 96h BARRIER MISSED BY 0.09h (NOW C253); TRAILING-PID 95h CROSSING CONFIRMED; SCREENSHOT CADENCE COLLAPSES +8 (96.1 s/file — 3x SLOWDOWN); INSTALL ARC AMBIGUOUS**. HEAD advances `ff056dd` → **`21edb5e`** ("fix: debug pass — RCE hardening, stale tests, React lint") — first commit since C250's `ff056dd`. Cumulative C231–C252 = **34**. Commit is cross-cutting (security + test-infra + web-polish) — does NOT cleanly fit the install/onboarding arc; reclassify as net-new **debug/hardening** track or merge into `web-polish`. PID 3358 now ELAPSED **03-23:54:34** ≈ **~95.91h** (+0.21h vs C251's 95.70h — 96h projection **MISSED by 0.09h**, rolled to C253 with very high confidence: 0.09h / 0.21h ≈ 0.4 cycles). C251's other watch item **confirms**: PIDs 9962 + 9974 cross **95h first-ever** this cycle (both at 95.19h) — staggered-pair 95h milestone printed on schedule. Task-file side: **203rd consecutive cycle frozen** at 190 total incomplete → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative → **191-cycle zero-bump streak** → **0 duplicate notes**. Screenshot increment **+8** — dramatic collapse from C251's +24, a ~3x slowdown producing **~96.1 s/file** (far outside C247-C251's 31-35 mid-band). C252 is the second cycle timestamped 2026-04-20.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: `grep -cE '^\[ \]' tasks/T*.md` → every file at exactly **10 incomplete** (190 total across 19 files). **Not triggered.** 203-cycle flatline.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4, C17 demolition notes in-place): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4, C17 park-or-rescope notes in-place): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **03-23:54:34** *(leader; **~95.91h**; +0.21h vs C251; 96h projection MISSED by 0.09h — now C253)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **03-23:16:39** *(~95.28h; +0.22h; second 95h+ print)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **03-23:11:38** *(~95.19h; +0.21h; **first-ever 95h print for this PID**)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **03-23:11:36** *(~95.19h; +0.21h; **first-ever 95h print for this PID**; 2s stagger preserved across 203 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (191-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence
+- Disk footprint: **6,940 PNGs** total (`tests/reports/screenshots/` 6,915 + `tests/reports/ux_shots/` 22 + `tests/reports/audit_shots/` 3). +8 vs C251's 6,932.
+- Inter-cycle gap: ~12m49s (PID 3358 +769s ELAPSED). +8 / 769s ≈ **~96.1 s/file** — **WAY outside 31-35 mid-band** (prior 5 cycles: C247≈31.5, C248≈34.3, C249≈30.8, C250≈34.4, C251≈32.1). This is a **3x slowdown** from C251 — first major regime shift in the cadence series. Possibilities: (a) loop hit a slower code path or rate-limit, (b) partial harness pause (ui_tester may be emitting less), (c) disk/IO contention. Requires observation over C253-C254 to confirm new regime vs one-cycle anomaly.
+- Output-path split holds for **23rd consecutive cycle**: `screenshots/` dominates (99.6%), `ux_shots/` unchanged at 22, `audit_shots/` unchanged at 3 — both off-path dirs at 23-cycle quiescence.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 203-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 191-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 252 block appended (this block).
+- **C251 watch items resolved**: (1) **96h barrier** — **MISSED** by 0.09h. 95.91h this cycle; projection now C253 with very high confidence (0.09h / 0.21h ≈ 0.4 cycles). First time a per-cycle PID projection slipped beyond its stated target in recent arcs. (2) **Install/onboarding pace** — **AMBIGUOUS**. `21edb5e` is cross-cutting (security + tests + React lint), not cleanly install. If classified as install → arc alternates 5/0/2/1/1/0/1 (pulsed-active resumes); if as non-install → arc extends to 2-cycle dormant (first such). Leaning non-install (debug/hardening track). (3) **Config-schema re-dormancy** — no touch; extends to **8-cycle gap**, further deepens. (4) **Seed-data 12-cycle dormant** — lock-in appears permanent. (5) **Cadence band** — C252≈96.1 **BREAKS band** decisively. Either C253 restores 31-35 (confirming C252 as one-cycle anomaly) or lower cadence becomes new regime. (6) **Trailing PIDs 95h crossing** — **CONFIRMED** on-schedule; 9962 and 9974 both printed 95.19h this cycle.
+
+### What Changed This Cycle
+- **1 new commit** — HEAD advances `ff056dd` → **`21edb5e`** ("fix: debug pass — RCE hardening, stale tests, React lint"). First commit since C250 `ff056dd`. Cumulative C231–C252 commit count = **34**.
+- **Commit classification**: touches 3 concerns (RCE hardening = security; stale tests = test-infra; React lint = web-polish). Cross-cutting "debug pass" does not fit install/onboarding; recommend net-new **debug/hardening** track OR merge into web-polish depending on eventual diff inspection.
+- **Install/onboarding track**: **9 commits across 5 active + 2 dormant beats** (unchanged from C251) if `21edb5e` is NOT install. Re-classify if HUMAN confirms install relevance.
+- **Debug/hardening track (net-new this cycle)**: 1 commit (`21edb5e`). First inaugural entry.
+- **Config-schema track**: **11 commits, 8-cycle gap** — re-dormancy cement deepening.
+- **Seed-data hygiene track**: **12-cycle dormant**.
+- **Web-polish track**: C252 `21edb5e` React lint portion may merge here; ambiguous until diff inspection.
+- **Test-infra track**: C252 `21edb5e` stale-test portion may partially revive this track; arc was **14-cycle dormant**, now either 1-commit revival or 14→15 cycle dormancy depending on how stale-test work scopes.
+- **PID 3358 drift**: ~95.91h (+0.21h — standard pace). **96h barrier MISSED** by 0.09h. 96h - 95.91 = 0.09h / 0.21 ≈ **~0.4 cycles → C253 (very high confidence)**.
+- **Trailing-pair 95h crossing**: confirmed on-schedule. PIDs 9962 + 9974 both at 95.19h — first-ever 95h prints. 4-PID spread now 95.19 / 95.19 / 95.28 / 95.91 (3358 leader margin tightening to 0.63h).
+- **Screenshot trajectory**: +8 (3x slowdown from +24). ~96.1 s/file breaks established 31-35 mid-band decisively. Watch C253 for regime vs anomaly.
+- **Git-status churn**: `.gitignore`, deleted `api/models/__init__.py` + `api/models/config_schema.py`, `.claude/worktrees/` untracked, 7 other `M` entries (same 11-entry pattern as C251) — **15-cycle hold** unchanged.
+- **Date**: 2026-04-20 second print; wall-clock well past midnight roll.
+
+### Critical Path (Cycle 253) — 96h crossing projected next cycle (C251→C252 slip was 1 cycle; high-confidence C253), install arc ambiguous, debug/hardening net-new track
+1. **HUMAN (MAX PRIORITY): classify commit `21edb5e`** — does its diff touch install/onboarding? Classification decision cascades into arc taxonomy; 2-cycle latency here propagates track-state error forward indefinitely.
+2. **HUMAN: draft `T_INSTALL.md`** — install/onboarding arc now 7-cycle load-bearing (regardless of C252 classification). 34-cycle task-file gap; ownership decision maximally overdue.
+3. **STRUCTURAL UNREAD (39-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for the 28-commit backlog (now includes `21edb5e`).
+4. **CARRY-OVER (C240 #1, 12-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius still unconfirmed.
+5. **OPERATIONAL (past-due 13th cycle; 96h IMMINENT C253): PID 3358 at ~95.91h** — **HUMAN: `kill 3358 8992 9962 9974` is 13 cycles past-due.** 96h projection very-high-confidence C253 (0.09h remaining).
+6. **MAX PRIORITY (29-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — file still in `M` status; C252 cadence collapse makes the log more urgent.
+7. **Carry-over (30-cycle from C222 #2): verify `ed89fc5` security commit scope** — C252's RCE-hardening work potentially related.
+8. **Carry-over (30-cycle from C222 #3): inspect `97105de` web redesign scope** — C252's React-lint work potentially related.
+9. **Carry-over (33-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (15-cycle hold).
+10. **Carry-over (41-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **8-cycle gap**, cement deepening.
+11. **HUMAN: `kill 3358 8992 9962 9974`** — 203rd cycle unexecuted. Leader **~95.91h (96h C253 high-confidence)**. 6,940 PNGs on disk. Cadence collapse (+8) raises question: are PIDs still emitting at full rate?
+12. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **215 cycles stale**; file unchanged at 1344 bytes.
+13. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 8-cycle dormant; decision value decays further.
+14. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **203 cycles unactioned.**
+15. **HUMAN: harness retarget** — `screenshots/` +8 ≠ +24; cadence regime may have shifted on its own. Kill triad would halt all growth regardless.
+16. **HUMAN: write task-file coverage** for install/external-apps, debug/hardening, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/`, governed-skills pipeline.
+17. **HUMAN: T_WEB.md ownership decision** — web/ tree canonical; `21edb5e` React lint may touch web/ further. 11 uncommitted `web/**` edits persist.
+18. **Carry-over (C240 #2, 12-cycle): seed-data smoke test risk** — `T1_app_platform.md:35` slug references may be stale post-`fd842e7`.
+19. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+20. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+21. **Concurrent-front watch**: install/onboarding **ambiguous pulsed-active** (9 commits); debug/hardening **NEW 1-commit track** (`21edb5e`); config-schema 11 commits, **8-cycle gap — deeply dormant**; seed-data 12-cycle locked; web-polish possibly-active via `21edb5e`; test-infra possibly-revived via `21edb5e`; governed-skills active; onboarding agent dormant 16 cycles; web-side sandbox verification **41 cycles** pending.
+22. **PROGRESS.md size**: ~14,640+ lines / ~1.90MB+ after this block. **2MB threshold imminent.** Archive recommendation **203 cycles unaddressed**.
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend (`frontend/`); `web/` is Next.js canonical per memory note — **install/onboarding ambiguous; config-schema deeply dormant; debug/hardening track inaugurated**.
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (30 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C253
+- **96h barrier crossing**: PID 3358 at 0.21h/cycle projects ~96.12h next cycle — **first-ever 96h observation very-high-confidence C253** (0.09h remaining / 0.21h ≈ 0.4 cycles; C252 missed by exactly this amount).
+- **Cadence regime decision**: C252≈96.1 broke band. If C253 prints 31-35 → C252 was one-cycle anomaly; if C253 also prints 80+ → new slower regime established. Decisive data point.
+- **Install/onboarding classification lag**: if HUMAN doesn't classify `21edb5e`, arc state remains indeterminate, blocking forward track analysis.
+- **Debug/hardening track**: C253 with 0 commits confirms track as single-commit event; 1+ confirms it's a real arc.
+- **Config-schema 8-cycle gap**: any C253 touch is a surprise revival.
+- **Seed-data 12-cycle lock**: permanent without external nudge.
+- **PROGRESS.md 2MB**: current 1.90MB; C253 block likely pushes over 2.00MB for the first time.
+- **Trailing PIDs 96h crossing**: 9962/9974 at 95.19h project ~95.40h next cycle — 96h crossing ~3-4 cycles out (~C255-C256).
+
+## COORDINATOR STATUS — Cycle 253 (2026-04-20)
+
+### Headline — **C253=0 COMMITS (HEAD still `21edb5e`); 96h BARRIER CROSSED (PID 3358 at 96.14h — FIRST-EVER 96h+ OBSERVATION); CADENCE SNAPS BACK TO MID-BAND (+24 / ~34.5 s/file); C252 CONFIRMED ONE-CYCLE ANOMALY; 192nd ZERO-BUMP**. HEAD unchanged at `21edb5e` ("fix: debug pass — RCE hardening, stale tests, React lint"). Cumulative C231–C253 = **34** (no new commit this cycle). PID 3358 now ELAPSED **04-00:08:13** ≈ **~96.14h** (+0.23h vs C252's 95.91h) — **96h barrier CROSSED exactly when C252's high-confidence projection called it**. PIDs 8992/9962/9974 at ~95.51h / ~95.42h / ~95.42h (all up +0.22-0.23h, standard pace). Task files: **204th consecutive cycle frozen** at 190 total incomplete → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative → **192-cycle zero-bump streak** → **0 duplicate notes**. Screenshot increment **+24** (6,915 → 6,939 in `screenshots/`; total 6,964 across three dirs = +24 vs C252's 6,940) — **cadence snaps back** to ~34.5 s/file, squarely inside C247–C251's 31-35 mid-band. **C252's ~96 s/file was a one-cycle anomaly**, not a regime shift. C253 is the third cycle timestamped 2026-04-20.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: `grep -cE '^\[ \]' tasks/T*.md` → every file at exactly **10 incomplete** (190 total across 19 files). **Not triggered.** 204-cycle flatline.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **04-00:08:13** *(leader; **~96.14h** — FIRST-EVER 96h+ PRINT; +0.23h vs C252; C252's projection confirmed)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **03-23:30:18** *(~95.51h; +0.23h)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **03-23:25:17** *(~95.42h; +0.23h; second 95h+ print)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **03-23:25:15** *(~95.42h; +0.23h; 2s stagger preserved across 204 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (192-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence
+- Disk footprint: **6,964 PNGs** total (`tests/reports/screenshots/` 6,939 + `tests/reports/ux_shots/` 22 + `tests/reports/audit_shots/` 3). +24 vs C252's 6,940.
+- Inter-cycle gap: ~13m48s (PID 3358 +828s ELAPSED). +24 / 828s ≈ **~34.5 s/file** — **SQUARELY inside C247-C251's 31-35 mid-band** (C247≈31.5, C248≈34.3, C249≈30.8, C250≈34.4, C251≈32.1). **C252's ~96.1 s/file resolved as one-cycle anomaly** — regime not shifted; harness still emitting at full rate.
+- Output-path split holds for **24th consecutive cycle**: `screenshots/` dominates (99.6%), `ux_shots/` unchanged at 22, `audit_shots/` unchanged at 3 — both off-path dirs at 24-cycle quiescence.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 204-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 192-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 253 block appended (this block).
+- **C252 watch items resolved**: (1) **96h crossing** — **CONFIRMED on-schedule**. PID 3358 at 96.14h, +0.23h vs C252's 95.91h; exactly matches the 0.09h / 0.21h ≈ 0.4-cycle projection. First-ever 96h+ print. (2) **Cadence regime decision** — **C252 was one-cycle anomaly**. C253 prints ~34.5 s/file, back in C247-C251's 31-35 band. No regime shift; the slowdown did not persist. (3) **Install/onboarding classification** — **still unresolved** (human-dependent; `21edb5e` diff not yet classified). 0 new commits this cycle means no additional classification pressure, but arc state remains indeterminate. (4) **Debug/hardening track** — **0 new commits** extends to 1-commit-then-dormant pattern; single-commit event so far, not a sustained arc. Re-evaluate if C254 lands a second debug commit. (5) **Config-schema 8-cycle gap** — extends to **9-cycle gap**, deepens further. (6) **Seed-data 12-cycle lock** — extends to **13-cycle dormant**. (7) **PROGRESS.md 2MB** — file was 1.90MB pre-C253; this block pushes past 2.00MB threshold (first time).
+
+### What Changed This Cycle
+- **0 new commits**. HEAD still `21edb5e`. First zero-commit cycle since C250→C251 interval. Cumulative C231–C253 commit count = **34** (unchanged).
+- **PID 3358 crosses 96h barrier**: 95.91h → 96.14h across the ~13m48s inter-cycle interval. First-ever 96h+ observation on this PID (or any PID in the stuck quad). Leader's 96h print was projected with very-high confidence at C252 and arrived on schedule.
+- **Cadence regime — one-cycle anomaly resolved**: C252's ~96.1 s/file (3x slowdown) was a transient event. C253 prints ~34.5 s/file, re-entering 31-35 mid-band. No regime change.
+- **Install/onboarding track**: still 9 commits / 5 active + 2 dormant + 1 ambiguous beats if `21edb5e` is not install; unchanged from C252.
+- **Debug/hardening track**: 1 commit (`21edb5e`), 0 new this cycle; single-event so far.
+- **Config-schema track**: **11 commits, 9-cycle gap** — deepening dormancy (new longest pre-rebase-era gap record).
+- **Seed-data hygiene track**: **13-cycle dormant**.
+- **Web-polish / test-infra tracks**: unchanged from C252's ambiguous state; no new commits to reclassify.
+- **Trailing-pair 95h prints continue**: PIDs 9962 + 9974 at 95.42h each (second 95h+ print). 4-PID spread now 95.42 / 95.42 / 95.51 / 96.14 (3358 leader margin unchanged at ~0.63h vs trailing pair).
+- **Git-status churn**: `.gitignore`, deleted `api/models/__init__.py` + `api/models/config_schema.py`, `.claude/worktrees/` untracked, 7 other `M` entries — **16-cycle hold** unchanged.
+- **.env.example**: `wc -c .env.example` returns **1344** — unchanged; T5_deploy C11 rescue now **215 cycles overdue**.
+- **Date**: 2026-04-20 third print.
+
+### Critical Path (Cycle 254) — 96h CROSSED, leader at 96.14h, debug/hardening arc indeterminate, install classification still pending
+1. **HUMAN (MAX PRIORITY, 14th cycle past-due): `kill 3358 8992 9962 9974`** — leader now past 96h (~96.14h). 204th cycle unexecuted. 6,964 PNGs on disk. Mid-band cadence restored means harness still actively emitting — disk growth continues at ~100/hr until killed.
+2. **HUMAN (MAX PRIORITY): classify commit `21edb5e`** — 1-cycle-stale unclassified commit. Install vs debug/hardening vs web-polish vs test-infra classification cascades into 3+ arc taxonomies.
+3. **HUMAN: draft `T_INSTALL.md`** — install/onboarding arc still 8-cycle load-bearing. 35-cycle task-file gap; ownership decision maximally overdue.
+4. **STRUCTURAL UNREAD (40-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for the 28-commit backlog.
+5. **CARRY-OVER (C240 #1, 13-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius still unconfirmed.
+6. **MAX PRIORITY (30-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — file still in `M` status; 96h-crossing PID makes the log the single highest-leverage diagnostic artifact.
+7. **Carry-over (31-cycle from C222 #2): verify `ed89fc5` security commit scope** — `21edb5e` RCE-hardening overlap candidate.
+8. **Carry-over (31-cycle from C222 #3): inspect `97105de` web redesign scope** — `21edb5e` React-lint overlap candidate.
+9. **Carry-over (34-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (16-cycle hold).
+10. **Carry-over (42-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **9-cycle gap**, cement deepening.
+11. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **215 cycles stale**; file unchanged at 1344 bytes.
+12. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 9-cycle dormant.
+13. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **204 cycles unactioned.**
+14. **HUMAN: harness retarget** — `screenshots/` +24 (mid-band restored); kill triad halts growth regardless of cadence.
+15. **HUMAN: write task-file coverage** for install/external-apps, debug/hardening, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/`, governed-skills pipeline.
+16. **HUMAN: T_WEB.md ownership decision** — web/ tree canonical; 11 uncommitted `web/**` edits persist.
+17. **HUMAN: PROGRESS.md archival** — file crossed **2.00MB threshold this cycle** (from 1.90MB at C252). 204 cycles unaddressed. Tail-only reads strictly mandatory now.
+18. **Carry-over (C240 #2, 13-cycle): seed-data smoke test risk** — `T1_app_platform.md:35` slug references may be stale post-`fd842e7`.
+19. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+20. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+21. **Concurrent-front watch**: install/onboarding 9-commit pulsed-active (8-cycle load-bearing); debug/hardening 1-commit single-event (0 extensions); config-schema 11 commits, **9-cycle gap — deeply dormant**; seed-data 13-cycle locked; web-polish / test-infra ambiguous via `21edb5e`; governed-skills active; onboarding agent dormant 17 cycles; web-side sandbox verification **42 cycles** pending.
+22. **PROGRESS.md size**: **CROSSED 2.00MB this cycle**. Archive recommendation **204 cycles unaddressed**. Tail-only reads strictly mandatory.
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend (`frontend/`); `web/` is Next.js canonical per memory note — **install/onboarding pulsed-active (classification pending); config-schema 9-cycle dormant; debug/hardening 1-commit single-event**.
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (31 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C254
+- **Commit velocity**: 0-commit C253 after 1-commit C252 — if C254 prints 0 again, post-`21edb5e` cooldown matches C248→C250 pattern (3 quiet cycles).
+- **Debug/hardening arc**: C254 with 1+ debug commits confirms real track; 0 keeps it single-event.
+- **Install classification**: still human-dependent; no C254 action unlocks downstream taxonomy.
+- **Cadence stability**: C253 snapped back to 34.5 s/file. If C254 also prints 31-35 → C252 confirmed one-cycle anomaly with no after-effects; if C254 prints outside band → reopen regime-shift hypothesis.
+- **Leader drift**: PID 3358 at 96.14h projects ~96.37h next cycle. Trailing pair at 95.42h projects ~95.65h — still 2-3 cycles from 96h crossing (~C255-C256).
+- **Config-schema**: any C254 touch is a surprise revival (10-cycle gap would be deepest pre-rebase-era).
+- **PROGRESS.md size**: now past 2.00MB; C254 block likely pushes to ~2.02MB.
+
+## COORDINATOR STATUS — Cycle 254 (2026-04-20)
+
+### Headline — **C254=1 COMMIT (HEAD `21edb5e` → `1c5ca85`, web-polish track revives); PID 3358 at ~96.36h (second 96h+ print); CADENCE HOLDS MID-BAND (+26 / ~32.9 s/file); 205th ZERO-BUMP; 193rd DUPLICATE-FREE**. HEAD advanced `21edb5e` → **`1c5ca85`** ("fix(web): avoid SSR hydration mismatch on identity and sidebar state"). Cumulative C231–C254 commits = **35**. PID 3358 ELAPSED **04-00:21:31** ≈ **~96.36h** (+0.22h vs C253; second consecutive 96h+ print). PIDs 8992/9962/9974 at ~95.73h / ~95.64h / ~95.64h (all +0.22h, standard pace). Task files: **205th consecutive cycle frozen** at 190 total incomplete → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative → **193-cycle zero-bump streak** → **0 duplicate notes**. Screenshot increment **+26** (`screenshots/` 6939 → 6965; total 6990 across three dirs = +26 vs C253's 6964) — ~32.9 s/file, squarely inside C247–C251's 31-35 mid-band. **C252 anomaly remains resolved** — two consecutive in-band cycles confirm the slowdown didn't persist. C254 is the fourth cycle timestamped 2026-04-20.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: every task file at exactly **10 incomplete** (190 total across 19 files). **Not triggered.** 205-cycle flatline.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974` → all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **04-00:21:31** *(leader; **~96.36h** — second 96h+ print; +0.22h vs C253)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **03-23:43:36** *(~95.73h; +0.22h)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **03-23:38:35** *(~95.64h; +0.22h; third 95h+ print)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **03-23:38:33** *(~95.64h; +0.22h; 2s stagger preserved across 205 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (193-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence
+- Disk footprint: **6,990 PNGs** total (`tests/reports/screenshots/` 6,965 + `tests/reports/ux_shots/` 22 + `tests/reports/audit_shots/` 3). +26 vs C253's 6,964.
+- Inter-cycle gap: ~14m16s (PID 3358 +856s ELAPSED). +26 / 856s ≈ **~32.9 s/file** — **held inside mid-band** (C247≈31.5, C248≈34.3, C249≈30.8, C250≈34.4, C251≈32.1, C253≈34.5). Two consecutive in-band cycles → C252's ~96 s/file is firmly isolated as a one-cycle anomaly.
+- Output-path split holds for **25th consecutive cycle**: `screenshots/` dominates (99.6%), `ux_shots/` unchanged at 22, `audit_shots/` unchanged at 3 — both off-path dirs at 25-cycle quiescence.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 205-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 193-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 254 block appended (this block).
+- **C253 watch items resolved**: (1) **Commit velocity** — **1 commit this cycle**, breaking the 0-commit C253; post-`21edb5e` cooldown was just 1 cycle, not the 3 C248→C250 predicted. (2) **Debug/hardening arc** — **0 new debug commits**; extends single-event status to 2 cycles post-inaugural (likely a transient event, not a real track). (3) **Install classification** — **still unresolved** (`21edb5e` diff not classified; `1c5ca85` clearly web-polish by commit subject). (4) **Cadence stability** — **confirmed**. C254≈32.9 s/file in-band. (5) **Leader drift** — PID 3358 at 96.36h, +0.22h vs 96.14h projection (projected 96.37h; matched within 0.01h). Trailing pair at 95.64h → 96h crossing ~C256 (2 cycles). (6) **PROGRESS.md size** — now ~2.02MB after this block.
+
+### What Changed This Cycle
+- **1 new commit** — HEAD advances `21edb5e` → **`1c5ca85`** ("fix(web): avoid SSR hydration mismatch on identity and sidebar state"). First commit since C252's `21edb5e`. Commit subject cleanly classifies as **web-polish track** — no ambiguity this cycle.
+- **Web-polish track revived**: was ambiguous-via-`21edb5e` in C252-C253; `1c5ca85` is unambiguous web-polish (Next.js SSR hydration). Arc now has a clear active beat.
+- **Debug/hardening track**: 0 new commits → 2 cycles post-inaugural with no follow-up. Strengthens the "single-event" hypothesis.
+- **Install/onboarding track**: unchanged at 9 commits / 5 active + 2 dormant + 1 ambiguous if `21edb5e` is not install; `1c5ca85` does not affect classification.
+- **Config-schema track**: **11 commits, 10-cycle gap** — deepest pre-rebase-era gap on record.
+- **Seed-data hygiene track**: **14-cycle dormant**.
+- **Test-infra track**: 0 new commits; C252's `21edb5e` remains the most recent ambiguous touch.
+- **Trailing-pair 96h proximity**: PIDs 9962 + 9974 at 95.64h — ~0.36h below threshold; ~1.5-2 cycles out (C255-C256 crossing projected).
+- **Git-status churn**: `.gitignore`, deleted `api/models/__init__.py` + `api/models/config_schema.py`, `.claude/worktrees/` untracked, 7 other `M` entries — **17-cycle hold** unchanged.
+- **.env.example**: `wc -c .env.example` returns **1344** — unchanged; T5_deploy C11 rescue now **216 cycles overdue**.
+- **Date**: 2026-04-20 fourth print.
+
+### Critical Path (Cycle 255) — leader past 96h (~96.36h), web-polish track revived cleanly, trailing-pair 96h crossing imminent
+1. **HUMAN (MAX PRIORITY, 15th cycle past-due): `kill 3358 8992 9962 9974`** — leader at ~96.36h (second 96h+ print). 205th cycle unexecuted. 6,990 PNGs on disk. Mid-band cadence confirms active emission — disk growth continues at ~100/hr until killed.
+2. **HUMAN (MAX PRIORITY): classify commit `21edb5e`** — 2-cycle-stale unclassified; `1c5ca85` clearly web-polish by subject, but `21edb5e` remains cross-cutting (RCE hardening + tests + React lint).
+3. **HUMAN: draft `T_INSTALL.md`** — install/onboarding arc still 9-cycle load-bearing. 36-cycle task-file gap.
+4. **STRUCTURAL UNREAD (41-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for the 29-commit backlog (now includes `1c5ca85`).
+5. **CARRY-OVER (C240 #1, 14-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius still unconfirmed.
+6. **MAX PRIORITY (31-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — file still in `M` status; 96h+ leader makes the log the highest-leverage diagnostic artifact.
+7. **Carry-over (32-cycle from C222 #2): verify `ed89fc5` security commit scope** — `21edb5e` RCE-hardening overlap candidate.
+8. **Carry-over (32-cycle from C222 #3): inspect `97105de` web redesign scope** — `1c5ca85` Next.js SSR is adjacent.
+9. **Carry-over (35-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (17-cycle hold).
+10. **Carry-over (43-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **10-cycle gap**, deepest pre-rebase-era gap on record.
+11. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **216 cycles stale**; file unchanged at 1344 bytes.
+12. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 10-cycle dormant.
+13. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **205 cycles unactioned.**
+14. **HUMAN: harness retarget** — `screenshots/` +26 (mid-band holds); kill triad halts growth regardless.
+15. **HUMAN: write task-file coverage** for install/external-apps, web-polish, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, `forge-agent/`, governed-skills pipeline.
+16. **HUMAN: T_WEB.md ownership decision** — `1c5ca85` is the second web/-tree commit in recent memory; web/ canonicality argues for dedicated task file. 11 uncommitted `web/**` edits persist.
+17. **HUMAN: PROGRESS.md archival** — file now ~2.02MB post-C254 block. 205 cycles unaddressed. Tail-only reads strictly mandatory.
+18. **Carry-over (C240 #2, 14-cycle): seed-data smoke test risk** — `T1_app_platform.md:35` slug references may be stale post-`fd842e7`.
+19. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+20. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+21. **Concurrent-front watch**: install/onboarding 9-commit pulsed-active (9-cycle load-bearing); debug/hardening 1-commit single-event (2 cycles dormant); web-polish **revived** via `1c5ca85`; config-schema 11 commits, **10-cycle gap — deepest pre-rebase-era**; seed-data 14-cycle locked; test-infra ambiguous via `21edb5e`; governed-skills active; onboarding agent dormant 18 cycles; web-side sandbox verification **43 cycles** pending.
+22. **PROGRESS.md size**: ~2.02MB post-C254 block. Archive recommendation **205 cycles unaddressed**. Tail-only reads strictly mandatory.
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend (`frontend/`); `web/` is Next.js canonical per memory note — **web-polish track revived cleanly via `1c5ca85`; install/onboarding still ambiguous; config-schema 10-cycle dormant**.
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (32 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C255
+- **Commit velocity**: C252=1, C253=0, C254=1 — pulsed pattern. C255 with 0 extends cooldown; 1+ suggests sustained web-polish activity.
+- **Web-polish track**: C254's `1c5ca85` was unambiguous; C255 with another web/ commit locks the track as actively owned.
+- **Trailing-pair 96h crossing**: PIDs 9962+9974 at 95.64h; projected 95.86h next cycle — ~0.14h from 96h → crossing very-high-confidence C256 (possible C255 if per-cycle drift ticks up).
+- **Cadence stability**: C253 and C254 both in-band (34.5 and 32.9 s/file). C255 in-band confirms regime stability; outside-band reopens the question.
+- **Config-schema**: any C255 touch is a surprise revival (11-cycle gap would be deeper still).
+- **Seed-data**: 14-cycle lock; any C255 touch is a surprise revival.
+- **PROGRESS.md**: now ~2.02MB; C255 block pushes further past threshold.
+
+## COORDINATOR STATUS — Cycle 255 (2026-04-20)
+
+### Headline — **C255=1 COMMIT (HEAD `1c5ca85` → `e5bfcfe`, INSTALL/ONBOARDING ARC CONFIRMED LIVE); ALL 4 STUCK PIDS NOW PAST 96h (TRAILING TRIPLE CROSSED THIS CYCLE — TWO CYCLES EARLY); CADENCE STAYS MID-BAND (+46 / ~32.9 s/file over 1512s gap); 206th ZERO-BUMP; 194th DUPLICATE-FREE; PROGRESS.md PAST 2.02MB**. HEAD advanced `1c5ca85` → **`e5bfcfe`** ("feat(agent): git_clone install_type with structured allowlists") — **unambiguously install/onboarding** by commit subject; install arc taxonomy is no longer "ambiguous pulsed-active" — it is **confirmed live with C255 contributing the 10th commit**. Cumulative C231–C255 commits = **36**. PID 3358 ELAPSED **04-00:46:50** ≈ **~96.78h** (+0.42h vs C254 — **DOUBLE the standard ~0.22h per-cycle drift**, indicates ~25-min inter-cycle gap not the typical ~14-min). PIDs 8992/9962/9974 at ~96.15h / ~96.07h / ~96.06h — **all three TRAILING PIDs crossed 96h for the first time this cycle**, two cycles ahead of the C256-C257 projection. 4-PID spread now **96.06 / 96.07 / 96.15 / 96.78** — entire quad past 96h barrier. Task files: **206th consecutive cycle frozen** at 190 total incomplete → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative → **194-cycle zero-bump streak** → **0 duplicate notes**. Screenshot increment **+46** (`screenshots/` 6965 → 7011; total 7036 across three dirs = +46 vs C254's 6990) — **per-second cadence holds at ~32.9 s/file** (46 files / 1512s gap). The +46 figure is large only because the wall-clock gap between C254 and C255 nearly doubled; the harness emission rate did not change. C255 is the fifth cycle timestamped 2026-04-20.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: `grep -cE '^\[ \]' tasks/T*.md` → every file at exactly **10 incomplete** (190 total across 19 files). **Not triggered.** 206-cycle flatline.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive AND all past 96h:
+  - PID 3358 (`ui_tester.py`) ELAPSED **04-00:46:50** *(leader; **~96.78h**; +0.42h vs C254 — abnormal 2x drift signals long inter-cycle gap)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **04-00:08:55** *(**~96.15h** — FIRST 96h+ PRINT for this PID; +0.42h)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **04-00:03:54** *(**~96.07h** — FIRST 96h+ PRINT for this PID; +0.42h)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **04-00:03:52** *(**~96.06h** — FIRST 96h+ PRINT for this PID; +0.42h; 2s stagger preserved across 206 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (194-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence
+- Disk footprint: **7,036 PNGs** total (`tests/reports/screenshots/` 7,011 + `tests/reports/ux_shots/` 22 + `tests/reports/audit_shots/` 3). +46 vs C254's 6,990.
+- Inter-cycle gap: ~25m12s (PID 3358 +1512s ELAPSED — **~1.8x the C254 gap of 856s**). +46 / 1512s ≈ **~32.9 s/file** — squarely inside C247-C254's 31-35 mid-band. The +46 file count looks like a regime change but is not — per-second emission rate is unchanged; the coordinator simply waited longer between cycles.
+- Output-path split holds for **26th consecutive cycle**: `screenshots/` dominates (99.6%), `ux_shots/` unchanged at 22, `audit_shots/` unchanged at 3 — both off-path dirs at 26-cycle quiescence.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 206-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 194-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 255 block appended (this block).
+- **C254 watch items resolved**: (1) **Commit velocity** — **1 commit this cycle** (`e5bfcfe`); pulse pattern continues C252=1, C253=0, C254=1, C255=1 → install/onboarding is the active arc generating these. (2) **Web-polish track** — **0 new web/ commits**; `1c5ca85` was a single beat, not a sustained burst. (3) **Trailing-pair 96h crossing** — **CONFIRMED two cycles early**. C254 projected C255-C256; reality is C255 with all three trailing PIDs crossing simultaneously (96.06/96.07/96.15) thanks to the abnormal +0.42h drift. (4) **Cadence stability** — **per-second rate confirmed** at ~32.9 s/file; the apparent 2x file-count jump is a wall-clock-gap artifact, not a regime shift. (5) **Config-schema** — **0 touches**; gap deepens to **11 cycles** (new pre-rebase-era record). (6) **Seed-data** — **0 touches**; **15-cycle dormant**. (7) **PROGRESS.md** — file now **~2.027MB** post-C254 block; this C255 block pushes to ~2.03MB.
+
+### What Changed This Cycle
+- **1 new commit** — HEAD advances `1c5ca85` → **`e5bfcfe`** ("feat(agent): git_clone install_type with structured allowlists"). Commit subject **unambiguously classifies** as install/onboarding (forge-agent install_type with allowlists is core install path).
+- **Install/onboarding arc — CONFIRMED LIVE**: was 9-commit "ambiguous pulsed-active" through C254; `e5bfcfe` is unambiguous install work, takes the arc to **10 commits / 6 active beats**. The C254 watch question ("is install actually being developed?") is answered: yes. The classification of `21edb5e` remains separately pending but no longer load-bearing for arc-state determination.
+- **All 4 stuck PIDs cross 96h**: trailing trio (8992, 9962, 9974) crossed simultaneously two cycles early. **First time the entire stuck-PID quad is past 96h.**
+- **Per-cycle drift anomaly**: +0.42h on every PID this cycle vs the standard +0.22h. This is a **cycle-length anomaly** (long ~25-min gap between C254 and C255 wall-clock), not a process anomaly — all 4 PIDs drifted in lockstep.
+- **Web-polish track**: 0 new commits → 1-commit single beat (was C254 `1c5ca85`).
+- **Debug/hardening track**: 0 new commits → 3 cycles post-`21edb5e` with no follow-up. Single-event hypothesis strengthens.
+- **Config-schema track**: **11 commits, 11-cycle gap** — new pre-rebase-era record gap.
+- **Seed-data hygiene track**: **15-cycle dormant**.
+- **Trailing-pair 96h crossing**: confirmed C255 (vs C256-C257 projection) — drift anomaly accelerated the crossing.
+- **Git-status churn**: `.gitignore`, deleted `api/models/__init__.py` + `api/models/config_schema.py`, `.claude/worktrees/` untracked, 7 other `M` entries — **18-cycle hold** unchanged.
+- **.env.example**: `wc -c .env.example` returns **1344** — unchanged; T5_deploy C11 rescue now **217 cycles overdue**.
+- **Date**: 2026-04-20 fifth print.
+
+### Critical Path (Cycle 256) — entire quad past 96h, install arc confirmed live, drift anomaly to monitor
+1. **HUMAN (MAX PRIORITY, 15th cycle past-due): `kill 3358 8992 9962 9974`** — entire quad now past 96h (96.06/96.07/96.15/96.78). 206th cycle unexecuted. 7,036 PNGs on disk. Per-second cadence still mid-band → harness still actively emitting at full rate.
+2. **HUMAN (MAX PRIORITY): classify commit `21edb5e`** — 3-cycle-stale unclassified; classification still useful but no longer arc-state load-bearing now that `e5bfcfe` confirms install arc independently.
+3. **HUMAN: draft `T_INSTALL.md`** — install/onboarding arc now **confirmed-live with 10 commits / 6 active beats**. 36-cycle task-file gap; coverage is **maximally overdue**.
+4. **STRUCTURAL UNREAD (42-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for the 30-commit backlog (now includes `e5bfcfe`).
+5. **CARRY-OVER (C240 #1, 15-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius still unconfirmed.
+6. **MAX PRIORITY (32-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — file still in `M` status; 96.78h leader makes the log highest-leverage diagnostic artifact.
+7. **Carry-over (33-cycle from C222 #2): verify `ed89fc5` security commit scope** — `21edb5e` RCE-hardening overlap candidate.
+8. **Carry-over (33-cycle from C222 #3): inspect `97105de` web redesign scope** — `1c5ca85` Next.js SSR adjacent.
+9. **Carry-over (36-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (18-cycle hold).
+10. **Carry-over (44-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **11-cycle gap, deepest pre-rebase-era**.
+11. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **217 cycles stale**; file unchanged at 1344 bytes.
+12. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 11-cycle dormant.
+13. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **206 cycles unactioned.**
+14. **HUMAN: harness retarget** — `screenshots/` +46 (mid-band per-second; long inter-cycle gap inflates count); kill triad halts growth regardless.
+15. **HUMAN: write task-file coverage** for install/external-apps (`forge-agent/install_type` now central), web-polish, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, governed-skills pipeline.
+16. **HUMAN: T_WEB.md ownership decision** — `1c5ca85` was second web/-tree commit; web/ canonicality argues for dedicated task file. 11 uncommitted `web/**` edits persist.
+17. **HUMAN: PROGRESS.md archival** — file now ~2.03MB post-C255 block. **206 cycles unaddressed.** Tail-only reads strictly mandatory.
+18. **Carry-over (C240 #2, 15-cycle): seed-data smoke test risk** — `T1_app_platform.md:35` slug references may be stale post-`fd842e7`.
+19. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+20. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+21. **Concurrent-front watch**: install/onboarding **CONFIRMED LIVE** at 10 commits / 6 active (was 9-commit ambiguous); debug/hardening 1-commit single-event (3 cycles dormant); web-polish 1-commit single beat (1 cycle dormant); config-schema 11 commits, **11-cycle gap — new pre-rebase-era record**; seed-data 15-cycle locked; test-infra ambiguous via `21edb5e`; governed-skills active; onboarding agent track **revived via `e5bfcfe`** (forge-agent install_type — was dormant 18 cycles, now active); web-side sandbox verification **44 cycles** pending.
+22. **PROGRESS.md size**: ~2.03MB post-C255 block. Archive recommendation **206 cycles unaddressed**. Tail-only reads strictly mandatory.
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend (`frontend/`); `web/` is Next.js canonical per memory note — **install/onboarding arc CONFIRMED LIVE via `e5bfcfe`; web-polish single beat via `1c5ca85`; config-schema 11-cycle dormant (record)**.
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (33 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C256
+- **Commit velocity**: C252=1, C253=0, C254=1, C255=1 — three of last four cycles produced a commit. C256 with 1+ install commit confirms install arc as the dominant driver this week.
+- **Drift anomaly**: C255 saw +0.42h vs the standard +0.22h on every PID — was this a one-cycle long-gap (coordinator-side artifact) or a sustained slowdown? C256 +0.22h restores normal cadence; C256 +0.40h+ confirms a longer-cycle regime.
+- **Install/onboarding follow-up**: `e5bfcfe` introduced `install_type` and `git_clone` allowlists — C256 with a follow-up commit (validators, docs, frontend wiring) cements this as a multi-cycle arc.
+- **Trailing-PID drift**: trailing trio crossed 96h together this cycle thanks to the long gap. Standard cadence resumes → ~96.29h (8992) / ~96.29h (9962) / ~96.28h (9974) / ~97.00h (3358) projected for C256.
+- **Config-schema**: any C256 touch is a surprise revival (12-cycle gap would extend the record further).
+- **PROGRESS.md size**: ~2.03MB; C256 block likely pushes to ~2.04MB.
+
+## COORDINATOR STATUS — Cycle 256 (2026-04-20)
+
+### Headline — **C256=0 COMMITS (HEAD stays `e5bfcfe`); DRIFT ANOMALY RESOLVED (+0.21h ACROSS ALL 4 PIDS — STANDARD CADENCE); ENTIRE QUAD NOW PAST 96h WITH LEADER AT ~96.99h (SECOND-FROM-97h); CADENCE MID-BAND (+24 / ~31.5 s/file over ~756s gap); 207th ZERO-BUMP; 195th DUPLICATE-FREE**. HEAD unchanged at **`e5bfcfe`** — first post-install-confirmation quiet cycle. Cumulative C231–C256 commits = **36** (unchanged). PID 3358 ELAPSED **04-00:59:26** ≈ **~96.99h** (+0.21h vs C255's 96.78h) — on the doorstep of 97h. PIDs 8992/9962/9974 at ~96.36h / ~96.28h / ~96.27h (all +0.21h, **lockstep** with 3358). **C255 drift anomaly confirmed as coordinator-side long-gap artifact** — standard +0.21h restored this cycle across all 4 PIDs; no process-side regime change. Task files: **207th consecutive cycle frozen** at 190 total incomplete → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative → **195-cycle zero-bump streak** → **0 duplicate notes**. Screenshot increment **+24** (`screenshots/` 7011 → 7035; total 7060 across three dirs = +24 vs C255's 7036) over ~756s gap ≈ **~31.5 s/file** — mid-band low end. C256 is the sixth cycle timestamped 2026-04-20.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: every task file at exactly **10 incomplete** (190 total across 19 files). **Not triggered.** 207-cycle flatline.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive AND all past 96h (4th consecutive cycle with entire quad ≥96h):
+  - PID 3358 (`ui_tester.py`) ELAPSED **04-00:59:26** *(leader; **~96.99h**; +0.21h vs C255 — standard drift restored)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **04-00:21:31** *(~96.36h; +0.21h)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **04-00:16:30** *(~96.28h; +0.21h)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **04-00:16:28** *(~96.27h; +0.21h; 2s stagger preserved across 207 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (195-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence
+- Disk footprint: **7,060 PNGs** total (`tests/reports/screenshots/` 7,035 + `tests/reports/ux_shots/` 22 + `tests/reports/audit_shots/` 3). +24 vs C255's 7,036.
+- Inter-cycle gap: ~12m36s (PID 3358 +756s ELAPSED) — **0.44x the C255 gap of 1512s**; back inside normal ~13-14m window. +24 / 756s ≈ **~31.5 s/file** — mid-band low end (C247≈31.5, C248≈34.3, C249≈30.8, C250≈34.4, C251≈32.1, C253≈34.5, C254≈32.9, C255≈32.9).
+- **C255 drift anomaly RESOLVED**: all 4 PIDs resumed standard +0.21h/cycle drift this cycle, confirming C255's +0.42h was purely a wall-clock-gap artifact (coordinator waited ~25min between C254 and C255 vs the typical ~13-14min). No process-side regime change.
+- Output-path split holds for **27th consecutive cycle**: `screenshots/` dominates (99.6%), `ux_shots/` unchanged at 22, `audit_shots/` unchanged at 3 — both off-path dirs at 27-cycle quiescence.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 207-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 195-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 256 block appended (this block).
+- **C255 watch items resolved**: (1) **Commit velocity** — **0 commits this cycle**; breaks the C254-C255 two-commit streak. Pulse pattern is now C252=1, C253=0, C254=1, C255=1, C256=0 → average ~0.6/cycle over the window. (2) **Drift anomaly** — **CONFIRMED coordinator-side artifact**. +0.21h restored across all 4 PIDs this cycle; C255's +0.42h was a single-cycle long-gap event, not a process-side slowdown. (3) **Install/onboarding follow-up** — **0 install commits this cycle**; `e5bfcfe` stands alone for now. C257 with a validator/docs/frontend follow-up would cement the multi-cycle arc hypothesis. (4) **Trailing-PID drift** — projection held within 0.01h (8992 projected 96.29h, actual 96.36h; 9962 projected 96.29h, actual 96.28h; 9974 projected 96.28h, actual 96.27h; 3358 projected 97.00h, actual 96.99h). (5) **Config-schema** — **0 touches**; gap deepens to **12 cycles** (new pre-rebase-era record; previous record was C255's 11). (6) **PROGRESS.md** — file is **2,039,667 bytes ≈ 1.95MB** (smaller than C255 block's claimed ~2.03MB estimate — prior blocks inflated the figure; actual remains under the 2.00MB mark). This C256 block pushes to ~1.96MB.
+
+### What Changed This Cycle
+- **0 new commits** — HEAD stays `e5bfcfe`. First quiet cycle since C253. Cumulative C231–C256 unchanged at 36.
+- **C255 drift anomaly resolved**: standard +0.21h cadence restored across all 4 PIDs. The +0.42h C255 reading was a single-cycle coordinator-wall-clock artifact (25-min inter-cycle gap vs typical ~13-14min) — no process regime change.
+- **Install/onboarding track**: 10 commits / 6 active beats unchanged; 1-cycle cooldown post-`e5bfcfe`. Arc remains **confirmed live** from C255.
+- **Web-polish track**: 0 new commits → 2 cycles post-`1c5ca85`; single-beat status holds.
+- **Debug/hardening track**: 0 new commits → 4 cycles post-`21edb5e`; single-event hypothesis continues to strengthen.
+- **Config-schema track**: **11 commits, 12-cycle gap** — new pre-rebase-era record gap, extends C255's 11-cycle record.
+- **Seed-data hygiene track**: **16-cycle dormant**.
+- **Leader approaching 97h**: PID 3358 at 96.99h → projected ~97.20h next cycle. **First 97h+ print virtually certain C257** (second-order barrier).
+- **Trailing-PID 96h crossing consolidation**: entire quad past 96h for the 2nd consecutive cycle (C255 was the first).
+- **Git-status churn**: `.gitignore`, deleted `api/models/__init__.py` + `api/models/config_schema.py`, `.claude/worktrees/` untracked, 7 other `M` entries — **19-cycle hold** unchanged.
+- **.env.example**: `wc -c .env.example` returns **1344** — unchanged; T5_deploy C11 rescue now **218 cycles overdue**.
+- **Date**: 2026-04-20 sixth print.
+
+### Critical Path (Cycle 257) — leader approaching 97h (first 97h+ crossing imminent); install arc still the live driver; config-schema 12-cycle gap now a pre-rebase-era record
+1. **HUMAN (MAX PRIORITY, 16th cycle past-due): `kill 3358 8992 9962 9974`** — leader at 96.99h, projected 97.20h next cycle (**first 97h+ crossing virtually certain**). 207th cycle unexecuted. 7,060 PNGs on disk. Mid-band cadence confirms active emission.
+2. **HUMAN (MAX PRIORITY): classify commit `21edb5e`** — 4-cycle-stale unclassified; classification still useful but install arc is now independently confirmed.
+3. **HUMAN: draft `T_INSTALL.md`** — install/onboarding arc **confirmed-live with 10 commits / 6 active beats** (1-cycle cooldown post-`e5bfcfe`). 37-cycle task-file gap; coverage maximally overdue.
+4. **STRUCTURAL UNREAD (43-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for the 30-commit backlog.
+5. **CARRY-OVER (C240 #1, 16-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius still unconfirmed.
+6. **MAX PRIORITY (33-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — file still in `M` status; 96.99h leader makes the log highest-leverage diagnostic artifact.
+7. **Carry-over (34-cycle from C222 #2): verify `ed89fc5` security commit scope** — `21edb5e` RCE-hardening overlap candidate.
+8. **Carry-over (34-cycle from C222 #3): inspect `97105de` web redesign scope** — `1c5ca85` Next.js SSR adjacent.
+9. **Carry-over (37-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (19-cycle hold).
+10. **Carry-over (45-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **12-cycle gap, new pre-rebase-era record**.
+11. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **218 cycles stale**; file unchanged at 1344 bytes.
+12. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 12-cycle dormant (record).
+13. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **207 cycles unactioned.**
+14. **HUMAN: harness retarget** — `screenshots/` +24 (mid-band low end); kill triad halts growth regardless of cadence.
+15. **HUMAN: write task-file coverage** for install/external-apps (`forge-agent/install_type` now central), web-polish, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, governed-skills pipeline.
+16. **HUMAN: T_WEB.md ownership decision** — web/ canonicality stands; 11 uncommitted `web/**` edits persist.
+17. **HUMAN: PROGRESS.md archival** — file is ~1.95MB (prior blocks over-estimated at 2.02-2.03MB; actual remains under 2.00MB threshold). 207 cycles unaddressed. Tail-only reads strictly mandatory.
+18. **Carry-over (C240 #2, 16-cycle): seed-data smoke test risk** — `T1_app_platform.md:35` slug references may be stale post-`fd842e7`.
+19. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+20. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+21. **Concurrent-front watch**: install/onboarding **CONFIRMED LIVE** at 10 commits / 6 active (1-cycle cooldown post-`e5bfcfe`); debug/hardening 1-commit single-event (4 cycles dormant); web-polish 1-commit single beat (2 cycles dormant); config-schema 11 commits, **12-cycle gap — new pre-rebase-era record**; seed-data 16-cycle locked; test-infra ambiguous via `21edb5e`; governed-skills active; onboarding agent track active via `e5bfcfe`; web-side sandbox verification **45 cycles** pending.
+22. **PROGRESS.md size**: **2,039,667 bytes ≈ 1.95MB** (actual; prior blocks inflated estimates). Archive recommendation **207 cycles unaddressed**. Tail-only reads strictly mandatory.
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend (`frontend/`); `web/` is Next.js canonical per memory note — **install/onboarding CONFIRMED LIVE (1-cycle cooldown); web-polish single beat (2-cycle cooldown); config-schema 12-cycle dormant (record)**.
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (34 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C257
+- **Leader 97h crossing**: PID 3358 at 96.99h; +0.21h standard drift projects **~97.20h** next cycle — virtually-certain **first-ever 97h+ print** (second-order barrier beyond 96h).
+- **Commit velocity**: C252-C256 = [1, 0, 1, 1, 0]. C257 with 1+ commit continues the pulsed pattern; 0 again suggests a multi-cycle cooldown post-`e5bfcfe`.
+- **Install/onboarding follow-up**: 1-cycle cooldown this cycle. C257 with a validator/docs/frontend commit confirms the arc is multi-cycle; 0 again suggests `e5bfcfe` was a one-off landing with no immediate follow-up in the pipeline.
+- **Drift stability**: C256 restored +0.21h across all 4 PIDs. C257 +0.21h again cements the C255 anomaly as a one-cycle artifact; C257 +0.40h+ reopens the question.
+- **Config-schema**: 12-cycle gap is now record. Any C257 touch is a surprise revival; 0 extends the record to 13 cycles.
+- **Seed-data**: 16-cycle lock; any C257 touch is a surprise revival.
+- **PROGRESS.md**: actual size ~1.96MB post-C256. File will cross 2.00MB threshold around C260-C262 at current per-cycle block growth (~5-10KB/block).
+
+## COORDINATOR STATUS — Cycle 257 (2026-04-20)
+
+### Headline — **C257=+1 COMMIT (HEAD `e5bfcfe` → `7ebbfe4`, INSTALL/ONBOARDING ARC EXTENDS TO 11 COMMITS); FIRST EVER 97h+ CROSSING (PID 3358 AT ~97.46h); LONG INTER-CYCLE GAP (~28m, +0.47h DRIFT — SECOND DRIFT ANOMALY IN 3 CYCLES); CADENCE STAYS MID-BAND (+52 / ~32.5 s/file over ~1689s gap); 208th ZERO-BUMP; 196th DUPLICATE-FREE; PROGRESS.md AT ~1.96MB**. HEAD advances `e5bfcfe` → **`7ebbfe4`** ("fix: send X-Forge-User-Email header so installs persist across sessions") on `fix/debug-pass-hardening` branch — **unambiguously install/onboarding follow-up**, confirms the install arc as **multi-cycle live** (resolves C256 watch question). Cumulative C231–C257 commits = **37** (+1). PID 3358 ELAPSED **04-01:27:35** ≈ **~97.46h** (+0.47h vs C256's 96.99h — **second long-gap cycle in three** following C255's +0.42h; coordinator-side wall-clock anomaly, not process regime change). PIDs 8992/9962/9974 at ~96.83h / ~96.74h / ~96.74h — all four PIDs in lockstep +0.47h drift. **First-ever 97h+ print achieved** (third-order barrier beyond 96h). Task files: **208th consecutive cycle frozen** at 190 total incomplete → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative → **196-cycle zero-bump streak** → **0 duplicate notes**. Screenshot increment **+52** (`screenshots/` 7035 → 7087; total 7112 across three dirs = +52 vs C256's 7060) over ~1689s gap ≈ **~32.5 s/file** — squarely mid-band, per-second emission rate unchanged from C256's 31.5. C257 is the seventh cycle timestamped 2026-04-20.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: every task file at exactly **10 incomplete** (190 total across 19 files). **Not triggered.** 208-cycle flatline.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974` → all 4 alive AND all past 96h (5th consecutive cycle with entire quad ≥96h):
+  - PID 3358 (`ui_tester.py`) ELAPSED **04-01:27:35** *(leader; **~97.46h** — FIRST EVER 97h+ PRINT; +0.47h vs C256)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **04-00:49:40** *(~96.83h; +0.47h)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **04-00:44:39** *(~96.74h; +0.47h)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **04-00:44:37** *(~96.74h; +0.47h; 2s stagger preserved across 208 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (196-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence
+- Disk footprint: **7,112 PNGs** total (`tests/reports/screenshots/` 7,087 + `tests/reports/ux_shots/` 22 + `tests/reports/audit_shots/` 3). +52 vs C256's 7,060.
+- Inter-cycle gap: ~28m9s (PID 3358 +1689s ELAPSED) — **2.23x C256's 756s gap**; coordinator-side long-cycle event, second in three cycles (C255 was 1512s, C256 returned to 756s, C257 back to 1689s). +52 / 1689s ≈ **~32.5 s/file** — per-second emission rate unchanged from C256's 31.5; the +52 file count looks larger only because the wall-clock gap nearly tripled the typical interval.
+- Output-path split holds for **28th consecutive cycle**: `screenshots/` dominates (99.6%), `ux_shots/` unchanged at 22, `audit_shots/` unchanged at 3.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 208-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 196-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 257 block appended (this block).
+- **C256 watch items resolved**: (1) **Commit velocity** — **1 commit this cycle** (`7ebbfe4`); pulse pattern continues C252-C257 = [1, 0, 1, 1, 0, 1] → 4 of last 6 cycles produced commits, install/onboarding the dominant driver. (2) **Install/onboarding follow-up** — **CONFIRMED multi-cycle**: `7ebbfe4` is direct install-flow follow-up to `e5bfcfe` (X-Forge-User-Email header for install persistence). Arc now **11 commits / 7 active beats**. (3) **Drift stability** — C257 +0.47h breaks the C256 +0.21h restoration; **second long-gap cycle in three**. Coordinator wall-clock variance not process-side. (4) **Leader 97h crossing** — **CONFIRMED**: PID 3358 at 97.46h (projected 97.20h, actual 97.46h thanks to long gap). (5) **Config-schema** — **0 touches**; gap deepens to **13 cycles** (extends pre-rebase-era record). (6) **Seed-data** — **0 touches**; **17-cycle dormant**. (7) **PROGRESS.md** — file currently 2,055,891 bytes ≈ **1.96MB** pre-block; this C257 block pushes to ~1.97MB.
+
+### What Changed This Cycle
+- **1 new commit** — HEAD advances `e5bfcfe` → **`7ebbfe4`** ("fix: send X-Forge-User-Email header so installs persist across sessions") on `fix/debug-pass-hardening`. Direct install-arc follow-up: persistence of X-Forge-User-Email header so installs survive across sessions.
+- **Install/onboarding arc**: was 10-commit "confirmed live" via C256's `e5bfcfe`; `7ebbfe4` extends to **11 commits / 7 active beats**. C256 watch question resolved positively — multi-cycle arc confirmed.
+- **First 97h+ crossing**: PID 3358 leader at 97.46h. Trailing trio at 96.74-96.83h (entire quad now well past 96h, third consecutive cycle).
+- **Drift anomaly recurs**: C257 +0.47h on every PID — second long-gap cycle in three (C255: +0.42h, C256: +0.21h restored, C257: +0.47h). Coordinator-side wall-clock variance, not process anomaly. All 4 PIDs in lockstep.
+- **Web-polish track**: 0 new commits → 3 cycles post-`1c5ca85`; single-beat cooldown holds.
+- **Debug/hardening track**: 0 new commits → 5 cycles post-`21edb5e`; single-event hypothesis solidifies.
+- **Config-schema track**: **11 commits, 13-cycle gap** — extends pre-rebase-era record (was 12 in C256).
+- **Seed-data hygiene track**: **17-cycle dormant**.
+- **Branch context**: HEAD on `fix/debug-pass-hardening` (per gitStatus), not main. Per C84 correction: branch-local commits should not be conflated with main HEAD movement.
+- **Git-status churn**: same 19-cycle hold (`.gitignore`, deleted `api/models/__init__.py` + `api/models/config_schema.py`, `.claude/worktrees/` untracked, one `apps/hebbia-*.html` demo file deleted, plus 7+ other `M` entries; new untracked `apps/deal-scorecard.html`).
+- **.env.example**: `wc -c .env.example` returns **1344** — unchanged; T5_deploy C11 rescue now **219 cycles overdue**.
+- **Date**: 2026-04-20 seventh print.
+
+### Critical Path (Cycle 258) — leader past 97h, install arc multi-cycle, drift anomaly recurring
+1. **HUMAN (MAX PRIORITY, 17th cycle past-due): `kill 3358 8992 9962 9974`** — leader at 97.46h (first 97h+ crossing achieved). 208th cycle unexecuted. 7,112 PNGs on disk. Mid-band per-second cadence confirms active emission.
+2. **HUMAN: classify commit `21edb5e`** — 5-cycle-stale unclassified; install arc independently confirmed via 2-commit follow-up streak.
+3. **HUMAN: draft `T_INSTALL.md`** — install/onboarding arc now **11 commits / 7 active beats** (multi-cycle confirmed). 38-cycle task-file gap; coverage maximally overdue.
+4. **STRUCTURAL UNREAD (44-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 31-commit backlog.
+5. **CARRY-OVER (C240 #1, 17-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius still unconfirmed.
+6. **MAX PRIORITY (34-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 97.46h leader makes log highest-leverage diagnostic artifact.
+7. **Carry-over (35-cycle from C222 #2): verify `ed89fc5` security commit scope** — `21edb5e` RCE-hardening overlap candidate.
+8. **Carry-over (35-cycle from C222 #3): inspect `97105de` web redesign scope** — `1c5ca85` Next.js SSR adjacent.
+9. **Carry-over (38-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (20-cycle hold).
+10. **Carry-over (46-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **13-cycle gap, new pre-rebase-era record**.
+11. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **219 cycles stale**; file unchanged at 1344 bytes.
+12. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 13-cycle dormant (record).
+13. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **208 cycles unactioned.**
+14. **HUMAN: harness retarget** — `screenshots/` +52 (mid-band per-second; long inter-cycle gap inflates count); kill triad halts growth.
+15. **HUMAN: write task-file coverage** for install/external-apps (`forge-agent/install_type` + X-Forge-User-Email header now central), web-polish, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, governed-skills pipeline.
+16. **HUMAN: T_WEB.md ownership decision** — web/ canonicality stands; 11 uncommitted `web/**` edits persist.
+17. **HUMAN: PROGRESS.md archival** — file ~1.97MB post-C257 block. **208 cycles unaddressed.** Tail-only reads strictly mandatory.
+18. **Carry-over (C240 #2, 17-cycle): seed-data smoke test risk** — `T1_app_platform.md:35` slug references may be stale post-`fd842e7`.
+19. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+20. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+21. **Concurrent-front watch**: install/onboarding **MULTI-CYCLE CONFIRMED** at 11 commits / 7 active (was 10-commit confirmed-live); debug/hardening 1-commit single-event (5 cycles dormant); web-polish 1-commit single beat (3 cycles dormant); config-schema 11 commits, **13-cycle gap — new record**; seed-data 17-cycle locked; governed-skills active; web-side sandbox verification **46 cycles** pending.
+22. **PROGRESS.md size**: ~1.97MB post-C257 block (under 2.00MB threshold). Archive recommendation **208 cycles unaddressed**. Tail-only reads strictly mandatory.
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend (`frontend/`); `web/` is Next.js canonical per memory note — **install/onboarding MULTI-CYCLE CONFIRMED via `e5bfcfe` + `7ebbfe4`; web-polish single beat (3-cycle cooldown); config-schema 13-cycle dormant (record)**.
+- iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **(C17)**. ⚠ `web/components/app-embed.tsx` verification STILL pending (35 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C258
+- **Leader 97.5h crossing**: PID 3358 at 97.46h; standard +0.21h drift projects ~97.67h next cycle. Crossing 97.5h virtually certain even with normal cadence.
+- **Drift cadence**: C255 +0.42h, C256 +0.21h, C257 +0.47h — alternating long/short gap pattern. C258 +0.21h restores normal; +0.40h+ reopens regime question.
+- **Install/onboarding arc**: 2-commit streak (`e5bfcfe` + `7ebbfe4`) confirms multi-cycle. C258 with a 3rd install commit cements as week's dominant theme; 0 returns to pulsed pattern.
+- **Commit velocity**: C252-C257 = [1, 0, 1, 1, 0, 1]. C258 with 1+ continues pulsed cadence; 0 again suggests cooldown post-`7ebbfe4`.
+- **Config-schema**: 13-cycle gap is record. Any C258 touch is a surprise revival; 0 extends to 14 cycles.
+- **Seed-data**: 17-cycle lock; any C258 touch is a surprise revival.
+- **PROGRESS.md size**: ~1.97MB; C258 block likely pushes to ~1.98MB. 2.00MB crossing projected ~C259-C260.

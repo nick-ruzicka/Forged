@@ -201,7 +201,7 @@ def _render_with_claude(tool: Dict[str, Any]) -> str:
         "## When to use this\n"
         "## Limitations\n"
         "## Questions?\n\n"
-        "Write for non-engineers on a RevOps team. Be direct. "
+        "Write for non-engineers. Be direct. "
         "No preamble, no closing remarks — only the Markdown document.\n\n"
         "Tool context (JSON):\n"
         f"{json.dumps(context, indent=2, default=str)}"
