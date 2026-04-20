@@ -538,24 +538,26 @@ function GettingStartedCard({ app }: { app: App }) {
 
   // Build step-by-step instructions based on install type
   const steps: { label: string; command: string; note?: string }[] = [];
+  let appKind = "cli"; // cli | desktop | project
   try {
     const meta = app.install_meta ? JSON.parse(app.install_meta) : null;
     if (meta?.type === "brew") {
+      appKind = "cli";
       steps.push(
         { label: "Set up (first time only)", command: `${meta.formula || app.slug} --setup`, note: "Follow the prompts to configure API keys and preferences" },
-        { label: "Try it", command: `echo "Hello world" | ${meta.formula || app.slug} --pattern summarize` },
       );
     } else if (meta?.type === "brew-cask" || meta?.type === "dmg") {
+      appKind = "desktop";
       steps.push(
         { label: "Open the app", command: `open -a "${app.name}"` },
       );
     } else if (meta?.type === "command") {
+      appKind = "project";
       const cmd = meta.command || app.install_command || "";
       const dirMatch = cmd.match(/~\/([^\s&]+)/);
       if (dirMatch) {
         steps.push(
-          { label: "Open the project", command: `cd ~/${dirMatch[1]}` },
-          { label: "Start using it", command: "claude", note: "Open Claude Code in this directory to begin" },
+          { label: "Open in Claude Code", command: `cd ~/${dirMatch[1]} && claude`, note: "The AI assistant knows this project and will help you configure it" },
         );
       }
     }
@@ -626,14 +628,38 @@ function GettingStartedCard({ app }: { app: App }) {
         ))}
       </div>
 
+      {/* App type context */}
+      {appKind === "cli" && (
+        <div className="rounded-xl border border-border/50 bg-surface-2/30 p-4">
+          <span className="text-[12px] font-semibold text-text-secondary">
+            This is a command-line tool
+          </span>
+          <p className="mt-1 text-[12px] text-text-muted leading-relaxed">
+            {app.name} runs in your terminal, not in a browser window. After setup, use it by piping text into it or passing files. Check the documentation for all available commands and patterns.
+          </p>
+        </div>
+      )}
+
+      {appKind === "project" && (
+        <div className="rounded-xl border border-border/50 bg-surface-2/30 p-4">
+          <span className="text-[12px] font-semibold text-text-secondary">
+            This is a project you configure
+          </span>
+          <p className="mt-1 text-[12px] text-text-muted leading-relaxed">
+            {app.name} lives in a folder on your machine. Open it in Claude Code — the AI assistant will help you set it up and learn how to use it.
+          </p>
+        </div>
+      )}
+
       {app.source_url && (
         <a
           href={app.source_url}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-xs text-text-muted hover:text-foreground transition-colors"
+          className="flex items-center gap-1.5 text-[13px] font-medium text-primary hover:text-primary/80 transition-colors"
         >
-          View full documentation on GitHub →
+          <ExternalLink className="size-3.5" />
+          View full documentation
         </a>
       )}
     </div>
