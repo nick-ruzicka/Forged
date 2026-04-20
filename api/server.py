@@ -2263,7 +2263,7 @@ def configure_tool(slug):
                         "message": f"Tool '{slug}' has no config schema"}), 400
 
     # 2. Validate the schema
-    from api.models.config_schema import validate as validate_schema
+    from api.config_schema import validate as validate_schema
     try:
         schema = validate_schema(schema_yaml)
     except ValueError as exc:

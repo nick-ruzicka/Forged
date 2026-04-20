@@ -16,7 +16,7 @@ from typing import Any
 
 import yaml
 
-from api.models.config_schema import ConfigSchema, ConfigFile, ConfigSection
+from api.config_schema import ConfigSchema, ConfigFile, ConfigSection
 
 
 def configure_app(schema: ConfigSchema, answers: dict, app_dir: str) -> dict:

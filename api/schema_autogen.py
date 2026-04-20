@@ -17,7 +17,7 @@ from typing import Any
 
 import anthropic
 
-from api.models.config_schema import validate
+from api.config_schema import validate
 
 
 # Config file patterns to look for in the repo tree

@@ -83,6 +83,8 @@ class Tool:
     preview_tip: Optional[str] = None
     # Setup skill (onboarding agent)
     setup_skill_id: Optional[int] = None
+    # Config schema (structured onboarding)
+    config_schema: Optional[str] = None
 
     # Backend-aware (migration 012)
     has_local_backend: bool = False
