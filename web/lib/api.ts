@@ -65,9 +65,19 @@ export async function api<T>(
     if (qs) url += `?${qs}`;
   }
 
+  // Read email from localStorage if user has set it
+  let userEmail = "";
+  if (typeof window !== "undefined") {
+    try {
+      const u = JSON.parse(localStorage.getItem("forge_user") || "{}");
+      userEmail = u.email || "";
+    } catch { /* ignore */ }
+  }
+
   const headers: Record<string, string> = {
     Accept: "application/json",
     "X-Forge-User-Id": getUserId(),
+    ...(userEmail ? { "X-Forge-User-Email": userEmail } : {}),
     ...(init.headers as Record<string, string>),
   };
 
