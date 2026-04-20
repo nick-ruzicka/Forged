@@ -95,9 +95,9 @@ export default function MethodologyPage() {
           { agent: "Classifier", job: "Identifies what the submission is — category, type, confidence" },
           { agent: "Security Scanner", job: "Checks for XSS, data exfiltration, eval patterns, PII risk" },
           { agent: "Red Team", job: "Actively tries to break it — 5 attack templates, adversarial testing" },
+          { agent: "Hardener", job: "Patches what it can — CSP headers, input sanitization, safe defaults" },
           { agent: "QA Tester", job: "Verifies it actually works — renders, loads, handles edge cases" },
           { agent: "Synthesizer", job: "Aggregates all results — single verdict with confidence score" },
-          { agent: "Human Override", job: "Admin can approve or reject with reasoning — the final call" },
         ]} />
         <p>
           The point: when someone installs a tool from the catalog, they know it&apos;s been
@@ -166,7 +166,7 @@ export default function MethodologyPage() {
           },
           {
             title: "Behavioral analytics for leadership",
-            body: "'Reps who use the ICP Qualification tool before calls create 3x more pipeline.' Usage data that connects tool adoption to business outcomes. Nobody else has this data.",
+            body: "'Reps who use the ICP Qualification tool before calls create 3x more pipeline.' Usage data that connects tool adoption to business outcomes — the kind of closed-loop measurement most AI programs skip.",
           },
           {
             title: "Fork lineage as institutional knowledge",
