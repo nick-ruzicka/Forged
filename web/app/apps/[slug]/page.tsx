@@ -4,7 +4,7 @@ import { use, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import yaml from "js-yaml";
-import { ExternalLink, PanelLeftClose, PanelLeft, Download, Star, Clock, Users, Sparkles, Copy, Check, Settings, Share2 } from "lucide-react";
+import { ExternalLink, PanelLeftClose, Download, Star, Clock, Users, Sparkles, Copy, Check, Settings, Share2 } from "lucide-react";
 import { AppIcon } from "@/components/app-icon";
 import { ConfigWizard, type ParsedSchema } from "@/components/config-wizard";
 import { Badge } from "@/components/ui/badge";
@@ -273,7 +273,7 @@ export default function AppDetailPage({
       <Tabs defaultValue="overview">
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="open">Open App</TabsTrigger>
+          {!isExternal && <TabsTrigger value="open">Open App</TabsTrigger>}
         </TabsList>
 
         {/* Overview tab */}
@@ -363,7 +363,7 @@ export default function AppDetailPage({
               )}
 
               {/* Co-installs */}
-              <CoInstallCards toolId={app.id} toolName={app.name} />
+              <CoInstallCards toolId={app.id} />
 
               {/* Reviews */}
               <div className="flex flex-col gap-5">
