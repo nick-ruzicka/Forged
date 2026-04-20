@@ -14,6 +14,7 @@ import {
   ChevronRight,
   Menu,
   X,
+  BookOpen,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AppIcon } from "@/components/app-icon";
@@ -37,6 +38,7 @@ const NAV_ITEMS = [
   { label: "Skills", href: "/skills", icon: Sparkles },
   { label: "My Forge", href: "/my-forge", icon: Box },
   { label: "Publish", href: "/publish", icon: Upload },
+  { label: "Methodology", href: "/methodology", icon: BookOpen },
 ] as const;
 
 function isActive(pathname: string, href: string) {
