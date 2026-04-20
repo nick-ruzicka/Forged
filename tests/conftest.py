@@ -94,14 +94,26 @@ def db():
         else:
             conn = psycopg2.connect(os.environ["DATABASE_URL"])
         conn.autocommit = True
-        with conn.cursor() as cur:
-            if os.path.isdir(migrations_dir):
-                for path in sorted(glob.glob(os.path.join(migrations_dir, "*.sql"))):
-                    with open(path, "r") as fh:
-                        cur.execute(fh.read())
     except Exception:
-        # If the DB is unavailable, mark skip rather than hard-fail.
+        # If the DB is genuinely unavailable, skip rather than hard-fail.
         pytest.skip("PostgreSQL is not available for the test database")
+
+    # Apply migrations per-file with try/except, mirroring api/db.py:init_db.
+    # Some migrations are intentionally order-sensitive in a way that only
+    # resolves later (e.g. 020 references agent_reviews which is recreated
+    # by 021). Aborting on the first failure would skip every test; instead
+    # we log-and-continue, matching production init_db semantics.
+    if os.path.isdir(migrations_dir):
+        for path in sorted(glob.glob(os.path.join(migrations_dir, "*.sql"))):
+            with open(path, "r") as fh:
+                sql = fh.read()
+            if not sql.strip():
+                continue
+            try:
+                with conn.cursor() as cur:
+                    cur.execute(sql)
+            except Exception as exc:
+                print(f"[conftest] migration {os.path.basename(path)} failed: {exc}")
 
     try:
         yield conn
