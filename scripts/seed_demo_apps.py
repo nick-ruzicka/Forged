@@ -67,15 +67,15 @@ def seed_review(tool_slug: str, review_data: dict):
 def main():
     print("Seeding Forge demo apps...")
 
-    # Read Navan edition HTML from file if it exists
-    navan_html_path = os.path.join(os.path.dirname(__file__), "..", "apps", "hebbia-navan.html")
-    navan_html = ""
-    if os.path.exists(navan_html_path):
-        with open(navan_html_path) as f:
-            navan_html = f.read()
+    # Read travel-tech edition HTML from file if it exists
+    travel_html_path = os.path.join(os.path.dirname(__file__), "..", "apps", "hebbia-travel.html")
+    travel_html = ""
+    if os.path.exists(travel_html_path):
+        with open(travel_html_path) as f:
+            travel_html = f.read()
     else:
         # Inline minimal version
-        navan_html = "<h1>Hebbia Signal Engine — Navan Edition</h1><p>Loading...</p>"
+        travel_html = "<h1>Hebbia Signal Engine — Travel Edition</h1><p>Loading...</p>"
 
     # 1. Hebbia Signal Engine (original — iframe to VPS)
     seed_app({
@@ -94,18 +94,18 @@ def main():
         "source_url": "",
     })
 
-    # 2. Hebbia Signal Engine — Navan Edition
+    # 2. Hebbia Signal Engine — Travel Edition
     seed_app({
-        "name": "Hebbia Signal Engine — Navan Edition",
-        "slug": "hebbia-signal-engine-navan",
-        "tagline": "Travel-tech signals for Navan outbound — 14 accounts in-flight, 6 strong matches",
-        "description": "**Fork of Hebbia Signal Engine for Navan RevOps.** Same signal backend, travel-tech scoring taxonomy.\n\nTracks what Navan outbound actually cares about: corporate travel M&A, Expedia/Booking earnings, NDC adoption mandates, corporate T&E budget cuts, Amex GBT consolidations, Concur/SAP displacement windows.\n\n**6 strong matches** across Booking, Amex GBT, Expedia, Salesforce, and Sabre — each scored against the Navan ICP (Fortune 1000 T&E buyers, 500+ traveling employees, OBT renewal in next 12mo).",
+        "name": "Hebbia Signal Engine — Travel Edition",
+        "slug": "hebbia-signal-engine-travel",
+        "tagline": "Travel-tech signals for outbound — 14 accounts in-flight, 6 strong matches",
+        "description": "**Fork of Hebbia Signal Engine for travel-tech RevOps.** Same signal backend, travel-tech scoring taxonomy.\n\nTracks corporate travel M&A, Expedia/Booking earnings, NDC adoption mandates, corporate T&E budget cuts, Amex GBT consolidations, Concur/SAP displacement windows.\n\n**6 strong matches** across Booking, Amex GBT, Expedia, Salesforce, and Sabre — each scored against the ICP (Fortune 1000 T&E buyers, 500+ traveling employees, OBT renewal in next 12mo).",
         "category": "Developer Tools",
         "icon": "🔍",
         "status": "approved",
         "delivery": "embedded",
         "app_type": "app",
-        "app_html": navan_html,
+        "app_html": travel_html,
         "author_name": "Nick Ruzicka",
         "author_email": "nick.c.ruzicka@gmail.com",
         "source_url": "",
@@ -155,8 +155,18 @@ def main():
         "status": "approved",
         "delivery": "external",
         "app_type": "app",
-        "install_command": "git clone https://github.com/nick-ruzicka/nick-career-ops.git ~/career-ops && cd ~/career-ops && npm install && npx playwright install chromium",
-        "install_meta": json.dumps({"type": "command", "command": "git clone https://github.com/nick-ruzicka/nick-career-ops.git ~/career-ops && cd ~/career-ops && npm install && npx playwright install chromium"}),
+        # install_command is the human-readable shell equivalent shown as a copy-paste fallback.
+        "install_command": "git clone https://github.com/nick-ruzicka/nick-career-ops.git ~/forge-apps/career-ops && cd ~/forge-apps/career-ops && npm install && npx playwright install chromium",
+        # install_meta drives the structured git_clone install flow in forge-agent.
+        "install_meta": json.dumps({
+            "type": "git_clone",
+            "repo": "https://github.com/nick-ruzicka/nick-career-ops.git",
+            "dest": "~/forge-apps/career-ops",
+            "post_install": [
+                {"type": "npm_install", "cwd": "~/forge-apps/career-ops"},
+                {"type": "npx", "cwd": "~/forge-apps/career-ops", "cmd": "playwright install chromium"},
+            ],
+        }),
         "author_name": "Nick Ruzicka",
         "author_email": "nick.c.ruzicka@gmail.com",
         "source_url": "https://github.com/nick-ruzicka/nick-career-ops",

@@ -280,6 +280,55 @@ def _ensure_network():
 _FORMULA_RE = re.compile(r"^[a-zA-Z0-9][a-zA-Z0-9._\-/]+$")
 _PACKAGE_RE = re.compile(r"^[a-zA-Z0-9][a-zA-Z0-9._\-]+$")
 
+# ── git_clone safety ───────────────────────────────────────────
+ALLOWED_GIT_HOSTS = frozenset({"github.com", "gitlab.com", "bitbucket.org"})
+_GIT_REPO_RE = re.compile(
+    r"^https://(github\.com|gitlab\.com|bitbucket\.org)/"
+    r"[A-Za-z0-9][A-Za-z0-9._\-]{0,38}/"
+    r"[A-Za-z0-9][A-Za-z0-9._\-]{0,99}(\.git)?/?$"
+)
+# npx commands are high-risk (arbitrary package execution) — restrict to known
+# post-install patterns used by installable apps (headless browser setup, etc.).
+_ALLOWED_NPX_CMDS = frozenset({
+    "playwright install",
+    "playwright install chromium",
+    "playwright install firefox",
+    "playwright install webkit",
+    "playwright install chromium --with-deps",
+    "puppeteer browsers install chrome",
+})
+_FORGE_APPS_DIR = pathlib.Path.home() / "forge-apps"
+
+
+def _validate_git_dest(raw: str) -> str:
+    """Expand a dest path and ensure it lives under ~/forge-apps/ (preferred)
+    or directly under $HOME. Rejects system dirs, home-root itself, and any
+    traversal outside those roots. Returns the resolved absolute path."""
+    if not raw or not isinstance(raw, str):
+        raise ValueError("dest is required")
+    expanded = pathlib.Path(raw).expanduser()
+    # Resolve without requiring existence (clone target must not exist yet).
+    try:
+        expanded = expanded.resolve(strict=False)
+    except Exception:
+        raise ValueError(f"cannot resolve dest: {raw}")
+    home = pathlib.Path.home().resolve()
+    forge_apps = _FORGE_APPS_DIR.resolve()
+    # Home itself is off-limits — clones must go into a subdir.
+    if expanded == home:
+        raise ValueError("dest cannot be the home directory")
+    # Must be under ~/forge-apps/ OR under $HOME.
+    s = str(expanded)
+    if not (s.startswith(str(forge_apps) + os.sep) or s.startswith(str(home) + os.sep)):
+        raise ValueError(f"dest must be under ~/ or ~/forge-apps/: {s}")
+    # Never write to system/bin/etc/var paths even if they appear nested in home.
+    forbidden_roots = ("/etc", "/System", "/usr", "/bin", "/sbin", "/var",
+                       "/private/etc", "/private/var", "/Library/System")
+    for f in forbidden_roots:
+        if s == f or s.startswith(f + os.sep):
+            raise ValueError(f"dest in system dir: {s}")
+    return s
+
 
 # ── handler ────────────────────────────────────────────────────
 
@@ -591,9 +640,182 @@ class AgentHandler(http.server.BaseHTTPRequestHandler):
             })
             return
 
+        elif install_type == "git_clone":
+            self._handle_git_clone_install(body, slug, name, process_name)
+            return
+
         else:
             self._sse_event("error", {"success": False, "message": f"Unknown type: {install_type}"})
             self._sse_end()
+
+    def _handle_git_clone_install(self, body, slug, name, process_name):
+        """Structured `git clone` + post-install steps.
+
+        Body shape:
+          {
+            "type": "git_clone",
+            "repo": "https://github.com/owner/repo.git",
+            "dest": "~/forge-apps/<slug>",
+            "post_install": [
+              {"type": "npm_install", "cwd": "~/forge-apps/<slug>"},
+              {"type": "pip_install", "cwd": "...", "requirements": "requirements.txt"},
+              {"type": "cargo_install", "cwd": "..."},
+              {"type": "go_install", "cwd": "..."},
+              {"type": "npx", "cwd": "...", "cmd": "playwright install chromium"}
+            ]
+          }
+
+        Validations (all fail-fast, all pre-disk):
+          * repo host ∈ ALLOWED_GIT_HOSTS
+          * dest under ~/ or ~/forge-apps/, never a system dir, never home itself
+          * each post_install step uses an allowlisted sub-tool
+          * npx `cmd` exact-matches _ALLOWED_NPX_CMDS
+        """
+        repo = (body.get("repo") or "").strip()
+        dest_raw = (body.get("dest") or "").strip()
+        post_install = body.get("post_install") or []
+
+        # 1. repo URL
+        if not _GIT_REPO_RE.match(repo):
+            try:
+                host = urlparse(repo).hostname or "(none)"
+            except Exception:
+                host = "(none)"
+            msg = (f"repo host not allowlisted: {host}"
+                   if host not in ALLOWED_GIT_HOSTS
+                   else f"invalid repo URL: {repo[:120]}")
+            audit.warning("BLOCKED_GIT_CLONE %s", msg)
+            self._sse_event("error", {"success": False, "message": msg})
+            self._sse_end()
+            return
+
+        # 2. dest path
+        try:
+            dest_abs = _validate_git_dest(dest_raw)
+        except ValueError as e:
+            audit.warning("BLOCKED_GIT_CLONE_DEST %s", e)
+            self._sse_event("error", {"success": False, "message": f"invalid dest: {e}"})
+            self._sse_end()
+            return
+
+        # 3. post_install steps (validate BEFORE touching disk)
+        if not isinstance(post_install, list):
+            self._sse_event("error", {"success": False,
+                                      "message": "post_install must be a list"})
+            self._sse_end()
+            return
+
+        validated = []  # list[(cmd_args, cwd_abs, label)]
+        for idx, step in enumerate(post_install):
+            if not isinstance(step, dict):
+                self._sse_event("error", {"success": False,
+                                          "message": f"post_install[{idx}] must be an object"})
+                self._sse_end()
+                return
+            step_type = step.get("type", "")
+            cwd_raw = (step.get("cwd") or dest_abs).strip()
+            try:
+                cwd_abs = _validate_git_dest(cwd_raw)
+            except ValueError as e:
+                self._sse_event("error", {"success": False,
+                                          "message": f"invalid cwd for step {idx} ({step_type}): {e}"})
+                self._sse_end()
+                return
+
+            if step_type == "npm_install":
+                validated.append((["npm", "install"], cwd_abs, "npm install"))
+            elif step_type == "pip_install":
+                req = (step.get("requirements") or "requirements.txt").strip()
+                if not re.match(r"^[a-zA-Z0-9][a-zA-Z0-9._/\-]{0,100}$", req):
+                    self._sse_event("error", {"success": False,
+                                              "message": f"invalid requirements path: {req[:100]}"})
+                    self._sse_end()
+                    return
+                validated.append((["pip3", "install", "-r", req], cwd_abs, f"pip3 install -r {req}"))
+            elif step_type == "cargo_install":
+                validated.append((["cargo", "install", "--path", "."], cwd_abs, "cargo install --path ."))
+            elif step_type == "go_install":
+                validated.append((["go", "install", "./..."], cwd_abs, "go install ./..."))
+            elif step_type == "npx":
+                cmd_str = (step.get("cmd") or "").strip()
+                if cmd_str not in _ALLOWED_NPX_CMDS:
+                    audit.warning("BLOCKED_NPX %s", cmd_str[:200])
+                    self._sse_event("error", {"success": False,
+                                              "message": f"npx cmd not allowlisted: {cmd_str[:120]}"})
+                    self._sse_end()
+                    return
+                validated.append((["npx"] + cmd_str.split(), cwd_abs, f"npx {cmd_str}"))
+            else:
+                self._sse_event("error", {"success": False,
+                                          "message": f"post_install type not allowed: {step_type}"})
+                self._sse_end()
+                return
+
+        # 4. destination must not exist (avoid overwriting user work)
+        if pathlib.Path(dest_abs).exists():
+            self._sse_event("error", {"success": False,
+                                      "message": f"dest already exists: {dest_abs}. "
+                                                 f"Remove it first or pick a different dest."})
+            self._sse_end()
+            return
+
+        # 5. ensure parent dir exists (mkdir ~/forge-apps/ on first use)
+        try:
+            pathlib.Path(dest_abs).parent.mkdir(parents=True, exist_ok=True)
+        except Exception as e:
+            self._sse_event("error", {"success": False,
+                                      "message": f"cannot create parent dir: {str(e)[:120]}"})
+            self._sse_end()
+            return
+
+        audit.info("GIT_CLONE repo=%s dest=%s steps=%d", repo, dest_abs, len(validated))
+
+        # 6. clone
+        self._sse_event("progress", {"message": f"Cloning {repo} → {dest_abs}..."})
+        clone_rc = self._run_step(["git", "clone", "--depth", "1", repo, dest_abs], cwd=None)
+        if clone_rc != 0:
+            self._sse_event("error", {"success": False,
+                                      "message": f"git clone failed (exit {clone_rc})"})
+            self._sse_end()
+            return
+
+        # 7. run each post_install step in order
+        for cmd, cwd_abs, label in validated:
+            self._sse_event("progress", {"message": f"Running: {label} (in {cwd_abs})"})
+            rc = self._run_step(cmd, cwd=cwd_abs)
+            if rc != 0:
+                self._sse_event("error", {"success": False,
+                                          "message": f"{label} failed (exit {rc})"})
+                self._sse_end()
+                return
+
+        # 8. success — register and close stream
+        _register_app({
+            "slug": slug, "name": name, "process_name": process_name,
+            "install_type": "git_clone", "repo": repo, "install_path": dest_abs,
+        })
+        self._sse_event("installed", {"success": True,
+                                      "message": f"{name} installed to {dest_abs}"})
+        self._sse_end()
+
+    def _run_step(self, cmd, cwd=None):
+        """Run one step: stream stdout/stderr as SSE progress lines, return exit code.
+        Does NOT emit installed/error/end — the caller owns lifecycle events."""
+        try:
+            proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                    text=True, bufsize=1, cwd=cwd)
+            for line in proc.stdout:
+                line = line.rstrip()
+                if line:
+                    self._sse_event("progress", {"message": line})
+            proc.wait()
+            return proc.returncode
+        except FileNotFoundError as e:
+            self._sse_event("progress", {"message": f"command not found: {str(e)[:120]}"})
+            return 127
+        except Exception as e:
+            self._sse_event("progress", {"message": f"exec error: {str(e)[:200]}"})
+            return 1
 
     def _stream_process(self, cmd, name, registry_entry=None):
         """Run a command, stream stdout/stderr via SSE, emit installed/error at end.
