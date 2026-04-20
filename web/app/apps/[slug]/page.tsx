@@ -569,6 +569,16 @@ function GettingStartedCard({ app }: { app: App }) {
     steps.push({ label: "Run it", command: app.slug });
   }
 
+  // Parse usage examples
+  let usageExamples: { icon: string; title: string; command: string; description: string }[] = [];
+  try {
+    if (app.usage_examples) {
+      usageExamples = JSON.parse(app.usage_examples);
+    }
+  } catch {
+    // ignore
+  }
+
   const handleCopy = async (idx: number, cmd: string) => {
     await navigator.clipboard.writeText(cmd);
     setCopiedIdx(idx);
@@ -628,25 +638,41 @@ function GettingStartedCard({ app }: { app: App }) {
         ))}
       </div>
 
-      {/* App type context */}
-      {appKind === "cli" && (
+      {/* Usage examples */}
+      {usageExamples.length > 0 && (
+        <div className="flex flex-col gap-3">
+          <span className="text-[12px] font-semibold text-text-secondary">
+            What you can do with {app.name}
+          </span>
+          <div className="flex flex-col gap-2">
+            {usageExamples.map((ex: { icon: string; title: string; command: string; description: string }, i: number) => (
+              <div key={i} className="flex items-start gap-3 rounded-xl border border-border/50 bg-surface-2/30 p-3 transition-colors hover:border-border">
+                <span className="text-base mt-0.5 shrink-0">{ex.icon}</span>
+                <div className="flex flex-1 flex-col gap-1 min-w-0">
+                  <span className="text-[13px] font-medium text-foreground">{ex.title}</span>
+                  <code className="text-[11px] font-mono text-text-muted break-all">{ex.command}</code>
+                  <span className="text-[11px] text-text-muted">{ex.description}</span>
+                </div>
+                <button
+                  onClick={() => handleCopy(i + 100, ex.command)}
+                  className="shrink-0 mt-1 rounded-lg p-1 text-text-muted hover:bg-white/[0.04] hover:text-foreground transition-colors"
+                >
+                  {copiedIdx === i + 100 ? <Check className="size-3" /> : <Copy className="size-3" />}
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* App type note for CLI tools */}
+      {appKind === "cli" && usageExamples.length === 0 && (
         <div className="rounded-xl border border-border/50 bg-surface-2/30 p-4">
           <span className="text-[12px] font-semibold text-text-secondary">
             This is a command-line tool
           </span>
           <p className="mt-1 text-[12px] text-text-muted leading-relaxed">
-            {app.name} runs in your terminal, not in a browser window. After setup, use it by piping text into it or passing files. Check the documentation for all available commands and patterns.
-          </p>
-        </div>
-      )}
-
-      {appKind === "project" && (
-        <div className="rounded-xl border border-border/50 bg-surface-2/30 p-4">
-          <span className="text-[12px] font-semibold text-text-secondary">
-            This is a project you configure
-          </span>
-          <p className="mt-1 text-[12px] text-text-muted leading-relaxed">
-            {app.name} lives in a folder on your machine. Open it in Claude Code — the AI assistant will help you set it up and learn how to use it.
+            {app.name} runs in your terminal. Check the documentation for available commands.
           </p>
         </div>
       )}

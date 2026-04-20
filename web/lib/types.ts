@@ -23,6 +23,7 @@ export interface App {
   role_tags?: string | string[];
   setup_skill_id?: number;
   config_schema?: string;
+  usage_examples?: string;
   created_at?: string;
   deployed_at?: string;
 }

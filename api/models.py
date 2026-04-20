@@ -85,6 +85,8 @@ class Tool:
     setup_skill_id: Optional[int] = None
     # Config schema (structured onboarding)
     config_schema: Optional[str] = None
+    # Usage examples (JSON array of {icon, title, command, description})
+    usage_examples: Optional[str] = None
 
     # Backend-aware (migration 012)
     has_local_backend: bool = False
