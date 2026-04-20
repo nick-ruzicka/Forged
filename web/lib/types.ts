@@ -22,6 +22,7 @@ export interface App {
   avg_rating?: number;
   role_tags?: string | string[];
   setup_skill_id?: number;
+  config_schema?: string;
   created_at?: string;
   deployed_at?: string;
 }

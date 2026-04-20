@@ -3,7 +3,9 @@
 import { use, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { ExternalLink, PanelLeftClose, PanelLeft, Download, Star, Clock, Users, Sparkles, Copy, Check } from "lucide-react";
+import yaml from "js-yaml";
+import { ExternalLink, PanelLeftClose, PanelLeft, Download, Star, Clock, Users, Sparkles, Copy, Check, Settings } from "lucide-react";
+import { ConfigWizard, type ParsedSchema } from "@/components/config-wizard";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -40,8 +42,19 @@ export default function AppDetailPage({
   const { data: stars } = useMyStars();
   const { data: reviews, mutate: mutateReviews } = useReviews(app?.id);
 
+  const [wizardOpen, setWizardOpen] = useState(false);
+
   const isExternal = app?.delivery === "external";
   const { data: agentAvailable } = useAgentAvailable(isExternal);
+
+  const parsedSchema: ParsedSchema | null = (() => {
+    if (!app?.config_schema) return null;
+    try {
+      return yaml.load(app.config_schema) as ParsedSchema;
+    } catch {
+      return null;
+    }
+  })();
 
   const installedIds = useMemo(
     () => new Set((Array.isArray(items) ? items : []).map((i) => i.tool_id ?? i.id)),
@@ -290,9 +303,49 @@ export default function AppDetailPage({
                 />
               )}
 
-              {/* Setup skill — onboarding agent */}
-              {app.setup_skill_id && (
+              {/* Config wizard or setup skill — onboarding */}
+              {parsedSchema ? (
+                <div className="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-primary/[0.06] to-primary/[0.02] p-6">
+                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-primary/[0.06] to-transparent pointer-events-none" />
+                  <div className="relative flex flex-col gap-4">
+                    <div className="flex items-center gap-3">
+                      <div className="flex size-10 items-center justify-center rounded-xl bg-primary/10 ring-1 ring-primary/20">
+                        <Settings className="size-5 text-primary" />
+                      </div>
+                      <div className="flex flex-col gap-0.5">
+                        <span className="text-[15px] font-semibold text-foreground">
+                          Configure {app.name}
+                        </span>
+                        <span className="text-[13px] text-text-secondary">
+                          Set up this app with a step-by-step wizard. Your answers will generate the configuration files automatically.
+                        </span>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setWizardOpen(true)}
+                      className="flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-[13px] font-semibold text-primary-foreground shadow-[0_1px_2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] transition-all hover:brightness-110 w-fit"
+                    >
+                      <Sparkles className="size-3.5" />
+                      Configure
+                    </button>
+                  </div>
+                </div>
+              ) : app.setup_skill_id ? (
                 <SetupSkillCard skillId={app.setup_skill_id} appName={app.name} isInstalled={isInstalled} />
+              ) : null}
+
+              {/* Config Wizard modal */}
+              {wizardOpen && parsedSchema && (
+                <ConfigWizard
+                  schema={parsedSchema}
+                  slug={slug}
+                  userProfile={{ name: undefined, email: undefined }}
+                  onComplete={() => {
+                    setWizardOpen(false);
+                    mutateItems();
+                  }}
+                  onClose={() => setWizardOpen(false)}
+                />
               )}
 
               {/* About */}

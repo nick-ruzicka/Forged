@@ -13,7 +13,6 @@ from __future__ import annotations
 
 import logging
 import os
-import socket
 import subprocess
 import time
 from datetime import datetime
@@ -28,7 +27,6 @@ _REPO_ROOT = Path(__file__).resolve().parent.parent
 _LOG_DIR = _REPO_ROOT / "logs"
 _LOG_PATH = _LOG_DIR / "sandbox.log"
 
-_PORT_RANGE = range(9000, 10000)
 _READY_TIMEOUT_SEC = 10.0
 _READY_POLL_INTERVAL = 0.2
 _MEMORY_LIMIT = "256m"
@@ -61,18 +59,6 @@ class SandboxManager:
 
     # -------------------- Public API --------------------
 
-    def get_free_port(self) -> int:
-        for port in _PORT_RANGE:
-            try:
-                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-                s.bind(("127.0.0.1", port))
-                s.close()
-                return port
-            except OSError:
-                continue
-        raise SandboxError("no free port available in 9000-9999")
-
     def ensure_running(self, tool_id: int) -> int:
         tool = db.get_tool(tool_id)
         if not tool:
@@ -97,8 +83,7 @@ class SandboxManager:
             image_tag = result["image_tag"]
 
         self._remove_container_if_exists(container_name)
-        port = self.get_free_port()
-        container_id = self._run_container(container_name, image_tag, port)
+        container_id, port = self._run_container(container_name, image_tag)
         self._wait_healthy(port)
 
         db.update_tool(
@@ -232,12 +217,18 @@ class SandboxManager:
         except Exception:
             pass
 
-    def _run_container(self, name: str, image_tag: str, port: int) -> str:
+    def _run_container(self, name: str, image_tag: str) -> tuple[str, int]:
+        """Start a container with a Docker-assigned host port, then read it back.
+
+        Using `-p 127.0.0.1::80` (empty host port) lets the kernel pick a free
+        port atomically. We then query `docker port` to learn which one. This
+        eliminates the TOCTOU race that an in-Python port scan had.
+        """
         proc = subprocess.run(
             [
                 "docker", "run", "-d",
                 "--name", name,
-                "-p", f"{port}:80",
+                "-p", "127.0.0.1::80",
                 "--memory", _MEMORY_LIMIT,
                 "--cpus", _CPU_LIMIT,
                 "--network", "bridge",
@@ -251,7 +242,29 @@ class SandboxManager:
             raise SandboxError(
                 f"docker run failed rc={proc.returncode}: {(proc.stderr or proc.stdout or '').strip()[-400:]}"
             )
-        return (proc.stdout or "").strip()
+        container_id = (proc.stdout or "").strip()
+
+        port_proc = subprocess.run(
+            ["docker", "port", name, "80/tcp"],
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+        if port_proc.returncode != 0 or not port_proc.stdout.strip():
+            # Tear the container down so we don't leak it.
+            self._remove_container_if_exists(name)
+            raise SandboxError(
+                f"could not read assigned port for {name}: {port_proc.stderr.strip()[:200]}"
+            )
+        # Output looks like "127.0.0.1:32768\n" (possibly multiple lines).
+        first_line = port_proc.stdout.strip().splitlines()[0]
+        try:
+            port = int(first_line.rsplit(":", 1)[-1])
+        except ValueError:
+            self._remove_container_if_exists(name)
+            raise SandboxError(f"could not parse docker port output: {first_line!r}")
+
+        return container_id, port
 
     def _wait_healthy(self, port: int) -> None:
         import requests  # local import keeps module import cheap
