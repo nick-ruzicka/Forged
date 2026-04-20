@@ -719,6 +719,29 @@ def agent_token():
     return jsonify({"token": None, "available": False})
 
 
+@app.route("/api/forge-agent/open-terminal", methods=["POST"])
+def proxy_open_terminal():
+    """Proxy open-terminal request to forge-agent."""
+    uid, _ = _get_identity()
+    if not uid:
+        return jsonify({"error": "user_id_required"}), 401
+    body = request.get_json(silent=True) or {}
+    try:
+        import urllib.request as ur
+        token = open(os.path.expanduser("~/.forge/agent-token")).read().strip()
+        data = json.dumps(body).encode()
+        req = ur.Request(
+            "http://localhost:4242/open-terminal",
+            data=data,
+            headers={"X-Forge-Token": token, "Content-Type": "application/json"},
+            method="POST",
+        )
+        with ur.urlopen(req, timeout=10) as r:
+            return jsonify(json.loads(r.read()))
+    except Exception as e:
+        return jsonify({"error": str(e), "success": False}), 502
+
+
 @app.route("/api/forge-agent/launch", methods=["POST"])
 def proxy_launch():
     """Proxy launch request to forge-agent."""
@@ -1539,6 +1562,7 @@ def resolve_token(access_token):
 def list_skills():
     category = request.args.get("category")
     search = request.args.get("search")
+    sort = request.args.get("sort", "upvotes")
     # Admin can see all statuses; default is approved-only
     include = request.args.get("include")
     if include == "pending":
@@ -1548,7 +1572,7 @@ def list_skills():
         review_status = None  # no filter — show all
     else:
         review_status = "approved"
-    rows = db.list_skills(category=category, search=search, review_status=review_status)
+    rows = db.list_skills(category=category, search=search, sort=sort, review_status=review_status)
     return jsonify({
         "skills": [Skill.from_row(r).to_dict() for r in rows],
         "count": len(rows),
@@ -1625,34 +1649,22 @@ def get_skill_review(skill_id):
     if not skill:
         return jsonify({"error": "not_found"}), 404
 
-    # Check if caller is author or admin
+    # Check if caller is author or admin — governs what we include beyond
+    # the public surface (blocked_reason + review summary + test cases).
     uid, _ = _get_identity()
     is_author = uid and skill.get("author_user_id") and uid == skill["author_user_id"]
     is_admin = request.headers.get("X-Admin-Key") == ADMIN_KEY
-
-    if not is_author and not is_admin:
-        return jsonify({"skill_id": skill_id, "review_status": skill.get("review_status", "pending")})
+    privileged = is_author or is_admin
 
     result = {
         "skill_id": skill_id,
         "review_status": skill.get("review_status", "pending"),
-        "review_id": skill.get("review_id"),
-        "blocked_reason": skill.get("blocked_reason"),
         "approved_at": skill["approved_at"].isoformat() if skill.get("approved_at") else None,
         "blocked_at": skill["blocked_at"].isoformat() if skill.get("blocked_at") else None,
     }
 
-    # Include review details if a review exists
-    if skill.get("review_id"):
-        review = db.get_review_by_skill(skill_id)
-        if review:
-            result["review"] = {
-                "recommendation": review.get("agent_recommendation"),
-                "confidence": review.get("agent_confidence"),
-                "summary": review.get("review_summary"),
-            }
-
-    # Include admin actions (override reasons, blocks, etc.)
+    # admin_actions are an audit trail — surface them publicly so users can
+    # see *why* a skill was approved or blocked out-of-band.
     admin_actions = db.list_skill_admin_actions(skill_id)
     if admin_actions:
         result["admin_actions"] = [
@@ -1666,7 +1678,22 @@ def get_skill_review(skill_id):
             for a in admin_actions
         ]
 
-    # Include test cases
+    if not privileged:
+        return jsonify(result)
+
+    # Author/admin-only: review details, block reason, test cases, review_id
+    result["review_id"] = skill.get("review_id")
+    result["blocked_reason"] = skill.get("blocked_reason")
+
+    if skill.get("review_id"):
+        review = db.get_review_by_skill(skill_id)
+        if review:
+            result["review"] = {
+                "recommendation": review.get("agent_recommendation"),
+                "confidence": review.get("agent_confidence"),
+                "summary": review.get("review_summary"),
+            }
+
     result["test_cases"] = db.get_skill_test_cases(skill_id)
 
     return jsonify(result)
@@ -1701,7 +1728,7 @@ def download_skill(skill_id):
         mimetype="text/markdown",
         headers={
             "Content-Disposition":
-                f'attachment; filename="{row.get("title", "skill").replace(" ", "-")}.md"'
+                f'attachment; filename="{row.get("title", "skill").lower().replace(" ", "-")}.md"'
         },
     )
 
@@ -2248,7 +2275,15 @@ except Exception:
 
 @app.route("/api/tools/<string:slug>/configure", methods=["POST"])
 def configure_tool(slug):
-    """Apply user-provided config answers to an installed tool's app directory."""
+    """Apply user-provided config answers to an installed tool's app directory.
+
+    Admin-gated: the schema's verification command runs on the server, and
+    the schema is LLM-generated from repo content — a prompt-injected README
+    could otherwise smuggle arbitrary commands in here.
+    """
+    unauthorized = _require_admin()
+    if unauthorized:
+        return unauthorized
     if not re.match(r"^[a-z0-9][a-z0-9\-]*$", slug):
         return jsonify({"error": "invalid_slug"}), 400
 

@@ -4,7 +4,7 @@ import { use, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import yaml from "js-yaml";
-import { ExternalLink, PanelLeftClose, Download, Star, Clock, Users, Sparkles, Copy, Check, Settings, Share2 } from "lucide-react";
+import { ExternalLink, PanelLeftClose, Download, Star, Clock, Users, Sparkles, Copy, Check, Settings, Share2, Terminal } from "lucide-react";
 import { AppIcon } from "@/components/app-icon";
 import { ConfigWizard, type ParsedSchema } from "@/components/config-wizard";
 import { Badge } from "@/components/ui/badge";
@@ -595,8 +595,24 @@ function GettingStartedCard({ app }: { app: App }) {
                 {step.command}
               </code>
               <button
+                onClick={async () => {
+                  try {
+                    await fetch("/api/forge-agent/open-terminal", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json", "X-Forge-User-Id": localStorage.getItem("forge_user_id") || "" },
+                      body: JSON.stringify({ command: step.command }),
+                    });
+                  } catch { /* ignore */ }
+                }}
+                className="shrink-0 rounded-lg p-1.5 text-text-muted hover:bg-white/[0.04] hover:text-foreground transition-colors"
+                title="Run in terminal"
+              >
+                <Terminal className="size-3.5" />
+              </button>
+              <button
                 onClick={() => handleCopy(i, step.command)}
                 className="shrink-0 rounded-lg p-1.5 text-text-muted hover:bg-white/[0.04] hover:text-foreground transition-colors"
+                title="Copy command"
               >
                 {copiedIdx === i ? <Check className="size-3.5 text-green-400" /> : <Copy className="size-3.5" />}
               </button>
