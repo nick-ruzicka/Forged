@@ -4,7 +4,8 @@ import { use, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import yaml from "js-yaml";
-import { ExternalLink, PanelLeftClose, PanelLeft, Download, Star, Clock, Users, Sparkles, Copy, Check, Settings } from "lucide-react";
+import { ExternalLink, PanelLeftClose, PanelLeft, Download, Star, Clock, Users, Sparkles, Copy, Check, Settings, Share2 } from "lucide-react";
+import { AppIcon } from "@/components/app-icon";
 import { ConfigWizard, type ParsedSchema } from "@/components/config-wizard";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -146,7 +147,7 @@ export default function AppDetailPage({
 
           {/* Center: app identity */}
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2">
-            <span className="text-sm">{app.icon || "📦"}</span>
+            <AppIcon name={app.name} slug={app.slug} icon={app.icon} size={20} />
             <span className="text-[13px] font-semibold text-foreground">{app.name}</span>
           </div>
 
@@ -178,25 +179,24 @@ export default function AppDetailPage({
         {/* Subtle radial glow behind icon */}
         <div className="absolute top-12 left-12 size-32 rounded-full bg-primary/[0.04] blur-3xl pointer-events-none" />
 
-        <Link
-          href="/"
-          className="relative text-[13px] text-text-muted hover:text-foreground transition-colors w-fit"
-        >
-          ← Back to Apps
-        </Link>
+        <div className="relative flex items-center gap-1.5 text-xs">
+          <Link href="/" className="text-white/45 hover:text-white/80 transition-colors">
+            Apps
+          </Link>
+          <span className="text-white/25">/</span>
+          <span className="text-white/85 font-medium">{app.name}</span>
+        </div>
 
         <div className="relative flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex items-start gap-5">
-            <div className="flex size-[72px] items-center justify-center rounded-2xl bg-card text-[40px] ring-1 ring-border shadow-[0_8px_30px_rgba(0,0,0,0.25)]">
-              {app.icon || "📦"}
-            </div>
+            <AppIcon name={app.name} slug={app.slug} icon={app.icon} size={64} className="shadow-[0_8px_30px_rgba(0,0,0,0.25)]" />
             <div className="flex flex-col gap-2">
               <div className="flex flex-col gap-1">
-                <h1 className="text-3xl font-bold tracking-tight text-foreground">
+                <h1 className="text-[26px] font-bold tracking-[-0.03em] text-white/98">
                   {app.name}
                 </h1>
                 {app.tagline && (
-                  <p className="text-[15px] leading-relaxed text-text-secondary max-w-lg">
+                  <p className="text-[15px] font-normal leading-relaxed text-white/65 max-w-lg">
                     {app.tagline}
                   </p>
                 )}
@@ -216,9 +216,10 @@ export default function AppDetailPage({
                     {formatCount(app.install_count)} {app.install_count === 1 ? "install" : "installs"}
                   </StatPill>
                 )}
-                {app.avg_rating != null && app.avg_rating > 0 && (
+                {reviews && reviews.length >= 3 && app.avg_rating != null && app.avg_rating > 0 && (
                   <StatPill icon={<Star className="size-3 fill-yellow-400 text-yellow-400" />}>
                     {app.avg_rating.toFixed(1)} rating
+                    <span className="text-white/40 ml-0.5">({reviews.length})</span>
                   </StatPill>
                 )}
                 {app.delivery === "external" && (
@@ -243,6 +244,7 @@ export default function AppDetailPage({
               isInstalled={isInstalled}
               delivery={app.delivery}
             />
+            <ShareButton slug={app.slug} />
             <StarButton toolId={app.id} isStarred={isStarred} />
             {app.source_url && (
               <Button
@@ -351,7 +353,7 @@ export default function AppDetailPage({
               {/* About */}
               {app.description && (
                 <div className="flex flex-col gap-3">
-                  <h3 className="text-[13px] font-semibold uppercase tracking-widest text-text-muted/70">
+                  <h3 className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white/40">
                     About this app
                   </h3>
                   <p className="whitespace-pre-wrap text-[15px] leading-[1.7] text-text-secondary">
@@ -366,7 +368,7 @@ export default function AppDetailPage({
               {/* Reviews */}
               <div className="flex flex-col gap-5">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-[13px] font-semibold uppercase tracking-widest text-text-muted/70">
+                  <h3 className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white/40">
                     Reviews
                   </h3>
                   {reviews && reviews.length > 0 && (
@@ -425,13 +427,9 @@ export default function AppDetailPage({
                     ))}
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center gap-3 py-8 text-center">
-                    <div className="flex gap-1">
-                      {[1,2,3,4,5].map(i => (
-                        <Star key={i} className="size-5 text-border-strong" />
-                      ))}
-                    </div>
-                    <p className="text-sm text-text-muted">No reviews yet. Be the first to share your thoughts.</p>
+                  <div className="flex flex-col items-center gap-4 rounded-xl border border-white/[0.06] bg-white/[0.02] p-6 text-center">
+                    <p className="text-sm font-medium text-white/75">Be the first to review this app</p>
+                    <p className="text-xs text-white/45">Share your experience to help others decide.</p>
                   </div>
                 )}
               </div>
@@ -449,8 +447,8 @@ export default function AppDetailPage({
                 {app.install_count != null && (
                   <DetailRow label="Installs" value={formatCount(app.install_count)} />
                 )}
-                {app.avg_rating != null && app.avg_rating > 0 && (
-                  <DetailRow label="Rating" value={`${app.avg_rating.toFixed(1)} / 5`} />
+                {reviews && reviews.length >= 3 && app.avg_rating != null && app.avg_rating > 0 && (
+                  <DetailRow label="Rating" value={`${app.avg_rating.toFixed(1)} / 5 (${reviews.length} reviews)`} />
                 )}
                 <DetailRow label="Version" value={`v${app.version}`} />
                 {app.created_at && (
@@ -602,10 +600,32 @@ function humanDate(iso: string): string {
 
 function DetailRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
-      <span className="text-xs text-text-muted">{label}</span>
-      <span className="text-xs font-medium text-foreground">{value}</span>
+    <div className="flex items-center justify-between py-2 border-b border-white/[0.06] last:border-0">
+      <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white/40">{label}</span>
+      <span className="text-[13px] font-medium text-white/90">{value}</span>
     </div>
+  );
+}
+
+function ShareButton({ slug }: { slug: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleShare = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const url = `${window.location.origin}/apps/${slug}`;
+    await navigator.clipboard.writeText(url);
+    setCopied(true);
+    const { toast } = await import("sonner");
+    toast.success("Link copied to clipboard");
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <Button variant="outline" size="sm" onClick={handleShare} className="gap-1.5">
+      {copied ? <Check className="size-3.5 text-green-400" /> : <Share2 className="size-3.5" />}
+      Share
+    </Button>
   );
 }
 

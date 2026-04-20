@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { Search, ArrowRight } from "lucide-react";
+import { Search, ArrowRight, TrendingUp } from "lucide-react";
+import { AppIcon } from "@/components/app-icon";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -84,8 +85,8 @@ export default function CatalogPage() {
     <div className="flex flex-col gap-8 p-6 md:p-8">
       {/* Header */}
       <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">Apps</h1>
-        <p className="text-[15px] text-text-secondary">
+        <h1 className="text-[28px] font-bold tracking-[-0.03em] text-white/98">Apps</h1>
+        <p className="text-sm text-white/55 leading-relaxed">
           Discover tools your team has built. Install in one click.
         </p>
       </div>
@@ -110,7 +111,7 @@ export default function CatalogPage() {
         />
       )}
 
-      {/* Spotlight: newest app */}
+      {/* Featured banner */}
       {!isLoading && !query && !activeCategory && sortedApps.length > 0 && (() => {
         const newest = [...sortedApps].sort((a, b) =>
           new Date(b.created_at ?? 0).getTime() - new Date(a.created_at ?? 0).getTime()
@@ -119,27 +120,47 @@ export default function CatalogPage() {
         return (
           <Link
             href={`/apps/${newest.slug}`}
-            className="group relative overflow-hidden rounded-2xl border border-border bg-gradient-to-r from-primary/[0.06] via-card to-card p-6 transition-all duration-200 hover:border-border-strong hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)]"
+            className="group relative overflow-hidden rounded-2xl border border-white/[0.06] p-8 transition-all duration-200 hover:border-white/[0.10] hover:brightness-105 cursor-pointer"
+            style={{ minHeight: 160, background: "radial-gradient(ellipse at top left, rgba(0,102,255,0.04), transparent 70%)" }}
           >
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-primary/[0.06] to-transparent pointer-events-none" />
-            <div className="relative flex items-center gap-5">
-              <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-card text-3xl ring-1 ring-border shadow-lg">
-                {newest.icon || "📦"}
+            <div className="relative flex items-center gap-6">
+              {/* Icon with glow */}
+              <div className="relative shrink-0">
+                <div className="absolute inset-0 scale-150 rounded-full bg-primary/[0.08] blur-2xl pointer-events-none" />
+                <AppIcon name={newest.name} slug={newest.slug} icon={newest.icon} size={80} />
               </div>
-              <div className="flex min-w-0 flex-1 flex-col gap-1">
-                <div className="flex items-center gap-2">
-                  <span className="text-[11px] font-semibold uppercase tracking-widest text-primary">New</span>
-                </div>
-                <span className="text-lg font-bold tracking-tight text-foreground">
-                  {newest.name}
+
+              {/* Content */}
+              <div className="flex min-w-0 flex-1 flex-col gap-2">
+                <span className="text-[8px] font-semibold uppercase tracking-[0.16em] text-white/35">
+                  Featured
                 </span>
+                <div className="flex items-center gap-2.5">
+                  <span className="rounded-full bg-[rgba(0,102,255,0.15)] px-2 py-0.5 text-[10px] font-semibold text-[#5B9FFF]">
+                    NEW
+                  </span>
+                  <span className="text-2xl font-bold tracking-tight text-white/98">
+                    {newest.name}
+                  </span>
+                </div>
                 {newest.tagline && (
-                  <span className="text-[13px] text-text-secondary line-clamp-1">
+                  <span className="text-sm text-white/60 line-clamp-1">
                     {newest.tagline}
                   </span>
                 )}
               </div>
-              <ArrowRight className="size-5 shrink-0 text-text-muted transition-transform group-hover:translate-x-1" />
+
+              {/* Right: install stat */}
+              <div className="hidden shrink-0 sm:flex flex-col items-end gap-1">
+                {newest.install_count != null && newest.install_count > 0 && (
+                  <div className="flex items-center gap-1.5 text-white/45">
+                    <TrendingUp className="size-3.5" />
+                    <span className="text-sm font-medium tabular-nums">{newest.install_count}</span>
+                    <span className="text-xs">installs</span>
+                  </div>
+                )}
+                <ArrowRight className="size-4 text-white/30 transition-transform group-hover:translate-x-1" />
+              </div>
             </div>
           </Link>
         );

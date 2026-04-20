@@ -13,6 +13,7 @@ import { AppPane } from "@/components/app-pane";
 import { useMyItems, useMyStars, useMySkills, useMySubmissions, useAgentAvailable, useRunningApps, uninstallApp } from "@/lib/hooks";
 import { launchItem, removeStar, launchApp, unsubscribeSkill } from "@/lib/api";
 import { useUser } from "@/lib/user-context";
+import { AppIcon } from "@/components/app-icon";
 import type { UserItem, Star, Skill } from "@/lib/types";
 
 export default function MyForgePage() {
@@ -95,8 +96,8 @@ export default function MyForgePage() {
     <div className="flex flex-col gap-8 p-6 md:p-8">
       {/* Header */}
       <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">My Forge</h1>
-        <p className="text-[15px] text-text-secondary">
+        <h1 className="text-[28px] font-bold tracking-[-0.03em] text-white/98">My Forge</h1>
+        <p className="text-sm text-white/55 leading-relaxed">
           Everything you've installed, saved, and subscribed to.
         </p>
       </div>
@@ -165,7 +166,6 @@ export default function MyForgePage() {
         <TabsContent value="installed">
           {(!items || items.length === 0) ? (
             <EmptyState
-              icon={<span className="text-3xl">📦</span>}
               title="No apps installed"
               message="Browse the catalog and install your first app."
               actionLabel="Browse Apps"
@@ -196,7 +196,6 @@ export default function MyForgePage() {
         <TabsContent value="saved">
           {(!stars || stars.length === 0) ? (
             <EmptyState
-              icon={<span className="text-3xl">⭐</span>}
               title="No saved apps"
               message="Star apps from the catalog to save them here."
               actionLabel="Browse Apps"
@@ -219,7 +218,6 @@ export default function MyForgePage() {
         <TabsContent value="skills">
           {(!skills || skills.length === 0) ? (
             <EmptyState
-              icon={<span className="text-3xl">📄</span>}
               title="No skills yet"
               message="Subscribe to skills to build your prompt library. Share them with your team."
               actionLabel="Browse Skills"
@@ -242,7 +240,6 @@ export default function MyForgePage() {
         <TabsContent value="submissions">
           {(!submissions || submissions.length === 0) ? (
             <EmptyState
-              icon={<span className="text-3xl">📝</span>}
               title="No submissions"
               message="Submit a skill from the Skills page to see it here."
               actionLabel="Browse Skills"
@@ -293,9 +290,7 @@ function InstalledTile({
     <div className="group flex flex-col gap-3 rounded-2xl border border-border bg-card p-4 transition-all duration-150 hover:border-border-strong hover:shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
       <div className="flex items-start gap-3">
         <div className="relative shrink-0">
-          <div className="flex size-11 items-center justify-center rounded-xl bg-surface-2 text-xl ring-1 ring-border">
-            {item.icon || "📦"}
-          </div>
+          <AppIcon name={item.name || item.slug || "App"} slug={item.slug || "app"} icon={item.icon} size={44} />
           {item.delivery === "external" && (
             <span className={cn(
               "absolute -right-0.5 -top-0.5 size-2.5 rounded-full ring-2 ring-card",
@@ -362,9 +357,7 @@ function SavedTile({
 }) {
   return (
     <div className="group flex items-center gap-3 rounded-2xl border border-border bg-card p-4 transition-all duration-150 hover:border-border-strong hover:shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
-      <div className="flex size-10 items-center justify-center rounded-xl bg-surface-2 text-xl ring-1 ring-border">
-        {star.icon || "📦"}
-      </div>
+      <AppIcon name={star.name || star.slug || "App"} slug={star.slug || "app"} icon={star.icon} size={40} />
       <div className="flex min-w-0 flex-1 flex-col">
         <Link
           href={star.slug ? `/apps/${star.slug}` : "#"}

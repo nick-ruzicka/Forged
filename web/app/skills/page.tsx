@@ -10,6 +10,13 @@ import {
   ExternalLink,
   Search,
   Sparkles,
+  Zap,
+  FlaskConical,
+  Bug,
+  ClipboardList,
+  Eye,
+  FileText,
+  FileCode,
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -44,6 +51,16 @@ const SKILL_CATEGORIES = [
   "Documents",
   "Other",
 ];
+
+const SKILL_CATEGORY_ICONS: Record<string, typeof Zap> = {
+  Development: Zap,
+  Testing: FlaskConical,
+  Debugging: Bug,
+  Planning: ClipboardList,
+  "Code Review": Eye,
+  Documents: FileText,
+  Other: Sparkles,
+};
 
 type SortOption = "upvotes" | "newest" | "downloads";
 
@@ -104,10 +121,10 @@ export default function SkillsPage() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div className="flex flex-col gap-2">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
+          <h1 className="text-[28px] font-bold tracking-[-0.03em] text-white/98">
             Skills
           </h1>
-          <p className="text-[15px] text-text-secondary">
+          <p className="text-sm text-white/55 leading-relaxed">
             Your prompt library. Subscribe, share, and teach Claude new tricks.
           </p>
         </div>
@@ -118,7 +135,7 @@ export default function SkillsPage() {
       {!isSearching && mySkills && mySkills.length > 0 && (
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-[13px] font-semibold uppercase tracking-widest text-text-muted/70">
+            <h2 className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white/40">
               My Skills
             </h2>
             <span className="text-xs text-text-muted tabular-nums">
@@ -175,7 +192,7 @@ export default function SkillsPage() {
 
       {/* Discover header */}
       {!isSearching && (
-        <h2 className="text-[13px] font-semibold uppercase tracking-widest text-text-muted/70">
+        <h2 className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white/40">
           Discover
         </h2>
       )}
@@ -261,19 +278,16 @@ function SkillRow({
     ? skill.prompt_text.slice(0, 80).replace(/\n/g, " ").trim()
     : null;
 
+  const SkillIcon = SKILL_CATEGORY_ICONS[skill.category || "Other"] || FileCode;
+
   return (
-    <div className="group flex items-center gap-4 px-5 py-3.5 transition-colors hover:bg-white/[0.02]">
+    <div className="group flex items-center gap-4 px-4 transition-colors hover:bg-white/[0.025] border-l-2 border-l-transparent hover:border-l-[rgba(0,102,255,0.4)]" style={{ height: 56 }}>
       {/* Icon */}
       <Link
         href={`/skills/${skill.id}`}
-        className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-surface-2 text-base ring-1 ring-border transition-colors group-hover:ring-border-strong"
+        className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-white/[0.03] ring-1 ring-white/[0.06] transition-colors group-hover:ring-white/[0.10]"
       >
-        {skill.category === "Development" ? "⚡" :
-         skill.category === "Testing" ? "🧪" :
-         skill.category === "Debugging" ? "🐛" :
-         skill.category === "Planning" ? "📋" :
-         skill.category === "Code Review" ? "👁" :
-         skill.category === "Documents" ? "📝" : "📄"}
+        <SkillIcon className="size-4 text-white/60" />
       </Link>
 
       {/* Content */}
@@ -282,26 +296,29 @@ function SkillRow({
         className="flex min-w-0 flex-1 flex-col gap-0.5"
       >
         <div className="flex items-center gap-2">
-          <span className="truncate text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">
+          <span className="truncate text-sm font-semibold text-white/95 group-hover:text-[#5B9FFF] transition-colors">
             {skill.title}
           </span>
           {skill.category && (
-            <Badge variant="secondary" className="hidden sm:flex text-[10px] shrink-0">
+            <span className="hidden sm:inline shrink-0 text-[10px] font-medium uppercase tracking-[0.08em] text-white/35">
               {skill.category}
-            </Badge>
+            </span>
           )}
         </div>
-        <span className="truncate text-[12px] text-text-muted">
+        <span className="truncate text-[13px] text-white/60">
           {skill.use_case || preview || "No description"}
         </span>
       </Link>
 
       {/* Stats */}
-      <div className="hidden md:flex items-center gap-3 shrink-0 text-[11px] tabular-nums text-text-muted">
-        <span className="flex items-center gap-1">
+      <div className="hidden md:flex items-center gap-3 shrink-0 text-[11px] tabular-nums text-white/45">
+        <button
+          className="flex items-center gap-1 hover:text-[#5B9FFF] transition-colors"
+          onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+        >
           <ArrowUp className="size-3" />
           {skill.upvotes}
-        </span>
+        </button>
         <span className="flex items-center gap-1">
           <Download className="size-3" />
           {skill.copy_count}
@@ -309,7 +326,7 @@ function SkillRow({
       </div>
 
       {/* Author */}
-      <span className="hidden lg:block shrink-0 text-[11px] text-text-muted w-24 truncate text-right">
+      <span className="hidden lg:block shrink-0 text-xs text-white/45 w-24 truncate text-right">
         {skill.author_name || "Anonymous"}
       </span>
 

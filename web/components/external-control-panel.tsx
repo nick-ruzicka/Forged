@@ -9,6 +9,7 @@ import { UsageChart, formatDuration, timeAgo, formatUptime } from "@/components/
 import { CoInstallCards } from "@/components/co-install-cards";
 import { useAgentUsage, useRunningApps, useSocial } from "@/lib/hooks";
 import { launchApp, revealApp, uninstallAgent, getAgentPrivacy } from "@/lib/api";
+import { AppIcon } from "@/components/app-icon";
 import type { App } from "@/lib/types";
 import type { PrivacyData } from "@/lib/types";
 
@@ -88,8 +89,8 @@ export function ExternalControlPanel({
       {/* Status + Launch bar */}
       <div className="flex items-center justify-between rounded-2xl border border-border bg-card p-4">
         <div className="flex items-center gap-3">
-          <div className="relative flex size-10 items-center justify-center rounded-xl bg-surface-2 ring-1 ring-border">
-            <span className="text-lg">{app.icon || "📦"}</span>
+          <div className="relative">
+            <AppIcon name={app.name} slug={app.slug} icon={app.icon} size={40} />
             <span
               className={`absolute -right-0.5 -top-0.5 size-2.5 rounded-full ring-2 ring-card ${
                 isRunning

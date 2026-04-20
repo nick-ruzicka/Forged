@@ -16,6 +16,7 @@ import {
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { AppIcon } from "@/components/app-icon";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -112,11 +113,20 @@ export function Sidebar({ onOpenCommandMenu }: SidebarProps) {
             href="/"
             className="flex items-center gap-2.5 text-foreground hover:text-foreground/80 transition-colors"
           >
-            <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-base">
-              &#9874;
+            <div className="flex size-8 items-center justify-center rounded-lg overflow-hidden">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="forge-logo-bg" x1="0" y1="0" x2="32" y2="32">
+                    <stop offset="0%" stopColor="hsl(217 92% 55%)" stopOpacity="0.2" />
+                    <stop offset="100%" stopColor="hsl(217 92% 40%)" stopOpacity="0.1" />
+                  </linearGradient>
+                </defs>
+                <rect width="32" height="32" rx="8" fill="url(#forge-logo-bg)" />
+                <text x="16" y="21" textAnchor="middle" fill="rgba(255,255,255,0.92)" fontSize="16" fontWeight="700" fontFamily="var(--font-sans), system-ui, sans-serif">F</text>
+              </svg>
             </div>
             {!collapsed && (
-              <span className="font-mono text-sm font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent">
+              <span className="text-sm font-bold tracking-tight text-white/90">
                 Forge
               </span>
             )}
@@ -133,7 +143,7 @@ export function Sidebar({ onOpenCommandMenu }: SidebarProps) {
             onClick={onOpenCommandMenu}
             trailing={
               !collapsed ? (
-                <kbd className="ml-auto rounded border border-border-strong bg-surface-2 px-1.5 py-0.5 text-[10px] text-text-muted font-mono">
+                <kbd className="ml-auto rounded border border-white/[0.08] bg-white/[0.03] px-1.5 py-0.5 text-[10px] text-white/40 font-mono">
                   &#8984;K
                 </kbd>
               ) : undefined
@@ -163,7 +173,7 @@ export function Sidebar({ onOpenCommandMenu }: SidebarProps) {
         {installedApps && installedApps.length > 0 && (
           <div className="flex flex-col gap-0.5 px-2 overflow-y-auto">
             {!collapsed && (
-              <span className="px-2.5 py-1.5 text-[11px] font-semibold text-text-muted/70 uppercase tracking-widest">
+              <span className="px-2.5 py-1.5 text-[11px] font-semibold text-white/35 uppercase tracking-[0.12em]">
                 Installed
               </span>
             )}
@@ -173,9 +183,12 @@ export function Sidebar({ onOpenCommandMenu }: SidebarProps) {
                 collapsed={collapsed}
                 label={item.name || "App"}
                 icon={() => (
-                  <span className="text-sm leading-none">
-                    {item.icon || "📦"}
-                  </span>
+                  <AppIcon
+                    name={item.name || "App"}
+                    slug={item.slug || "app"}
+                    icon={item.icon}
+                    size={16}
+                  />
                 )}
                 href={`/apps/${item.slug}`}
                 active={pathname === `/apps/${item.slug}`}
@@ -192,7 +205,7 @@ export function Sidebar({ onOpenCommandMenu }: SidebarProps) {
             </div>
             <div className="flex flex-col gap-0.5 px-2 overflow-y-auto">
               {!collapsed && (
-                <span className="px-2.5 py-1.5 text-[11px] font-semibold text-text-muted/70 uppercase tracking-widest">
+                <span className="px-2.5 py-1.5 text-[11px] font-semibold text-white/35 uppercase tracking-[0.12em]">
                   Skills
                 </span>
               )}
@@ -279,8 +292,12 @@ export function Sidebar({ onOpenCommandMenu }: SidebarProps) {
           href="/"
           className="ml-2 flex items-center gap-1.5 text-foreground"
         >
-          <span className="text-lg">&#9874;</span>
-          <span className="font-mono text-sm font-semibold">Forge</span>
+          <svg width="20" height="20" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="forge-m" x1="0" y1="0" x2="32" y2="32"><stop offset="0%" stopColor="hsl(217 92% 55%)" stopOpacity="0.2" /><stop offset="100%" stopColor="hsl(217 92% 40%)" stopOpacity="0.1" /></linearGradient></defs>
+            <rect width="32" height="32" rx="8" fill="url(#forge-m)" />
+            <text x="16" y="21" textAnchor="middle" fill="rgba(255,255,255,0.92)" fontSize="16" fontWeight="700" fontFamily="var(--font-sans), system-ui, sans-serif">F</text>
+          </svg>
+          <span className="text-sm font-bold tracking-tight text-white/90">Forge</span>
         </Link>
       </div>
 
@@ -336,17 +353,18 @@ function NavItem({
   const content = (
     <span
       className={cn(
-        "relative flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-medium transition-all duration-150",
+        "relative flex w-full items-center gap-2.5 rounded-lg px-2.5 text-[13px] font-medium transition-all duration-150",
         active
-          ? "bg-primary/10 text-primary"
-          : "text-text-secondary hover:bg-white/[0.04] hover:text-foreground",
-        collapsed && "justify-center px-0",
+          ? "bg-[rgba(0,102,255,0.10)] text-[#5B9FFF]"
+          : "text-white/55 hover:bg-white/[0.04] hover:text-white/90",
+        collapsed ? "justify-center px-0 py-2" : "py-[7px]",
       )}
+      style={{ height: collapsed ? undefined : 36 }}
     >
       {active && (
-        <span className="absolute left-0 top-1/2 -translate-y-1/2 h-4 w-[3px] rounded-full bg-primary" />
+        <span className="absolute left-0 top-1/2 -translate-y-1/2 h-4 w-[2px] rounded-full bg-[#5B9FFF]" />
       )}
-      <Icon className="size-4 shrink-0" />
+      <Icon className={cn("size-4 shrink-0", active ? "text-[#5B9FFF]" : "text-white/60")} />
       {!collapsed && <span className="truncate">{label}</span>}
       {!collapsed && trailing}
     </span>

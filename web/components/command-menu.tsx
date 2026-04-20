@@ -8,6 +8,7 @@ import {
   Box,
   Upload,
 } from "lucide-react";
+import { AppIcon } from "@/components/app-icon";
 import {
   CommandDialog,
   CommandInput,
@@ -82,7 +83,7 @@ export function CommandMenu({ open, onOpenChange }: CommandMenuProps) {
                 key={app.id}
                 onSelect={() => navigate(`/apps/${app.slug}`)}
               >
-                <span className="text-base">{app.icon || "📦"}</span>
+                <AppIcon name={app.name} slug={app.slug} icon={app.icon} size={20} />
                 <div className="flex flex-col">
                   <span>{app.name}</span>
                   {app.tagline && (
