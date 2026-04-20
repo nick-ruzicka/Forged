@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline Forecast — Q2 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: #0a0a10;
+    color: #e2e2e8;
+    min-height: 100vh;
+    padding: 2rem;
+    line-height: 1.6;
+  }
+  .container { max-width: 760px; margin: 0 auto; }
+  .header {
+    border-bottom: 1px solid #1a1a22;
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.25rem;
+  }
+  .header-icon { font-size: 1.5rem; }
+  .header-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #6366f1;
+  }
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: #fff;
+    margin-top: 0.5rem;
+  }
+  .subtitle {
+    color: #8888a0;
+    font-size: 0.82rem;
+    margin-top: 0.35rem;
+  }
+
+  /* Funnel */
+  .funnel-section {
+    margin-bottom: 2rem;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: #fff;
+    margin-bottom: 1.25rem;
+  }
+  .funnel-stage {
+    display: grid;
+    grid-template-columns: 140px 1fr 100px 60px;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .stage-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #c8c8d4;
+  }
+  .stage-bar-wrap {
+    height: 36px;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .stage-bar {
+    height: 100%;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    padding-left: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.9);
+    min-width: 40px;
+    transition: width 0.6s ease;
+  }
+  .stage-value {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+    text-align: right;
+  }
+  .stage-deals {
+    font-size: 0.75rem;
+    color: #6b6b80;
+    text-align: right;
+  }
+  .bar-s1 { background: linear-gradient(90deg, #6366f1, #818cf8); }
+  .bar-s2 { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
+  .bar-s3 { background: linear-gradient(90deg, #14b8a6, #2dd4bf); }
+  .bar-s4 { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+  .bar-s5 { background: linear-gradient(90deg, #22c55e, #4ade80); }
+
+  /* Conversion arrows */
+  .conversion-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 100px 60px;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .conversion-arrow {
+    grid-column: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-left: 0.5rem;
+  }
+  .conversion-line {
+    width: 1px;
+    height: 16px;
+    background: #2a2a35;
+  }
+  .conversion-rate {
+    font-size: 0.68rem;
+    color: #6b6b80;
+    font-weight: 500;
+  }
+
+  /* Forecast summary */
+  .forecast-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .forecast-card {
+    background: #111118;
+    border: 1px solid #1a1a22;
+    border-radius: 10px;
+    padding: 1.25rem;
+    text-align: center;
+  }
+  .forecast-card-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6b6b80;
+    margin-bottom: 0.5rem;
+  }
+  .forecast-card-value {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.5rem;
+    color: #fff;
+  }
+  .forecast-card-sub {
+    font-size: 0.72rem;
+    color: #6b6b80;
+    margin-top: 0.25rem;
+  }
+  .fc-best .forecast-card-value { color: #818cf8; }
+  .fc-commit .forecast-card-value { color: #f59e0b; }
+  .fc-closed .forecast-card-value { color: #22c55e; }
+
+  /* Target indicator */
+  .target-indicator {
+    background: #111118;
+    border: 1px solid #1a1a22;
+    border-radius: 10px;
+    padding: 1.25rem;
+  }
+  .target-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.75rem;
+  }
+  .target-header h3 {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6b6b80;
+  }
+  .target-pct {
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+  .pct-yellow { color: #f59e0b; }
+  .target-bar-bg {
+    height: 10px;
+    background: #1a1a22;
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 0.75rem;
+  }
+  .target-bar-fill {
+    height: 100%;
+    border-radius: 5px;
+    background: linear-gradient(90deg, #f59e0b, #eab308);
+    width: 68%;
+  }
+  .target-bar-marker {
+    position: absolute;
+    right: 0;
+    top: -4px;
+    width: 2px;
+    height: 18px;
+    background: #fff;
+    border-radius: 1px;
+  }
+  .target-legend {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    color: #6b6b80;
+  }
+  .target-legend span:last-child { font-weight: 600; color: #a0a0b4; }
+
+  /* Pipeline table */
+  .pipeline-table {
+    width: 100%;
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .pipeline-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .pipeline-table th {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6b6b80;
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid #1a1a22;
+  }
+  .pipeline-table th:last-child { text-align: right; }
+  .pipeline-table td {
+    font-size: 0.82rem;
+    color: #c8c8d4;
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid #111118;
+  }
+  .pipeline-table td:last-child {
+    text-align: right;
+    font-weight: 600;
+    color: #fff;
+  }
+  .stage-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+  }
+
+  /* Status bar */
+  .status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #111118;
+    border: 1px solid #1a1a22;
+    border-radius: 10px;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.72rem;
+    color: #6b6b80;
+  }
+  .status-bar .shortcuts span {
+    background: #1a1a22;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.65rem;
+    margin-left: 0.5rem;
+    color: #8888a0;
+  }
+
+  @media (max-width: 640px) {
+    body { padding: 1rem; }
+    .funnel-stage { grid-template-columns: 100px 1fr 70px 40px; }
+    .forecast-grid { grid-template-columns: 1fr 1fr; }
+    .conversion-row { grid-template-columns: 100px 1fr 70px 40px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <div class="header-top">
+      <span class="header-icon">📊</span>
+      <span class="header-label">Pipeline Forecast</span>
+    </div>
+    <h1>Q2 2026 Revenue Pipeline</h1>
+    <div class="subtitle">30 deals in pipeline &middot; $6.71M total weighted value &middot; Updated Apr 19, 2026</div>
+  </header>
+
+  <div class="funnel-section">
+    <div class="section-title">Pipeline by Stage</div>
+
+    <div class="funnel-stage">
+      <div class="stage-name">Discovery</div>
+      <div class="stage-bar-wrap"><div class="stage-bar bar-s1" style="width:100%">$2.4M</div></div>
+      <div class="stage-value">$2.4M</div>
+      <div class="stage-deals">12 deals</div>
+    </div>
+    <div class="conversion-row"><div class="conversion-arrow"><div class="conversion-line"></div><span class="conversion-rate">67% conversion</span></div></div>
+
+    <div class="funnel-stage">
+      <div class="stage-name">Qualification</div>
+      <div class="stage-bar-wrap"><div class="stage-bar bar-s2" style="width:75%">$1.8M</div></div>
+      <div class="stage-value">$1.8M</div>
+      <div class="stage-deals">8 deals</div>
+    </div>
+    <div class="conversion-row"><div class="conversion-arrow"><div class="conversion-line"></div><span class="conversion-rate">63% conversion</span></div></div>
+
+    <div class="funnel-stage">
+      <div class="stage-name">Proposal</div>
+      <div class="stage-bar-wrap"><div class="stage-bar bar-s3" style="width:50%">$1.2M</div></div>
+      <div class="stage-value">$1.2M</div>
+      <div class="stage-deals">5 deals</div>
+    </div>
+    <div class="conversion-row"><div class="conversion-arrow"><div class="conversion-line"></div><span class="conversion-rate">60% conversion</span></div></div>
+
+    <div class="funnel-stage">
+      <div class="stage-name">Negotiation</div>
+      <div class="stage-bar-wrap"><div class="stage-bar bar-s4" style="width:37%">$890K</div></div>
+      <div class="stage-value">$890K</div>
+      <div class="stage-deals">3 deals</div>
+    </div>
+    <div class="conversion-row"><div class="conversion-arrow"><div class="conversion-line"></div><span class="conversion-rate">67% conversion</span></div></div>
+
+    <div class="funnel-stage">
+      <div class="stage-name">Closed Won</div>
+      <div class="stage-bar-wrap"><div class="stage-bar bar-s5" style="width:18%">$420K</div></div>
+      <div class="stage-value">$420K</div>
+      <div class="stage-deals">2 deals</div>
+    </div>
+  </div>
+
+  <div class="section-title">Forecast Summary</div>
+  <div class="forecast-grid">
+    <div class="forecast-card fc-best">
+      <div class="forecast-card-label">Best Case</div>
+      <div class="forecast-card-value">$1.6M</div>
+      <div class="forecast-card-sub">Weighted pipeline</div>
+    </div>
+    <div class="forecast-card fc-commit">
+      <div class="forecast-card-label">Commit</div>
+      <div class="forecast-card-value">$890K</div>
+      <div class="forecast-card-sub">High confidence</div>
+    </div>
+    <div class="forecast-card fc-closed">
+      <div class="forecast-card-label">Closed</div>
+      <div class="forecast-card-value">$420K</div>
+      <div class="forecast-card-sub">Month to date</div>
+    </div>
+    <div class="forecast-card">
+      <div class="forecast-card-label">Avg Deal Size</div>
+      <div class="forecast-card-value">$224K</div>
+      <div class="forecast-card-sub">Across pipeline</div>
+    </div>
+  </div>
+
+  <div class="target-indicator">
+    <div class="target-header">
+      <h3>vs. Quarterly Target</h3>
+      <span class="target-pct pct-yellow">68%</span>
+    </div>
+    <div class="target-bar-bg">
+      <div class="target-bar-fill"></div>
+      <div class="target-bar-marker"></div>
+    </div>
+    <div class="target-legend">
+      <span>Closed: $420K</span>
+      <span>Target: $2.35M</span>
+    </div>
+  </div>
+
+  <div class="pipeline-table">
+    <div class="section-title">Top Deals in Pipeline</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Deal</th>
+          <th>Stage</th>
+          <th>Close Date</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Acme Corp — Platform</td>
+          <td><span class="stage-dot" style="background:#f59e0b"></span>Negotiation</td>
+          <td>Jun 18</td>
+          <td>$180K</td>
+        </tr>
+        <tr>
+          <td>Globex — Analytics Suite</td>
+          <td><span class="stage-dot" style="background:#f59e0b"></span>Negotiation</td>
+          <td>May 30</td>
+          <td>$340K</td>
+        </tr>
+        <tr>
+          <td>Initech — Migration</td>
+          <td><span class="stage-dot" style="background:#f59e0b"></span>Negotiation</td>
+          <td>Jun 5</td>
+          <td>$370K</td>
+        </tr>
+        <tr>
+          <td>Wayne Enterprises — Security</td>
+          <td><span class="stage-dot" style="background:#14b8a6"></span>Proposal</td>
+          <td>Jun 22</td>
+          <td>$450K</td>
+        </tr>
+        <tr>
+          <td>Stark Industries — DevOps</td>
+          <td><span class="stage-dot" style="background:#14b8a6"></span>Proposal</td>
+          <td>Jun 28</td>
+          <td>$290K</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="status-bar">
+    <span>Pipeline refreshed: Apr 19, 2026 at 3:00 PM</span>
+    <div class="shortcuts">
+      <span>R</span> Refresh
+      <span>F</span> Filter
+      <span>P</span> Print
+      <span>Esc</span> Close
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'p' || e.key === 'P') { window.print(); }
+  });
+</script>
+</body>
+</html>

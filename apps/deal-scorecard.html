@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deal Scorecard — Acme Corp</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: #0a0a10;
+    color: #e2e2e8;
+    min-height: 100vh;
+    padding: 2rem;
+    line-height: 1.6;
+  }
+  .container { max-width: 720px; margin: 0 auto; }
+  .header {
+    border-bottom: 1px solid #1a1a22;
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.25rem;
+  }
+  .header-icon { font-size: 1.5rem; }
+  .header-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #6366f1;
+  }
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: #fff;
+    margin-top: 0.5rem;
+  }
+  .deal-meta {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+    color: #8888a0;
+  }
+  .deal-meta span { display: flex; align-items: center; gap: 0.35rem; }
+
+  /* Overall Score */
+  .overall-score {
+    background: #111118;
+    border: 1px solid #1a1a22;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .score-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: conic-gradient(#6366f1 75%, #1a1a22 75%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .score-circle-inner {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #111118;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  .score-detail h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: #fff;
+    margin-bottom: 0.25rem;
+  }
+  .score-badge {
+    display: inline-block;
+    background: rgba(34, 197, 94, 0.12);
+    color: #22c55e;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    border: 1px solid rgba(34, 197, 94, 0.2);
+  }
+  .score-bar-bg {
+    width: 100%;
+    height: 6px;
+    background: #1a1a22;
+    border-radius: 3px;
+    margin-top: 0.75rem;
+    overflow: hidden;
+  }
+  .score-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #6366f1, #22c55e);
+    border-radius: 3px;
+    width: 75%;
+  }
+
+  /* Dimension bars */
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+  .dimensions { margin-bottom: 2rem; }
+  .dim-row {
+    display: grid;
+    grid-template-columns: 180px 1fr 50px;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #1a1a22;
+  }
+  .dim-row:last-child { border-bottom: none; }
+  .dim-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #c8c8d4;
+  }
+  .dim-bar-wrap {
+    height: 8px;
+    background: #1a1a22;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .dim-bar {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.6s ease;
+  }
+  .dim-score {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #fff;
+    text-align: right;
+  }
+  .dim-note {
+    grid-column: 1 / -1;
+    font-size: 0.75rem;
+    color: #6b6b80;
+    padding-left: 180px;
+    margin-top: -0.25rem;
+    padding-bottom: 0.25rem;
+  }
+
+  /* Cards */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .card {
+    background: #111118;
+    border: 1px solid #1a1a22;
+    border-radius: 10px;
+    padding: 1.25rem;
+  }
+  .card h3 {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.75rem;
+  }
+  .card-risks h3 { color: #f59e0b; }
+  .card-next h3 { color: #6366f1; }
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+  .card li {
+    font-size: 0.82rem;
+    color: #a0a0b4;
+    padding: 0.35rem 0;
+    padding-left: 1rem;
+    position: relative;
+    line-height: 1.5;
+  }
+  .card li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.65rem;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+  }
+  .card-risks li::before { background: #f59e0b; }
+  .card-next li::before { background: #6366f1; }
+
+  /* Status bar */
+  .status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #111118;
+    border: 1px solid #1a1a22;
+    border-radius: 10px;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.72rem;
+    color: #6b6b80;
+    margin-top: 1rem;
+  }
+  .status-bar .updated { color: #4b4b60; }
+  .status-bar .shortcuts span {
+    background: #1a1a22;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.65rem;
+    margin-left: 0.5rem;
+    color: #8888a0;
+  }
+
+  /* Color helpers */
+  .bar-green { background: linear-gradient(90deg, #22c55e, #16a34a); }
+  .bar-blue { background: linear-gradient(90deg, #6366f1, #818cf8); }
+  .bar-amber { background: linear-gradient(90deg, #f59e0b, #d97706); }
+  .bar-teal { background: linear-gradient(90deg, #14b8a6, #0d9488); }
+
+  @media (max-width: 600px) {
+    body { padding: 1rem; }
+    .dim-row { grid-template-columns: 1fr 1fr 40px; }
+    .dim-note { padding-left: 0; }
+    .cards-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <div class="header-top">
+      <span class="header-icon">🎯</span>
+      <span class="header-label">Deal Scorecard</span>
+    </div>
+    <h1>Acme Corp — Enterprise Platform Deal</h1>
+    <div class="deal-meta">
+      <span>Stage: Negotiation</span>
+      <span>Owner: Sarah Chen</span>
+      <span>$180K ARR</span>
+      <span>Close: Jun 18, 2026</span>
+    </div>
+  </header>
+
+  <div class="overall-score">
+    <div class="score-circle">
+      <div class="score-circle-inner">75</div>
+    </div>
+    <div class="score-detail" style="flex:1">
+      <h2>Overall Deal Health</h2>
+      <span class="score-badge">Strong</span>
+      <div class="score-bar-bg">
+        <div class="score-bar-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dimensions">
+    <div class="section-title">Scoring Dimensions</div>
+
+    <div class="dim-row">
+      <div class="dim-label">Champion Strength</div>
+      <div class="dim-bar-wrap"><div class="dim-bar bar-green" style="width:80%"></div></div>
+      <div class="dim-score">8/10</div>
+    </div>
+    <div class="dim-note">VP Engineering, actively sponsoring internally</div>
+
+    <div class="dim-row">
+      <div class="dim-label">Economic Buyer Access</div>
+      <div class="dim-bar-wrap"><div class="dim-bar bar-amber" style="width:60%"></div></div>
+      <div class="dim-score">6/10</div>
+    </div>
+    <div class="dim-note">CFO met once, need follow-up meeting</div>
+
+    <div class="dim-row">
+      <div class="dim-label">Competition</div>
+      <div class="dim-bar-wrap"><div class="dim-bar bar-blue" style="width:70%"></div></div>
+      <div class="dim-score">7/10</div>
+    </div>
+    <div class="dim-note">Incumbent is legacy, switching cost is main barrier</div>
+
+    <div class="dim-row">
+      <div class="dim-label">Timeline</div>
+      <div class="dim-bar-wrap"><div class="dim-bar bar-green" style="width:90%"></div></div>
+      <div class="dim-score">9/10</div>
+    </div>
+    <div class="dim-note">Contract renewal in 60 days, strong urgency</div>
+
+    <div class="dim-row">
+      <div class="dim-label">Technical Fit</div>
+      <div class="dim-bar-wrap"><div class="dim-bar bar-green" style="width:80%"></div></div>
+      <div class="dim-score">8/10</div>
+    </div>
+    <div class="dim-note">POC passed, 3 integration requirements met</div>
+
+    <div class="dim-row">
+      <div class="dim-label">Budget</div>
+      <div class="dim-bar-wrap"><div class="dim-bar bar-blue" style="width:70%"></div></div>
+      <div class="dim-score">7/10</div>
+    </div>
+    <div class="dim-note">$180K ARR, within approved range</div>
+  </div>
+
+  <div class="cards-grid">
+    <div class="card card-risks">
+      <h3>Key Risks</h3>
+      <ul>
+        <li>Limited CFO access — only one meeting so far, no executive sponsor alignment confirmed</li>
+        <li>Incumbent vendor offering 20% discount to retain account</li>
+        <li>IT security review not yet scheduled, could add 2-3 weeks</li>
+        <li>Two competing budget requests from other departments</li>
+      </ul>
+    </div>
+    <div class="card card-next">
+      <h3>Next Steps</h3>
+      <ul>
+        <li>Schedule CFO follow-up via champion intro by Apr 25</li>
+        <li>Submit security questionnaire to IT by Apr 22</li>
+        <li>Prepare ROI deck with 3-year TCO comparison</li>
+        <li>Confirm legal review timeline with procurement</li>
+        <li>Send case study from similar enterprise deployment</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="status-bar">
+    <span class="updated">Last scored: Apr 19, 2026 at 2:14 PM</span>
+    <div class="shortcuts">
+      <span>R</span> Refresh
+      <span>E</span> Edit
+      <span>P</span> Print
+      <span>Esc</span> Close
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'p' || e.key === 'P') { window.print(); }
+  });
+</script>
+</body>
+</html>

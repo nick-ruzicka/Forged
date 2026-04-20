@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Battle Card — vs. SAP Concur</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: #0a0a10;
+    color: #e2e2e8;
+    min-height: 100vh;
+    padding: 2rem;
+    line-height: 1.6;
+  }
+  .container { max-width: 740px; margin: 0 auto; }
+  .header {
+    border-bottom: 1px solid #1a1a22;
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.25rem;
+  }
+  .header-icon { font-size: 1.5rem; }
+  .header-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #6366f1;
+  }
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: #fff;
+    margin-top: 0.5rem;
+  }
+  .subtitle {
+    color: #8888a0;
+    font-size: 0.82rem;
+    margin-top: 0.35rem;
+  }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+
+  /* Win rate badge */
+  .win-rate-banner {
+    background: #111118;
+    border: 1px solid #1a1a22;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .win-stat {
+    text-align: center;
+  }
+  .win-stat-value {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    color: #22c55e;
+  }
+  .win-stat-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6b6b80;
+    font-weight: 600;
+  }
+  .win-bar-section { flex: 1; min-width: 200px; }
+  .win-bar-bg {
+    height: 10px;
+    background: #1a1a22;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 0.4rem;
+  }
+  .win-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #22c55e, #16a34a);
+    border-radius: 5px;
+    width: 67%;
+  }
+  .win-bar-legend {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: #6b6b80;
+  }
+
+  /* Comparison grid */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .compare-card {
+    background: #111118;
+    border: 1px solid #1a1a22;
+    border-radius: 10px;
+    padding: 1.25rem;
+  }
+  .compare-card h3 {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.75rem;
+  }
+  .card-red h3 { color: #ef4444; }
+  .card-amber h3 { color: #f59e0b; }
+  .card-green h3 { color: #22c55e; }
+  .card-blue h3 { color: #6366f1; }
+  .compare-card ul {
+    list-style: none;
+    padding: 0;
+  }
+  .compare-card li {
+    font-size: 0.82rem;
+    color: #a0a0b4;
+    padding: 0.4rem 0;
+    padding-left: 1rem;
+    position: relative;
+    line-height: 1.5;
+    border-bottom: 1px solid #151520;
+  }
+  .compare-card li:last-child { border-bottom: none; }
+  .compare-card li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.7rem;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+  }
+  .card-red li::before { background: #ef4444; }
+  .card-amber li::before { background: #f59e0b; }
+  .card-green li::before { background: #22c55e; }
+  .card-blue li::before { background: #6366f1; }
+
+  /* Objection handlers */
+  .objections {
+    margin-bottom: 2rem;
+  }
+  .objection {
+    background: #111118;
+    border: 1px solid #1a1a22;
+    border-radius: 10px;
+    padding: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+  .objection-q {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #f59e0b;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .objection-q-icon {
+    font-size: 0.7rem;
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 0.05rem;
+  }
+  .objection-a {
+    font-size: 0.82rem;
+    color: #a0a0b4;
+    padding-left: 2.5rem;
+    line-height: 1.6;
+  }
+  .objection-a strong {
+    color: #22c55e;
+    font-weight: 600;
+  }
+
+  /* Recent wins */
+  .wins-section { margin-bottom: 1.5rem; }
+  .win-row {
+    display: grid;
+    grid-template-columns: 1fr 120px 100px;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #1a1a22;
+    align-items: center;
+  }
+  .win-row:last-child { border-bottom: none; }
+  .win-company {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #c8c8d4;
+  }
+  .win-company-sub {
+    font-size: 0.72rem;
+    color: #6b6b80;
+  }
+  .win-size {
+    font-size: 0.78rem;
+    color: #8888a0;
+    text-align: center;
+  }
+  .win-value {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #22c55e;
+    text-align: right;
+  }
+  .wins-header {
+    display: grid;
+    grid-template-columns: 1fr 120px 100px;
+    gap: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #1a1a22;
+    margin-bottom: 0;
+  }
+  .wins-header span {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6b6b80;
+  }
+  .wins-header span:nth-child(2) { text-align: center; }
+  .wins-header span:last-child { text-align: right; }
+
+  /* Status bar */
+  .status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #111118;
+    border: 1px solid #1a1a22;
+    border-radius: 10px;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.72rem;
+    color: #6b6b80;
+    margin-top: 0.5rem;
+  }
+  .status-bar .shortcuts span {
+    background: #1a1a22;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.65rem;
+    margin-left: 0.5rem;
+    color: #8888a0;
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 1rem; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .win-rate-banner { flex-direction: column; text-align: center; }
+    .win-row { grid-template-columns: 1fr 80px 80px; }
+    .wins-header { grid-template-columns: 1fr 80px 80px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <div class="header-top">
+      <span class="header-icon">&#x2694;&#xFE0F;</span>
+      <span class="header-label">Competitive Battle Card</span>
+    </div>
+    <h1>vs. SAP Concur</h1>
+    <div class="subtitle">Travel &amp; Expense Management &middot; Last updated Apr 19, 2026</div>
+  </header>
+
+  <div class="win-rate-banner">
+    <div class="win-stat">
+      <div class="win-stat-value">67%</div>
+      <div class="win-stat-label">Head-to-Head Win Rate</div>
+    </div>
+    <div class="win-bar-section">
+      <div class="win-bar-bg"><div class="win-bar-fill"></div></div>
+      <div class="win-bar-legend">
+        <span>24 wins</span>
+        <span>12 losses &middot; 36 total</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="compare-grid">
+    <div class="compare-card card-red">
+      <h3>Their Strengths</h3>
+      <ul>
+        <li>Deep enterprise compliance framework, battle-tested at Fortune 100</li>
+        <li>Large partner and integrator network (300+ certified)</li>
+        <li>Strong brand recognition with procurement teams</li>
+        <li>Comprehensive global tax and regulatory coverage</li>
+      </ul>
+    </div>
+    <div class="compare-card card-amber">
+      <h3>Their Weaknesses</h3>
+      <ul>
+        <li>Legacy UX with poor user satisfaction (NPS ~18)</li>
+        <li>Slow innovation cycle — 2 major releases/year</li>
+        <li>High implementation cost ($150K-500K typical)</li>
+        <li>Poor mobile experience, outdated app design</li>
+        <li>Complex pricing with hidden per-transaction fees</li>
+      </ul>
+    </div>
+    <div class="compare-card card-green">
+      <h3>Our Advantages</h3>
+      <ul>
+        <li>Modern UX with 4.7-star app rating (vs. their 2.8)</li>
+        <li>AI-powered policy controls — auto-approve 80% of expenses</li>
+        <li>3x faster deployment: 6 weeks vs. their 4-6 months</li>
+        <li>Real-time spend visibility with predictive analytics</li>
+        <li>Transparent per-seat pricing, no transaction fees</li>
+      </ul>
+    </div>
+    <div class="compare-card card-blue">
+      <h3>Key Differentiators</h3>
+      <ul>
+        <li>AI receipt scanning: 99.2% accuracy vs. their 94%</li>
+        <li>Built-in travel booking — no separate module needed</li>
+        <li>Slack/Teams native integration for approvals</li>
+        <li>Real-time budget alerts for managers</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="objections">
+    <div class="section-title">Objection Handlers</div>
+
+    <div class="objection">
+      <div class="objection-q">
+        <span class="objection-q-icon">OBJ</span>
+        "SAP Concur is the industry standard. Why would we switch?"
+      </div>
+      <div class="objection-a">
+        <strong>Reframe:</strong> "Being the incumbent doesn't mean being the best fit. Companies like [reference customer] switched because they were spending $X on implementation and support that could be redirected. The 'standard' 5 years ago isn't the standard today — employee expectations for software have changed dramatically."
+      </div>
+    </div>
+
+    <div class="objection">
+      <div class="objection-q">
+        <span class="objection-q-icon">OBJ</span>
+        "We've already invested heavily in our Concur setup."
+      </div>
+      <div class="objection-a">
+        <strong>Acknowledge + pivot:</strong> "That's a real consideration. But consider the ongoing costs: dedicated admin headcount, integration maintenance, user training. Our migration toolkit transfers your existing policies and GL mappings in weeks, not months. Most customers see positive ROI within the first quarter post-migration."
+      </div>
+    </div>
+
+    <div class="objection">
+      <div class="objection-q">
+        <span class="objection-q-icon">OBJ</span>
+        "We need Concur's compliance depth for our regulated industry."
+      </div>
+      <div class="objection-a">
+        <strong>Evidence:</strong> "We serve 40+ companies in regulated industries including [examples]. Our AI policy engine actually catches more violations because it learns from patterns rather than relying on static rules. We're SOC 2 Type II certified and pass the same audits. Happy to share our compliance documentation."
+      </div>
+    </div>
+  </div>
+
+  <div class="wins-section">
+    <div class="section-title">Recent Wins vs. Concur</div>
+    <div class="wins-header">
+      <span>Company</span>
+      <span>Size</span>
+      <span>Deal Value</span>
+    </div>
+    <div class="win-row">
+      <div>
+        <div class="win-company">Meridian Health Systems</div>
+        <div class="win-company-sub">Healthcare &middot; Closed Mar 2026</div>
+      </div>
+      <div class="win-size">2,400 employees</div>
+      <div class="win-value">$312K ARR</div>
+    </div>
+    <div class="win-row">
+      <div>
+        <div class="win-company">Vortex Manufacturing</div>
+        <div class="win-company-sub">Industrial &middot; Closed Feb 2026</div>
+      </div>
+      <div class="win-size">1,100 employees</div>
+      <div class="win-value">$156K ARR</div>
+    </div>
+    <div class="win-row">
+      <div>
+        <div class="win-company">Pinnacle Financial Group</div>
+        <div class="win-company-sub">Financial Services &middot; Closed Jan 2026</div>
+      </div>
+      <div class="win-size">3,800 employees</div>
+      <div class="win-value">$485K ARR</div>
+    </div>
+  </div>
+
+  <div class="status-bar">
+    <span>Updated by Competitive Intelligence team &middot; Apr 19, 2026</span>
+    <div class="shortcuts">
+      <span>S</span> Share
+      <span>P</span> Print
+      <span>C</span> Copy
+      <span>Esc</span> Close
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'p' || e.key === 'P') { window.print(); }
+    if (e.key === 'c' || e.key === 'C') {
+      if (!e.metaKey && !e.ctrlKey) {
+        navigator.clipboard.writeText(document.body.innerText).then(function() {
+          var bar = document.querySelector('.status-bar span');
+          var orig = bar.textContent;
+          bar.textContent = 'Copied to clipboard!';
+          setTimeout(function() { bar.textContent = orig; }, 1500);
+        });
+      }
+    }
+  });
+</script>
+</body>
+</html>
