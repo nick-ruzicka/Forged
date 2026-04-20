@@ -7,10 +7,9 @@ import { AppIcon } from "@/components/app-icon";
 
 interface CoInstallCardsProps {
   toolId: number;
-  toolName: string;
 }
 
-export function CoInstallCards({ toolId, toolName }: CoInstallCardsProps) {
+export function CoInstallCards({ toolId }: CoInstallCardsProps) {
   const { data: coinstalls } = useCoInstalls(toolId);
 
   if (!coinstalls || coinstalls.length === 0) return null;

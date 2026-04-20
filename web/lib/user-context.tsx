@@ -41,7 +41,11 @@ export function UserProvider({ children }: { children: ReactNode }) {
   });
   const [adminKey, _setAdminKey] = useState(() => readLocal("forge_admin_key"));
 
-  // Re-hydrate on mount (ensures SSR mismatch is resolved)
+  // Re-hydrate on mount. Lazy initializers above return "" during SSR (no
+  // window), so after client takes over we have to pull the real values
+  // from localStorage — that's a legitimate external-store sync, not a
+  // render-triggered state cascade.
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     setUserId(getUserId());
     _setRole(localStorage.getItem("forge_user_role") ?? "");
@@ -58,6 +62,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
       // ignore bad JSON
     }
   }, []);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const setRole = useCallback((r: string) => {
     _setRole(r);

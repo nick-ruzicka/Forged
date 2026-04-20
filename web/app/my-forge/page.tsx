@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import Link from "next/link";
 import { ExternalLink, LogOut, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
@@ -98,7 +98,7 @@ export default function MyForgePage() {
       <div className="flex flex-col gap-2">
         <h1 className="text-[28px] font-bold tracking-[-0.03em] text-white/98">My Forge</h1>
         <p className="text-sm text-white/55 leading-relaxed">
-          Everything you've installed, saved, and subscribed to.
+          Everything you&apos;ve installed, saved, and subscribed to.
         </p>
       </div>
 

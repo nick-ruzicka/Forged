@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -57,11 +57,10 @@ export default function PublishPage() {
   const [error, setError] = useState("");
   const [published, setPublished] = useState<App | null>(null);
 
-  // Auto-fill from localStorage
-  useEffect(() => {
-    if (userName) setAuthorName(userName);
-    if (userEmail) setAuthorEmail(userEmail);
-  }, [userName, userEmail]);
+  // Inputs fall back to the identity from user-context when the user hasn't
+  // typed anything, so we don't need to mirror userName/userEmail into state.
+  const displayAuthorName = authorName || userName || "";
+  const displayAuthorEmail = authorEmail || userEmail || "";
 
   // Handle paste-mode drag-drop of .html files
   const handlePasteDrop = useCallback((e: React.DragEvent) => {
@@ -83,7 +82,9 @@ export default function PublishPage() {
       setError("Tagline is required");
       return;
     }
-    if (!authorEmail.trim()) {
+    const resolvedAuthorName = (authorName || userName || "").trim();
+    const resolvedAuthorEmail = (authorEmail || userEmail || "").trim();
+    if (!resolvedAuthorEmail) {
       setError("Author email is required");
       return;
     }
@@ -94,8 +95,8 @@ export default function PublishPage() {
       category,
       icon: icon.trim() || "\u229E",
       description: description.trim() || "",
-      author_name: authorName.trim() || "",
-      author_email: authorEmail.trim(),
+      author_name: resolvedAuthorName,
+      author_email: resolvedAuthorEmail,
     };
 
     setSubmitting(true);
@@ -129,9 +130,10 @@ export default function PublishPage() {
         result = await submitApp({ ...metadata, html });
       }
 
-      // Persist identity
+      // Persist identity only if the user changed it; otherwise leave
+      // user-context in charge.
       if (authorName || authorEmail) {
-        setIdentity(authorName, authorEmail);
+        setIdentity(resolvedAuthorName, resolvedAuthorEmail);
       }
 
       const milestoneMsg = trackMilestone("first_submission");
@@ -154,6 +156,8 @@ export default function PublishPage() {
     description,
     authorName,
     authorEmail,
+    userName,
+    userEmail,
     pasteContent,
     uploadFile,
     githubUrl,
@@ -359,7 +363,7 @@ export default function PublishPage() {
             </label>
             <Input
               placeholder="Your name"
-              value={authorName}
+              value={displayAuthorName}
               onChange={(e) => setAuthorName(e.target.value)}
             />
           </div>
@@ -371,7 +375,7 @@ export default function PublishPage() {
             <Input
               placeholder="you@example.com"
               type="email"
-              value={authorEmail}
+              value={displayAuthorEmail}
               onChange={(e) => setAuthorEmail(e.target.value)}
             />
           </div>

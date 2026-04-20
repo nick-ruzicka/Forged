@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import os
 import re
+import shlex
 import subprocess
 from typing import Any
 
@@ -198,11 +199,24 @@ def _write_yaml_from_scratch(cf: ConfigFile, answers: dict, out_path: str) -> No
 
 
 def _run_verification(command: str, success_pattern: str, app_dir: str) -> dict:
-    """Run a verification command in the app directory and check output."""
+    """Run a verification command in the app directory and check output.
+
+    The command comes from an LLM-generated config schema, so `shell=True`
+    is unsafe — a prompt-injected README could smuggle shell metacharacters
+    into the command. Tokenize with shlex and exec the argv list directly.
+    """
+    try:
+        argv = shlex.split(command)
+    except ValueError as exc:
+        return {"command": command, "exit_code": -1, "passed": False,
+                "output": f"invalid command (shlex parse failed): {exc}"}
+    if not argv:
+        return {"command": command, "exit_code": -1, "passed": False,
+                "output": "empty verification command"}
     try:
         result = subprocess.run(
-            command,
-            shell=True,
+            argv,
+            shell=False,
             cwd=app_dir,
             capture_output=True,
             text=True,

@@ -49,17 +49,16 @@ export function Sidebar({ onOpenCommandMenu }: SidebarProps) {
   const { adminKey, name, email } = useUser();
   const { data: myItems } = useMyItems();
   const { data: mySkills } = useMySkills();
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return localStorage.getItem("forge_sidebar_collapsed") === "true";
+  });
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Hydrate collapsed state from localStorage + listen for external toggle
+  // Subscribe to external toggle events.
   useEffect(() => {
-    const stored = localStorage.getItem("forge_sidebar_collapsed");
-    if (stored === "true") setCollapsed(true);
-
     const handleToggle = () => {
-      const current = localStorage.getItem("forge_sidebar_collapsed") === "true";
-      setCollapsed(current);
+      setCollapsed(localStorage.getItem("forge_sidebar_collapsed") === "true");
     };
     window.addEventListener("forge-sidebar-toggle", handleToggle);
     return () => window.removeEventListener("forge-sidebar-toggle", handleToggle);
@@ -73,8 +72,10 @@ export function Sidebar({ onOpenCommandMenu }: SidebarProps) {
     });
   }, []);
 
-  // Close mobile sidebar on navigation
+  // Close mobile sidebar on navigation. This syncs local UI to the router's
+  // pathname, which is external state — not an intra-render cascade.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMobileOpen(false);
   }, [pathname]);
 

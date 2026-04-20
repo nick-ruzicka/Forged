@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { ArrowUp, ChevronRight, Copy, Download, ExternalLink, Eye } from "lucide-react";
+import { ArrowUp, ChevronRight, Copy, Download, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";

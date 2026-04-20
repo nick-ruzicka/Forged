@@ -4,8 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Search, ArrowRight, TrendingUp } from "lucide-react";
 import { AppIcon } from "@/components/app-icon";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AppCard } from "@/components/app-card";
 import { CategoryPills } from "@/components/category-pills";
@@ -18,11 +16,12 @@ import { useUser } from "@/lib/user-context";
 export default function CatalogPage() {
   const { role } = useUser();
 
-  // Role picker on first visit
-  const [rolePickerOpen, setRolePickerOpen] = useState(false);
-  useEffect(() => {
-    if (!role) setRolePickerOpen(true);
-  }, [role]);
+  // Role picker on first visit. Derive `open` from (no role) minus user dismissals.
+  const [rolePickerDismissed, setRolePickerDismissed] = useState(false);
+  const rolePickerOpen = !role && !rolePickerDismissed;
+  const handleRolePickerOpenChange = (next: boolean) => {
+    if (!next) setRolePickerDismissed(true);
+  };
 
   // Search with debounce
   const [query, setQuery] = useState("");
@@ -214,7 +213,7 @@ export default function CatalogPage() {
       )}
 
       {/* Role picker dialog */}
-      <RolePicker open={rolePickerOpen} onOpenChange={setRolePickerOpen} />
+      <RolePicker open={rolePickerOpen} onOpenChange={handleRolePickerOpenChange} />
     </div>
   );
 }

@@ -1,13 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {
   ArrowUp,
   Check,
-  Copy,
   Download,
-  ExternalLink,
   Search,
   Sparkles,
   Zap,
@@ -20,7 +18,6 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -34,12 +31,7 @@ import { CategoryPills } from "@/components/category-pills";
 import { EmptyState } from "@/components/empty-state";
 import { SubmitSkillDialog } from "@/components/submit-skill-dialog";
 import { useSkills, useMySkills } from "@/lib/hooks";
-import {
-  subscribeSkill,
-  unsubscribeSkill,
-  downloadSkillUrl,
-  upvoteSkill,
-} from "@/lib/api";
+import { subscribeSkill, unsubscribeSkill } from "@/lib/api";
 import type { Skill } from "@/lib/types";
 
 const SKILL_CATEGORIES = [

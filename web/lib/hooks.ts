@@ -29,7 +29,6 @@ import {
   getClaudeRunLog,
   getAdminQueue,
   getAdminStats,
-  getAgentRunning,
   addItem,
   removeItem,
   addStar,

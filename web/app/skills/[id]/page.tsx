@@ -10,7 +10,6 @@ import {
   Download,
   ExternalLink,
   Link2,
-  Share2,
   Trash2,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -25,8 +24,6 @@ import {
   upvoteSkill,
   subscribeSkill,
 } from "@/lib/api";
-import type { Skill } from "@/lib/types";
-
 export default function SkillDetailPage({
   params,
 }: {

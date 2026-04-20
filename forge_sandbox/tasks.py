@@ -152,7 +152,12 @@ def skill_review_pipeline(skill_id: int) -> dict:
             review_id=review_id,
         )
 
-    return {"skill_id": skill_id, "review_id": review_id, "review_status": recommendation}
+    # Normalize pipeline recommendation ("approve"/"block") to the review_status
+    # value actually stored on the skill ("approved"/"blocked"/"needs_revision"),
+    # so the task return value matches DB state.
+    status_map = {"approve": "approved", "block": "blocked"}
+    review_status = status_map.get(recommendation, recommendation)
+    return {"skill_id": skill_id, "review_id": review_id, "review_status": review_status}
 
 
 @celery_app.task(name="forge_sandbox.tasks.async_skill_sweep")

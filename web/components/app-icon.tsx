@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import Image from "next/image";
 
 interface AppIconProps {
   name: string;
@@ -33,7 +34,14 @@ export function AppIcon({ name, slug, icon, size = 48, className = "" }: AppIcon
             borderRadius: size * 0.21,
           }}
         >
-          <img src={icon} alt={name} width={size} height={size} className="object-cover" />
+          <Image
+            src={icon}
+            alt={name}
+            width={size}
+            height={size}
+            unoptimized
+            className="object-cover"
+          />
         </div>
       );
     }

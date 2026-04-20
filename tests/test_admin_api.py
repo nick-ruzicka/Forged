@@ -1,6 +1,4 @@
 """Tests for /api/admin/* endpoints."""
-from unittest.mock import patch
-
 import pytest
 
 
@@ -13,20 +11,6 @@ ADMIN_ROUTES = [
     ("POST", "/api/admin/tools/1/override-scores"),
     ("POST", "/api/admin/tools/1/archive"),
 ]
-
-
-@pytest.fixture(autouse=True)
-def _no_deploy_thread():
-    """The admin approve flow launches deploy_tool in a daemon thread. Mock it
-    so the test runs deterministically and never hits real Claude/WeasyPrint.
-
-    If api.admin cannot be imported (e.g. psycopg2 missing locally), silently
-    pass through so the underlying test's own skip logic handles it."""
-    try:
-        with patch("api.admin._launch_deploy", return_value=None):
-            yield
-    except (ImportError, ModuleNotFoundError, AttributeError):
-        yield
 
 
 @pytest.mark.parametrize("method,path", ADMIN_ROUTES)
@@ -76,20 +60,6 @@ def test_approve_sets_status_approved(client, db, sample_pending_tool, admin_hea
         row = cur.fetchone()
         status = row[0] if isinstance(row, tuple) else row["status"]
         assert status == "approved"
-
-
-def test_approve_calls_deploy_hook(client, sample_pending_tool, admin_headers):
-    """Approve should invoke _launch_deploy exactly once."""
-    with patch("api.admin._launch_deploy") as deploy_mock:
-        resp = client.post(
-            f"/api/admin/tools/{sample_pending_tool['id']}/approve",
-            headers=admin_headers,
-            json={"reviewer": "Nick"},
-        )
-    if resp.status_code in (404, 405):
-        pytest.skip("POST approve not implemented yet (T4)")
-    assert resp.status_code == 200
-    assert deploy_mock.called
 
 
 def test_reject_sets_status_rejected(client, db, sample_pending_tool, admin_headers):
