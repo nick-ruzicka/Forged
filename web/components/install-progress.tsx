@@ -210,7 +210,7 @@ export function InstallProgress({
         </div>
       </div>
 
-      {/* Progress bar */}
+      {/* Progress bar — force 100% on done/error regardless of state race */}
       <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-2">
         <div
           className={`h-full rounded-full transition-all duration-500 ease-out ${
@@ -220,7 +220,7 @@ export function InstallProgress({
                 ? "bg-destructive"
                 : "bg-primary"
           }`}
-          style={{ width: `${progress}%` }}
+          style={{ width: `${phase === "done" || phase === "error" ? 100 : progress}%` }}
         />
       </div>
 
@@ -239,6 +239,21 @@ export function InstallProgress({
               <div key={i} className="py-0.5">{line}</div>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* Success: next step */}
+      {phase === "done" && (
+        <div className="flex items-center gap-3 border-t border-border pt-4">
+          <Button
+            size="sm"
+            onClick={() => window.location.reload()}
+          >
+            Continue to app
+          </Button>
+          <span className="text-xs text-text-muted">
+            App installed — reload to see configuration options
+          </span>
         </div>
       )}
 
