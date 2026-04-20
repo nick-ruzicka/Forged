@@ -126,12 +126,42 @@ def _slugify(name: str) -> str:
 
 
 def _unique_slug(base: str) -> str:
+    """Return a slug guaranteed not to collide at call time.
+
+    `tools.slug` has a UNIQUE constraint, so insert-time collisions will still
+    raise an IntegrityError if two callers race between the lookup here and
+    their own `insert_tool`. Callers that insert into `tools` should catch
+    psycopg2.IntegrityError and retry with a fresh slug if they need true
+    race safety.
+    """
     slug = base
     i = 2
     while db.slug_exists(slug):
         slug = f"{base}-{i}"
         i += 1
     return slug
+
+
+def _insert_tool_with_unique_slug(row: dict, base_slug: str, max_retries: int = 5) -> tuple[int, str]:
+    """Insert a tool, retrying with a fresh slug on unique-constraint collisions.
+
+    Closes the race between _unique_slug() and db.insert_tool() where two
+    concurrent submissions of the same app name would both pass the existence
+    check and then collide on INSERT.
+    """
+    import psycopg2
+
+    for attempt in range(max_retries):
+        try:
+            tool_id = db.insert_tool(row)
+            return tool_id, row["slug"]
+        except psycopg2.IntegrityError as exc:
+            if "slug" not in str(exc).lower():
+                raise
+            # Pick a new slug with a bumped counter and try again.
+            row = dict(row)
+            row["slug"] = _unique_slug(f"{base_slug}-{attempt + 2}")
+    raise RuntimeError(f"could not allocate unique slug after {max_retries} attempts")
 
 
 def _require_admin():
@@ -1959,7 +1989,9 @@ def submit_app():
     Body (JSON):  {html, name, tagline, description, category, author_name, author_email}
     Multipart:    same fields + optional `file` (zip containing index.html)
 
-    No pipeline dispatch — apps go straight to `pending_review` for admin approval.
+    No pipeline dispatch — apps are auto-approved and deployed immediately.
+    Admins can later toggle per-org review gating; until then this endpoint
+    treats every submission as trusted.
     """
     import io
     import json
@@ -2003,7 +2035,8 @@ def submit_app():
     if not author_email:
         return jsonify({"error": "validation", "message": "author_email required"}), 400
 
-    slug = _unique_slug(_slugify(name))
+    base_slug = _slugify(name)
+    slug = _unique_slug(base_slug)
     row = {
         "slug": slug,
         "name": name,
@@ -2018,7 +2051,7 @@ def submit_app():
         "author_email": author_email,
         "submitted_at": datetime.utcnow(),
     }
-    tool_id = db.insert_tool(row)
+    tool_id, slug = _insert_tool_with_unique_slug(row, base_slug)
 
     # Auto-inspect at submit time so the trust card is ready immediately.
     try:
@@ -2047,7 +2080,7 @@ def submit_app():
         "id": tool_id,
         "slug": slug,
         "url": f"/apps/{slug}",
-        "status": "pending_review",
+        "status": "approved",
     }), 201
 
 
@@ -2063,11 +2096,16 @@ def submit_from_github():
     import shutil
     import subprocess
     import tempfile
+    from urllib.parse import urlparse
 
     body = request.get_json(silent=True) or {}
     github_url = (body.get("github_url") or "").strip()
-    if not github_url or "github.com" not in github_url:
+    if not github_url:
         return jsonify({"error": "validation", "message": "github_url required"}), 400
+    parsed = urlparse(github_url)
+    if parsed.scheme not in ("https", "http") or (parsed.hostname or "").lower() != "github.com":
+        return jsonify({"error": "validation",
+                        "message": "github_url must be an https://github.com/... URL"}), 400
     name = (body.get("name") or "").strip()
     if not name:
         return jsonify({"error": "validation", "message": "name required"}), 400
@@ -2105,7 +2143,8 @@ def submit_from_github():
         except Exception:
             pass
 
-    slug = _unique_slug(_slugify(name))
+    base_slug = _slugify(name)
+    slug = _unique_slug(base_slug)
     row = {
         "slug": slug,
         "name": name,
@@ -2128,7 +2167,8 @@ def submit_from_github():
         "endpoint_url": f"/apps/{slug}",
         "submitted_at": datetime.utcnow(),
     }
-    tool_id = db.insert_tool(row)
+    tool_id, slug = _insert_tool_with_unique_slug(row, base_slug)
+    row["endpoint_url"] = f"/apps/{slug}"
 
     try:
         from api.inspector import store_inspection
@@ -2176,6 +2216,67 @@ try:
     app.register_blueprint(forgedata_bp)
 except Exception:
     pass
+
+
+# -------------------- Tool configuration --------------------
+
+@app.route("/api/tools/<string:slug>/configure", methods=["POST"])
+def configure_tool(slug):
+    """Apply user-provided config answers to an installed tool's app directory."""
+    if not re.match(r"^[a-z0-9][a-z0-9\-]*$", slug):
+        return jsonify({"error": "invalid_slug"}), 400
+
+    # 1. Look up tool and get its config_schema
+    row = db.get_tool_by_slug(slug)
+    if not row:
+        return jsonify({"error": "not_found"}), 404
+
+    schema_yaml = row.get("config_schema")
+    if not schema_yaml:
+        return jsonify({"error": "no_config_schema",
+                        "message": f"Tool '{slug}' has no config schema"}), 400
+
+    # 2. Validate the schema
+    from api.models.config_schema import validate as validate_schema
+    try:
+        schema = validate_schema(schema_yaml)
+    except ValueError as exc:
+        return jsonify({"error": "invalid_schema", "message": str(exc)}), 500
+
+    # 3. Get answers from request body
+    body = request.get_json(silent=True) or {}
+    answers = body.get("answers") or body
+    if not isinstance(answers, dict) or not answers:
+        return jsonify({"error": "validation",
+                        "message": "Request body must contain answers dict"}), 400
+
+    # 4. Determine app_dir
+    app_dir = body.get("app_dir")
+    if not app_dir:
+        # Check install_meta for a path
+        install_meta = row.get("install_meta")
+        if install_meta:
+            try:
+                meta = json.loads(install_meta) if isinstance(install_meta, str) else install_meta
+                app_dir = meta.get("install_dir") or meta.get("path")
+            except (json.JSONDecodeError, TypeError):
+                pass
+        # Default paths by slug
+        if not app_dir:
+            if slug == "career-ops":
+                app_dir = os.path.expanduser("~/career-ops")
+            else:
+                app_dir = os.path.expanduser(f"~/.forge/apps/{slug}")
+
+    if not os.path.isdir(app_dir):
+        return jsonify({"error": "app_not_found",
+                        "message": f"App directory does not exist: {app_dir}"}), 400
+
+    # 5. Run the config agent
+    from api.config_agent import configure_app
+    result = configure_app(schema, answers, app_dir)
+
+    return jsonify(result), 200 if result["success"] else 422
 
 
 # -------------------- Main --------------------
