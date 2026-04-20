@@ -1980,6 +1980,32 @@ def admin_override_skill(skill_id):
     })
 
 
+# -------------------- Config schema auto-generation --------------------
+
+@app.route("/api/admin/generate-config-schema", methods=["POST"])
+def admin_generate_schema():
+    unauthorized = _require_admin()
+    if unauthorized:
+        return unauthorized
+    body = request.get_json(silent=True) or {}
+    github_url = body.get("github_url", "")
+    tool_slug = body.get("tool_slug")
+
+    from api.schema_autogen import generate_config_schema
+    try:
+        schema_yaml = generate_config_schema(github_url)
+        # Optionally save to tool if tool_slug provided
+        if tool_slug:
+            tool = db.get_tool_by_slug(tool_slug)
+            if tool:
+                db.update_tool(tool["id"], config_schema=schema_yaml)
+        return jsonify({"schema": schema_yaml, "valid": True})
+    except ValueError as e:
+        return jsonify({"error": str(e), "valid": False}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 # -------------------- App upload (keep — used by forge CLI + GitHub bot) --------------------
 
 @app.route("/api/submit/app", methods=["POST"])
