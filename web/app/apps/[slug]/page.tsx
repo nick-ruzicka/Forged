@@ -167,7 +167,7 @@ export default function AppDetailPage({
           </div>
         </div>
         <div className="flex-1">
-          <AppEmbed slug={slug} />
+          <AppEmbed slug={slug} allowSameOrigin />
         </div>
       </div>
     );
@@ -522,7 +522,7 @@ export default function AppDetailPage({
                 <span className="flex-1 text-center text-[11px] text-text-muted">{app.name}</span>
               </div>
               <div className="h-[620px] overflow-hidden rounded-b-2xl border border-t-0 border-border shadow-[0_12px_40px_rgba(0,0,0,0.3)]">
-                <AppEmbed slug={slug} preview={!isInstalled} />
+                <AppEmbed slug={slug} preview={!isInstalled} allowSameOrigin={isInstalled} />
               </div>
             </div>
           </div>
