@@ -165,8 +165,13 @@ def _write_yaml_from_template(cf: ConfigFile, answers: dict, app_dir: str, out_p
             dotted = f"{section_name}.{field.key}"
             val = answers.get(dotted) if dotted in answers else answers.get(field.key)
 
-            if val is not None:
+            if val is not None and val != "":
+                # User provided a value — use it
                 section_data[field.key] = val
+            elif not field.required and field.key in section_data:
+                # Optional field with no user answer — remove template default
+                # to prevent example data (like "janesmith") leaking through
+                del section_data[field.key]
 
     _ensure_parent(out_path)
     with open(out_path, "w", encoding="utf-8") as f:

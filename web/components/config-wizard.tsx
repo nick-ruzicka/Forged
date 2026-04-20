@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog,
-  DialogContent,
   DialogOverlay,
   DialogPortal,
 } from "@/components/ui/dialog";
@@ -24,8 +23,6 @@ interface SchemaField {
   source?: string;
   required?: boolean;
   validation?: string;
-  section?: string;
-  configPath?: string;
 }
 
 interface ProfileField {
@@ -38,6 +35,7 @@ interface ProfileField {
 
 interface ConfigFileSection {
   name: string;
+  prompt?: string;
   fields: {
     key: string;
     prompt: string;
@@ -50,6 +48,7 @@ interface ConfigFileSection {
 interface ConfigFile {
   path: string;
   template?: string;
+  format?: string;
   sections?: ConfigFileSection[];
 }
 
@@ -71,38 +70,51 @@ export interface ConfigWizardProps {
 }
 
 // ---------------------------------------------------------------------------
-// Flatten schema into linear steps
+// Group fields into sections (3-6 fields per screen)
 // ---------------------------------------------------------------------------
 
-function flattenFields(schema: ParsedSchema): SchemaField[] {
-  const fields: SchemaField[] = [];
+interface WizardSection {
+  title: string;
+  subtitle?: string;
+  fields: SchemaField[];
+}
 
-  if (schema.profile_fields) {
-    for (const pf of schema.profile_fields) {
-      fields.push({
+function buildSections(schema: ParsedSchema): WizardSection[] {
+  const sections: WizardSection[] = [];
+
+  // Profile fields as one section
+  if (schema.profile_fields && schema.profile_fields.length > 0) {
+    sections.push({
+      title: "Your Profile",
+      subtitle: "Basic information used across your apps",
+      fields: schema.profile_fields.map((pf) => ({
         key: pf.key,
         prompt: pf.prompt,
         type: (pf.type as SchemaField["type"]) || "string",
         source: pf.source,
         required: pf.required,
-        section: "Profile",
-      });
-    }
+      })),
+    });
   }
 
+  // Config file sections
   if (schema.config_files) {
     for (const cf of schema.config_files) {
       if (cf.sections) {
         for (const sec of cf.sections) {
-          for (const f of sec.fields) {
-            fields.push({
-              key: f.key,
-              prompt: f.prompt,
-              type: (f.type as SchemaField["type"]) || "string",
-              required: f.required,
-              validation: f.validation,
-              section: sec.name,
-              configPath: cf.path,
+          // Each schema section becomes one wizard section
+          const fields: SchemaField[] = sec.fields.map((f) => ({
+            key: `${sec.name}.${f.key}`,
+            prompt: f.prompt,
+            type: (f.type as SchemaField["type"]) || "string",
+            required: f.required,
+            validation: f.validation,
+          }));
+          if (fields.length > 0) {
+            sections.push({
+              title: formatSectionTitle(sec.name),
+              subtitle: sec.prompt,
+              fields,
             });
           }
         }
@@ -110,11 +122,17 @@ function flattenFields(schema: ParsedSchema): SchemaField[] {
     }
   }
 
-  return fields;
+  return sections;
+}
+
+function formatSectionTitle(name: string): string {
+  return name
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
 // ---------------------------------------------------------------------------
-// Resolve auto-fill value from profile
+// Resolve auto-fill
 // ---------------------------------------------------------------------------
 
 function resolveSource(
@@ -138,22 +156,26 @@ export function ConfigWizard({
   onComplete,
   onClose,
 }: ConfigWizardProps) {
-  const fields = flattenFields(schema);
-  const totalSteps = fields.length;
+  const sections = buildSections(schema);
+  const totalSections = sections.length;
 
-  const [step, setStep] = useState(0);
+  const [sectionIdx, setSectionIdx] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>(() => {
     const init: Record<string, string> = {};
-    for (const f of fields) {
-      const auto = resolveSource(f.source, userProfile);
-      if (auto) init[f.key] = auto;
+    for (const sec of sections) {
+      for (const f of sec.fields) {
+        const auto = resolveSource(f.source, userProfile);
+        if (auto) init[f.key] = auto;
+      }
     }
     return init;
   });
-  const [autoFilled, setAutoFilled] = useState<Set<string>>(() => {
+  const [autoFilled] = useState<Set<string>>(() => {
     const s = new Set<string>();
-    for (const f of fields) {
-      if (resolveSource(f.source, userProfile)) s.add(f.key);
+    for (const sec of sections) {
+      for (const f of sec.fields) {
+        if (resolveSource(f.source, userProfile)) s.add(f.key);
+      }
     }
     return s;
   });
@@ -161,43 +183,34 @@ export function ConfigWizard({
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<{ ok: boolean; message?: string } | null>(null);
 
-  const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
+  const firstInputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
 
-  // Focus input on step change
   useEffect(() => {
-    const timer = setTimeout(() => inputRef.current?.focus(), 100);
+    const timer = setTimeout(() => firstInputRef.current?.focus(), 150);
     return () => clearTimeout(timer);
-  }, [step, showSummary]);
+  }, [sectionIdx, showSummary]);
 
-  const current = fields[step];
+  const currentSection = sections[sectionIdx];
 
   const setValue = useCallback(
-    (val: string) => {
-      if (!current) return;
-      setAnswers((prev) => ({ ...prev, [current.key]: val }));
-      // Clear auto-fill tag once user edits
-      if (autoFilled.has(current.key)) {
-        setAutoFilled((prev) => {
-          const next = new Set(prev);
-          next.delete(current.key);
-          return next;
-        });
-      }
+    (key: string, val: string) => {
+      setAnswers((prev) => ({ ...prev, [key]: val }));
     },
-    [current, autoFilled],
+    [],
   );
 
   const canAdvance = () => {
-    if (!current) return false;
-    const val = answers[current.key] ?? "";
-    if (current.required && val.trim() === "") return false;
+    if (!currentSection) return false;
+    for (const f of currentSection.fields) {
+      if (f.required && !(answers[f.key] ?? "").trim()) return false;
+    }
     return true;
   };
 
   const handleNext = () => {
     if (!canAdvance()) return;
-    if (step < totalSteps - 1) {
-      setStep(step + 1);
+    if (sectionIdx < totalSections - 1) {
+      setSectionIdx(sectionIdx + 1);
     } else {
       setShowSummary(true);
     }
@@ -208,27 +221,25 @@ export function ConfigWizard({
       setShowSummary(false);
       return;
     }
-    if (step > 0) setStep(step - 1);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey && current?.type !== "list" && current?.type !== "freeform_file") {
-      e.preventDefault();
-      handleNext();
-    }
+    if (sectionIdx > 0) setSectionIdx(sectionIdx - 1);
   };
 
   const handleSubmit = async () => {
     setSubmitting(true);
     try {
-      const res = await api<{ message?: string; output?: string }>(
+      const res = await api<{ success?: boolean; message?: string; files_written?: string[]; errors?: string[] }>(
         `/tools/${slug}/configure`,
         {
           method: "POST",
           body: JSON.stringify({ answers }),
         },
       );
-      setResult({ ok: true, message: res?.message || res?.output || "Configuration saved successfully." });
+      if (res?.success) {
+        setResult({ ok: true, message: `Configuration saved. Files written: ${(res.files_written || []).join(", ")}` });
+      } else {
+        const errs = res?.errors || [];
+        setResult({ ok: false, message: errs.length > 0 ? errs.join("\n") : "Configuration failed" });
+      }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Configuration failed";
       setResult({ ok: false, message: msg });
@@ -237,20 +248,16 @@ export function ConfigWizard({
     }
   };
 
-  // ---------------------------------------------------------------------------
-  // Progress bar
-  // ---------------------------------------------------------------------------
-  const progress = showSummary ? 100 : ((step + 1) / totalSteps) * 100;
+  const progress = showSummary ? 100 : ((sectionIdx + 1) / totalSections) * 100;
 
-  // Handle empty schema
-  if (totalSteps === 0) {
+  if (totalSections === 0) {
     return (
       <Dialog open onOpenChange={(open) => !open && onClose()}>
         <DialogPortal>
           <DialogOverlay />
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div className="w-full max-w-lg rounded-2xl border border-border bg-card p-8 text-center shadow-[0_20px_60px_rgba(0,0,0,0.4)]">
-              <p className="text-text-secondary">No configuration fields found in schema.</p>
+              <p className="text-text-secondary">No configuration fields found.</p>
               <Button className="mt-4" onClick={onClose}>Close</Button>
             </div>
           </div>
@@ -259,35 +266,28 @@ export function ConfigWizard({
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
   return (
     <Dialog open onOpenChange={(open) => !open && onClose()}>
       <DialogPortal>
         <DialogOverlay />
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="relative flex w-full max-w-lg flex-col rounded-2xl border border-border bg-card shadow-[0_20px_60px_rgba(0,0,0,0.4)]">
-            {/* Close button */}
+          <div className="relative flex w-full max-w-xl flex-col rounded-2xl border border-border bg-card shadow-[0_20px_60px_rgba(0,0,0,0.4)]">
+            {/* Close */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 rounded-lg p-1.5 text-text-muted transition-colors hover:bg-surface-2 hover:text-foreground"
+              className="absolute top-4 right-4 z-10 rounded-lg p-1.5 text-text-muted transition-colors hover:bg-surface-2 hover:text-foreground"
             >
               <X className="size-4" />
             </button>
 
-            {/* Progress bar */}
+            {/* Progress */}
             <div className="px-6 pt-6 pb-2">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[11px] font-medium uppercase tracking-widest text-text-muted">
                   {showSummary
                     ? "Review & Confirm"
-                    : `Step ${step + 1} of ${totalSteps}`}
+                    : `Section ${sectionIdx + 1} of ${totalSections}`}
                 </span>
-                {current?.section && !showSummary && (
-                  <span className="text-[11px] text-text-muted">{current.section}</span>
-                )}
               </div>
               <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-2">
                 <div
@@ -298,9 +298,8 @@ export function ConfigWizard({
             </div>
 
             {/* Content */}
-            <div className="flex-1 px-6 py-6">
+            <div className="flex-1 overflow-y-auto px-6 py-5" style={{ maxHeight: "60vh" }}>
               {result ? (
-                /* Result screen */
                 <div className="flex flex-col items-center gap-4 py-4 text-center">
                   <div
                     className={`flex size-14 items-center justify-center rounded-2xl ${
@@ -319,7 +318,7 @@ export function ConfigWizard({
                     <h3 className="text-lg font-semibold text-foreground">
                       {result.ok ? "Configuration Complete" : "Configuration Failed"}
                     </h3>
-                    <p className="text-[13px] text-text-secondary max-w-sm">
+                    <p className="text-[13px] text-text-secondary max-w-sm whitespace-pre-wrap">
                       {result.message}
                     </p>
                   </div>
@@ -331,75 +330,82 @@ export function ConfigWizard({
                   </Button>
                 </div>
               ) : showSummary ? (
-                /* Summary */
                 <div className="flex flex-col gap-4">
                   <h3 className="text-lg font-semibold text-foreground">
                     Review your configuration
                   </h3>
-                  <div className="max-h-72 overflow-y-auto rounded-xl border border-border bg-surface-2/30 p-4">
-                    <div className="flex flex-col gap-3">
-                      {fields.map((f) => (
-                        <div key={f.key} className="flex flex-col gap-0.5">
-                          <span className="text-[11px] font-medium uppercase tracking-wider text-text-muted">
-                            {f.key}
-                          </span>
-                          <span className="text-[13px] text-foreground break-words whitespace-pre-wrap">
-                            {answers[f.key] || <span className="italic text-text-muted">empty</span>}
-                          </span>
+                  <div className="flex flex-col gap-4">
+                    {sections.map((sec) => (
+                      <div key={sec.title} className="flex flex-col gap-2">
+                        <span className="text-[11px] font-semibold uppercase tracking-widest text-text-muted/70">
+                          {sec.title}
+                        </span>
+                        <div className="rounded-xl border border-border bg-surface-2/30 p-3">
+                          {sec.fields.map((f) => (
+                            <div key={f.key} className="flex items-start justify-between py-1.5 border-b border-border/30 last:border-0">
+                              <span className="text-xs text-text-muted">{f.prompt.replace(/\?$/, "")}</span>
+                              <span className="text-xs font-medium text-foreground max-w-[50%] text-right truncate">
+                                {answers[f.key] || <span className="italic text-text-muted">—</span>}
+                              </span>
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               ) : (
-                /* Field step */
-                <div className="flex flex-col gap-4" onKeyDown={handleKeyDown}>
-                  <h3 className="text-lg font-semibold text-foreground leading-snug pr-8">
-                    {current.prompt}
-                  </h3>
+                /* Section view — multiple fields per screen */
+                <div className="flex flex-col gap-5">
+                  <div className="flex flex-col gap-1">
+                    <h3 className="text-[18px] font-semibold text-foreground">
+                      {currentSection.title}
+                    </h3>
+                    {currentSection.subtitle && (
+                      <p className="text-[14px] text-white/60">{currentSection.subtitle}</p>
+                    )}
+                  </div>
 
-                  {current.required && (
-                    <span className="text-[11px] text-primary font-medium -mt-2">Required</span>
-                  )}
+                  <div className="flex flex-col gap-4">
+                    {currentSection.fields.map((field, i) => (
+                      <div key={field.key} className="flex flex-col gap-1.5">
+                        <label className="text-[13px] font-medium text-foreground/80">
+                          {field.prompt}
+                          {field.required && <span className="text-primary ml-1">*</span>}
+                        </label>
 
-                  {current.type === "list" || current.type === "freeform_file" ? (
-                    <Textarea
-                      ref={inputRef as React.Ref<HTMLTextAreaElement>}
-                      value={answers[current.key] ?? ""}
-                      onChange={(e) => setValue(e.target.value)}
-                      rows={current.type === "freeform_file" ? 10 : 5}
-                      placeholder={
-                        current.type === "list"
-                          ? "Enter one item per line..."
-                          : "Enter content..."
-                      }
-                      className="resize-y"
-                    />
-                  ) : (
-                    <Input
-                      ref={inputRef as React.Ref<HTMLInputElement>}
-                      type={current.type === "url" ? "url" : "text"}
-                      value={answers[current.key] ?? ""}
-                      onChange={(e) => setValue(e.target.value)}
-                      placeholder={
-                        current.type === "url"
-                          ? "https://..."
-                          : "Type your answer..."
-                      }
-                    />
-                  )}
+                        {field.type === "list" || field.type === "freeform_file" ? (
+                          <Textarea
+                            ref={i === 0 ? (firstInputRef as React.Ref<HTMLTextAreaElement>) : undefined}
+                            value={answers[field.key] ?? ""}
+                            onChange={(e) => setValue(field.key, e.target.value)}
+                            rows={field.type === "freeform_file" ? 8 : 3}
+                            placeholder={
+                              field.type === "list"
+                                ? "One item per line..."
+                                : "Enter content..."
+                            }
+                            className="resize-y text-sm"
+                          />
+                        ) : (
+                          <Input
+                            ref={i === 0 ? (firstInputRef as React.Ref<HTMLInputElement>) : undefined}
+                            type={field.type === "url" ? "url" : "text"}
+                            value={answers[field.key] ?? ""}
+                            onChange={(e) => setValue(field.key, e.target.value)}
+                            placeholder={field.type === "url" ? "https://..." : ""}
+                            className="text-sm"
+                          />
+                        )}
 
-                  {autoFilled.has(current.key) && (
-                    <span className="text-[11px] text-text-muted italic -mt-2">
-                      (auto-filled from your profile)
-                    </span>
-                  )}
-
-                  {current.validation && (
-                    <span className="text-[11px] text-text-muted -mt-2">
-                      {current.validation}
-                    </span>
-                  )}
+                        {autoFilled.has(field.key) && answers[field.key] && (
+                          <span className="text-[11px] text-text-muted italic">
+                            Auto-filled from your profile
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
@@ -411,7 +417,7 @@ export function ConfigWizard({
                   variant="ghost"
                   size="sm"
                   onClick={handleBack}
-                  disabled={step === 0 && !showSummary}
+                  disabled={sectionIdx === 0 && !showSummary}
                 >
                   <ChevronLeft className="size-3.5" />
                   Back
@@ -433,7 +439,7 @@ export function ConfigWizard({
                   </Button>
                 ) : (
                   <Button onClick={handleNext} disabled={!canAdvance()}>
-                    {step < totalSteps - 1 ? (
+                    {sectionIdx < totalSections - 1 ? (
                       <>
                         Next
                         <ChevronRight className="size-3.5" />
