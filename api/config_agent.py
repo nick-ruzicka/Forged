@@ -90,7 +90,10 @@ def _check_required_fields(schema: ConfigSchema, answers: dict) -> list[str]:
 
 def _write_config_file(cf: ConfigFile, answers: dict, app_dir: str) -> None:
     """Write a single config file based on its type and template."""
-    out_path = os.path.join(app_dir, cf.path)
+    out_path = os.path.normpath(os.path.join(app_dir, cf.path))
+    # Prevent path traversal — output must stay within app_dir
+    if not out_path.startswith(os.path.normpath(app_dir)):
+        raise ValueError(f"Path traversal blocked: {cf.path} resolves outside {app_dir}")
 
     # Check for freeform_file — write content directly
     if _is_freeform(cf):

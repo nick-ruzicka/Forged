@@ -45,7 +45,7 @@ A Discovery page inside Forge:
 Three new tables. No changes to existing tables.
 
 ```sql
--- 022_discovery.sql
+-- 024_discovery.sql  (022 + 023 already taken)
 
 CREATE TABLE discovery_repos (
     id            SERIAL PRIMARY KEY,
@@ -95,8 +95,10 @@ CREATE TABLE discovery_lanes (
     generation_meta JSONB NOT NULL DEFAULT '{}'::jsonb  -- model, prompt_version, input_count
 );
 
+-- Mirrors starred_items pattern (migration 013): user_id is the anonymous
+-- UUID from X-Forge-User-Id header, stored as TEXT, no FK to users.
 CREATE TABLE user_discovery_saves (
-    user_id  INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    user_id  TEXT NOT NULL,
     repo_id  INT NOT NULL REFERENCES discovery_repos(id) ON DELETE CASCADE,
     saved_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     note     TEXT,                                -- optional user note (v2)

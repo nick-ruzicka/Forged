@@ -1073,7 +1073,17 @@ class AgentHandler(http.server.BaseHTTPRequestHandler):
 
         try:
             # Use Terminal.app — works on every Mac, no dependencies
-            # Escape double quotes in the command for AppleScript
+            # Block dangerous shell patterns (allow && for chained commands)
+            BLOCKED_PATTERNS = ['`', '$(', '${', '>>', '>', '<', 'rm -rf', 'curl|', 'wget|']
+            for pat in BLOCKED_PATTERNS:
+                if pat in command:
+                    self._json({"error": f"Command contains blocked pattern: {pat}"}, 400)
+                    return
+            # Length limit
+            if len(command) > 500:
+                self._json({"error": "Command too long (max 500 chars)"}, 400)
+                return
+            # Escape for AppleScript embedding
             safe_cmd = command.replace('\\', '\\\\').replace('"', '\\"')
             safe_cwd = cwd.replace('\\', '\\\\').replace('"', '\\"')
             script = (

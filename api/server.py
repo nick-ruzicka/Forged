@@ -7,6 +7,7 @@ After the prompt-stack demolition: Forge serves apps (HTML bundles) and skills
 workflow modules. Pre-demolition state is tagged `pre-prompt-demolition`.
 """
 import json
+import logging
 import os
 import re
 import threading
@@ -37,7 +38,7 @@ if not ADMIN_KEY:
     logging.warning("ADMIN_KEY not set — generated ephemeral key: %s", ADMIN_KEY)
 
 app = Flask(__name__, static_folder=None)
-CORS(app)
+CORS(app, origins=["http://localhost:3000", "http://localhost:3002", "http://localhost:8090"])
 
 
 @app.before_request
@@ -745,6 +746,9 @@ def proxy_open_terminal():
 @app.route("/api/forge-agent/launch", methods=["POST"])
 def proxy_launch():
     """Proxy launch request to forge-agent."""
+    uid, _ = _get_identity()
+    if not uid:
+        return jsonify({"error": "user_id_required"}), 401
     body = request.get_json(silent=True) or {}
     try:
         import urllib.request as ur
@@ -765,6 +769,9 @@ def proxy_launch():
 @app.route("/api/forge-agent/install", methods=["POST", "OPTIONS"])
 def proxy_install():
     """Proxy install request to forge-agent, streaming SSE response."""
+    uid, _ = _get_identity()
+    if not uid:
+        return jsonify({"error": "user_id_required"}), 401
     from flask import Response
     import http.client
     # Handle CORS preflight
@@ -868,6 +875,9 @@ def proxy_updates():
 @app.route("/api/forge-agent/uninstall", methods=["POST"])
 def proxy_uninstall():
     """Proxy uninstall request to forge-agent."""
+    uid, _ = _get_identity()
+    if not uid:
+        return jsonify({"error": "user_id_required"}), 401
     body = request.get_json(silent=True) or {}
     try:
         import urllib.request as ur
