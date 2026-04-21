@@ -10,7 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { AppCard } from "@/components/app-card";
 import { CategoryPills } from "@/components/category-pills";
 import { EmptyState } from "@/components/empty-state";
-import { RolePicker } from "@/components/role-picker";
+// import { RolePicker } from "@/components/role-picker";
 import { TrendingStrip } from "@/components/trending-strip";
 import { useApps, useMyItems, useMyStars } from "@/lib/hooks";
 import { useUser } from "@/lib/user-context";
@@ -18,12 +18,7 @@ import { useUser } from "@/lib/user-context";
 export default function CatalogPage() {
   const { role } = useUser();
 
-  // Role picker on first visit. Derive `open` from (no role) minus user dismissals.
-  const [rolePickerDismissed, setRolePickerDismissed] = useState(false);
-  const rolePickerOpen = !role && !rolePickerDismissed;
-  const handleRolePickerOpenChange = (next: boolean) => {
-    if (!next) setRolePickerDismissed(true);
-  };
+  // Role picker disabled for now — friction without value at this catalog size
 
   // New project modal
   const [newProjectOpen, setNewProjectOpen] = useState(false);
@@ -223,8 +218,7 @@ export default function CatalogPage() {
         </div>
       )}
 
-      {/* Role picker dialog */}
-      <RolePicker open={rolePickerOpen} onOpenChange={handleRolePickerOpenChange} />
+      {/* Role picker disabled */}
 
       {/* New project modal */}
       <NewProjectModal open={newProjectOpen} onOpenChange={setNewProjectOpen} />
