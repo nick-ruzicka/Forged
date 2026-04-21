@@ -80,15 +80,24 @@ ALLOWED_PROJECT_DIRS = [
 # Track running processes
 _running_runs: dict = {}  # run_id -> Popen
 
-# Check claude CLI exists
+# Check claude CLI exists — detect install method
 _CLAUDE_AVAILABLE = False
+_CLAUDE_CMD = "claude"  # default
 try:
     _r = subprocess.run(["which", "claude"], capture_output=True, text=True, timeout=5)
-    _CLAUDE_AVAILABLE = _r.returncode == 0
-    if _CLAUDE_AVAILABLE:
-        logging.info("claude CLI found: %s", _r.stdout.strip())
+    if _r.returncode == 0:
+        _CLAUDE_AVAILABLE = True
+        _CLAUDE_CMD = _r.stdout.strip()  # full path like /opt/homebrew/bin/claude
+        logging.info("claude CLI found: %s", _CLAUDE_CMD)
     else:
-        logging.warning("claude CLI not found in PATH — /claude-exec will not work")
+        # Try npx claude
+        _r2 = subprocess.run(["npx", "claude", "--version"], capture_output=True, text=True, timeout=10)
+        if _r2.returncode == 0:
+            _CLAUDE_AVAILABLE = True
+            _CLAUDE_CMD = "npx claude"
+            logging.info("claude CLI found via npx: %s", _r2.stdout.strip())
+        else:
+            logging.warning("claude CLI not found in PATH or via npx")
 except Exception:
     logging.warning("Could not check for claude CLI")
 
@@ -1059,6 +1068,11 @@ class AgentHandler(http.server.BaseHTTPRequestHandler):
         """Open Terminal.app with a command pre-filled and executed."""
         command = body.get("command", "")
         cwd = body.get("cwd", os.path.expanduser("~"))
+        launch_claude = body.get("then_launch_claude", False)
+
+        # If requested, append the detected Claude command
+        if launch_claude and _CLAUDE_AVAILABLE:
+            command = f"{command} && {_CLAUDE_CMD}" if command else _CLAUDE_CMD
 
         if not command:
             self._json({"error": "command required"}, 400)
