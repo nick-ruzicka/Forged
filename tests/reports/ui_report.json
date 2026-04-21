@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-04-19T17:46:06.729471+00:00",
+  "timestamp": "2026-04-21T04:36:55.542290+00:00",
   "base_url": "http://localhost:8090",
-  "passed": 12,
-  "failed": 3,
+  "passed": 11,
+  "failed": 4,
   "total": 15,
   "results": [
     {
@@ -11,7 +11,7 @@
       "passed": true,
       "error_message": null,
       "screenshot_path": null,
-      "timestamp": "2026-04-19T17:46:03.598281+00:00"
+      "timestamp": "2026-04-21T04:36:52.553218+00:00"
     },
     {
       "page": "/",
@@ -19,23 +19,23 @@
       "passed": false,
       "error_message": null,
       "screenshot_path": null,
-      "timestamp": "2026-04-19T17:46:03.629729+00:00"
+      "timestamp": "2026-04-21T04:36:52.566948+00:00"
     },
     {
       "page": "/",
       "test_name": "tool_cards_present",
       "passed": false,
       "error_message": "found 0 cards",
-      "screenshot_path": "tests/reports/screenshots/catalog-no-cards-20260419T174603.png",
-      "timestamp": "2026-04-19T17:46:03.671875+00:00"
+      "screenshot_path": "tests/reports/screenshots/catalog-no-cards-20260421T043652.png",
+      "timestamp": "2026-04-21T04:36:52.607452+00:00"
     },
     {
       "page": "/",
       "test_name": "click_first_run_tool",
       "passed": false,
       "error_message": "no Run Tool button found",
-      "screenshot_path": "tests/reports/screenshots/no-run-button-20260419T174604.png",
-      "timestamp": "2026-04-19T17:46:04.251766+00:00"
+      "screenshot_path": "tests/reports/screenshots/no-run-button-20260421T043653.png",
+      "timestamp": "2026-04-21T04:36:53.163501+00:00"
     },
     {
       "page": "/submit.html",
@@ -43,7 +43,7 @@
       "passed": true,
       "error_message": null,
       "screenshot_path": null,
-      "timestamp": "2026-04-19T17:46:04.776145+00:00"
+      "timestamp": "2026-04-21T04:36:53.685403+00:00"
     },
     {
       "page": "/submit.html",
@@ -51,7 +51,7 @@
       "passed": true,
       "error_message": null,
       "screenshot_path": null,
-      "timestamp": "2026-04-19T17:46:04.783592+00:00"
+      "timestamp": "2026-04-21T04:36:53.689080+00:00"
     },
     {
       "page": "/submit.html",
@@ -59,7 +59,7 @@
       "passed": true,
       "error_message": null,
       "screenshot_path": null,
-      "timestamp": "2026-04-19T17:46:04.787086+00:00"
+      "timestamp": "2026-04-21T04:36:53.691206+00:00"
     },
     {
       "page": "/skills.html",
@@ -67,7 +67,7 @@
       "passed": true,
       "error_message": null,
       "screenshot_path": null,
-      "timestamp": "2026-04-19T17:46:05.441416+00:00"
+      "timestamp": "2026-04-21T04:36:54.262947+00:00"
     },
     {
       "page": "/skills.html",
@@ -75,7 +75,7 @@
       "passed": true,
       "error_message": null,
       "screenshot_path": null,
-      "timestamp": "2026-04-19T17:46:05.446899+00:00"
+      "timestamp": "2026-04-21T04:36:54.266716+00:00"
     },
     {
       "page": "/skills.html",
@@ -83,7 +83,7 @@
       "passed": true,
       "error_message": null,
       "screenshot_path": null,
-      "timestamp": "2026-04-19T17:46:05.449507+00:00"
+      "timestamp": "2026-04-21T04:36:54.268859+00:00"
     },
     {
       "page": "/my-tools.html",
@@ -91,7 +91,7 @@
       "passed": true,
       "error_message": null,
       "screenshot_path": null,
-      "timestamp": "2026-04-19T17:46:06.155926+00:00"
+      "timestamp": "2026-04-21T04:36:54.962320+00:00"
     },
     {
       "page": "/my-tools.html",
@@ -99,7 +99,7 @@
       "passed": true,
       "error_message": null,
       "screenshot_path": null,
-      "timestamp": "2026-04-19T17:46:06.159475+00:00"
+      "timestamp": "2026-04-21T04:36:54.971106+00:00"
     },
     {
       "page": "/my-tools.html",
@@ -107,7 +107,7 @@
       "passed": true,
       "error_message": null,
       "screenshot_path": null,
-      "timestamp": "2026-04-19T17:46:06.162005+00:00"
+      "timestamp": "2026-04-21T04:36:54.973676+00:00"
     },
     {
       "page": "/",
@@ -115,15 +115,15 @@
       "passed": true,
       "error_message": null,
       "screenshot_path": null,
-      "timestamp": "2026-04-19T17:46:06.701941+00:00"
+      "timestamp": "2026-04-21T04:36:55.518842+00:00"
     },
     {
       "page": "*",
       "test_name": "no_console_errors",
-      "passed": true,
-      "error_message": null,
+      "passed": false,
+      "error_message": "3 errors: ['Failed to load resource: the server responded with a status of 404 (NOT FOUND)', 'Failed to load resource: the server responded with a status of 404 (NOT FOUND)', 'Failed to load resource: the server responded with a status of 404 (NOT FOUND)']",
       "screenshot_path": null,
-      "timestamp": "2026-04-19T17:46:06.707019+00:00"
+      "timestamp": "2026-04-21T04:36:55.523426+00:00"
     }
   ]
 }

@@ -117,7 +117,7 @@
           </div>
           <div>
             <label style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px;">Work email</label>
-            <input id="id-email" type="email" value="${escapeHtml(getEmail())}" placeholder="you@navan.com"
+            <input id="id-email" type="email" value="${escapeHtml(getEmail())}" placeholder="you@example.com"
               style="width:100%;background:#0d0d0d;border:1px solid #2a2a2a;color:#e0e0e0;padding:10px;border-radius:6px;box-sizing:border-box;font-size:14px;">
           </div>
           <div id="id-err" style="color:#ff8a80;font-size:12px;min-height:14px;"></div>

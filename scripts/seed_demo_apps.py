@@ -67,16 +67,6 @@ def seed_review(tool_slug: str, review_data: dict):
 def main():
     print("Seeding Forge demo apps...")
 
-    # Read travel-tech edition HTML from file if it exists
-    travel_html_path = os.path.join(os.path.dirname(__file__), "..", "apps", "hebbia-travel.html")
-    travel_html = ""
-    if os.path.exists(travel_html_path):
-        with open(travel_html_path) as f:
-            travel_html = f.read()
-    else:
-        # Inline minimal version
-        travel_html = "<h1>Hebbia Signal Engine — Travel Edition</h1><p>Loading...</p>"
-
     # 1. Hebbia Signal Engine (original — iframe to VPS)
     seed_app({
         "name": "Hebbia Signal Engine",
@@ -94,24 +84,7 @@ def main():
         "source_url": "",
     })
 
-    # 2. Hebbia Signal Engine — Travel Edition
-    seed_app({
-        "name": "Hebbia Signal Engine — Travel Edition",
-        "slug": "hebbia-signal-engine-travel",
-        "tagline": "Travel-tech signals for outbound — 14 accounts in-flight, 6 strong matches",
-        "description": "**Fork of Hebbia Signal Engine for travel-tech RevOps.** Same signal backend, travel-tech scoring taxonomy.\n\nTracks corporate travel M&A, Expedia/Booking earnings, NDC adoption mandates, corporate T&E budget cuts, Amex GBT consolidations, Concur/SAP displacement windows.\n\n**6 strong matches** across Booking, Amex GBT, Expedia, Salesforce, and Sabre — each scored against the ICP (Fortune 1000 T&E buyers, 500+ traveling employees, OBT renewal in next 12mo).",
-        "category": "Developer Tools",
-        "icon": "🔍",
-        "status": "approved",
-        "delivery": "embedded",
-        "app_type": "app",
-        "app_html": travel_html,
-        "author_name": "Nick Ruzicka",
-        "author_email": "nick.c.ruzicka@gmail.com",
-        "source_url": "",
-    })
-
-    # 3. Chariot Signal Engine
+    # 2. Chariot Signal Engine
     seed_app({
         "name": "Chariot Signal Engine",
         "slug": "chariot-signal-engine",

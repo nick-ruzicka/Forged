@@ -1,9 +1,9 @@
 # Forge
 
-Internal AI tool marketplace for the Navan RevOps team. Builders submit
-tools they've prototyped in Claude; a multi-agent pipeline reviews,
-hardens, and scores them; approved tools auto-deploy to a live URL with
-a generated usage guide and Slack announcement.
+An academic exploration of AI governance, security, and enablement
+concepts. A multi-agent pipeline reviews, hardens, and scores AI tool
+submissions; approved tools auto-deploy to a live URL with a generated
+usage guide and Slack announcement.
 
 Tagline: **Build once. Run everywhere. Trust everything.**
 

@@ -306,7 +306,7 @@ SEED_APPS = [
         "category": "Account Research",
         "tags": "salesforce,accounts,dashboard,forgedata",
         "author_name": "Nick Ruzicka",
-        "author_email": "nick@navan.com",
+        "author_email": "nick@example.com",
         "reliability_score": 92,
         "safety_score": 90,
         "verified_score": 70,
@@ -342,13 +342,13 @@ SEED_TOOLS = [
         "max_tokens": 1500,
         "temperature": 0.4,
         "system_prompt": (
-            "You are a Navan revenue-operations research assistant. Produce a structured pre-call brief "
+            "You are a revenue-operations research assistant. Produce a structured pre-call brief "
             "for {{company_name}} ({{company_website}}). Include: 1) company snapshot, 2) likely priorities "
             "in the {{segment}} segment, 3) three conversation openers, 4) risks or red flags. If any fact "
             "is unknown, write 'unknown' — never fabricate numbers or names."
         ),
         "hardened_prompt": (
-            "You are a Navan revenue-operations research assistant. Produce a structured pre-call brief "
+            "You are a revenue-operations research assistant. Produce a structured pre-call brief "
             "for the company provided. Only use information you are confident about. Never invent specific "
             "numbers, dates, executives, or customer names. If anything is uncertain, write 'unknown'.\n\n"
             "Company: {{company_name}}\nWebsite: {{company_website}}\nSegment: {{segment}}\n\n"
@@ -362,7 +362,7 @@ SEED_TOOLS = [
              "options": ["SMB", "Mid-Market", "Enterprise"], "required": True},
         ],
         "author_name": "Sarah Chen",
-        "author_email": "sarah@navan.com",
+        "author_email": "sarah@example.com",
         "run_count": 247,
         "avg_rating": 4.3,
     },
@@ -404,14 +404,14 @@ SEED_TOOLS = [
             {"name": "context", "label": "Context / reason for outreach", "type": "textarea", "required": True},
         ],
         "author_name": "Marcus Patel",
-        "author_email": "marcus@navan.com",
+        "author_email": "marcus@example.com",
         "run_count": 512,
         "avg_rating": 4.1,
     },
     {
         "slug": "icp-qualification-check",
         "name": "ICP Qualification Check",
-        "tagline": "Score how well an account fits Navan's ICP.",
+        "tagline": "Score how well an account fits the ideal customer profile.",
         "description": (
             "Given a company's basics, returns a structured ICP fit score with supporting reasons. Use as a "
             "starting point — always confirm with live data before routing."
@@ -433,7 +433,7 @@ SEED_TOOLS = [
             "(HQ {{hq_location}}). Return a JSON object."
         ),
         "hardened_prompt": (
-            "Score ICP fit for a company against Navan's ideal customer profile. Respond ONLY with a "
+            "Score ICP fit for a company against the ideal customer profile. Respond ONLY with a "
             "single JSON object. Never include prose before or after the JSON.\n\n"
             "Company: {{company_name}}\nEmployee count: {{employee_count}}\nIndustry: {{industry}}\n"
             "HQ location: {{hq_location}}\n\n"
@@ -449,7 +449,7 @@ SEED_TOOLS = [
             {"name": "hq_location", "label": "HQ location", "type": "text", "required": False},
         ],
         "author_name": "Priya Shah",
-        "author_email": "priya@navan.com",
+        "author_email": "priya@example.com",
         "run_count": 134,
         "avg_rating": 4.0,
     },
@@ -492,7 +492,7 @@ SEED_TOOLS = [
             {"name": "notes", "label": "Notes", "type": "textarea", "required": False},
         ],
         "author_name": "Devon Wu",
-        "author_email": "devon@navan.com",
+        "author_email": "devon@example.com",
         "run_count": 88,
         "avg_rating": 3.9,
     },
@@ -537,7 +537,7 @@ SEED_TOOLS = [
             {"name": "open_tickets", "label": "Open support tickets", "type": "number", "required": False},
         ],
         "author_name": "Elena Torres",
-        "author_email": "elena@navan.com",
+        "author_email": "elena@example.com",
         "run_count": 192,
         "avg_rating": 4.2,
     },

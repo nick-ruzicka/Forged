@@ -28,7 +28,7 @@ def test_list_tools_category_filter(client, db):
                 f"email-{uuid.uuid4().hex[:6]}", "Email Writer",
                 "Write emails", "Email writer tool", "email_generation",
                 "app", "<html></html>",
-                "approved", "A", "a@navan.com",
+                "approved", "A", "a@example.com",
             ),
         )
 
@@ -52,7 +52,7 @@ def test_list_tools_search(client, db):
                 f"research-{uuid.uuid4().hex[:6]}", "Account Research Brief",
                 "Company research", "Generate a research brief",
                 "account_research", "app", "<html></html>",
-                "approved", "A", "a@navan.com",
+                "approved", "A", "a@example.com",
             ),
         )
 
@@ -74,7 +74,7 @@ def test_list_tools_pagination(client, db):
                     f"pag-{idx}-{uuid.uuid4().hex[:4]}", f"Tool {idx}",
                     "pagination tool", "desc", "other", "app",
                     "<html></html>",
-                    "approved", "A", "a@navan.com",
+                    "approved", "A", "a@example.com",
                 ),
             )
 
@@ -100,7 +100,7 @@ def test_get_tool_by_id_missing_returns_404(client):
 def test_fork_sets_fork_of(client, db, sample_tool):
     resp = client.post(
         f"/api/tools/{sample_tool['id']}/fork",
-        json={"author_name": "Forker", "author_email": "forker@navan.com"},
+        json={"author_name": "Forker", "author_email": "forker@example.com"},
     )
     assert resp.status_code in (200, 201), resp.get_data(as_text=True)
     payload = resp.get_json() or {}

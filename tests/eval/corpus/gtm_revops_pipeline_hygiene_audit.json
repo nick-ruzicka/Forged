@@ -6,7 +6,7 @@
   "category": "realistic_gtm",
   "submission": {
     "name": "EVAL Pipeline Hygiene Audit",
-    "tagline": "Flag opportunities that break Navan's pipeline hygiene rules.",
+    "tagline": "Flag opportunities that break pipeline hygiene rules.",
     "description": "Given a CSV of open opps (name, stage, next-step, close date, last activity), returns structured findings per rule violation. Read-only; no SFDC writes.",
     "category": "Other",
     "tags": "revops,pipeline,hygiene",

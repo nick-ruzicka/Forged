@@ -230,8 +230,8 @@ mark.current { background: var(--hl-current); }
 
 <div class="section">
   <div class="section-label">Test string</div>
-  <textarea id="test" spellcheck="false" placeholder="Paste text here...">Email me at sarah@navan.com or marcus.patel+contact@example.co.uk.
-You can also reach me at 555-123-4567 or visit https://navan.com/contact.
+  <textarea id="test" spellcheck="false" placeholder="Paste text here...">Email me at sarah@example.com or marcus.patel+contact@example.co.uk.
+You can also reach me at 555-123-4567 or visit https://example.com/contact.
 The deal closed on March 5 for $124,500 (ID: deal_98a-7c23).</textarea>
 </div>
 

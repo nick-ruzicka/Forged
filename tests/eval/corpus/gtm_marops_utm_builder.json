@@ -6,8 +6,8 @@
   "category": "realistic_gtm",
   "submission": {
     "name": "EVAL UTM Tagging Helper",
-    "tagline": "Append Navan-standard UTM parameters to a destination URL.",
-    "description": "Deterministic helper. Validates the source/medium/campaign combo against Navan's naming convention and returns the final URL.",
+    "tagline": "Append standard UTM parameters to a destination URL.",
+    "description": "Deterministic helper. Validates the source/medium/campaign combo against the team naming convention and returns the final URL.",
     "category": "Other",
     "tags": "marops,utm",
     "output_type": "deterministic",

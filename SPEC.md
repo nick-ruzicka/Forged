@@ -1,4 +1,4 @@
-# NAVAN AI APP PLATFORM — PRODUCTION SPEC v2.0
+# FORGE AI APP PLATFORM — PRODUCTION SPEC v2.0
 # "Forge" — The Internal AI Tool Marketplace
 # Author: Nick Ruzicka | 7-Day Build | Parallelized Across 6 Claude Code Terminals
 
@@ -6,11 +6,11 @@
 
 ## THE VISION
 
-Forge is an internal AI tool marketplace that lets the 50-person Navan RevOps team build, publish, discover, and run AI-powered tools — with a multi-agent governance pipeline that reviews, scores, hardens, and auto-deploys every submission.
+Forge is an AI tool marketplace that lets teams build, publish, discover, and run AI-powered tools — with a multi-agent governance pipeline that reviews, scores, hardens, and auto-deploys every submission.
 
 The product has three audiences:
-- **Builders** (RevOps analysts): Submit tools they've built in Claude, get them reviewed and published
-- **Users** (sales reps + RevOps team): Discover and run tools in a clean UI without touching code
+- **Builders** (analysts): Submit tools they've built in Claude, get them reviewed and published
+- **Users** (team members): Discover and run tools in a clean UI without touching code
 - **Platform admin** (Nick): Review queue, governance scoring, deployment controls, abuse monitoring
 
 The magic: when a tool is approved, Forge auto-deploys it to a live VPS endpoint, generates a shareable link, sends a Slack notification, and produces human-readable instructions. A non-engineer never needs to know what a server is.
@@ -318,7 +318,7 @@ What data flows through this tool?
 | Level | Label | Examples |
 |-------|-------|---------|
 | public | Public | Company names, publicly available info |
-| internal | Internal | Navan team data, internal metrics |
+| internal | Internal | Team data, internal metrics |
 | confidential | Confidential | Deal values, customer names, pipeline data |
 | pii | PII | Email addresses, phone numbers, personal contact info |
 
@@ -340,7 +340,7 @@ Has a human validated this tool's outputs against ground truth?
 - 0: Never validated
 - 50: Validated by agent QA only
 - 75: Validated by human reviewer on test cases
-- 90: Validated against real Navan data by trusted team member
+- 90: Validated against real production data by trusted team member
 - 100: Passed formal accuracy audit
 
 ---
@@ -824,7 +824,7 @@ Footer: version number, #forge-help Slack link, status page link
 ### PAGE 1: CATALOG (/catalog or /)
 
 **Hero section (first-time visitors only, dismissible):**
-"Welcome to Forge — Navan's internal AI tool platform. Browse tools built by your team, or submit one of your own. Every tool is reviewed and scored before going live."
+"Welcome to Forge — the internal AI tool platform. Browse tools built by your team, or submit one of your own. Every tool is reviewed and scored before going live."
 [Browse Tools button] [Submit a Tool button]
 
 **Search bar (prominent, full-width):**
@@ -970,7 +970,7 @@ Previous runs (collapsible):
 Multi-step form with progress indicator (5 steps):
 
 **Step 1: Basics**
-- Tool name* (text, 60 char limit, slug preview shown live: "forge.navan/tools/your-tool-name")
+- Tool name* (text, 60 char limit, slug preview shown live: "forge.internal/tools/your-tool-name")
 - Tagline* (text, 80 char limit — "what does it do in one sentence?")
 - Description* (markdown textarea with live preview)
 - Category* (select with descriptions for each)
@@ -1462,25 +1462,23 @@ Simple shared secret approach:
   - Rate limiting: 30 runs per hour per IP
 
 Phase 2 roadmap (not built now, but designed for):
-- Google OAuth (Navan uses Google Workspace)
+- Google OAuth (Google Workspace)
 - SSO via Okta
 - Role-based tiers: viewer / contributor / manager / admin
 - Tool-level access control (security_tier field already in schema)
 
 ---
 
-## WHAT THIS DEMONSTRATES AT THE OLIVER INTERVIEW
+## WHAT THIS DEMONSTRATES
 
-This is not a prototype. This is the actual product Oliver described wanting, built before he had a chance to spec it himself.
-
-Specific things Oliver said that this directly addresses:
-- "How do people collaborate on those apps?" → Submit + fork workflow + version history
-- "These are non-engineers, right?" → Submit form with no code required, plain-English governance cards
+Key design problems this project explores:
+- "How do people collaborate on AI tools?" → Submit + fork workflow + version history
+- "How do non-engineers participate?" → Submit form with no code required, plain-English governance cards
 - "How do we distinguish deterministic vs probabilistic?" → Multi-dimension scoring system with plain-English UI, not jargon
-- "It's so easy to get it wrong and create a black box with an AI slot" → Agent review pipeline + trust tier system + governance scores
-- "How do you enable the rest of the revenue operations team?" → Skills library + app marketplace serves all 50 people
+- "How do you prevent black-box AI tools?" → Agent review pipeline + trust tier system + governance scores
+- "How do you enable an entire team?" → Skills library + app marketplace
 
-The auto-deployment with instructions is the thing Oliver didn't explicitly name but clearly wanted — the moment a tool gets approved, it's live and the team gets notified with a link and instructions. That's the magic.
+The auto-deployment with instructions is the key innovation — the moment a tool gets approved, it's live and the team gets notified with a link and instructions.
 
 ---
 

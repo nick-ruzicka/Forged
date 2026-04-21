@@ -156,7 +156,7 @@ def _insert_tool(db, **overrides):
         "app_html": overrides.pop("app_html", "<html><body>test</body></html>"),
         "status": overrides.pop("status", "approved"),
         "author_name": overrides.pop("author_name", "Test Author"),
-        "author_email": overrides.pop("author_email", "test@navan.com"),
+        "author_email": overrides.pop("author_email", "test@example.com"),
     }
     row.update(overrides)
 
@@ -205,7 +205,7 @@ def sample_run(db, sample_tool):
                 json.dumps({"query": "hello"}),
                 "hello world",
                 "Test User",
-                "user@navan.com",
+                "user@example.com",
             ),
         )
         result = cur.fetchone()

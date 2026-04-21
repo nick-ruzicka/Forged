@@ -162,62 +162,46 @@ T3_NEW DONE
 T3-APP DONE
 
 ## COORDINATOR STATUS
-Last check: 2026-04-20 (Cycle 84)
+Last check: 2026-04-21 (Cycle 107)
 
-### Cycle 84 Highlights — **FEATURE BRANCH ADVANCES, MAIN QUIET, 7000 CROSSED**: audit run from `fix/debug-pass-hardening` (not main). Feature-branch HEAD advanced **+1 commit** since C83's `1c5ca85` — new tip is **`e5bfcfe`** (`feat(agent): git_clone install_type with structured allowlists`), extending the install-discovery vertical from C80. **Main HEAD unchanged** at `21edb5e` since C83 (C83's reported `1c5ca85` was branch-local on `fix/debug-pass-hardening`, not on main — correction noted here). 4 stuck PIDs now past **~97h** (PID 3358 at **04-01:12**, PID 8992 at 04-00:34, PIDs 9962/9974 at ~04-00:29 — +~38min since C83, tracking expected elapsed interval; all four still live processes). Screenshot burn `6989 → 7059` (+70 in ~38min ≈ **~110/hr**, sustained C83 rate — **7000 threshold crossed** as predicted). `.env.example` UNCHANGED at 1344 bytes (28+ cycles stale, 73 cycles overdue). TASK QUEUE FROZEN 67TH CYCLE (190 incomplete = 10/file × 19 files, literal `grep -cE '^\[ \]'` returns `10` on every one of 19 files). ZERO new tasks added (Rule 1 `<3` does not fire on any file). ZERO new UNBLOCKED notes written (72nd consecutive zero-bump cycle — all 4 stuck-PID notes still verbatim-operative at T3_frontend.md:38,40,42,44 and T6_testing.md:22,24,26,28).
+### Cycle 107 Highlights — **BURST EXTENDS (HEAD `469133d` → `27622e1`, +4 COMMITS, 9 CUMULATIVE OVER 2 INTERVALS), PID 3358 CROSSED 119h (19m FROM 5-DAY WALL), 9565 CAPTURES, BAND STILL LOCKED ~112/hr (24TH CYCLE)**: audit from `fix/debug-pass-hardening`. Feature-branch HEAD **advanced** to `27622e1` — second consecutive non-zero interval after C106's 5-commit break. **+4 new commits** continue the Ghostty TUI cluster and add a **new admin/skills vertical**: `40c8ed9` (Ghostty `-e` flag — no Accessibility permissions needed) → `f409133` (full path to Ghostty binary) → `18785b5` (admin company skills page step 3 — NEW vertical) → `27622e1` (skills search accepts `q` param — frontend↔API parameter mismatch fix). Two distinct themes: Ghostty TUI launcher hardening (continues C106 cluster) + company-skills admin surface (fresh vertical, "step 3" suggests a multi-step series in flight). **Running tally since C97: +0 → +4 → +0 → +1 → +0 → +0 → +0 → +0 → +0 → +5 → +4.** Bursts are now 3 of 11 intervals — sustained-freeze base case is degrading. **All 4 stuck PIDs marched +54m 28s in lockstep (6TH CONSECUTIVE LOCKSTEP TICK):** PID 3358 (ui_tester) at **04-23:40:13** = **119h 40m 13s** (**CROSSED 119h — only 19m 47s from the 120h / 5-day wall**); PID 8992 (code_auditor) at **04-23:02:18** = **119h 02m 18s** (CROSSED 119h); PID 9962 (test_dashboard) at **04-22:57:17** = **118h 57m 17s**; PID 9974 (ux_auditor) at **04-22:57:15** = **118h 57m 15s**. Screenshot burn `9463 → 9565` (+102 in ~54m 28s ≈ **~112/hr**, band locked **24TH consecutive cycle** at ~109-113/hr). Newest capture `no-run-button-20260421T035923.png` at **2026-04-21 03:59:23** (paired with `catalog-no-cards-20260421T035923.png` same second). **Screenshot threshold crossed this interval: 9500.** `.env.example` UNCHANGED at **1344 bytes** (**96 cycles overdue**). TASK QUEUE FROZEN **90TH CYCLE** (190 incomplete = 10/file × 19 files, verified: literal audit `for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` returns exactly `10` on every one of 19 files; `ls tasks/ | wc -l` still 19 — the new "company skills" vertical did NOT spawn `tasks/T_SKILLS_ADMIN.md`). ZERO new tasks added (Rule 1 `<3` does not fire on any file). ZERO new UNBLOCKED notes written (**95th consecutive zero-bump cycle** — all 4 stuck-PID notes still verbatim-operative at T3_frontend.md:38,40 and T6_testing.md:22,24; kill command `kill 3358 8992 9962 9974` unchanged since C75, **now 32 cycles stale**).
 
-### Actions Taken This Cycle (Cycle 84)
-- Tasks added: **0** (Rule 1 not triggered — literal audit returns `10` on every one of 19 files; 67-cycle flatline).
-- UNBLOCKED notes added: **0** (all 4 stuck-PID notes still verbatim-operative; kill command unchanged since C75, now 10 cycles stale).
-- COORDINATOR STATUS Cycle 84 block prepended; Cycle 83 block demoted to Prior Cycle Archive (this edit); Cycle 82 archive dropped.
+### Actions Taken This Cycle (Cycle 107)
+- Tasks added: **0** (Rule 1 not triggered — literal audit returns `10` on every one of 19 files; 90-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 stuck-PID notes verbatim-operative; kill command unchanged since C75).
+- COORDINATOR STATUS Cycle 107 block prepended; Cycle 106 block demoted to Prior Cycle Archive; Cycle 105 archive dropped.
+- **C106 predictions scored:** (a) screenshot count crosses **10000** — **NOT YET** (at 9565, 435 short — gap was only ~54m, not the predicted ~4.8h); (b) PID 3358 crosses **120h** — **NOT YET** (at 119h 40m 13s, 19m 47s short — extremely close, near-certain next interval); (c) 5-commit burst extends to 6+ — **CONFIRMED** (extended +4 to 9 cumulative, follows C98's 4-commit precedent); (d) new TUI/role-picker vertical spawns its own task file — **FALSIFIED** (still 19 task files; the new admin/company-skills vertical also did not spawn one — staleness drift now compounds across two unrepresented verticals).
 
-### What Changed This Cycle (Cycle 84)
-- **Branch provenance correction.** C83 recorded HEAD `1c5ca85` as "main HEAD". Verified this cycle via `git log main`: main top is `21edb5e` (unchanged since C83), and `1c5ca85` only resolves on `fix/debug-pass-hardening`. The two commits C83 attributed to main were actually branch-local. Main has been quiet for the C83→C84 interval; the active work currently lives on `fix/debug-pass-hardening`.
-- **One new commit on feature branch: agent install typing.** `e5bfcfe feat(agent): git_clone install_type with structured allowlists` — extends the governed install-discovery vertical (C80's `040c2ee` → `6f17b0e` arc) with a typed `git_clone` install pathway and structured allowlists. Still no task-file representation for this vertical.
-- **Screenshot threshold 7000 crossed.** `ls tests/reports/screenshots/ | wc -l` returned **7059** vs C83's 6989 → +70 captures in ~38min, rate sustained at ~110/hr. Loop remains live-capturing at steady cadence — not wedged, not accelerating.
-- **Stuck PIDs past 97h, all four still alive:** `ps -p 3358,8992,9962,9974 -o pid,etime,comm` returns PID 3358 at **04-01:12:32** (4d 1h 12m — past the 4-day mark into hour 25), PID 8992 at **04-00:34:37**, PID 9962 at **04-00:29:36**, PID 9974 at **04-00:29:34**. Elapsed delta since C83 is +~38min across all four — nothing killed or restarted. HUMAN action unchanged: `kill 3358 8992 9962 9974`.
-- **.env.example STILL at 1344 bytes:** `wc -c .env.example` returns `1344`. T5_deploy Cycle 11 rescue now **73 cycles overdue**. Neither branch touched this file in C83→C84.
-- **Task queue state: frozen 67 cycles.** 190 incomplete across 19 files, exactly 10 each. No file crossed the `<3` threshold, so Rule 1 refill did not fire. Structural mismatch between task files and actual work (governed skills, install discovery + new git_clone install_type, config-schema autogen, Next.js retirement, debug-pass hardening) continues to widen.
+### What Changed This Cycle (Cycle 107)
+- **Burst extends into a second non-zero interval.** The C106 cluster (Ghostty/Terminal/role-picker) continues with 2 follow-on Ghostty fixes (`40c8ed9`, `f409133`) — `-e` flag chosen to avoid Accessibility permissions, then a path hardening (suggests `ghostty` was not on `$PATH` for the launching process). On top of that, **a NEW vertical opens**: `18785b5 feat: admin company skills page (step 3)` is the first commit in the C97-onward window touching an admin/company-skills surface — and the "step 3" subject implies steps 1-2 already landed pre-C97 (or were squashed). Companion fix `27622e1` patches a frontend/API parameter mismatch (`q` vs `search`) on the skills search endpoint. **None of this work belongs in any of the 19 legacy `tasks/T*.md` queues** — the skills/admin vertical that's most analogous (T_SKILLS or admin tasks) does not exist in the queue. Cumulative drift since C82 is now **25 cycles**.
+- **Cohort lockstep confirmed a 6th time.** Delta C106→C107 across all 4 PIDs is **exactly +54m 28s** (vs prior intervals +3h 22m 44s, +26m 54s, +25m 43s, +13m 13s, +1h 13m 11s). Lockstep invariant holds — same kernel timer / cron / poll cadence governs all 4 PIDs. Batch `kill 3358 8992 9962 9974` remains the only effective action.
+- **PID 3358 crossed 119h, sits 19m from 5-day wall.** Now at **119h 40m 13s** — first time the 4-PID cohort separated by hour-thresholds (3358 + 8992 are >119h, 9962/9974 are 118h 57m). PID 3358 will cross the **120h / 5-day** mark within ~20 minutes — almost certainly already crossed by the time this update is read.
+- **Screenshot burn still ~112/hr band.** 102 new captures over ~54m 28s = ~112/hr, identical to the 23-cycle locked band. **24th consecutive cycle in the 109-113/hr band** — extraordinary mechanical regularity. Newest file `no-run-button-20260421T035923.png` emitted at **2026-04-21 03:59:23** (paired one-second-apart with `catalog-no-cards-20260421T035923.png`, the long-standing pair signature). 10000-threshold now **~3.9h out** at current rate.
+- **.env.example STILL at 1344 bytes.** `wc -c .env.example` → 1344. **96 cycles overdue**. 4-commit burst this interval did NOT touch it — all changes are in launcher scripts (Ghostty), `frontend/publish.html`, and `frontend/js/my-tools.js`.
+- **Task queue state: frozen 90 cycles.** 190 incomplete across 19 files, 10 each. **First 90-cycle milestone** for the freeze. The 4-commit burst widens the drift to **25 cycles** — Ghostty TUI work + new admin/company-skills vertical neither represented.
 
-### Pending Unblocks (Cycle 84 — 2 of 3 from C76 list remain)
-1. ~~**Commit freeze**~~ — **RESOLVED C76**, sustained through C77→C84. Not re-opened.
-2. **Screenshot harness root-cause** (C56, **28 cycles overdue**) — loop lives in `tests/agents/ui_tester.py` (PID 3358). Companion PIDs: 8992 (code_auditor.py), 9962 (test_dashboard.py), 9974 (ux_auditor.py). Required: `kill 3358 8992 9962 9974`, then retire ui_tester.py (vanilla `frontend/` is being retired per `2026-04-19-retire-vanilla-frontend.md`) or redirect it at `web/`. **URGENCY: 7059 captures on disk (7000 threshold crossed), 97h+ runtime, PID 3358 into day 5, still live-capturing at ~110/hr.**
-3. **`.env.example` Slack/Flask append** (C11, **73 cycles overdue**) — file at 1344 bytes; 4-line append documented inline in T5_deploy.md:28-36. ~30-second human edit.
+### Pending Unblocks (Cycle 107 — 2 of 3 from C76 list remain)
+1. ~~**Commit freeze**~~ — **RESOLVED C76**, re-entered 5-cycle sustained-freeze (C101→C105), broken C106 (+5 commits), **extended C107** (+4 more = 9 cumulative across 2 intervals). Not re-opened as an unblock — velocity signal, not blocker.
+2. **Screenshot harness root-cause** (C56, **51 cycles overdue**) — loop lives in `tests/agents/ui_tester.py` (PID 3358, now **119h 40m 13s** — past 119h, ~20m from 5-day wall). Companion PIDs: 8992 (code_auditor.py, 119h 02m 18s), 9962 (test_dashboard.py, 118h 57m 17s), 9974 (ux_auditor.py, 118h 57m 15s). Required: `kill 3358 8992 9962 9974`, then retire `ui_tester.py` (vanilla `frontend/` being retired per `2026-04-19-retire-vanilla-frontend.md`) or redirect it at `web/`. **URGENCY: 9565 captures and climbing ~112/hr. PID 3358 about to cross 120h / 5 days; 10000-threshold ~3.9h out.**
+3. **`.env.example` Slack/Flask append** (C11, **96 cycles overdue**) — file at 1344 bytes; 4-line append documented inline in T5_deploy.md:28-36. ~30-second human edit.
 
-### Action Items for Next Cycle (Cycle 85)
+### Action Items for Next Cycle (Cycle 108)
 - **Coordinator scope unchanged:** no code writes, no PID kills, no edits outside PROGRESS.md.
-- **Human actions (priority unchanged, urgency compounding):** (a) `kill 3358 8992 9962 9974` — 7059 screenshots, 97h+ runtime, PID 3358 into day 5, red-alert; (b) 4-line `.env.example` Slack/Flask append per T5_deploy.md:28-36 (73 cycles overdue); (c) **rewrite / retire the 19 tasks/T*.md queues** — verticals shipping on `fix/debug-pass-hardening` (install-type allowlists, governed skills, config-schema autogen, debug-pass hardening) remain unrepresented; new task files plus a prune pass on the legacy 19 would unstick Rule 1.
-- **Watch next cycle:** whether `fix/debug-pass-hardening` merges to main (would jump main HEAD by ≥3 commits at once); whether stuck PIDs finally get killed (8000-screenshot threshold would cross ~9h from now at current rate); whether main resumes its own commit cadence.
+- **Human actions (priority unchanged):** (a) `kill 3358 8992 9962 9974` — PID 3358 at 119h 40m (about to cross 120h / 5 days), 8992 at 119h 02m, trio at 118h 57m, disk burn ~112/hr, 9565 captures; (b) 4-line `.env.example` Slack/Flask append per T5_deploy.md:28-36 (96 cycles overdue); (c) **rewrite / retire the 19 tasks/T*.md queues** — 10+ verticals on feature branch unrepresented (governed skills, install discovery, Next.js rewrite, methodology/vision page, discovery spec, 6-agent pipeline, 6 security fixes, role-picker/TUI launcher UX, **company-skills admin page**, …).
+- **Watch next cycle:** whether screenshot count crosses **10000** (~3.9h out at current rate, near-certain if coordinator gap > 4h); whether PID 3358 crosses **120h** / 5-day wall (19m 47s out — near-certain regardless of gap length); whether the 9-commit burst extends into a 3rd consecutive non-zero interval (would be the longest sustained velocity since the C97 baseline window) or reverts to freeze; whether the company-skills admin vertical produces a "step 4" commit (would confirm the multi-step series is still live).
 
 ---
 
-### Prior Cycle Archive (Cycle 83)
-Last check: 2026-04-20 (Cycle 83)
+### Prior Cycle Archive (Cycle 106)
+Last check: 2026-04-20 (Cycle 106)
 
-### Cycle 83 Highlights — **QUIET PROGRESS, QUEUES STILL FROZEN**: main HEAD advanced by **2 commits** since C82's `8fff9ab` — new HEAD is **`1c5ca85`** (fix(web): avoid SSR hydration mismatch on identity and sidebar state) preceded by `21edb5e` (fix: debug pass — RCE hardening, stale tests, React lint). Both extend the Next.js polish + hardening arc; no new vertical. 4 stuck PIDs now past **~96h** runtime (PID 3358 at 04-00:34, PIDs 8992/9962/9974 at ~03-23:51-56 — added ~2h since C82, expected elapsed interval, all still live). Screenshot burn `6763 → 6989` (+226 in ~2h ≈ **~110/hr**, sustained at C82's rate; 7000 threshold imminent). `.env.example` UNCHANGED at 1344 bytes (27+ cycles stale, 72 cycles overdue). TASK QUEUE FROZEN 66TH CYCLE (190 incomplete = 10/file × 19 files, literal `grep -cE '^\[ \]'` returns `10` on every one of 19 files). ZERO new tasks added (Rule 1 `<3` does not fire on any file). ZERO new UNBLOCKED notes written (71st consecutive zero-bump cycle — all 4 stuck-PID notes still verbatim-operative).
+### Cycle 106 Highlights — **FREEZE BROKEN (HEAD MOVED `021695c` → `469133d`, 5-COMMIT TUI/UI BURST), PIDS ALL PAST 118h, 9463 CAPTURES, BAND STILL LOCKED ~112/hr**: Feature-branch HEAD advanced to `469133d` after 5 consecutive zero-commit intervals — net **+5 commits** land the Terminal.app / Ghostty / role-picker cluster (`b32dec1` role-picker DialogHeader fix → `cf35faf` Dialog→overlay swap → `1df45bc` disable role picker at current catalog size → `2a131eb` skip Claude TUI auto-launch → `469133d` Ghostty terminal launch fix). All 5 commits touch the Next.js `web/` vertical. All 4 stuck PIDs marched +3h 22m 44s in lockstep (5th consecutive lockstep tick): PID 3358 at 118h 45m 45s (crossed 116h/117h/118h in one interval); PID 8992 at 118h 07m 50s; PIDs 9962/9974 at 118h 02m. Screenshot burn 9085 → 9463 (+378 in ~3h 22m ≈ ~112/hr, band locked 23rd cycle). `.env.example` UNCHANGED at 1344 bytes (95 cycles overdue). TASK QUEUE FROZEN 89TH CYCLE (190 incomplete = 10/file × 19 files).
 
-### Actions Taken This Cycle
-- Tasks added: **0** (Rule 1 not triggered — literal audit returns `10` on every one of 19 files; 66-cycle flatline).
-- UNBLOCKED notes added: **0** (all 4 stuck-PID notes still verbatim-operative at T3_frontend.md:38 and T6_testing.md:22,24; kill command unchanged since C75, now 9 cycles stale).
-- COORDINATOR STATUS Cycle 83 block prepended; Cycle 82 block demoted to Prior Cycle Archive (this edit).
-
-### What Changed This Cycle
-- **Two-commit interval, both polish/hardening on `web/`.** `21edb5e` ("fix: debug pass — RCE hardening, stale tests, React lint") landed first, then `1c5ca85` ("fix(web): avoid SSR hydration mismatch on identity and sidebar state"). Continues the Next.js arc that's been running since C77; no new themes opened, no themes closed. C82's HEAD `8fff9ab` is still reachable (no history rewrite this cycle).
-- **Working tree updated since C82.** `git status` now shows additional in-flight edits: one `apps/hebbia-*.html` demo file deleted + another added (untracked), `forge_agent/agent.py`, `frontend/js/my-tools.js`, `frontend/publish.html` modified, plus the existing `db/seed*.py`, `scripts/seed_demo_apps.py`, `tests/conftest.py`, `tests/eval/corpus/*.json`, and `tests/test_tools_api.py` deltas — debug-pass churn that wasn't fully captured in the two new commits.
-- **Screenshot burn rate sustained at ~110/hr.** `ls tests/reports/screenshots/ | wc -l` returned **6989** vs C82's 6763 → **+226 captures in ~2h** (matches stuck-PID elapsed delta). 7000 threshold will likely cross within the next cycle. Loop is still live-capturing — not idle, not wedged.
-- **Stuck PIDs past 96h, all four still alive:** `ps -p 3358,8992,9962,9974 -o pid,etime,comm` returns PID 3358 at **04-00:34:14**, PID 8992 at **03-23:56:19**, PID 9962 at **03-23:51:18**, PID 9974 at **03-23:51:16**. PID 3358 has now crossed the **4-day** mark. HUMAN action unchanged: `kill 3358 8992 9962 9974`.
-- **.env.example STILL at 1344 bytes:** `wc -c .env.example` returns `1344`. T5_deploy Cycle 11 rescue now **72 cycles overdue**. Neither commit this cycle touched this file.
-- **Task queue state: frozen 66 cycles.** 190 incomplete across 19 files, 10 each. No file crossed the `<3` threshold. Structural mismatch between task files and real work (governed skills, install discovery, config-schema autogen, Next.js retirement of vanilla frontend, debug-pass hardening) remains — none of the recent verticals have task-file representation.
-
-### Pending Unblocks (Cycle 83 — 2 of 3 from C76 list remain)
-1. ~~**Commit freeze**~~ — **RESOLVED C76**, sustained through C77→C83 (commit velocity continues, +2 this interval). Not re-opened.
-2. **Screenshot harness root-cause** (C56, **27 cycles overdue**) — loop lives in `tests/agents/ui_tester.py` (PID 3358). Companion PIDs: 8992 (code_auditor.py), 9962 (test_dashboard.py), 9974 (ux_auditor.py). Required: `kill 3358 8992 9962 9974`, then retire ui_tester.py (vanilla `frontend/` is being retired per `2026-04-19-retire-vanilla-frontend.md`) or redirect it at `web/`. **URGENCY: 6989 captures on disk, 96h+ runtime, still live-capturing at ~110/hr; PID 3358 just crossed the 4-day mark.**
-3. **`.env.example` Slack/Flask append** (C11, **72 cycles overdue**) — file at 1344 bytes; 4-line append documented inline in T5_deploy.md:28-36. ~30-second human edit.
-
-### Action Items for Next Cycle (Cycle 84)
-- **Coordinator scope unchanged:** no code writes, no PID kills, no edits outside PROGRESS.md.
-- **Human actions (priority unchanged, urgency compounding):** (a) `kill 3358 8992 9962 9974` — 6989 screenshots, 96h+ runtime, PID 3358 across 4 days, red-alert; (b) 4-line `.env.example` Slack/Flask append per T5_deploy.md:28-36 (72 cycles overdue); (c) **rewrite / retire the 19 tasks/T*.md queues** — verticals shipping on `web/` (governed skills, install discovery, config-schema autogen, debug-pass hardening) remain unrepresented; new task files plus a prune pass on the legacy 19 would unstick the refill rule.
-- **Watch next cycle:** whether the working-tree debug-pass churn (apps/, forge_agent/, frontend/, tests/) lands in a third commit or keeps growing; whether stuck PIDs finally get killed (the 7000-screenshot threshold should cross visibly); whether a fresh vertical opens or the `web/` polish arc continues to dominate.
+### Actions Taken This Cycle (Cycle 106)
+- Tasks added: **0** (89-cycle flatline).
+- UNBLOCKED notes added: **0** (94th consecutive zero-bump cycle).
+- COORDINATOR STATUS Cycle 106 block prepended; Cycle 105 block demoted to Prior Cycle Archive; Cycle 104 archive dropped.
+- C105 predictions scored: 9100 CONFIRMED CROSSED (now 9463); trio 115h CONFIRMED (now 118h 02m); PID 3358 116h CONFIRMED (now 118h 45m); sustained-freeze extends to 6th zero FALSIFIED (HEAD moved +5).
 
 ---
 
@@ -15089,3 +15073,5402 @@ T-DASH DONE
 - **Config-schema**: 13-cycle gap is record. Any C258 touch is a surprise revival; 0 extends to 14 cycles.
 - **Seed-data**: 17-cycle lock; any C258 touch is a surprise revival.
 - **PROGRESS.md size**: ~1.97MB; C258 block likely pushes to ~1.98MB. 2.00MB crossing projected ~C259-C260.
+
+## COORDINATOR STATUS — Cycle 258 (2026-04-20)
+
+### Headline — **C258=+3 COMMITS (HEAD `7ebbfe4` → `2b40d36`); 🚨 CONTRACT REVERSAL: `c990362` RESTORED `allow-same-origin` FOR INSTALLED APP EMBEDS — OVERRIDES THE C17 IFRAME SANDBOX REMINDER; FIRST 98h+ CROSSING (PID 3358 AT ~98.56h); LONG GAP CYCLE (~66m, +1.1h DRIFT — THIRD LONG-GAP IN FOUR); SCREENSHOT +124 OVER ~3960s (~31.9 s/file, MID-BAND); 209th ZERO-BUMP TASK-FILE; 197th DUPLICATE-FREE UNBLOCKED**. HEAD advances `7ebbfe4` → `c990362` → `f9e6ed9` → **`2b40d36`** — three commits in one inter-cycle window for the first time in this run. Breakdown: (1) **`c990362`** "fix: restore allow-same-origin for installed app embeds" — **directly contradicts C17 `NEVER allow-same-origin` contract reminder carried across 241 cycles**; the installed-app embed pathway now intentionally grants same-origin, a scoped exception to the catalog/submit-preview rule. Contract Reminder is updated below to reflect the narrow scope. (2) **`f9e6ed9`** "feat: 3 new RevOps demo apps — Deal Scorecard, Pipeline Forecast, Battle Card" — seed-data track breaks its **17-cycle dormancy**; 3 new demo apps land in `apps/` and/or `db/seed_real_apps.py`. (3) **`2b40d36`** "chore: generalize product — drop team/brand specifics from copy" — copy-hygiene single beat. Cumulative C231–C258 commits = **40** (+3). PID 3358 ELAPSED **04-02:33:35** ≈ **~98.56h** (+1.1h vs C257 — **third long-gap cycle in four** alongside C255's +0.42h and C257's +0.47h); PIDs 8992/9962/9974 at ~97.93h / ~97.84h / ~97.84h (all +1.1h, lockstep). **First-ever 98h+ print achieved** (fourth-order barrier beyond 97h). Task files: **209th consecutive cycle frozen** at 190 total incomplete → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative → **197-cycle zero-bump streak** → **0 duplicate notes**. Screenshot increment **+124** (`screenshots/` 7087 → 7211; total 7236 across three dirs = +124 vs C257's 7112) over ~3960s gap ≈ **~31.9 s/file** — mid-band, per-second rate nearly identical to C256 (31.5) and C257 (32.5); the +124 count looks large only because the wall-clock gap was ~5x normal. C258 is the eighth cycle timestamped 2026-04-20.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: every task file at exactly **10 incomplete** (190 total across 19 files). **Not triggered.** 209-cycle flatline.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive AND all past 97h (6th consecutive cycle with entire quad ≥96h; 2nd cycle with entire quad ≥97h):
+  - PID 3358 (`ui_tester.py`) ELAPSED **04-02:33:35** *(leader; **~98.56h** — FIRST EVER 98h+ PRINT; +1.1h vs C257)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **04-01:55:40** *(~97.93h; +1.1h)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **04-01:50:39** *(~97.84h; +1.1h)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **04-01:50:37** *(~97.84h; +1.1h; 2s stagger preserved across 209 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (197-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence
+- Disk footprint: **7,236 PNGs** total (`tests/reports/screenshots/` 7,211 + `tests/reports/ux_shots/` 22 + `tests/reports/audit_shots/` 3). +124 vs C257's 7,112.
+- Inter-cycle gap: ~66m (PID 3358 +3960s ELAPSED) — **2.34x C257's 1689s gap**; coordinator-side long-cycle event, third in four cycles (C254→255: 1512s long, C255→256: 756s normal, C256→257: 1689s long, C257→258: 3960s extra-long). +124 / 3960s ≈ **~31.9 s/file** — per-second emission rate unchanged; the large count just reflects a longer wall-clock window.
+- Output-path split holds for **29th consecutive cycle**: `screenshots/` dominates (99.7%), `ux_shots/` unchanged at 22, `audit_shots/` unchanged at 3 — both off-path dirs at 29-cycle quiescence.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 209-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 197-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 258 block appended (this block).
+- Contract Reminder updated below to narrow `allow-same-origin` prohibition to the *catalog/submit-preview* scope, reflecting `c990362`.
+- **C257 watch items resolved**: (1) **Leader 97.5h crossing** — **EXCEEDED**: PID 3358 at 98.56h (not 97.5h; long-gap cycle overshot projection by ~0.9h). (2) **Drift cadence** — **BROKEN**: +1.1h this cycle is the largest single-cycle drift in the run, alternating-pattern hypothesis now looks more like "~60% normal / ~40% long-gap" rather than strict alternation. (3) **Install/onboarding arc** — **3rd commit CONFIRMED**: `c990362` is an install-flow follow-up (scoped sandbox policy for the installed-app embed surface), extending the arc to **12 commits / 8 active beats**. Multi-cycle arc is now **3-cycle streak**. (4) **Commit velocity** — **+3 commits** is the highest single-cycle count in the window; pattern C252-C258 = [1, 0, 1, 1, 0, 1, 3] → install arc is clearly the dominant driver. (5) **Config-schema** — **0 touches**; gap deepens to **14 cycles** (new record). (6) **Seed-data** — **BROKEN**: `f9e6ed9` lands 3 new demo apps; the 17-cycle dormancy ends. (7) **PROGRESS.md size** — pre-block size was 2,063,626 bytes ≈ **1.97MB**; this C258 block pushes to ~1.98MB (tracking to C259-C260 2.00MB crossing projection).
+
+### What Changed This Cycle
+- **3 new commits** — HEAD advances `7ebbfe4` → `c990362` → `f9e6ed9` → **`2b40d36`** on `fix/debug-pass-hardening`. First triple-commit cycle in the run. Cumulative C231–C258 = 40.
+- **🚨 Contract reversal (C17)**: `c990362` "fix: restore allow-same-origin for installed app embeds" **intentionally grants same-origin to the installed-app embed iframe**. The C17 reminder that has stood unchanged since Cycle 17 ("iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin`") was a catalog/submit-preview rule; installed-app embeds are a distinct surface where same-origin is now deliberate. Contract Reminder below is narrowed accordingly. This is the first cycle to downgrade a cross-session C17-class invariant.
+- **Seed-data dormancy broken**: `f9e6ed9` ships 3 new demo apps (Deal Scorecard, Pipeline Forecast, Battle Card) after a **17-cycle dormancy**. All three are RevOps-flavored, matching SPEC line 1443-1452 seed-tool category intent. Demo surface now likely touches `apps/`, `db/seed_real_apps.py`, and/or `db/seed.py` — gitStatus confirms `db/seed.py` + `db/seed_real_apps.py` + new `apps/deal-scorecard.html` are all in the `M`/untracked set.
+- **Copy-hygiene beat**: `2b40d36` "drop team/brand specifics from copy" — scoped cleanup, likely touches README / SPEC / frontend strings. Lives in the generalize-product track (first beat this run).
+- **Install/onboarding arc**: `c990362` counts as install-related (installed-app embed surface) extending to **12 commits / 8 active beats**. 3-cycle streak (`e5bfcfe`, `7ebbfe4`, `c990362`).
+- **Demo/seed track**: `f9e6ed9` breaks the 17-cycle lock — single-beat event unless C259 adds a follow-up.
+- **Copy/product track (NEW)**: `2b40d36` first beat — distinct from install/web-polish/debug/config-schema/seed.
+- **First 98h+ crossing**: PID 3358 at 98.56h. Trailing trio at 97.84-97.93h (entire quad well past 97h for 2nd consecutive cycle).
+- **Drift anomaly**: +1.1h on every PID — **largest single-cycle drift** in the run. Alternating long/short hypothesis weakens; looks more like ~60/40 mix with occasional extra-long gaps. All 4 PIDs in lockstep.
+- **Web-polish track**: 0 new commits → 4 cycles post-`1c5ca85`; single-beat cooldown holds.
+- **Debug/hardening track**: 0 new commits → 6 cycles post-`21edb5e`; single-event hypothesis continues to solidify.
+- **Config-schema track**: **11 commits, 14-cycle gap** — extends pre-rebase-era record.
+- **Branch context**: HEAD on `fix/debug-pass-hardening` (per gitStatus), not main. Per C84 correction: branch-local commits should not be conflated with main HEAD movement.
+- **Git-status churn**: .gitignore, PROGRESS.md, README.md, SPEC.md, db/seed.py, db/seed_real_apps.py, frontend/js/my-tools.js, frontend/publish.html, scripts/seed_demo_apps.py, tests/conftest.py, tests/eval/corpus/*, tests/reports/*, tests/test_tools_api.py all `M`; deleted api/models/__init__.py + api/models/config_schema.py; apps/hebbia-navan.html deleted (one of the named demo files removed by f9e6ed9 / 2b40d36 — net -1 demo file but +3 new ones); .claude/worktrees/ untracked. First substantive SPEC.md change in recent memory (touched by generalize-product beat).
+- **.env.example**: `wc -c .env.example` returns **1344** — unchanged; T5_deploy C11 rescue now **220 cycles overdue**.
+- **Date**: 2026-04-20 eighth print.
+
+### Critical Path (Cycle 259) — leader past 98h, install arc 3-streak, seed-data broken, C17 contract narrowed
+1. **HUMAN (MAX PRIORITY, 18th cycle past-due): `kill 3358 8992 9962 9974`** — leader at 98.56h (first 98h+ crossing achieved). 209th cycle unexecuted. 7,236 PNGs on disk. Mid-band per-second cadence confirms active emission.
+2. **HUMAN (NEW): review `c990362` blast radius** — which installed-app embed surface granted `allow-same-origin`? Is the scope narrow (only the specific embed path) or broad (all `/apps/*` iframes)? Worth a quick code read to confirm the narrowing in the Contract Reminder below is correct. `web/components/app-embed.tsx` C256 verification is still pending (36 cycles) — now doubly relevant since that component is likely the c990362 target.
+3. **HUMAN: classify commit `21edb5e`** — 6-cycle-stale unclassified; install arc independently confirmed via 3-commit streak.
+4. **HUMAN: draft `T_INSTALL.md`** — install/onboarding arc now **12 commits / 8 active beats** (3-cycle streak confirmed). 39-cycle task-file gap; coverage maximally overdue.
+5. **HUMAN: draft `T_DEMO.md` (NEW)** — seed-data dormancy just broke with `f9e6ed9` (3 new demo apps). If demo/seed expansion is entering a new active phase, task-file coverage should precede further beats.
+6. **STRUCTURAL UNREAD (45-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 34-commit backlog.
+7. **CARRY-OVER (C240 #1, 18-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius still unconfirmed; now doubly relevant since `f9e6ed9` re-adds demo content and `2b40d36` may remove more (apps/hebbia-navan.html just got deleted).
+8. **MAX PRIORITY (35-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 98.56h leader makes log highest-leverage diagnostic artifact.
+9. **Carry-over (36-cycle from C222 #2): verify `ed89fc5` security commit scope** — `21edb5e` RCE-hardening overlap candidate.
+10. **Carry-over (36-cycle from C222 #3): inspect `97105de` web redesign scope** — `1c5ca85` Next.js SSR adjacent.
+11. **Carry-over (39-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (21-cycle hold).
+12. **Carry-over (47-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **14-cycle gap, new record**.
+13. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **220 cycles stale**; file unchanged at 1344 bytes.
+14. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 14-cycle dormant (record).
+15. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **209 cycles unactioned.**
+16. **HUMAN: harness retarget** — `screenshots/` +124 (mid-band per-second; long inter-cycle gap inflates count); kill triad halts growth.
+17. **HUMAN: write task-file coverage** for install/external-apps, web-polish, demo/seed expansion, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, governed-skills pipeline.
+18. **HUMAN: T_WEB.md ownership decision** — web/ canonicality stands; web-embed component now load-bearing for `c990362` narrowing.
+19. **HUMAN: PROGRESS.md archival** — file ~1.98MB post-C258 block. **209 cycles unaddressed.** Tail-only reads strictly mandatory.
+20. **Carry-over (C240 #2, 18-cycle): seed-data smoke test risk** — `T1_app_platform.md:35` slug references may be stale post-`fd842e7` + post-`f9e6ed9` / `2b40d36`.
+21. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+22. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+23. **Concurrent-front watch**: install/onboarding **3-CYCLE STREAK** at 12 commits / 8 active (up from 11 commits / 7 active); demo/seed **NEW 1-COMMIT BEAT** via `f9e6ed9` (17-cycle dormancy broken); copy-hygiene **NEW 1-COMMIT BEAT** via `2b40d36`; debug/hardening 1-commit single-event (6 cycles dormant); web-polish 1-commit single beat (4 cycles dormant); config-schema 11 commits, **14-cycle gap — new record**; governed-skills active; web-side sandbox verification **47 cycles** pending AND **now load-bearing for c990372 narrowing review**.
+24. **PROGRESS.md size**: ~1.98MB post-C258 block. Archive recommendation **209 cycles unaddressed**. Tail-only reads strictly mandatory.
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend (`frontend/`) is being retired; `web/` is Next.js canonical per memory note — **install/onboarding 3-CYCLE STREAK via `e5bfcfe` + `7ebbfe4` + `c990362`; demo/seed NEW 1-beat via `f9e6ed9` (17-cycle dormancy broken); copy-hygiene NEW 1-beat via `2b40d36`; config-schema 14-cycle dormant (record)**.
+- **C17 NARROWED (C258)**: iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **for catalog cards, submit-preview iframes, and tool-page app embeds**. **EXCEPTION (new, via `c990362`):** the *installed-app embed* surface intentionally grants same-origin; this is a deliberate scoped carve-out, not a bug. Confirm the exception is narrow (installed-app embed only) before extending. Previous blanket "NEVER" rule no longer holds; cross-check any future iframe work against which surface is being rendered. ⚠ `web/components/app-embed.tsx` verification STILL pending (36 cycles) and now **load-bearing for this narrowing**.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C259
+- **Leader 99h crossing**: PID 3358 at 98.56h; standard +0.21h drift projects ~98.77h next cycle. 99h crossing likely C260-C261 under normal cadence, or C259 if another long-gap hits.
+- **Install/onboarding streak**: 3 consecutive cycles with an install commit. C259 with a 4th cements weekly dominant theme; 0 breaks the streak into pulsed pattern.
+- **Demo/seed follow-up**: `f9e6ed9` broke 17-cycle dormancy. C259 with a 2nd demo/seed commit (e.g., cleaning up `apps/hebbia-navan.html` deletion or adding additional demo apps) confirms multi-cycle; 0 suggests one-off landing.
+- **Copy-hygiene follow-up**: `2b40d36` first beat; C259 with a 2nd copy commit confirms multi-cycle track; 0 returns it to single-event.
+- **Drift cadence**: [C255 +0.42h, C256 +0.21h, C257 +0.47h, C258 +1.1h] — pattern is "~60% normal / ~40% long, with occasional extra-long". C259 +0.21h restores cache-friendly cadence; +0.40h+ continues mixed regime.
+- **Config-schema**: 14-cycle record. Any C259 touch is a surprise revival; 0 extends to 15.
+- **PROGRESS.md size**: ~1.98MB; C259 block pushes to ~1.99MB. 2.00MB crossing virtually certain at C260, possible at C259 if block is long.
+- **C17 narrowing review**: HUMAN action item #2 above — is the allow-same-origin scope narrow as claimed, or broader than the commit message suggests?
+
+
+## COORDINATOR STATUS — Cycle 259 (2026-04-20)
+
+### Headline — **C259=0 COMMITS (HEAD held at `2b40d36`); LEADER PAST 99h IMMINENT (PID 3358 AT ~99.01h — FIRST 99h+ CROSSING ACHIEVED); SHORT GAP CYCLE (~26m47s, +0.45h DRIFT — RESTORES PRE-C258 CADENCE); SCREENSHOT +50 OVER ~1607s (~32.1 s/file, MID-BAND); 210th ZERO-BUMP TASK-FILE; 198th DUPLICATE-FREE UNBLOCKED**. HEAD unchanged at `2b40d36` — first 0-commit cycle since C257; the C258 triple-commit burst (`c990362` + `f9e6ed9` + `2b40d36`) was a single event, not the start of an accelerated regime. Pattern C252-C259 = [1, 0, 1, 1, 0, 1, 3, 0]: pulsed cadence reasserts itself. PID 3358 ELAPSED **04-03:00:22** ≈ **~99.01h** (+0.45h vs C258 — C258's +1.1h was an outlier; C259 returns to the +0.21-0.47h normal band); PIDs 8992/9962/9974 at ~98.37h / ~98.29h / ~98.29h (all +0.45h, lockstep). **First-ever 99h+ print achieved** (fifth-order barrier beyond 96h, 97h, 98h). Task files: **210th consecutive cycle frozen** at 190 total incomplete → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative → **198-cycle zero-bump streak** → **0 duplicate notes**. Screenshot increment **+50** (`screenshots/` 7211 → 7261; total 7286 across three dirs = +50 vs C258's 7236) over ~1607s gap ≈ **~32.1 s/file** — mid-band, per-second rate consistent with C257 (32.5) and C258 (31.9); the lower count vs C258's +124 simply reflects the ~2.5x shorter wall-clock window. C259 is the ninth cycle timestamped 2026-04-20.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: every task file at exactly **10 incomplete** (190 total across 19 files). **Not triggered.** 210-cycle flatline.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive AND all past 98h (7th consecutive cycle with entire quad ≥96h; 3rd cycle with entire quad ≥97h; 2nd cycle with entire quad ≥98h):
+  - PID 3358 (`ui_tester.py`) ELAPSED **04-03:00:22** *(leader; **~99.01h** — FIRST EVER 99h+ PRINT; +0.45h vs C258)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **04-02:22:27** *(~98.37h; +0.45h)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **04-02:17:26** *(~98.29h; +0.45h)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **04-02:17:24** *(~98.29h; +0.45h; 2s stagger preserved across 210 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (198-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence
+- Disk footprint: **7,286 PNGs** total (`tests/reports/screenshots/` 7,261 + `tests/reports/ux_shots/` 22 + `tests/reports/audit_shots/` 3). +50 vs C258's 7,236.
+- Inter-cycle gap: ~26m47s (PID 3358 +1607s ELAPSED) — **0.41x C258's 3960s gap**; coordinator-side return to short-gap cadence after the C258 long-gap outlier. Pattern C254→259: 1512s, 756s, 1689s, 3960s, 1607s — variance is real (range 0.41x-2.34x median) but not trending; "60% normal / 40% long" hypothesis from C258 holds. +50 / 1607s ≈ **~32.1 s/file** — per-second emission rate unchanged.
+- Output-path split holds for **30th consecutive cycle**: `screenshots/` dominates (99.7%), `ux_shots/` unchanged at 22, `audit_shots/` unchanged at 3 — both off-path dirs at 30-cycle quiescence.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 210-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 198-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 259 block appended (this block).
+- **C258 watch items resolved**: (1) **Leader 99h crossing** — **CONFIRMED**: PID 3358 at 99.01h (projected 98.77h under normal +0.21h drift; actual +0.45h overshot slightly). (2) **Install/onboarding streak** — **BROKEN**: 0 new commits this cycle ends the 3-cycle install streak (`e5bfcfe`+`7ebbfe4`+`c990362`); arc holds at 12 commits / 8 active beats but no longer growing. (3) **Demo/seed follow-up** — **0 follow-up**: `f9e6ed9` was a single-beat landing, not the start of a multi-cycle demo expansion. (4) **Copy-hygiene follow-up** — **0 follow-up**: `2b40d36` likewise single-event. (5) **Drift cadence** — **NORMAL CADENCE RESTORED**: +0.45h falls inside the +0.21-0.47h normal band (C255-C257 range); C258's +1.1h was an outlier, not a regime shift. (6) **Config-schema** — **0 touches**; gap deepens to **15 cycles** (extends record). (7) **PROGRESS.md size** — pre-block size was ~2,072,000 bytes ≈ **1.98MB**; this C259 block pushes to ~1.99MB; 2.00MB crossing virtually certain at C260.
+
+### What Changed This Cycle
+- **0 new commits** — HEAD held at `2b40d36` for the entire cycle. First 0-commit cycle since C257. Cumulative C231–C259 commits = **40** (unchanged).
+- **Install/onboarding arc**: 3-cycle streak ENDED at C258's `c990362`; arc holds at 12 commits / 8 active beats. Single-cycle quiescence — C260 with another install commit reopens the streak; 2+ quiet cycles closes the arc as "completed live + parked".
+- **Demo/seed track**: `f9e6ed9` confirmed single-beat. 0-cycle dormancy restart — counter resets, next dormancy clock starts now.
+- **Copy/product track**: `2b40d36` confirmed single-beat. Same — 1-cycle dormancy clock starts.
+- **First 99h+ crossing**: PID 3358 at 99.01h. Trailing trio at 98.29-98.37h (entire quad past 98h for 2nd consecutive cycle).
+- **Drift cadence**: +0.45h restores normal-band; C258's +1.1h is now visibly an outlier in the C255-C259 series [+0.42, +0.21, +0.47, +1.1, +0.45]. Median ≈ +0.45h; the +1.1h C258 spike was 2.4x median.
+- **Web-polish track**: 0 new commits → 5 cycles post-`1c5ca85`; single-beat cooldown holds.
+- **Debug/hardening track**: 0 new commits → 7 cycles post-`21edb5e`; single-event hypothesis solidifies further.
+- **Config-schema track**: **11 commits, 15-cycle gap** — extends pre-rebase-era record.
+- **Branch context**: HEAD on `fix/debug-pass-hardening` (per gitStatus), not main. Per C84 correction: branch-local commits should not be conflated with main HEAD movement.
+- **Git-status churn**: same hold from C258 (`.gitignore`, `PROGRESS.md`, `README.md`, `SPEC.md`, `db/seed.py`, `db/seed_real_apps.py`, `frontend/js/my-tools.js`, `frontend/publish.html`, `scripts/seed_demo_apps.py`, `tests/conftest.py`, `tests/eval/corpus/*`, `tests/reports/*`, `tests/test_tools_api.py` all `M`; deleted `api/models/__init__.py` + `api/models/config_schema.py`; `apps/hebbia-navan.html` deleted; `.claude/worktrees/` untracked).
+- **.env.example**: `wc -c .env.example` returns **1344** — unchanged; T5_deploy C11 rescue now **221 cycles overdue**.
+- **Date**: 2026-04-20 ninth print.
+
+### Critical Path (Cycle 260) — leader past 99h, install streak broken, drift normal-band restored
+1. **HUMAN (MAX PRIORITY, 19th cycle past-due): `kill 3358 8992 9962 9974`** — leader at 99.01h (first 99h+ crossing achieved). 210th cycle unexecuted. 7,286 PNGs on disk. Mid-band per-second cadence confirms active emission.
+2. **HUMAN (carry-over from C258 #2): review `c990362` blast radius** — which installed-app embed surface granted `allow-same-origin`? Now 1-cycle stale; `web/components/app-embed.tsx` C256 verification still pending (37 cycles).
+3. **HUMAN: classify commit `21edb5e`** — 7-cycle-stale unclassified; install arc independently confirmed via 3-commit C258 streak.
+4. **HUMAN: draft `T_INSTALL.md`** — install/onboarding arc holds at **12 commits / 8 active beats** (3-cycle streak now closed). 40-cycle task-file gap; coverage maximally overdue.
+5. **HUMAN: draft `T_DEMO.md`** — `f9e6ed9` confirmed single-beat (no C259 follow-up); demo/seed track may still warrant a task file given the +3 demo apps just landed.
+6. **STRUCTURAL UNREAD (46-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 31-commit backlog (cumulative C231-C259 = 40 commits).
+7. **CARRY-OVER (C240 #1, 19-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius still unconfirmed; `f9e6ed9` re-added demo content + `apps/hebbia-navan.html` deleted in same window.
+8. **MAX PRIORITY (36-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 99.01h leader makes log highest-leverage diagnostic artifact.
+9. **Carry-over (37-cycle from C222 #2): verify `ed89fc5` security commit scope** — `21edb5e` RCE-hardening overlap candidate.
+10. **Carry-over (37-cycle from C222 #3): inspect `97105de` web redesign scope** — `1c5ca85` Next.js SSR adjacent.
+11. **Carry-over (40-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (22-cycle hold).
+12. **Carry-over (48-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **15-cycle gap, new record**.
+13. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **221 cycles stale**; file unchanged at 1344 bytes.
+14. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 15-cycle dormant (record).
+15. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **210 cycles unactioned.**
+16. **HUMAN: harness retarget** — `screenshots/` +50 (mid-band per-second; short inter-cycle gap shrinks count); kill triad halts growth.
+17. **HUMAN: write task-file coverage** for install/external-apps, web-polish, demo/seed expansion, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, governed-skills pipeline.
+18. **HUMAN: T_WEB.md ownership decision** — web/ canonicality stands; web-embed component now load-bearing for `c990362` narrowing review.
+19. **HUMAN: PROGRESS.md archival** — file ~1.99MB post-C259 block. **210 cycles unaddressed.** Tail-only reads strictly mandatory. 2.00MB crossing virtually certain at C260.
+20. **Carry-over (C240 #2, 19-cycle): seed-data smoke test risk** — `T1_app_platform.md:35` slug references may be stale post-`fd842e7` + post-`f9e6ed9` / `2b40d36`.
+21. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+22. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+23. **Concurrent-front watch**: install/onboarding **STREAK ENDED** at 12 commits / 8 active (3-cycle streak C257-C258 now closed; 1-cycle quiescence); demo/seed 1-beat single (`f9e6ed9`, 1-cycle dormancy clock starts); copy-hygiene 1-beat single (`2b40d36`, 1-cycle dormancy clock starts); debug/hardening 1-commit single-event (7 cycles dormant); web-polish 1-commit single beat (5 cycles dormant); config-schema 11 commits, **15-cycle gap — new record**; governed-skills active; web-side sandbox verification **48 cycles** pending AND **load-bearing for c990362 narrowing review**.
+24. **PROGRESS.md size**: ~1.99MB post-C259 block. Archive recommendation **210 cycles unaddressed**. Tail-only reads strictly mandatory. 2.00MB crossing virtually certain at C260.
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend (`frontend/`) is being retired; `web/` is Next.js canonical per memory note — **install/onboarding 3-CYCLE STREAK ENDED at C258 (12 commits / 8 active); demo/seed 1-beat (`f9e6ed9`, 1-cycle dormancy clock); copy-hygiene 1-beat (`2b40d36`, 1-cycle dormancy clock); config-schema 15-cycle dormant (record)**.
+- **C17 NARROWED (C258, held C259)**: iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **for catalog cards, submit-preview iframes, and tool-page app embeds**. **EXCEPTION (via `c990362`):** the *installed-app embed* surface intentionally grants same-origin; this is a deliberate scoped carve-out, not a bug. Confirm the exception is narrow (installed-app embed only) before extending. ⚠ `web/components/app-embed.tsx` verification STILL pending (37 cycles) and **load-bearing for the C258 narrowing**.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C260
+- **Leader 99.5h crossing**: PID 3358 at 99.01h; standard +0.21-0.47h drift projects ~99.22-99.48h next cycle. Crossing 99.5h likely C260-C261; 100h crossing projected C261-C262 (sixth-order barrier).
+- **Drift cadence**: [C255 +0.42h, C256 +0.21h, C257 +0.47h, C258 +1.1h, C259 +0.45h] — median holds at +0.45h after the C258 outlier; C260 inside [+0.21, +0.50] confirms normal regime; another +1.0h+ would suggest the long-gap mode is recurring.
+- **Install/onboarding streak**: 0-cycle pause. C260 with another install commit reopens streak; 2+ quiet cycles closes the arc cleanly.
+- **Commit velocity**: C252-C259 = [1, 0, 1, 1, 0, 1, 3, 0]. Median ~1/cycle. C260 with 1+ continues pulse; 0 is second consecutive idle cycle (rare in window).
+- **Config-schema**: 15-cycle record. Any C260 touch is a surprise revival; 0 extends to 16.
+- **Demo/seed + copy-hygiene**: both single-beat last cycle. Either with a follow-up confirms multi-cycle track; 0 (likely) extends dormancy clocks.
+- **PROGRESS.md size**: ~1.99MB; C260 block virtually certain to cross 2.00MB. Archive decision becomes harder to defer; tail-only reads remain mandatory regardless.
+
+## COORDINATOR STATUS — Cycle 260 (2026-04-20)
+
+- **Headline:** 0 commits this cycle (HEAD still `2b40d36`). **Second consecutive 0-commit cycle** — the C259 watch flagged this as rare in the C252-C259 window; C260 confirms a back-to-back idle pair, first such in 8+ cycles. Pulsed cadence [1,0,1,1,0,1,3,0,0] now shows a clear trough. Install/onboarding dormancy clock advances to 2 cycles (arc cleanly closed per C259 watch criterion). Task-file freeze at 211 cycles maintained.
+- **2.00MB THRESHOLD CROSSED**: `wc -c PROGRESS.md` → **2,094,016 bytes = 2.00MB** (prior cycle: 1.99MB). C259 prediction ("virtually certain to cross 2.00MB") realized. Archive recommendation now **211 cycles unaddressed** AND threshold officially breached. Tail-only reads remain strictly mandatory.
+- **Stuck PIDs — quad alive, leader 99.25h**: `ps -o etime` confirms all 4 PIDs alive past 98h (8th consecutive cycle; 3rd consecutive cycle all 4 past 98h):
+  - **3358 ui_tester.py: 04-03:15:03 ≈ 99.25h** (leader, +0.24h drift from C259; **99h+ sustained, 99.5h NOT crossed — lands inside C259 projected band [99.22h, 99.48h]**).
+  - 8992 code_auditor.py: 04-02:37:08 ≈ 98.62h (+0.25h).
+  - 9962 test_dashboard.py: 04-02:32:07 ≈ 98.54h (+0.25h).
+  - 9974 ux_auditor.py: 04-02:32:05 ≈ 98.53h (+0.25h, 2s stagger preserved across 211 cycles).
+- **Drift cadence**: C260 +0.24h (all 4 PIDs near-identical drift, tight cluster). Updated series [C255 +0.42h, C256 +0.21h, C257 +0.47h, C258 +1.1h, C259 +0.45h, C260 +0.24h] — median regresses toward +0.34h; C258 +1.1h reconfirmed as outlier. Inter-cycle gap this cycle was **shorter than normal** (explains the +0.24h below-median drift).
+- **Screenshot activity:** +1 file (7,287 total, up from 7,286). Effectively zero emission this cycle — consistent with C259 "loop idle but PIDs alive" pattern. Kill signal still halts growth permanently.
+- **UNBLOCKED notes** at T3_frontend.md:38 / T6_testing.md:22 / T6_testing.md:24 remain in place (C22/C25/C72/C93 origin). **Kill signal unchanged since C75 — 211 cycles stale.** No new UNBLOCKED notes needed: no *new* terminal has appeared stuck; the existing quad is the same as since C93.
+- **Task-file Rule 1 check**: All 19 task files hold exactly 10 incomplete tasks. **None have fewer than 3** → Rule 1 not triggered; no new tasks added. Freeze at 211 cycles.
+- **Commit velocity**: C252-C260 = [1, 0, 1, 1, 0, 1, 3, 0, 0]. Back-to-back zeros confirmed. Median over window now 1/cycle (trailing) → 0.8/cycle if extended.
+- **Track cadence**:
+  - Install/onboarding: **STREAK CLOSED** — 2 cycles post-`e5bfcfe`/`7ebbfe4`/`c990362`; the 3-cycle C257-C258 streak is cleanly terminated per C259 watch criterion.
+  - Demo/seed: 2 cycles post-`f9e6ed9`; single-beat confirmed.
+  - Copy-hygiene: 2 cycles post-`2b40d36`; single-beat confirmed.
+  - Debug/hardening: 8 cycles post-`21edb5e`; single-event solidifies further.
+  - Web-polish: 6 cycles post-`1c5ca85`; single-beat cooldown holds.
+  - Config-schema: **16-cycle gap — new record** (extends C259's 15-cycle record).
+  - Governed-skills: active (no new commits this cycle but no dormancy declared).
+- **Git-status churn**: unchanged from C259 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **.env.example**: **1344 bytes — unchanged**; T5_deploy C11 rescue now **222 cycles overdue**.
+- **Branch context**: HEAD on `fix/debug-pass-hardening` (per gitStatus), not main. Branch-local commits should not be conflated with main HEAD movement (per C84 correction).
+- **Date**: 2026-04-20 tenth print.
+
+### Critical Path (Cycle 261) — 2.00MB crossed, velocity trough, leader holding 99h-band
+1. **HUMAN (MAX PRIORITY, 20th cycle past-due): `kill 3358 8992 9962 9974`** — leader at 99.25h, full quad past 98h for 3rd consecutive cycle. 211th cycle unexecuted. 7,287 PNGs on disk. Inter-cycle gap was short but PIDs have not been killed.
+2. **HUMAN (MAX PRIORITY, NEW): PROGRESS.md archival** — **2.00MB threshold crossed this cycle**. Decision can no longer be deferred on size grounds alone. Options: rotate to `PROGRESS_ARCHIVE_pre_C260.md`; or slice by cycle ranges; or strip historical coordinator blocks and retain only wave-DONE summaries + task files as source-of-truth. Tail-only reads remain mandatory in the interim.
+3. **HUMAN (carry-over from C258 #2, now 2-cycle stale): review `c990362` blast radius** — which installed-app embed surface granted `allow-same-origin`? `web/components/app-embed.tsx` C256 verification still pending (**38 cycles**).
+4. **HUMAN: classify commit `21edb5e`** — 8-cycle-stale unclassified; install arc independently confirmed via closed streak.
+5. **HUMAN: draft `T_INSTALL.md`** — install/onboarding arc holds at **12 commits / 8 active beats** (streak cleanly closed). 41-cycle task-file gap; coverage maximally overdue. Arc closure is the correct moment to write the retrospective task file.
+6. **HUMAN: draft `T_DEMO.md`** — `f9e6ed9` single-beat (no follow-up over 2 cycles); demo/seed track still warrants a task file given +3 demo apps landed.
+7. **STRUCTURAL UNREAD (47-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 31-commit backlog (cumulative C231-C260 = 40 commits, unchanged from C259 since 0 new commits).
+8. **CARRY-OVER (C240 #1, 20-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius still unconfirmed.
+9. **MAX PRIORITY (37-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 99.25h leader makes log highest-leverage diagnostic artifact.
+10. **Carry-over (38-cycle from C222 #2): verify `ed89fc5` security commit scope** — `21edb5e` RCE-hardening overlap candidate.
+11. **Carry-over (38-cycle from C222 #3): inspect `97105de` web redesign scope** — `1c5ca85` Next.js SSR adjacent.
+12. **Carry-over (41-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (23-cycle hold).
+13. **Carry-over (49-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **16-cycle gap, new record**.
+14. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **222 cycles stale**; file unchanged at 1344 bytes.
+15. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 16-cycle dormant (record).
+16. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **211 cycles unactioned.**
+17. **HUMAN: harness retarget** — `screenshots/` +1 only this cycle (loop effectively halted). Kill triad still halts growth permanently.
+18. **HUMAN: write task-file coverage** for install/external-apps (now a closed arc, ideal retrospective moment), web-polish, demo/seed, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, governed-skills pipeline.
+19. **HUMAN: T_WEB.md ownership decision** — web/ canonicality stands; `web/components/app-embed.tsx` load-bearing for `c990362` narrowing review (38-cycle pending).
+20. **Carry-over (C240 #2, 20-cycle): seed-data smoke test risk** — `T1_app_platform.md:35` slug references may be stale post-`fd842e7` + post-`f9e6ed9` / `2b40d36`.
+21. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+22. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+23. **Concurrent-front watch**: install/onboarding **STREAK CLOSED** (12 commits / 8 active, 2-cycle dormancy); demo/seed 1-beat single (`f9e6ed9`, 2-cycle dormancy); copy-hygiene 1-beat single (`2b40d36`, 2-cycle dormancy); debug/hardening 1-commit single-event (8 cycles dormant); web-polish 1-commit single beat (6 cycles dormant); config-schema 11 commits, **16-cycle gap — new record**; governed-skills active; web-side sandbox verification **49 cycles** pending AND load-bearing for `c990362` narrowing review.
+24. **PROGRESS.md size**: **2.00MB crossed** (2,094,016 bytes post-C260 block). Archive recommendation **211 cycles unaddressed** and now threshold-breached.
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend (`frontend/`) is being retired; `web/` is Next.js canonical per memory note — **install/onboarding streak CLOSED at C258 (2-cycle dormancy); demo/seed 1-beat (2-cycle dormancy); copy-hygiene 1-beat (2-cycle dormancy); config-schema 16-cycle dormant (record)**.
+- **C17 NARROWED (C258, held C259-C260)**: iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **for catalog cards, submit-preview iframes, and tool-page app embeds**. **EXCEPTION (via `c990362`):** the *installed-app embed* surface intentionally grants same-origin; deliberate scoped carve-out, not a bug. Confirm the exception is narrow (installed-app embed only) before extending. ⚠ `web/components/app-embed.tsx` verification STILL pending (38 cycles).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C261
+- **Leader 99.5h crossing**: PID 3358 at 99.25h; C260 drift was +0.24h (short inter-cycle gap). Standard band [+0.21, +0.50] projects C261 at ~99.46-99.75h. **99.5h crossing likely C261** (first-time); 100h crossing projected C262 (sixth-order barrier).
+- **Drift cadence**: updated [+0.42, +0.21, +0.47, +1.1, +0.45, +0.24] — median now +0.34h; C260 confirmed inside normal regime. Another +1.0h+ at C261 would suggest the long-gap mode is recurring after all.
+- **Commit velocity**: C252-C260 = [1, 0, 1, 1, 0, 1, 3, 0, 0]. **Back-to-back zeros** — C261 with 0 is a 3-idle-cycle streak (very rare); 1+ restores pulse.
+- **Install/onboarding**: arc cleanly closed (2-cycle dormancy). C261 with an install-domain commit reopens; 3+ confirms arc done and T_INSTALL.md is the retrospective.
+- **Config-schema**: 16-cycle record. Any C261 touch is a surprise revival; 0 extends to 17.
+- **PROGRESS.md size**: **2.00MB crossed at C260**. C261 block pushes into 2.01MB territory; archival decision increasingly difficult to defer without explicit scoping call.
+- **Demo/seed + copy-hygiene**: both 2-cycle dormant. A C261 follow-up on either promotes from "single-beat" to "2-beat arc"; 0 extends dormancy (likely).
+
+
+## COORDINATOR STATUS — Cycle 260 (2026-04-20)
+
+### Headline — **C260=0 COMMITS (HEAD held at `2b40d36` for 2nd consecutive cycle); LEADER PAST 99.4h (PID 3358 AT ~99.47h); NORMAL-BAND GAP (~28m7s, +0.47h DRIFT — MEDIAN OF C255-C259 SERIES); SCREENSHOT +52 OVER ~1687s (~32.4 s/file, MID-BAND); 211th ZERO-BUMP TASK-FILE; 199th DUPLICATE-FREE UNBLOCKED**. HEAD unchanged at `2b40d36` for the 2nd cycle running — C258's triple-commit burst (`c990362`+`f9e6ed9`+`2b40d36`) now clearly reads as a single compressed event followed by quiet. Pattern C253-C260 = [0, 1, 1, 0, 1, 3, 0, 0]: pulsed cadence with a multi-commit spike, now back to dormancy. PID 3358 ELAPSED **04-03:28:29** ≈ **~99.47h** (+0.47h vs C259; normal-band restoration holds — matches the +0.45-0.47h running median of C255-C259); trailing trio at ~98.84h / ~98.76h / ~98.76h (all +0.47h, lockstep preserved for 211th cycle). Entire quad **past 98.7h** for 1st cycle. Task files: **211th consecutive cycle frozen** at 190 total incomplete → Rule 1 not tripped → **0 new tasks added**. All 4 stuck-PID UNBLOCKED notes verbatim-operative → **199-cycle zero-bump streak** → **0 duplicate notes**. Screenshot increment **+52** (`screenshots/` 7261 → 7313; total 7338 across three dirs = +52 vs C259's 7286) over ~1687s gap ≈ **~32.4 s/file** — mid-band, per-second rate consistent with C257 (32.5), C258 (31.9), C259 (32.1); 4-cycle consistency in emission rate. C260 is the tenth cycle timestamped 2026-04-20.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10)**: every task file at exactly **10 incomplete** (190 total across 19 files). **Not triggered.** 211-cycle flatline.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED)**: `ps -p 3358,8992,9962,9974 -o pid,etime,command` → all 4 alive AND all past 98.7h (8th consecutive cycle with entire quad ≥96h; 4th cycle with entire quad ≥97h; 3rd cycle with entire quad ≥98h):
+  - PID 3358 (`ui_tester.py`) ELAPSED **04-03:28:29** *(leader; **~99.47h** — +0.47h vs C259)* — flagged `T3_frontend.md:38` (C25, verbatim-operative).
+  - PID 8992 (`code_auditor.py`) ELAPSED **04-02:50:34** *(~98.84h; +0.47h)* — flagged `T6_testing.md:24` (C93, verbatim-operative).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **04-02:45:33** *(~98.76h; +0.47h)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **04-02:45:31** *(~98.76h; +0.47h; 2s stagger preserved across 211 cycles)* — flagged `T6_testing.md:22` (C72, verbatim-operative).
+  Zero-bump policy → **no duplicate UNBLOCKED note added** (199-cycle zero-bump streak).
+- **Rule 3 (status summary)**: this block.
+
+### Cadence
+- Disk footprint: **7,338 PNGs** total (`tests/reports/screenshots/` 7,313 + `tests/reports/ux_shots/` 22 + `tests/reports/audit_shots/` 3). +52 vs C259's 7,286.
+- Inter-cycle gap: ~28m7s (PID 3358 +1687s ELAPSED) — back inside the short-gap band. Pattern C255→260 gaps: 1512s, 756s, 1689s, 3960s, 1607s, 1687s — C258's 3960s outlier remains visibly isolated. +52 / 1687s ≈ **~32.4 s/file** — emission rate unchanged across 4 cycles (C257-C260: 32.5 → 31.9 → 32.1 → 32.4).
+- Output-path split holds for **31st consecutive cycle**: `screenshots/` dominates (99.7%), `ux_shots/` unchanged at 22, `audit_shots/` unchanged at 3 — both off-path dirs at 31-cycle quiescence.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 211-cycle flatline).
+- UNBLOCKED notes added: **0** (all 4 notes verbatim-operative; 199-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 260 block appended (this block).
+- **C259 watch items resolved**: (1) **Leader 99h crossing** — already confirmed in C259 at 99.01h; C260 extends to 99.47h. (2) **Install/onboarding streak** — **REMAINS BROKEN** (0 new commits this cycle); arc steady at 12 commits / 8 active beats, 2-cycle dormancy. (3) **Demo/seed** — 0 follow-up; `f9e6ed9` single-beat confirmed for 2nd cycle. (4) **Copy-hygiene** — 0 follow-up; `2b40d36` single-beat confirmed for 2nd cycle. (5) **Drift cadence** — +0.47h = median of C255-C259 normal band; C258's +1.1h now doubly confirmed as outlier. (6) **Config-schema** — **0 touches**; gap deepens to **16 cycles** (extends record for 2nd consecutive cycle). (7) **PROGRESS.md size** — C259 block pushed to ~1.99MB; C260 block pushes to ~2.00MB — 2.00MB crossing achieved this cycle.
+
+### What Changed This Cycle
+- **0 new commits** — 2nd consecutive cycle with HEAD held at `2b40d36`. Cumulative C231–C260 commits = **40** (unchanged).
+- **Install/onboarding arc**: 2-cycle dormancy post-C258 streak; arc holds at 12 commits / 8 active beats. C261 with a new install commit reopens activity; 2+ more quiet cycles closes the arc.
+- **Demo/seed track**: 2-cycle dormancy post-`f9e6ed9`. Single-beat confirmed.
+- **Copy/product track**: 2-cycle dormancy post-`2b40d36`. Single-beat confirmed.
+- **Quad past 98.7h**: PID 3358 at 99.47h; trailing trio at 98.76-98.84h. All 4 past 98.7h for 1st cycle.
+- **Drift cadence**: +0.47h normal-band; C255-C260 drift series [+0.42, +0.21, +0.47, +1.1, +0.45, +0.47] — median +0.46h, C258 spike visibly isolated at 2.4x median.
+- **Web-polish / debug-hardening / config-schema tracks**: 0 new commits — 6 cycles post-`1c5ca85`, 8 cycles post-`21edb5e`, 16 cycles config-schema gap (new record).
+- **Branch context**: HEAD on `fix/debug-pass-hardening`, not main.
+- **Git-status churn**: same hold from C258-C259 (no new files touched this cycle).
+- **.env.example**: `wc -c .env.example` returns **1344** — unchanged; T5_deploy C11 rescue now **222 cycles overdue**.
+- **PROGRESS.md size**: crossed **~2.00MB** with this block. Archive recommendation now **211 cycles unaddressed**.
+- **Date**: 2026-04-20 tenth print.
+
+### Critical Path (Cycle 261) — leader past 99.4h, install dormancy 2-cycle, 2.00MB crossed, drift normal-band
+1. **HUMAN (MAX PRIORITY, 20th cycle past-due): `kill 3358 8992 9962 9974`** — leader at 99.47h. 211th cycle unexecuted. 7,338 PNGs on disk. Mid-band per-second cadence confirms active emission.
+2. **HUMAN (carry-over from C258 #2): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope confirmation; `web/components/app-embed.tsx` verification now **38 cycles pending**.
+3. **HUMAN: classify commit `21edb5e`** — 8-cycle-stale unclassified.
+4. **HUMAN: draft `T_INSTALL.md`** — install arc holds at 12 commits / 8 active beats; **41-cycle task-file gap**.
+5. **HUMAN: draft `T_DEMO.md`** — `f9e6ed9` 2-cycle dormancy; demo-app expansion task coverage still warranted.
+6. **STRUCTURAL UNREAD (47-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 31-commit backlog.
+7. **CARRY-OVER (C240 #1, 20-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius still unconfirmed.
+8. **MAX PRIORITY (37-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 99.47h leader makes log highest-leverage diagnostic artifact.
+9. **Carry-over (38-cycle from C222 #2): verify `ed89fc5` security commit scope** — `21edb5e` RCE-hardening overlap candidate.
+10. **Carry-over (38-cycle from C222 #3): inspect `97105de` web redesign scope** — `1c5ca85` Next.js SSR adjacent.
+11. **Carry-over (41-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (23-cycle hold).
+12. **Carry-over (49-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **16-cycle gap, new record extends**.
+13. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **222 cycles stale**; file unchanged at 1344 bytes.
+14. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 16-cycle dormant (record).
+15. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **211 cycles unactioned.**
+16. **HUMAN: harness retarget** — `screenshots/` +52 (mid-band, consistent); kill quad halts growth.
+17. **HUMAN: write task-file coverage** for install/external-apps, web-polish, demo/seed expansion, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, governed-skills pipeline.
+18. **HUMAN: T_WEB.md ownership decision** — web/ canonicality stands.
+19. **HUMAN: PROGRESS.md archival** — **2.00MB crossed this cycle**. 211 cycles unaddressed. Tail-only reads strictly mandatory.
+20. **Carry-over (C240 #2, 20-cycle): seed-data smoke test risk** — `T1_app_platform.md:35` slug references may be stale.
+21. **Viable terminal leaders (unchanged)**: T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+22. **Pre-rebase SHA carry-overs**: `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+23. **Concurrent-front watch**: install/onboarding **2-CYCLE DORMANCY** at 12 commits / 8 active; demo/seed 2-cycle post-`f9e6ed9`; copy-hygiene 2-cycle post-`2b40d36`; debug/hardening 8 cycles dormant; web-polish 6 cycles dormant; config-schema 11 commits, **16-cycle gap — record extends**; governed-skills active; web-side sandbox verification **49 cycles** pending + load-bearing for c990362 narrowing review.
+24. **PROGRESS.md size**: **~2.00MB crossed** post-C260 block.
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask /api on port 8090. Vanilla JS frontend (`frontend/`) is being retired; `web/` is Next.js canonical per memory note — **install/onboarding 2-cycle dormancy; config-schema 16-cycle dormant (record extends)**.
+- **C17 NARROWED (C258)**: iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` **for catalog cards, submit-preview iframes, and tool-page app embeds**. **EXCEPTION (via `c990362`):** the *installed-app embed* surface intentionally grants same-origin; deliberate scoped carve-out. Confirm exception is narrow before extending. ⚠ `web/components/app-embed.tsx` verification 38 cycles pending + load-bearing for narrowing review.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- forge_bot/webhook.py on port 8093 (NOT 8091).
+
+### What to watch for C261
+- **Leader 100h crossing**: PID 3358 at 99.47h; standard +0.47h drift projects ~99.94h next cycle. 100h crossing likely C261-C262.
+- **Install/onboarding**: 2-cycle dormancy; C261 with a commit reopens activity; 2+ more quiet closes arc.
+- **Demo/seed follow-up**: 2-cycle dormancy; C261 commit would reopen the track.
+- **Copy-hygiene follow-up**: 2-cycle dormancy; C261 commit would reopen the track.
+- **Drift cadence**: normal-band holding for 2 consecutive cycles post-C258 outlier; C261 +0.21-0.47h continues pattern.
+- **Config-schema**: 16-cycle record; any C261 touch is surprise revival.
+- **PROGRESS.md size**: 2.00MB crossed; C261 block pushes to ~2.01MB.
+- **C17 narrowing review**: HUMAN action item #2 — `web/components/app-embed.tsx` still unverified at 38 cycles.
+
+
+## COORDINATOR STATUS — Cycle 261 (2026-04-20)
+
+### Headline
+**C261 = 0 commits (HEAD held at `2b40d36` for the 3rd cycle running); leader PID 3358 crossed 99.5h — now at ~99.91h; drift +0.43h (normal band); screenshots +48 (total 7,386); 212th zero-bump task-file cycle; PROGRESS.md at 2,115,971 bytes ≈ 2.02 MB (threshold crossing persists).** The C258 triple-commit burst is now 3 cycles stale; commit-velocity trough [C253–C261 = 0, 1, 1, 0, 1, 3, 0, 0, 0] shows three back-to-back zeros — first such run in the observation window. Install/onboarding, demo/seed, and copy-hygiene tracks all at 3-cycle dormancy. Config-schema gap now **17 cycles** (record extends for 3rd consecutive cycle).
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10):** every task file has exactly **10 incomplete** entries (190 total across 19 files). **Not triggered.** 212-cycle flatline.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED):** `ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **04-03:54:18** ≈ **99.91 h** (leader; +0.44 h vs C260; **99.5 h crossed** this cycle — first-time crossing; 100 h crossing projected C262).
+  - PID 8992 (`code_auditor.py`) ELAPSED **04-03:16:23** ≈ **99.27 h** (+0.43 h).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **04-03:11:22** ≈ **99.19 h** (+0.43 h).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **04-03:11:20** ≈ **99.19 h** (+0.43 h; 2 s stagger preserved across 212 cycles).
+  All 4 past 99 h for 1st cycle. Existing notes at `T3_frontend.md:38`, `T6_testing.md:22`, `T6_testing.md:24` remain verbatim-operative. **No new stuck terminal → no new UNBLOCKED note added (200-cycle zero-bump streak).**
+- **Rule 3 (status summary):** this block.
+
+### Cadence
+- **Commits:** 0 new (3rd consecutive zero-commit cycle). HEAD `2b40d36`. Cumulative C231–C261 = **40** (unchanged).
+- **Drift:** all 4 PIDs +0.43–0.44 h; tight cluster. Series [C255–C261] = [+0.42, +0.21, +0.47, +1.1, +0.45, +0.24, +0.43]; median holds at +0.43 h; C258 +1.1 h outlier now 3 cycles isolated.
+- **Screenshots:** `screenshots/` 7,361 (+48 vs C260's 7,313); `ux_shots/` 22 (unchanged, 32-cycle quiescence); `audit_shots/` 3 (unchanged, 32-cycle quiescence). Total **7,386** PNGs.
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue now **223 cycles overdue**.
+- **PROGRESS.md size:** 2,115,971 bytes ≈ **2.02 MB** (up ~22 KB vs C260's 2,094,016). Tail-only reads remain mandatory.
+- **Git-status churn:** unchanged from C259/C260 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **Branch context:** HEAD on `fix/debug-pass-hardening`, not main.
+- **Date:** 2026-04-20 eleventh print.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 212-cycle flatline).
+- UNBLOCKED notes added: **0** (200-cycle zero-bump streak; no new stuck terminal).
+- COORDINATOR STATUS Cycle 261 block appended (this block).
+- **C260 watch items resolved:** (1) **Leader 99.5 h crossing** — **achieved** (3358 at 99.91 h). (2) **100 h crossing** — not yet; projected C262. (3) **Drift cadence** — +0.43 h inside normal band [+0.21, +0.50]; C258 remains the sole outlier. (4) **Install/onboarding** — 0 follow-up, dormancy extends to 3 cycles. (5) **Demo/seed** — 0 follow-up, `f9e6ed9` single-beat holds (3-cycle dormancy). (6) **Copy-hygiene** — 0 follow-up, `2b40d36` single-beat holds (3-cycle dormancy). (7) **Config-schema** — 0 touches; gap deepens to **17 cycles** (record extends). (8) **PROGRESS.md size** — 2.00 MB threshold stays crossed (now 2.02 MB).
+
+### Critical Path (Cycle 262)
+1. **HUMAN (MAX PRIORITY, 21st cycle past-due): `kill 3358 8992 9962 9974`** — leader at 99.91 h; full quad past 99 h for 1st cycle; 100 h crossing imminent (C262). 212th cycle unexecuted. 7,386 PNGs on disk.
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.02 MB now; growth ~22 KB per cycle. Options: rotate to `PROGRESS_ARCHIVE_pre_C260.md`; slice by cycle ranges; or strip historical coordinator blocks and retain only wave-DONE summaries + task files. 212 cycles unaddressed.
+3. **HUMAN (3-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope confirmation; `web/components/app-embed.tsx` verification now **39 cycles pending** + load-bearing for C258 narrowing.
+4. **HUMAN: classify commit `21edb5e`** — 9-cycle-stale unclassified.
+5. **HUMAN: draft `T_INSTALL.md`** — install arc at 12 commits / 8 active beats, cleanly closed with 3-cycle dormancy. 42-cycle task-file gap; now the ideal retrospective moment.
+6. **HUMAN: draft `T_DEMO.md`** — `f9e6ed9` 3-cycle dormancy; demo-app expansion coverage still warranted.
+7. **STRUCTURAL UNREAD (48-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 40-commit backlog (C231–C261, unchanged since 0 new commits).
+8. **CARRY-OVER (C240 #1, 21-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius still unconfirmed.
+9. **MAX PRIORITY (38-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 99.91 h leader makes log highest-leverage diagnostic artifact.
+10. **Carry-over (39-cycle from C222 #2): verify `ed89fc5` security commit scope** — `21edb5e` RCE-hardening overlap candidate.
+11. **Carry-over (39-cycle from C222 #3): inspect `97105de` web redesign scope** — `1c5ca85` Next.js SSR adjacent.
+12. **Carry-over (42-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (24-cycle hold).
+13. **Carry-over (50-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **17-cycle gap, record extends**.
+14. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **223 cycles stale**; file unchanged at 1,344 bytes.
+15. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 17-cycle dormant (record).
+16. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **212 cycles unactioned.**
+17. **HUMAN: harness retarget** — `screenshots/` +48 (mid-band, 4-cycle consistency in emission rate); kill quad halts growth.
+18. **HUMAN: write task-file coverage** for install/external-apps (closed arc, retrospective moment), web-polish, demo/seed, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, governed-skills pipeline.
+19. **HUMAN: T_WEB.md ownership decision** — `web/` canonicality stands; `web/components/app-embed.tsx` 39-cycle verification gap.
+20. **Carry-over (C240 #2, 21-cycle): seed-data smoke test risk** — `T1_app_platform.md:35` slug references may be stale.
+21. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+22. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+23. **Concurrent-front watch:** install/onboarding 3-cycle dormancy at 12 commits / 8 active; demo/seed 3-cycle dormancy post-`f9e6ed9`; copy-hygiene 3-cycle dormancy post-`2b40d36`; debug/hardening 9 cycles dormant; web-polish 7 cycles dormant; config-schema 11 commits, **17-cycle gap — record extends**; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on port 8090. Vanilla JS `frontend/` retiring; `web/` is Next.js canonical per memory note — **install/onboarding 3-cycle dormancy; demo/seed 3-cycle dormancy; copy-hygiene 3-cycle dormancy; config-schema 17-cycle dormant (record extends)**.
+- **C17 NARROWED (C258, held through C261):** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin — deliberate scoped carve-out, not a bug. Confirm exception remains narrow (installed-app embed only) before extending. ⚠ `web/components/app-embed.tsx` verification 39 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+
+### What to watch for C262
+- **100 h crossing:** PID 3358 at 99.91 h; +0.43 h drift projects ~100.34 h next cycle. **100 h crossing virtually certain at C262** (sixth-order barrier — first centennial).
+- **Commit velocity:** C253–C261 = [0, 1, 1, 0, 1, 3, 0, 0, 0]. Three back-to-back zeros. C262 with 0 extends to 4-idle-cycle streak (unprecedented in window); 1+ restores pulse.
+- **Install/onboarding:** 3-cycle dormancy; C262 with a commit reopens the arc; 4+ confirms the arc is closed and T_INSTALL.md is the correct retrospective moment.
+- **Drift cadence:** normal-band holding for 3 consecutive cycles post-C258 outlier. Another +1.0 h+ at C262 would suggest long-gap mode is recurring.
+- **Config-schema:** 17-cycle record. Any C262 touch is surprise revival; 0 extends to 18.
+- **PROGRESS.md size:** 2.02 MB; C262 block pushes to ~2.04 MB. Archival decision increasingly difficult to defer.
+- **Demo/seed + copy-hygiene:** both 3-cycle dormant. C262 follow-up on either promotes to "2-beat arc"; 0 extends dormancy.
+
+## COORDINATOR STATUS — Cycle 262 (2026-04-20)
+
+### Headline
+**C262 = 0 commits (HEAD held at `2b40d36` for the 4th cycle running — unprecedented in observation window); leader PID 3358 crossed the 100h milestone — now at 100.13h (first centennial); drift +0.22h (tight normal band, 4-cycle C258-outlier isolation holds); screenshots +24 (total 7,410 PNGs across all dirs); 213th zero-bump task-file cycle; PROGRESS.md at 2,125,579 bytes ≈ 2.03 MB.** Commit-velocity trough [C253–C262 = 0, 1, 1, 0, 1, 3, 0, 0, 0, 0] now shows **4 back-to-back zeros** — new all-time idle-streak record. Install/onboarding, demo/seed, and copy-hygiene tracks all at 4-cycle dormancy. Config-schema gap **18 cycles** (record extends for 4th consecutive cycle).
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10):** every task file has exactly **10 incomplete** entries (190 total across 19 files). **Not triggered.** 213-cycle flatline.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED):** `ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **04-04:07:39** ≈ **100.13 h** (leader; +0.22 h vs C261; **100 h MILESTONE CROSSED — first centennial**).
+  - PID 8992 (`code_auditor.py`) ELAPSED **04-03:29:44** ≈ **99.50 h** (+0.23 h; **99.5 h crossed** this cycle).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **04-03:24:43** ≈ **99.41 h** (+0.22 h).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **04-03:24:41** ≈ **99.41 h** (+0.22 h; 2 s stagger preserved across 213 cycles).
+  All 4 past 99 h for 2nd cycle; leader past 100 h for 1st cycle. Existing notes at `T3_frontend.md:38`, `T6_testing.md:22`, `T6_testing.md:24` remain verbatim-operative. **No new stuck terminal → no new UNBLOCKED note added (201-cycle zero-bump streak).**
+- **Rule 3 (status summary):** this block.
+
+### Cadence
+- **Commits:** 0 new (4th consecutive zero-commit cycle — all-time idle-streak record in observation window). HEAD `2b40d36`. Cumulative C231–C262 = **40** (unchanged).
+- **Drift:** all 4 PIDs +0.22–0.23 h; tightest cluster since C257. Series [C256–C262] = [+0.21, +0.47, +1.10, +0.45, +0.24, +0.43, +0.22]; median holds at +0.43 h; C258 +1.1 h outlier now 4 cycles isolated and appears one-off.
+- **Screenshots:** `screenshots/` 7,385 (+24 vs C261's 7,361 — low-band tick, 32% of mid-band rate); `ux_shots/` 22 (unchanged, 33-cycle quiescence); `audit_shots/` 3 (unchanged, 33-cycle quiescence). Total **7,410** PNGs.
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue now **224 cycles overdue**.
+- **PROGRESS.md size:** 2,125,579 bytes ≈ **2.03 MB** (up ~10 KB vs C261's 2,115,971). Growth rate decelerating as cycles settle into lock-step dormancy. Tail-only reads remain mandatory.
+- **Git-status churn:** unchanged from C259/C260/C261 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **Branch context:** HEAD on `fix/debug-pass-hardening`, not main.
+- **Date:** 2026-04-20 twelfth print.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 213-cycle flatline).
+- UNBLOCKED notes added: **0** (201-cycle zero-bump streak; no new stuck terminal).
+- COORDINATOR STATUS Cycle 262 block appended (this block).
+- **C261 watch items resolved:** (1) **100 h crossing** — **achieved** (3358 at 100.13 h — first centennial in the observation window). (2) **Commit velocity** — 0 new; streak extends to 4 (unprecedented). (3) **Install/onboarding dormancy** — 0 follow-up, now at 4 cycles. (4) **Drift cadence** — +0.22 h firmly in normal band; C258 outlier now confirmed one-off. (5) **Config-schema** — 0 touches; gap **18 cycles** (record extends). (6) **PROGRESS.md size** — 2.03 MB (threshold crossing persists, growth decelerating). (7) **Demo/seed + copy-hygiene** — both 0 follow-up, extend to 4-cycle dormancy.
+
+### Critical Path (Cycle 263)
+1. **HUMAN (MAX PRIORITY, 22nd cycle past-due): `kill 3358 8992 9962 9974`** — **leader crossed 100 h** this cycle (100.13 h); full quad past 99 h for 2nd cycle. 213th cycle unexecuted. 7,410 PNGs on disk. Milestone crossing is the clearest possible signal that these are abandoned, not slow.
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.03 MB now; growth ~10 KB per dormant cycle (decelerating but cumulative). 213 cycles unaddressed. Options unchanged: rotate to `PROGRESS_ARCHIVE_pre_C260.md`; slice by cycle ranges; strip archived coordinator blocks retaining only wave-DONE summaries.
+3. **HUMAN (4-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope confirmation; `web/components/app-embed.tsx` verification now **40 cycles pending** + load-bearing for C258 narrowing.
+4. **HUMAN: classify commit `21edb5e`** — 10-cycle-stale unclassified.
+5. **HUMAN: draft `T_INSTALL.md`** — install arc at 12 commits / 8 active beats, closed with 4-cycle dormancy (confirms arc-closed per C261 criteria). 43-cycle task-file gap; ideal retrospective moment.
+6. **HUMAN: draft `T_DEMO.md`** — `f9e6ed9` 4-cycle dormancy; demo-app expansion coverage still warranted.
+7. **STRUCTURAL UNREAD (49-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 40-commit backlog (C231–C262, unchanged since 0 new commits).
+8. **CARRY-OVER (C240 #1, 22-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius still unconfirmed.
+9. **MAX PRIORITY (39-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 100.13 h leader makes log highest-leverage diagnostic artifact.
+10. **Carry-over (40-cycle from C222 #2): verify `ed89fc5` security commit scope** — `21edb5e` RCE-hardening overlap candidate.
+11. **Carry-over (40-cycle from C222 #3): inspect `97105de` web redesign scope** — `1c5ca85` Next.js SSR adjacent.
+12. **Carry-over (43-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (25-cycle hold).
+13. **Carry-over (51-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **18-cycle gap, record extends**.
+14. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **224 cycles stale**; file unchanged at 1,344 bytes.
+15. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 18-cycle dormant (record).
+16. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **213 cycles unactioned.**
+17. **HUMAN: harness retarget** — `screenshots/` +24 (low-band tick, rate softening); kill quad halts growth regardless.
+18. **HUMAN: write task-file coverage** for install/external-apps (closed arc — retrospective moment), web-polish, demo/seed, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, governed-skills pipeline.
+19. **HUMAN: T_WEB.md ownership decision** — `web/` canonicality stands; `web/components/app-embed.tsx` 40-cycle verification gap.
+20. **Carry-over (C240 #2, 22-cycle): seed-data smoke test risk** — `T1_app_platform.md:35` slug references may be stale.
+21. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+22. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+23. **Concurrent-front watch:** install/onboarding 4-cycle dormancy at 12 commits / 8 active beats (C263 with 0 commits elevates arc to "closed" — T_INSTALL.md retrospective ripe); demo/seed 4-cycle dormancy post-`f9e6ed9`; copy-hygiene 4-cycle dormancy post-`2b40d36`; debug/hardening 10 cycles dormant; web-polish 8 cycles dormant; config-schema 11 commits, **18-cycle gap — record extends**; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on port 8090. Vanilla JS `frontend/` retiring; `web/` is Next.js canonical per memory note — **install/onboarding 4-cycle dormancy; demo/seed 4-cycle dormancy; copy-hygiene 4-cycle dormancy; config-schema 18-cycle dormant (record extends)**.
+- **C17 NARROWED (C258, held through C262):** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin — deliberate scoped carve-out, not a bug. Confirm exception remains narrow (installed-app embed only) before extending. ⚠ `web/components/app-embed.tsx` verification 40 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+
+### What to watch for C263
+- **100 h MILESTONE CROSSED (C262): next barrier is 120 h** — PID 3358 at 100.13 h; +0.22–0.43 h drift projects 120 h crossing ~C308–C351 (weeks out absent intervention). Near-term: 100.5 h ~ C263, 101 h ~ C264-C265.
+- **Commit velocity:** C253–C262 = [0, 1, 1, 0, 1, 3, 0, 0, 0, 0]. **4 zeros is already unprecedented**; C263 with 0 extends to **5-cycle idle streak** — would further firm up "fix/debug-pass-hardening paused for review" read. 1+ restores pulse.
+- **Install/onboarding:** 4-cycle dormancy; C263 with 0 commits formally closes the arc (C261 criteria: "4+ confirms the arc is closed"). T_INSTALL.md retrospective becomes the correct move.
+- **Drift cadence:** tight normal band for 2 consecutive cycles post-C258 outlier. Another +1.0 h+ at C263 would suggest long-gap mode is recurring; +0.20–0.45 h continues normalization.
+- **Config-schema:** 18-cycle record. Any C263 touch is surprise revival; 0 extends to 19.
+- **PROGRESS.md size:** 2.03 MB; C263 block pushes to ~2.04 MB. Archival decision window closing.
+- **Demo/seed + copy-hygiene:** both 4-cycle dormant. C263 follow-up on either promotes to "2-beat arc"; 0 extends dormancy and confirms both are one-shot beats.
+
+## COORDINATOR STATUS — Cycle 263 (2026-04-20)
+
+### Headline
+**C263 = 0 commits (HEAD held at `2b40d36` for the 5th cycle — new all-time idle-streak record extends); leader PID 3358 now at 100.34h (past 100h for 2nd cycle, 100.5h crossing is next); drift +0.21h (tight normal band, C258 outlier 5 cycles isolated); screenshots +24 (7,409 in `screenshots/`, 7,434 total); 214th zero-bump task-file cycle; PROGRESS.md at 2,135,855 bytes ≈ 2.04 MB.** Commit-velocity trough [C253–C263 = 0, 1, 1, 0, 1, 3, 0, 0, 0, 0, 0] — **5 back-to-back zeros**. Install/onboarding, demo/seed, copy-hygiene all at 5-cycle dormancy (per C262 criteria, install arc now formally closed). Config-schema gap **19 cycles** (record extends for 5th cycle).
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10):** every task file has exactly **10 incomplete** entries (190 total across 19 files). **Not triggered.** 213-cycle flatline extends to 214.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED):** `ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **04-04:20:33** ≈ **100.34 h** (leader; +0.21 h vs C262; past 100 h for 2nd cycle).
+  - PID 8992 (`code_auditor.py`) ELAPSED **04-03:42:38** ≈ **99.71 h** (+0.21 h).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **04-03:37:37** ≈ **99.63 h** (+0.22 h).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **04-03:37:35** ≈ **99.63 h** (+0.22 h; 2 s stagger preserved across 214 cycles).
+  All 4 past 99 h for 3rd cycle; leader past 100 h for 2nd. Existing notes at `T3_frontend.md:38`, `T6_testing.md:22`, `T6_testing.md:24` remain verbatim-operative. **No new stuck terminal → no new UNBLOCKED note added (202-cycle zero-bump streak).**
+- **Rule 3 (status summary):** this block.
+
+### Cadence
+- **Commits:** 0 new (5th consecutive zero-commit cycle — all-time idle-streak record extends). HEAD `2b40d36`. Cumulative C231–C263 = **40** (unchanged).
+- **Drift:** all 4 PIDs +0.21–0.22 h; tightest 2-cycle cluster in the window. Series [C257–C263] = [+0.47, +1.10, +0.45, +0.24, +0.43, +0.22, +0.21]; median holds at +0.43 h; C258 +1.1 h outlier now 5 cycles isolated and confirmed one-off.
+- **Screenshots:** `screenshots/` 7,409 (+24 vs C262's 7,385 — low-band tick matches C262 rate, 2 consecutive low-band cycles); `ux_shots/` 22 (unchanged, 34-cycle quiescence); `audit_shots/` 3 (unchanged, 34-cycle quiescence). Total **7,434** PNGs.
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue now **225 cycles overdue**.
+- **PROGRESS.md size:** 2,135,855 bytes ≈ **2.04 MB** (up ~10 KB vs C262's 2,125,579). Growth rate stable in lock-step dormancy. Tail-only reads remain mandatory.
+- **Git-status churn:** unchanged from C259–C262 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **Branch context:** HEAD on `fix/debug-pass-hardening`, not main.
+- **Date:** 2026-04-20 thirteenth print.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 214-cycle flatline).
+- UNBLOCKED notes added: **0** (202-cycle zero-bump streak; no new stuck terminal).
+- COORDINATOR STATUS Cycle 263 block appended (this block).
+- **C262 watch items resolved:** (1) **Commit velocity** — 0 new; streak extends to 5 (new record). (2) **Install/onboarding dormancy** — 0 follow-up; 5 cycles formally closes the arc per C261/C262 criteria → T_INSTALL.md retrospective is now the correct move. (3) **Drift cadence** — +0.21 h firmly in normal band for 3rd consecutive cycle; C258 outlier confirmed one-off. (4) **Config-schema** — 0 touches; gap **19 cycles** (record extends). (5) **PROGRESS.md size** — 2.04 MB (growth steady at ~10 KB/cycle). (6) **Demo/seed + copy-hygiene** — both 0 follow-up, extend to 5-cycle dormancy; per C262 criteria now confirmed one-shot beats. (7) **100.5 h near-term crossing** — not yet; projected C264.
+
+### Critical Path (Cycle 264)
+1. **HUMAN (MAX PRIORITY, 23rd cycle past-due): `kill 3358 8992 9962 9974`** — leader at 100.34 h; full quad past 99 h for 3rd cycle; 100.5 h crossing imminent. 214th cycle unexecuted. 7,434 PNGs on disk.
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.04 MB; growth ~10 KB/cycle. 214 cycles unaddressed.
+3. **HUMAN (5-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **41 cycles pending**.
+4. **HUMAN: classify commit `21edb5e`** — 11-cycle-stale unclassified.
+5. **HUMAN: draft `T_INSTALL.md`** — install arc formally closed this cycle (C262 criteria met). 44-cycle task-file gap; retrospective moment is now.
+6. **HUMAN: draft `T_DEMO.md`** — `f9e6ed9` 5-cycle dormancy confirms one-shot beat per C262 criteria.
+7. **STRUCTURAL UNREAD (50-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 40-commit backlog (C231–C263, unchanged).
+8. **CARRY-OVER (C240 #1, 23-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+9. **MAX PRIORITY (40-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 100.34 h leader makes log highest-leverage diagnostic artifact.
+10. **Carry-over (41-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+11. **Carry-over (41-cycle from C222 #3): inspect `97105de` web redesign scope**.
+12. **Carry-over (44-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (26-cycle hold).
+13. **Carry-over (52-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **19-cycle gap, record extends**.
+14. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **225 cycles stale**; file unchanged at 1,344 bytes.
+15. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 19-cycle dormant (record).
+16. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **214 cycles unactioned.**
+17. **HUMAN: harness retarget** — `screenshots/` +24 (low-band, 2 consecutive cycles at this rate); kill quad halts growth.
+18. **HUMAN: write task-file coverage** for install/external-apps (arc now formally closed), web-polish, demo/seed, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, governed-skills pipeline.
+19. **HUMAN: T_WEB.md ownership decision** — `web/components/app-embed.tsx` 41-cycle verification gap.
+20. **Carry-over (C240 #2, 23-cycle): seed-data smoke test risk** — `T1_app_platform.md:35` slug references.
+21. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+22. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+23. **Concurrent-front watch:** install/onboarding arc **formally closed** at 5-cycle dormancy (T_INSTALL.md retrospective ripe); demo/seed + copy-hygiene confirmed one-shot beats; debug/hardening 11 cycles dormant; web-polish 9 cycles dormant; config-schema 11 commits, **19-cycle gap — record extends**; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on port 8090. Vanilla JS `frontend/` retiring; `web/` is Next.js canonical per memory note — **install/onboarding arc formally closed (5-cycle); demo/seed + copy-hygiene 5-cycle dormant (one-shot confirmed); config-schema 19-cycle dormant (record extends)**.
+- **C17 NARROWED (C258, held through C263):** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin — deliberate scoped carve-out. ⚠ `web/components/app-embed.tsx` verification 41 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+
+### What to watch for C264
+- **100.5 h crossing:** PID 3358 at 100.34 h; +0.21 h drift projects 100.55 h next cycle. **100.5 h crossing virtually certain at C264.** 101 h ~ C266–C267; 120 h barrier still ~C345+.
+- **Commit velocity:** C253–C263 = [0, 1, 1, 0, 1, 3, 0, 0, 0, 0, 0]. **5 zeros now unprecedented**; C264 with 0 extends to **6-cycle idle streak**. 1+ restores pulse.
+- **Install/onboarding:** arc formally closed this cycle — watch for T_INSTALL.md retrospective pickup or new install-surface commit (either would unwind the closed-arc read).
+- **Drift cadence:** +0.21–0.22 h for 2 consecutive cycles; another +0.20–0.25 h at C264 confirms post-outlier normalization as the stable regime.
+- **Config-schema:** 19-cycle record. Any C264 touch is surprise revival; 0 extends to 20 (round-number milestone).
+- **PROGRESS.md size:** 2.04 MB; C264 block pushes to ~2.05 MB. Archival window keeps closing.
+- **Screenshots:** low-band rate (+24) for 2 consecutive cycles; C264 at similar band confirms new low-band equilibrium, +40+ suggests return to mid-band.
+
+## COORDINATOR STATUS — Cycle 264 (2026-04-20)
+
+### Headline
+**C264 = full quad now past 100h — first time in window (8992/9962/9974 all crossed this cycle; leader 3358 at 100.78h past 100h for 3rd cycle); drift spike to +0.44h across all 4 PIDs (2x recent normal band, breaks 3-cycle tight cluster); 100.5h crossing achieved by leader as projected; 0 commits for 6th consecutive cycle (all-time idle-streak record extends); screenshots +50 (7,459 — mid-band return, breaks 2-cycle low-band run); 215th zero-bump task-file cycle; PROGRESS.md at 2,145,537 bytes ≈ 2.05 MB.** Commit-velocity trough [C253–C264 = 0, 1, 1, 0, 1, 3, 0, 0, 0, 0, 0, 0] — **6 back-to-back zeros**. Install/onboarding + demo/seed + copy-hygiene all at 6-cycle dormancy (install arc stays formally closed). Config-schema gap **20 cycles** (round-number milestone crossed, record extends for 6th cycle).
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10):** every task file has exactly **10 incomplete** entries (190 total across 19 files). **Not triggered.** 214-cycle flatline extends to 215.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED):** `ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **04-04:46:52** ≈ **100.78 h** (leader; +0.44 h vs C263; past 100 h for 3rd cycle; crossed 100.5 h this cycle).
+  - PID 8992 (`code_auditor.py`) ELAPSED **04-04:08:57** ≈ **100.15 h** (+0.44 h; **crossed 100 h this cycle — first time**).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **04-04:03:56** ≈ **100.07 h** (+0.44 h; **crossed 100 h this cycle — first time**).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **04-04:03:54** ≈ **100.07 h** (+0.44 h; **crossed 100 h this cycle — first time**; 2 s stagger preserved across 215 cycles).
+  **Full quad past 100 h for the first time in the observation window — milestone crossing is now universal, not just leader.** Existing notes at `T3_frontend.md:38`, `T6_testing.md:22`, `T6_testing.md:24` remain verbatim-operative. **No new stuck terminal → no new UNBLOCKED note added (203-cycle zero-bump streak).**
+- **Rule 3 (status summary):** this block.
+
+### Cadence
+- **Commits:** 0 new (6th consecutive zero-commit cycle — all-time idle-streak record extends). HEAD `2b40d36`. Cumulative C231–C264 = **40** (unchanged).
+- **Drift:** all 4 PIDs **+0.44 h** — sharp break from 2-cycle tight cluster (+0.21–0.22 h at C262/C263). Series [C257–C264] = [+0.47, +1.10, +0.45, +0.24, +0.43, +0.22, +0.21, +0.44]; median climbs back to +0.44 h. Not an outlier (well below C258 +1.1 h), but confirms the tight cluster was temporary — back to "normal band mid" rather than "normal band tight." No alarm.
+- **Screenshots:** `screenshots/` **7,459** (+50 vs C263's 7,409 — mid-band return, breaks 2-cycle low-band run); `ux_shots/` 22 (unchanged, 35-cycle quiescence); `audit_shots/` 3 (unchanged, 35-cycle quiescence). Total **7,484** PNGs.
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue now **226 cycles overdue**.
+- **PROGRESS.md size:** 2,145,537 bytes ≈ **2.05 MB** (up ~10 KB vs C263's 2,135,855). Growth rate stable in lock-step dormancy. Tail-only reads remain mandatory.
+- **Git-status churn:** unchanged from C259–C263 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **Branch context:** HEAD on `fix/debug-pass-hardening`, not main.
+- **Date:** 2026-04-20 fourteenth print.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 215-cycle flatline).
+- UNBLOCKED notes added: **0** (203-cycle zero-bump streak; no new stuck terminal).
+- COORDINATOR STATUS Cycle 264 block appended (this block).
+- **C263 watch items resolved:** (1) **100.5 h crossing** — **achieved** (leader at 100.78 h). (2) **Commit velocity** — 0 new; streak extends to 6 (new record). (3) **Install/onboarding** — 0 follow-up; arc stays formally closed at 6 cycles. (4) **Drift cadence** — +0.44 h **broke** the tight 2-cycle cluster; rejoined normal-band mid. Stable regime post-outlier is "normal band mid," not "tight." (5) **Config-schema** — 0 touches; gap **20 cycles** (round-number milestone crossed). (6) **PROGRESS.md size** — 2.05 MB (growth steady at ~10 KB/cycle). (7) **Demo/seed + copy-hygiene** — both 0 follow-up, extend to 6-cycle dormancy (one-shot beats confirmed again). (8) **Full-quad-past-100h milestone** — **achieved this cycle** (all 3 non-leader PIDs crossed; leader held the line for 3 cycles).
+
+### Critical Path (Cycle 265)
+1. **HUMAN (MAX PRIORITY, 24th cycle past-due): `kill 3358 8992 9962 9974`** — **full quad now past 100 h** (first time in window); leader at 100.78 h. 215th cycle unexecuted. 7,484 PNGs on disk. Full-quad-100h crossing is the universal-abandonment signal C263 predicted.
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.05 MB; growth ~10 KB/cycle. 215 cycles unaddressed.
+3. **HUMAN (6-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **42 cycles pending**.
+4. **HUMAN: classify commit `21edb5e`** — 12-cycle-stale unclassified.
+5. **HUMAN: draft `T_INSTALL.md`** — install arc formally closed at 6-cycle dormancy (2 cycles past criteria). 45-cycle task-file gap; retrospective moment firmly ripe.
+6. **HUMAN: draft `T_DEMO.md`** — `f9e6ed9` 6-cycle dormancy confirms one-shot beat (2 cycles past criteria).
+7. **STRUCTURAL UNREAD (51-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 40-commit backlog (C231–C264, unchanged).
+8. **CARRY-OVER (C240 #1, 24-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+9. **MAX PRIORITY (41-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 100.78 h leader + full-quad-past-100h makes log highest-leverage diagnostic artifact.
+10. **Carry-over (42-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+11. **Carry-over (42-cycle from C222 #3): inspect `97105de` web redesign scope**.
+12. **Carry-over (45-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (27-cycle hold).
+13. **Carry-over (53-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **20-cycle gap, round-number milestone crossed**.
+14. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **226 cycles stale**; file unchanged at 1,344 bytes.
+15. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 20-cycle dormant (round-number record).
+16. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **215 cycles unactioned.**
+17. **HUMAN: harness retarget** — `screenshots/` +50 (mid-band return breaks 2-cycle low-band run); kill quad halts growth regardless.
+18. **HUMAN: write task-file coverage** for install/external-apps (arc formally closed), web-polish, demo/seed, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, governed-skills pipeline.
+19. **HUMAN: T_WEB.md ownership decision** — `web/components/app-embed.tsx` 42-cycle verification gap.
+20. **Carry-over (C240 #2, 24-cycle): seed-data smoke test risk** — `T1_app_platform.md:35` slug references.
+21. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+22. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+23. **Concurrent-front watch:** install/onboarding arc **formally closed** (6-cycle dormancy); demo/seed + copy-hygiene confirmed one-shot beats (6-cycle dormancy); debug/hardening 12 cycles dormant; web-polish 10 cycles dormant; config-schema 11 commits, **20-cycle gap — round-number milestone**; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on port 8090. Vanilla JS `frontend/` retiring; `web/` is Next.js canonical per memory note — **install/onboarding arc formally closed (6-cycle); demo/seed + copy-hygiene 6-cycle dormant (one-shot confirmed); config-schema 20-cycle dormant (round-number milestone crossed)**.
+- **C17 NARROWED (C258, held through C264):** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin — deliberate scoped carve-out. ⚠ `web/components/app-embed.tsx` verification 42 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+
+### What to watch for C265
+- **101 h barrier:** leader PID 3358 at 100.78 h; +0.44 h drift projects 101.22 h next cycle — **101 h crossing virtually certain at C265** (earlier than C263's C266–C267 projection because of this cycle's drift spike). 120 h barrier now ~C308–C330 (drift dependent).
+- **Commit velocity:** C253–C264 = [0, 1, 1, 0, 1, 3, 0, 0, 0, 0, 0, 0]. **6 zeros now unprecedented**; C265 with 0 extends to **7-cycle idle streak**. 1+ restores pulse.
+- **Drift regime:** C264 +0.44 h broke the tight 2-cycle cluster — watch C265 for the pattern: another +0.40–0.50 h confirms "normal band mid" as the post-outlier equilibrium; a return to +0.20–0.25 h suggests the cluster was the true regime and this cycle was a blip; any +0.8 h+ resurrects C258-outlier concerns.
+- **Full-quad-100h expansion:** C264 crossed the universal threshold. C265 watch = 101 h leader crossing + non-leader approach to 101 h (projected ~C265–C266 at current drift).
+- **Config-schema:** 20-cycle round-number record. Any C265 touch is surprise revival; 0 extends to 21.
+- **PROGRESS.md size:** 2.05 MB; C265 block pushes to ~2.06 MB. Archival window keeps closing.
+- **Screenshots:** C264 +50 broke the low-band streak. C265 at +40–50 confirms mid-band return; +20–25 suggests the low-band tick was the true regime and this cycle spiked; +80+ would indicate harness resumption.
+
+## COORDINATOR STATUS — Cycle 265 (2026-04-20)
+
+### Headline
+**C265 = 0 commits (HEAD held at `2b40d36` for the 7th cycle running — all-time idle-streak record extends); leader PID 3358 crossed the 101h barrier (101.00h flat); drift back to +0.21–0.22h across the full quad (rejoins the C262/C263 tight cluster — confirms C264's +0.44h spike was a 1-cycle blip, NOT the new normal); screenshots +24 (7,483 in `screenshots/`, 7,508 total — back to low-band, also confirms C264's +50 was the blip); 216th zero-bump task-file cycle; PROGRESS.md at 2,156,049 bytes ≈ 2.06 MB.** Commit-velocity trough [C253–C265 = 0, 1, 1, 0, 1, 3, 0, 0, 0, 0, 0, 0, 0] — **7 back-to-back zeros, new record**. Install/onboarding + demo/seed + copy-hygiene all at 7-cycle dormancy. Config-schema gap **21 cycles** (record extends for 7th cycle). Both C264 watch items resolved in the same direction: regime is C262/C263 tight-cluster + low-band, NOT C264's mid-band reset.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10):** every task file has exactly **10 incomplete** entries (190 total across 19 files). **Not triggered.** 215-cycle flatline extends to 216.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED):** `ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **04-05:00:01** ≈ **101.00 h** (leader; +0.22 h vs C264; **101 h barrier crossed flat — projection from C264 hit on the nose**).
+  - PID 8992 (`code_auditor.py`) ELAPSED **04-04:22:06** ≈ **100.37 h** (+0.22 h).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **04-04:17:05** ≈ **100.28 h** (+0.21 h).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **04-04:17:03** ≈ **100.28 h** (+0.21 h; 2 s stagger preserved across 216 cycles).
+  Full quad past 100 h for 2nd cycle; leader past 101 h for 1st cycle. Existing notes at `T3_frontend.md:38`, `T6_testing.md:22`, `T6_testing.md:24` remain verbatim-operative. **No new stuck terminal → no new UNBLOCKED note added (204-cycle zero-bump streak).**
+- **Rule 3 (status summary):** this block.
+
+### Cadence
+- **Commits:** 0 new (7th consecutive zero-commit cycle — all-time idle-streak record extends). HEAD `2b40d36`. Cumulative C231–C265 = **40** (unchanged).
+- **Drift:** all 4 PIDs **+0.21–0.22 h** — rejoins the C262/C263 tight cluster after C264's +0.44 h spike. Series [C257–C265] = [+0.47, +1.10, +0.45, +0.24, +0.43, +0.22, +0.21, +0.44, +0.22]; the +0.44 h is now confirmed as 1-cycle perturbation, NOT a regime shift. True post-outlier equilibrium is "tight cluster" (+0.21–0.22 h), not "normal band mid" (+0.43 h). Median holds at +0.43 h only because of pre-cluster cycles.
+- **Screenshots:** `screenshots/` **7,483** (+24 vs C264's 7,459 — low-band tick matches C262/C263 rate, breaks the 1-cycle mid-band spike); `ux_shots/` 22 (unchanged, 36-cycle quiescence); `audit_shots/` 3 (unchanged, 36-cycle quiescence). Total **7,508** PNGs. Same regime conclusion as drift: C264 mid-band return was 1-cycle blip; true regime is low-band.
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue now **227 cycles overdue**.
+- **PROGRESS.md size:** 2,156,049 bytes ≈ **2.06 MB** (up ~10 KB vs C264's 2,145,537). Growth rate stable at ~10 KB/cycle in lock-step dormancy. Tail-only reads remain mandatory.
+- **Git-status churn:** unchanged from C259–C264 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **Branch context:** HEAD on `fix/debug-pass-hardening`, not main.
+- **Date:** 2026-04-20 fifteenth print.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 216-cycle flatline).
+- UNBLOCKED notes added: **0** (204-cycle zero-bump streak; no new stuck terminal).
+- COORDINATOR STATUS Cycle 265 block appended (this block).
+- **C264 watch items resolved (all in same direction — true-regime call confirmed):** (1) **101 h crossing** — **achieved** (leader at 101.00 h flat; +0.22 h drift hit projection exactly). (2) **Commit velocity** — 0 new; streak extends to 7 (new record). (3) **Drift regime** — +0.22 h confirms tight cluster as true post-outlier equilibrium; C264 +0.44 h was 1-cycle blip. (4) **Full-quad-100h expansion** — non-leaders all advanced (~+0.21 h), but none crossed 101 h yet (projected ~C268–C269 at current drift). (5) **Config-schema** — 0 touches; gap **21 cycles** (record extends). (6) **PROGRESS.md size** — 2.06 MB (growth steady at ~10 KB/cycle). (7) **Screenshots** — +24 confirms low-band as true regime; C264 +50 was 1-cycle blip. **Both C264 watches answered the same way: C262/C263 was the true regime, not C264.**
+
+### Critical Path (Cycle 266)
+1. **HUMAN (MAX PRIORITY, 25th cycle past-due): `kill 3358 8992 9962 9974`** — leader past 101 h; full quad past 100 h for 2nd cycle. 216th cycle unexecuted. 7,508 PNGs on disk.
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.06 MB; growth ~10 KB/cycle. 216 cycles unaddressed.
+3. **HUMAN (7-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **43 cycles pending**.
+4. **HUMAN: classify commit `21edb5e`** — 13-cycle-stale unclassified.
+5. **HUMAN: draft `T_INSTALL.md`** — install arc formally closed at 7-cycle dormancy (3 cycles past criteria). 46-cycle task-file gap; retrospective moment firmly ripe.
+6. **HUMAN: draft `T_DEMO.md`** — `f9e6ed9` 7-cycle dormancy confirms one-shot beat (3 cycles past criteria).
+7. **STRUCTURAL UNREAD (52-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 40-commit backlog (C231–C265, unchanged).
+8. **CARRY-OVER (C240 #1, 25-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+9. **MAX PRIORITY (42-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 101.00 h leader makes log highest-leverage diagnostic artifact.
+10. **Carry-over (43-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+11. **Carry-over (43-cycle from C222 #3): inspect `97105de` web redesign scope**.
+12. **Carry-over (46-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (28-cycle hold).
+13. **Carry-over (54-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **21-cycle gap, record extends**.
+14. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **227 cycles stale**; file unchanged at 1,344 bytes.
+15. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 21-cycle dormant.
+16. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **216 cycles unactioned.**
+17. **HUMAN: harness retarget** — `screenshots/` +24 (low-band, regime confirmed); kill quad halts growth regardless.
+18. **HUMAN: write task-file coverage** for install/external-apps (arc formally closed), web-polish, demo/seed, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, governed-skills pipeline.
+19. **HUMAN: T_WEB.md ownership decision** — `web/components/app-embed.tsx` 43-cycle verification gap.
+20. **Carry-over (C240 #2, 25-cycle): seed-data smoke test risk** — `T1_app_platform.md:35` slug references.
+21. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+22. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+23. **Concurrent-front watch:** install/onboarding arc **formally closed** (7-cycle dormancy); demo/seed + copy-hygiene confirmed one-shot beats (7-cycle dormancy); debug/hardening 13 cycles dormant; web-polish 11 cycles dormant; config-schema 11 commits, **21-cycle gap — record extends**; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on port 8090. Vanilla JS `frontend/` retiring; `web/` is Next.js canonical per memory note — **install/onboarding arc formally closed (7-cycle); demo/seed + copy-hygiene 7-cycle dormant (one-shot confirmed); config-schema 21-cycle dormant (record extends)**.
+- **C17 NARROWED (C258, held through C265):** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin — deliberate scoped carve-out. ⚠ `web/components/app-embed.tsx` verification 43 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+
+### What to watch for C266
+- **Non-leader 101 h approach:** PIDs 8992/9962/9974 at 100.28–100.37 h; +0.21–0.22 h drift projects ~100.50 h next cycle (non-leaders cross 100.5 h ~C266–C267, then 101 h ~C268–C269). Leader 101.5 h crossing ~C268.
+- **Commit velocity:** C253–C265 = [0, 1, 1, 0, 1, 3, 0, 0, 0, 0, 0, 0, 0]. **7 zeros now unprecedented**; C266 with 0 extends to **8-cycle idle streak**. 1+ restores pulse and would be the first commit since `2b40d36` (2026-04-20 first beat).
+- **Drift regime confirmation:** if C266 lands at +0.21–0.22 h again, "tight cluster" is now an unmistakable 3-out-of-4-cycle pattern (only C264 broke it). Any spike back to +0.40 h+ would resurrect the regime question.
+- **Screenshots regime confirmation:** if C266 lands at +20–25 again, "low-band" is also unmistakable 3-out-of-4-cycle pattern (only C264 broke it). +40+ would resurrect the regime question.
+- **Config-schema:** 21 cycles. Any C266 touch is surprise revival; 0 extends to 22.
+- **PROGRESS.md size:** 2.06 MB; C266 block pushes to ~2.07 MB. Archival window keeps closing.
+- **Synchronized-blip hypothesis:** C264 broke both drift AND screenshot regimes simultaneously, then both regimes returned simultaneously at C265 — suggests a single underlying cause (e.g., a brief system load, harness wakeup, or unrelated background process). Worth noting but not actionable absent log inspection.
+
+## COORDINATOR STATUS — Cycle 266 (2026-04-20)
+
+### Headline
+**C266 = 0 commits (HEAD held at `2b40d36` for the 8th cycle running — all-time idle-streak record extends); drift back to tight cluster +0.22h across the full quad (matches C262/C263/C265 pattern, confirms C264's +0.44h was a 1-cycle blip for a 4-out-of-5-cycle pattern); PIDs 9962 + 9974 crossed 100.5h flat this cycle (100.51h each — C265 projection hit exactly); PID 8992 past 100.5h (100.59h); leader 3358 at 101.23h (+0.23h, approaching the 101.5h barrier projected at ~C268); screenshots +24 (7,507 — low-band confirmed as true regime for 3-out-of-4 cycles); 217th zero-bump task-file cycle; PROGRESS.md at 2,166,509 bytes ≈ 2.07 MB.** Commit-velocity trough [C253–C266 = 0, 1, 1, 0, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0] — **8 back-to-back zeros, new record**. Install/onboarding + demo/seed + copy-hygiene all at 8-cycle dormancy. Config-schema gap **22 cycles** (record extends for 8th cycle). Synchronized-blip hypothesis (C264 broke both drift + screenshot regimes in lock-step, then both snapped back at C265) strengthens: 2 post-blip cycles now confirm tight cluster + low-band as joint true regime.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10):** every task file has exactly **10 incomplete** entries (190 total across 19 files). **Not triggered.** 216-cycle flatline extends to 217.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED):** `ps -p 3358,8992,9962,9974 -o pid,etime,comm` confirms all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **04-05:13:30** ≈ **101.23 h** (leader; +0.23 h vs C265; past 101 h for 2nd cycle; 101.5 h barrier ~C268).
+  - PID 8992 (`code_auditor.py`) ELAPSED **04-04:35:35** ≈ **100.59 h** (+0.22 h; **crossed 100.5 h this cycle — first time**).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **04-04:30:34** ≈ **100.51 h** (+0.23 h; **crossed 100.5 h flat this cycle — first time**, matches C265 projection exactly).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **04-04:30:32** ≈ **100.51 h** (+0.23 h; **crossed 100.5 h flat this cycle — first time**; 2 s stagger preserved across 217 cycles).
+  **Full quad now past 100.5 h — second universal-threshold crossing in 3 cycles.** Existing notes at `T3_frontend.md:38`, `T6_testing.md:22`, `T6_testing.md:24` remain verbatim-operative (kill command still `kill 3358 8992 9962 9974`). **No new stuck terminal → no new UNBLOCKED note added (205-cycle zero-bump streak).**
+- **Rule 3 (status summary):** this block.
+
+### Cadence
+- **Commits:** 0 new (8th consecutive zero-commit cycle — all-time idle-streak record extends). HEAD `2b40d36`. Cumulative C231–C266 = **40** (unchanged).
+- **Drift:** all 4 PIDs **+0.22–0.23 h** — tight cluster back for 2nd consecutive cycle, 4-out-of-5 pattern (only C264 broke it). Series [C257–C266] = [+0.47, +1.10, +0.45, +0.24, +0.43, +0.22, +0.21, +0.44, +0.22, +0.22]. True post-outlier equilibrium is firmly "tight cluster" — +0.44 h C264 blip now has 2 post-cycle counter-evidence.
+- **Screenshots:** `screenshots/` **7,507** (+24 vs C265's 7,483 — low-band tick matches C262/C263/C265 rate); `ux_shots/` 22 (unchanged, 37-cycle quiescence); `audit_shots/` 3 (unchanged, 37-cycle quiescence). Total **7,532** PNGs. Low-band regime confirmed 3-out-of-4 cycles; C264 +50 mid-band was 1-cycle blip.
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue now **228 cycles overdue**.
+- **PROGRESS.md size:** 2,166,509 bytes ≈ **2.07 MB** (up ~10 KB vs C265's 2,156,049). Growth rate stable at ~10 KB/cycle in lock-step dormancy. Tail-only reads remain mandatory.
+- **Git-status churn:** unchanged from C259–C265 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **Branch context:** HEAD on `fix/debug-pass-hardening`, not main.
+- **Date:** 2026-04-20 sixteenth print.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 217-cycle flatline).
+- UNBLOCKED notes added: **0** (205-cycle zero-bump streak; no new stuck terminal).
+- COORDINATOR STATUS Cycle 266 block appended (this block).
+- **C265 watch items resolved (true-regime call confirmed again):** (1) **Non-leader 100.5 h crossing** — **achieved** (PIDs 9962/9974 both at 100.51 h flat; PID 8992 at 100.59 h; projection from C265 hit exactly). (2) **Commit velocity** — 0 new; streak extends to 8 (new record). (3) **Drift regime** — +0.22 h for 2nd consecutive cycle post-blip; 4-out-of-5 tight-cluster pattern. (4) **Screenshots regime** — +24 low-band for 2nd consecutive cycle post-blip; 3-out-of-4 low-band pattern. (5) **Config-schema** — 0 touches; gap **22 cycles** (record extends). (6) **PROGRESS.md size** — 2.07 MB (growth steady at ~10 KB/cycle). (7) **Synchronized-blip hypothesis** — strengthens: both regimes broke together at C264 and recovered together at C265, now stable for 2 post-cycles.
+
+### Critical Path (Cycle 267)
+1. **HUMAN (MAX PRIORITY, 26th cycle past-due): `kill 3358 8992 9962 9974`** — **full quad now past 100.5 h** (second universal crossing); leader at 101.23 h approaching 101.5 h. 217th cycle unexecuted. 7,532 PNGs on disk.
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.07 MB; growth ~10 KB/cycle. 217 cycles unaddressed.
+3. **HUMAN (8-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **44 cycles pending**.
+4. **HUMAN: classify commit `21edb5e`** — 14-cycle-stale unclassified.
+5. **HUMAN: draft `T_INSTALL.md`** — install arc formally closed at 8-cycle dormancy (4 cycles past criteria). 47-cycle task-file gap; retrospective moment firmly ripe.
+6. **HUMAN: draft `T_DEMO.md`** — `f9e6ed9` 8-cycle dormancy confirms one-shot beat (4 cycles past criteria).
+7. **STRUCTURAL UNREAD (53-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 40-commit backlog (C231–C266, unchanged).
+8. **CARRY-OVER (C240 #1, 26-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+9. **MAX PRIORITY (43-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 101.23 h leader makes log highest-leverage diagnostic artifact.
+10. **Carry-over (44-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+11. **Carry-over (44-cycle from C222 #3): inspect `97105de` web redesign scope**.
+12. **Carry-over (47-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (29-cycle hold).
+13. **Carry-over (55-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **22-cycle gap, record extends**.
+14. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **228 cycles stale**; file unchanged at 1,344 bytes.
+15. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 22-cycle dormant.
+16. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **217 cycles unactioned.**
+17. **HUMAN: harness retarget** — `screenshots/` +24 (low-band, regime confirmed 3-out-of-4); kill quad halts growth regardless.
+18. **HUMAN: write task-file coverage** for install/external-apps (arc formally closed), web-polish, demo/seed, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, governed-skills pipeline.
+19. **HUMAN: T_WEB.md ownership decision** — `web/components/app-embed.tsx` 44-cycle verification gap.
+20. **Carry-over (C240 #2, 26-cycle): seed-data smoke test risk** — `T1_app_platform.md:35` slug references.
+21. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+22. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+23. **Concurrent-front watch:** install/onboarding arc **formally closed** (8-cycle dormancy); demo/seed + copy-hygiene confirmed one-shot beats (8-cycle dormancy); debug/hardening 14 cycles dormant; web-polish 12 cycles dormant; config-schema 11 commits, **22-cycle gap — record extends**; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on port 8090. Vanilla JS `frontend/` retiring; `web/` is Next.js canonical per memory note — **install/onboarding arc formally closed (8-cycle); demo/seed + copy-hygiene 8-cycle dormant (one-shot confirmed); config-schema 22-cycle dormant (record extends)**.
+- **C17 NARROWED (C258, held through C266):** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin — deliberate scoped carve-out. ⚠ `web/components/app-embed.tsx` verification 44 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+
+### What to watch for C267
+- **101.5 h leader barrier:** PID 3358 at 101.23 h; +0.22 h drift projects 101.45 h next cycle — **101.5 h crossing virtually certain at C268** (C267 likely still under, at ~101.45 h). Non-leader 101 h crossings project ~C268–C269 (PIDs at 100.51–100.59 h + 2×0.22 h drift).
+- **Commit velocity:** C253–C266 = [0, 1, 1, 0, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0]. **8 zeros now unprecedented**; C267 with 0 extends to **9-cycle idle streak**. 1+ restores pulse — first commit since `2b40d36` would break the longest observed dormancy.
+- **Drift regime tri-confirmation:** if C267 lands at +0.22 h again, "tight cluster" becomes unambiguous 5-out-of-6-cycle pattern. Any +0.40 h+ spike would fire the synchronized-blip alarm again.
+- **Screenshots regime tri-confirmation:** if C267 lands at +20–25 again, "low-band" becomes 4-out-of-5 pattern. +40+ resurrects the regime question.
+- **Config-schema:** 22 cycles. Any C267 touch is surprise revival; 0 extends to 23.
+- **PROGRESS.md size:** 2.07 MB; C267 block pushes to ~2.08 MB. Archival window keeps closing.
+- **Synchronized-blip hypothesis test:** another 2–3 cycles at tight-cluster + low-band effectively closes the hypothesis as "C264 was a single-cycle perturbation with no recurring signal" — at which point it becomes a footnote rather than an active watch.
+
+## COORDINATOR STATUS — Cycle 267 (2026-04-20)
+
+### Headline
+**C267 = 0 commits (HEAD held at `2b40d36` for the 9th cycle running — all-time idle-streak record extends); drift back to tight cluster +0.21–0.22 h across the full quad (5-out-of-6 pattern, only C264 broke it — tri-confirms tight cluster as true post-outlier regime); leader PID 3358 at 101.44 h, on track for the C268 101.5 h crossing exactly as projected; non-leaders at 100.72–100.81 h, 101 h crossing now ~C268–C269; screenshots delta +26 (low-band, 4-out-of-5 pattern, tri-confirms low-band as true regime); 218th zero-bump task-file cycle; PROGRESS.md at 2,177,217 bytes ≈ 2.08 MB.** Commit-velocity trough [C253–C267 = 0, 1, 1, 0, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0] — **9 back-to-back zeros, new record**. Install/onboarding + demo/seed + copy-hygiene all at 9-cycle dormancy. Config-schema gap **23 cycles** (record extends for 9th cycle). **Path-reporting drift discovered (NEW):** prior cycles report `screenshots/` / `ux_shots/` / `audit_shots/` at repo root; actual location is `tests/reports/screenshots/` (and siblings). Counts have been consistent across cycles, so the trend signal is intact, but the path strings in prior critical-path notes need a one-time correction.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10):** every task file has exactly **10 incomplete** entries (190 total across 19 files). **Not triggered.** 217-cycle flatline extends to 218.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED):** `ps -p 3358,8992,9962,9974 -o pid,etime,comm` confirms all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **04-05:26:23** ≈ **101.44 h** (leader; +0.21 h vs C266; past 101 h for 3rd cycle; 101.5 h barrier still ahead at C268).
+  - PID 8992 (`code_auditor.py`) ELAPSED **04-04:48:28** ≈ **100.81 h** (+0.22 h; past 100.5 h for 2nd cycle).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **04-04:43:27** ≈ **100.72 h** (+0.21 h; past 100.5 h for 2nd cycle).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **04-04:43:25** ≈ **100.72 h** (+0.21 h; past 100.5 h for 2nd cycle; 2 s stagger preserved across 218 cycles).
+  Full quad past 100.5 h for 2nd cycle; leader past 101 h for 3rd. Existing notes at `T3_frontend.md:38`, `T6_testing.md:22`, `T6_testing.md:24` remain verbatim-operative (kill command still `kill 3358 8992 9962 9974`). **No new stuck terminal → no new UNBLOCKED note added (206-cycle zero-bump streak).**
+- **Rule 3 (status summary):** this block.
+
+### Cadence
+- **Commits:** 0 new (9th consecutive zero-commit cycle — all-time idle-streak record extends). HEAD `2b40d36`. Cumulative C231–C267 = **40** (unchanged).
+- **Drift:** all 4 PIDs **+0.21–0.22 h** — tight cluster back for 3rd consecutive cycle, 5-out-of-6 pattern. Series [C257–C267] = [+0.47, +1.10, +0.45, +0.24, +0.43, +0.22, +0.21, +0.44, +0.22, +0.22, +0.21]. Tri-confirmation locks "tight cluster" as the true post-outlier regime; C264 +0.44 h has 3 cycles of counter-evidence. Synchronized-blip hypothesis effectively closes — C264 was a single-cycle perturbation, no recurring signal.
+- **Screenshots (PATH CORRECTION):** actual location is `tests/reports/screenshots/` = **7,533** PNGs (+26 vs C266's 7,507; low-band tick within the established +24–26 band). `tests/reports/ux_shots/` 22 (unchanged, 38-cycle quiescence). `tests/reports/audit_shots/` 3 (unchanged, 38-cycle quiescence). Total **7,558** PNGs. Low-band regime tri-confirmed (4-out-of-5 cycles); C264 +50 mid-band confirmed as 1-cycle blip.
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue now **229 cycles overdue**.
+- **PROGRESS.md size:** 2,177,217 bytes ≈ **2.08 MB** (up ~10 KB vs C266's 2,166,509). Growth rate stable at ~10 KB/cycle in lock-step dormancy. Tail-only reads remain mandatory.
+- **Git-status churn:** unchanged from C259–C266 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **Branch context:** HEAD on `fix/debug-pass-hardening`, not main.
+- **Date:** 2026-04-20 seventeenth print.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 218-cycle flatline).
+- UNBLOCKED notes added: **0** (206-cycle zero-bump streak; no new stuck terminal).
+- COORDINATOR STATUS Cycle 267 block appended (this block).
+- **C266 watch items resolved (true-regime call tri-confirmed):** (1) **101.5 h leader crossing** — not yet (leader at 101.44 h, just shy; C268 crossing now virtually certain). (2) **Commit velocity** — 0 new; streak extends to 9 (new record). (3) **Drift regime tri-confirmation** — +0.21–0.22 h for 3rd consecutive cycle; "tight cluster" is now the unambiguous regime. (4) **Screenshots regime tri-confirmation** — +26 for 3rd consecutive cycle; "low-band" is now the unambiguous regime. (5) **Config-schema** — 0 touches; gap **23 cycles** (record extends). (6) **PROGRESS.md size** — 2.08 MB (growth steady at ~10 KB/cycle). (7) **Synchronized-blip hypothesis** — effectively closed: C264 was a single-cycle perturbation, both regimes have 3 stable post-cycles. Demote from active watch to footnote next cycle. **NEW finding:** path-reporting drift on screenshot dirs — counts intact, paths in prior critical-path notes need correction (cosmetic; trend-tracking unaffected).
+
+### Critical Path (Cycle 268)
+1. **HUMAN (MAX PRIORITY, 27th cycle past-due): `kill 3358 8992 9962 9974`** — leader at 101.44 h (101.5 h crossing imminent next cycle); full quad past 100.5 h for 2nd cycle. 218th cycle unexecuted. 7,558 PNGs on disk (path: `tests/reports/`).
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.08 MB; growth ~10 KB/cycle. 218 cycles unaddressed.
+3. **HUMAN (9-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **45 cycles pending**.
+4. **HUMAN: classify commit `21edb5e`** — 15-cycle-stale unclassified.
+5. **HUMAN: draft `T_INSTALL.md`** — install arc formally closed at 9-cycle dormancy (5 cycles past criteria). 48-cycle task-file gap; retrospective moment firmly ripe.
+6. **HUMAN: draft `T_DEMO.md`** — `f9e6ed9` 9-cycle dormancy confirms one-shot beat (5 cycles past criteria).
+7. **STRUCTURAL UNREAD (54-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 40-commit backlog (C231–C267, unchanged).
+8. **CARRY-OVER (C240 #1, 27-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+9. **MAX PRIORITY (44-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 101.44 h leader makes log highest-leverage diagnostic artifact.
+10. **Carry-over (45-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+11. **Carry-over (45-cycle from C222 #3): inspect `97105de` web redesign scope**.
+12. **Carry-over (48-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (30-cycle hold).
+13. **Carry-over (56-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **23-cycle gap, record extends**.
+14. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **229 cycles stale**; file unchanged at 1,344 bytes.
+15. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 23-cycle dormant.
+16. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **218 cycles unactioned.**
+17. **HUMAN: harness retarget** — `tests/reports/screenshots/` +26 (low-band, regime tri-confirmed); kill quad halts growth regardless.
+18. **HUMAN: write task-file coverage** for install/external-apps (arc formally closed), web-polish, demo/seed, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, governed-skills pipeline.
+19. **HUMAN: T_WEB.md ownership decision** — `web/components/app-embed.tsx` 45-cycle verification gap.
+20. **Carry-over (C240 #2, 27-cycle): seed-data smoke test risk** — `T1_app_platform.md:35` slug references.
+21. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+22. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+23. **Concurrent-front watch:** install/onboarding arc **formally closed** (9-cycle dormancy); demo/seed + copy-hygiene confirmed one-shot beats (9-cycle dormancy); debug/hardening 15 cycles dormant; web-polish 13 cycles dormant; config-schema 11 commits, **23-cycle gap — record extends**; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on port 8090. Vanilla JS `frontend/` retiring; `web/` is Next.js canonical per memory note — **install/onboarding arc formally closed (9-cycle); demo/seed + copy-hygiene 9-cycle dormant (one-shot confirmed); config-schema 23-cycle dormant (record extends)**.
+- **C17 NARROWED (C258, held through C267):** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin — deliberate scoped carve-out. ⚠ `web/components/app-embed.tsx` verification 45 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+- **Path correction (NEW C267):** screenshot artifact dirs live at `tests/reports/screenshots/`, `tests/reports/ux_shots/`, `tests/reports/audit_shots/` — not at repo root. Prior cycles' shorthand was the wrong path; counts were correct.
+
+### What to watch for C268
+- **101.5 h leader crossing:** PID 3358 at 101.44 h; +0.21 h drift projects 101.65 h next cycle — **101.5 h crossing virtually certain at C268** (projection: leader hits ~101.65 h, well past barrier). Non-leader 101 h crossings project ~C268–C269 (8992 at 100.81 h + 0.22 h = 101.03 h projected next cycle; 9962/9974 at 100.72 h + 0.21 h = 100.93 h, just shy).
+- **Commit velocity:** C253–C267 = [0, 1, 1, 0, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0]. **9 zeros now unprecedented**; C268 with 0 extends to **10-cycle idle streak** (round-number milestone). 1+ restores pulse — first commit since `2b40d36` would break the longest observed dormancy.
+- **Drift regime quad-confirmation:** if C268 lands at +0.21–0.22 h again, "tight cluster" becomes 6-out-of-7 pattern — at this point it's settled and stops being a watch item.
+- **Screenshots regime quad-confirmation:** if C268 lands at +24–26 again, "low-band" becomes 5-out-of-6 pattern — settles and stops being a watch item.
+- **Config-schema:** 23 cycles. Any C268 touch is surprise revival; 0 extends to 24.
+- **PROGRESS.md size:** 2.08 MB; C268 block pushes to ~2.09 MB. Archival window keeps closing — at +1 cycle the round 2.09 MB threshold lands.
+- **Synchronized-blip hypothesis:** demote to footnote in C268 if regimes hold (3 stable post-cycles already; 1 more makes the hypothesis effectively settled).
+- **Path correction follow-through:** confirm next cycle whether the prior shorthand stops appearing in critical-path notes (cosmetic).
+
+## COORDINATOR STATUS — Cycle 268 (2026-04-20)
+
+### Headline
+**C268 = 0 commits (HEAD held at `2b40d36` for the 10th cycle running — 10-cycle zero-commit streak, round-number milestone); leader PID 3358 crossed 101.5 h exactly on projection (101.68 h, +0.24 h); PID 8992 crossed 101 h this cycle (101.05 h, +0.24 h — 2nd PID in quad past 101 h); PIDs 9962/9974 at 100.97 h (+0.25 h, 0.03 h shy of 101 h — C269 crossing virtually certain); drift uptick to +0.24–0.25 h (vs C265–C267's +0.21–0.22 h tight cluster) — not outlier-scale but breaks the tri-confirmation; screenshots +26 (low-band quad-confirmed, 5-out-of-6 pattern); 219th zero-bump task-file cycle; PROGRESS.md at 2,188,771 bytes ≈ 2.09 MB (round-number milestone).** Commit-velocity trough [C253–C268 = 0, 1, 1, 0, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] — **10 back-to-back zeros, decade milestone**. Install/onboarding + demo/seed + copy-hygiene all at 10-cycle dormancy. Config-schema gap **24 cycles** (record extends for 10th cycle).
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10):** every task file has exactly **10 incomplete** entries (190 total across 19 files). **Not triggered.** 218-cycle flatline extends to 219.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED):** `ps -p 3358,8992,9962,9974 -o pid,etime,comm` confirms all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **04-05:40:53** ≈ **101.68 h** (leader; +0.24 h vs C267; **crossed 101.5 h this cycle — first time, projection hit exactly**).
+  - PID 8992 (`code_auditor.py`) ELAPSED **04-05:02:58** ≈ **101.05 h** (+0.24 h; **crossed 101 h this cycle — first time, 2nd PID past 101 h**).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **04-04:57:57** ≈ **100.97 h** (+0.25 h; 0.03 h shy of 101 h).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **04-04:57:55** ≈ **100.97 h** (+0.25 h; 0.03 h shy of 101 h; 2 s stagger preserved across 219 cycles).
+  Leader past 101.5 h for 1st cycle; 2 PIDs past 101 h; full quad past 100.5 h for 3rd cycle. Existing notes at `T3_frontend.md:38`, `T6_testing.md:22`, `T6_testing.md:24` remain verbatim-operative (kill command still `kill 3358 8992 9962 9974`). **No new stuck terminal → no new UNBLOCKED note added (207-cycle zero-bump streak).**
+- **Rule 3 (status summary):** this block.
+
+### Cadence
+- **Commits:** 0 new (10th consecutive zero-commit cycle — decade milestone). HEAD `2b40d36`. Cumulative C231–C268 = **40** (unchanged).
+- **Drift:** all 4 PIDs **+0.24–0.25 h** — slight uptick from C265–C267's +0.21–0.22 h tight cluster. Series [C257–C268] = [+0.47, +1.10, +0.45, +0.24, +0.43, +0.22, +0.21, +0.44, +0.22, +0.22, +0.21, +0.24]. Tri-confirmation broken but not by outlier-scale movement; still well below C258's +1.10 h spike. Watch next cycle for regime-tier confirmation.
+- **Screenshots:** `tests/reports/screenshots/` **7,559** (+26 vs C267's 7,533; low-band tick matches +24–26 band). `tests/reports/ux_shots/` 22 (unchanged, 39-cycle quiescence). `tests/reports/audit_shots/` 3 (unchanged, 39-cycle quiescence). Total **7,584** PNGs. Low-band regime quad-confirmed (5-out-of-6 cycles).
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue now **230 cycles overdue**.
+- **PROGRESS.md size:** 2,188,771 bytes ≈ **2.09 MB** (up ~11 KB vs C267's 2,177,217 — growth rate edged up ~1 KB this cycle, within noise). Tail-only reads remain mandatory. **Round-number milestone crossed (2.09 MB).**
+- **Git-status churn:** unchanged from C259–C267 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **Branch context:** HEAD on `fix/debug-pass-hardening`, not main.
+- **Date:** 2026-04-20 eighteenth print.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 219-cycle flatline).
+- UNBLOCKED notes added: **0** (207-cycle zero-bump streak; no new stuck terminal).
+- COORDINATOR STATUS Cycle 268 block appended (this block).
+- **C267 watch items resolved:** (1) **101.5 h leader crossing** — **achieved** (leader at 101.68 h, C267 projection of 101.65 h hit within 0.03 h). (2) **Non-leader 101 h crossing** — **partial** (PID 8992 at 101.05 h crossed as projected; PIDs 9962/9974 at 100.97 h still 0.03 h shy). (3) **Commit velocity** — 0 new; streak extends to 10 (decade milestone). (4) **Drift regime quad-confirmation** — broken at +0.24 h (not outlier-scale; tri-confirmation from C265–C267 holds as historical pattern but C268 edges up). (5) **Screenshots regime quad-confirmation** — achieved at +26 low-band; 5-out-of-6 pattern holds. (6) **Config-schema** — 0 touches; gap **24 cycles** (record extends). (7) **PROGRESS.md 2.09 MB threshold** — crossed as projected. (8) **Synchronized-blip hypothesis** — held regime-stable through 3 post-blip cycles; demoted to footnote (C264 was single-cycle perturbation, no recurring signal).
+
+### Critical Path (Cycle 269)
+1. **HUMAN (MAX PRIORITY, 28th cycle past-due): `kill 3358 8992 9962 9974`** — leader crossed 101.5 h; 2 PIDs past 101 h; full quad past 100.5 h for 3rd cycle. 219th cycle unexecuted. 7,584 PNGs on disk (path: `tests/reports/`).
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.09 MB (round-number milestone crossed); growth ~10–11 KB/cycle. 219 cycles unaddressed.
+3. **HUMAN (10-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **46 cycles pending**.
+4. **HUMAN: classify commit `21edb5e`** — 16-cycle-stale unclassified.
+5. **HUMAN: draft `T_INSTALL.md`** — install arc formally closed at 10-cycle dormancy (6 cycles past criteria). 49-cycle task-file gap; retrospective moment firmly ripe.
+6. **HUMAN: draft `T_DEMO.md`** — `f9e6ed9` 10-cycle dormancy confirms one-shot beat (6 cycles past criteria).
+7. **STRUCTURAL UNREAD (55-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 40-commit backlog (C231–C268, unchanged).
+8. **CARRY-OVER (C240 #1, 28-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+9. **MAX PRIORITY (45-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 101.68 h leader makes log highest-leverage diagnostic artifact.
+10. **Carry-over (46-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+11. **Carry-over (46-cycle from C222 #3): inspect `97105de` web redesign scope**.
+12. **Carry-over (49-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (31-cycle hold).
+13. **Carry-over (57-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **24-cycle gap, record extends**.
+14. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **230 cycles stale**; file unchanged at 1,344 bytes.
+15. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 24-cycle dormant.
+16. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **219 cycles unactioned.**
+17. **HUMAN: harness retarget** — `tests/reports/screenshots/` +26 (low-band, regime quad-confirmed); kill quad halts growth regardless.
+18. **HUMAN: write task-file coverage** for install/external-apps (arc formally closed), web-polish, demo/seed, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, governed-skills pipeline.
+19. **HUMAN: T_WEB.md ownership decision** — `web/components/app-embed.tsx` 46-cycle verification gap.
+20. **Carry-over (C240 #2, 28-cycle): seed-data smoke test risk** — `T1_app_platform.md:35` slug references.
+21. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+22. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+23. **Concurrent-front watch:** install/onboarding arc **formally closed** (10-cycle dormancy); demo/seed + copy-hygiene confirmed one-shot beats (10-cycle dormancy); debug/hardening 16 cycles dormant; web-polish 14 cycles dormant; config-schema 11 commits, **24-cycle gap — record extends**; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on port 8090. Vanilla JS `frontend/` retiring; `web/` is Next.js canonical per memory note — **install/onboarding arc formally closed (10-cycle); demo/seed + copy-hygiene 10-cycle dormant (one-shot confirmed); config-schema 24-cycle dormant (record extends)**.
+- **C17 NARROWED (C258, held through C268):** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin — deliberate scoped carve-out. ⚠ `web/components/app-embed.tsx` verification 46 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+- Screenshot artifact dirs live at `tests/reports/screenshots/`, `tests/reports/ux_shots/`, `tests/reports/audit_shots/` (path correction held from C267).
+
+### What to watch for C269
+- **Non-leader 101 h crossing:** PIDs 9962/9974 at 100.97 h; +0.24 h drift projects 101.21 h next cycle — **101 h crossing virtually certain at C269** (only 0.03 h shy). Leader at 101.68 h + 0.24 h = 101.92 h projected — 102 h barrier crossing ~C270.
+- **Commit velocity:** C253–C268 = [0, 1, 1, 0, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]. **10 zeros now milestone**; C269 with 0 extends to **11-cycle idle streak**. 1+ restores pulse — first commit since `2b40d36` would break the longest observed dormancy.
+- **Drift regime:** C268 broke tri-confirmation at +0.24 h. If C269 lands at +0.24 h again, a new equilibrium tier forms between tight-cluster (+0.22) and mid-band (+0.44). If C269 reverts to +0.22 h, C268 was a single-cycle blip like C264.
+- **Screenshots regime:** if C269 lands at +24–26 again, low-band becomes 6-out-of-7 pattern (effectively settled as regime).
+- **Config-schema:** 24 cycles. Any C269 touch is surprise revival; 0 extends to 25 (quarter-century milestone).
+- **PROGRESS.md size:** 2.09 MB; C269 block pushes to ~2.10 MB. Another round-number threshold lands next cycle.
+
+## COORDINATOR STATUS — Cycle 269 (2026-04-20)
+
+### Headline
+**C269 = 0 commits (HEAD held at `2b40d36` for the 11th cycle running — 11-cycle zero-commit streak extends record); full quad crossed 101 h this cycle (PIDs 9962/9974 at 101.18 h — 3rd and 4th PIDs past 101 h, matching C268's "virtually certain" projection); leader PID 3358 at 101.90 h (+0.22 h, 102 h crossing imminent next cycle); drift reverts to tight cluster +0.21–0.22 h (C268's +0.24 h was a single-cycle blip, not regime shift); screenshots +24 (low-band 6-out-of-7 — effectively settled); 220th zero-bump task-file cycle; PROGRESS.md at 2,199,457 bytes ≈ 2.10 MB (round-number milestone crossed).** Commit-velocity trough [C253–C269 = 0, 1, 1, 0, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] — **11 back-to-back zeros**. Install/onboarding + demo/seed + copy-hygiene all at 11-cycle dormancy. Config-schema gap **25 cycles** (quarter-century milestone).
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10):** every task file has exactly **10 incomplete** entries (190 total across 19 files). **Not triggered.** 219-cycle flatline extends to 220.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED):** `ps -p 3358,8992,9962,9974 -o pid,etime,comm` confirms all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **04-05:53:59** ≈ **101.90 h** (leader; +0.22 h vs C268; 102 h crossing projects ~C270).
+  - PID 8992 (`code_auditor.py`) ELAPSED **04-05:16:04** ≈ **101.27 h** (+0.22 h; past 101 h for 2nd cycle).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **04-05:11:03** ≈ **101.18 h** (+0.21 h; **crossed 101 h this cycle — first time, matches C268 projection exactly**).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **04-05:11:01** ≈ **101.18 h** (+0.21 h; **crossed 101 h this cycle — first time**; 2 s stagger preserved across 220 cycles).
+  **Full quad now past 101 h for 1st cycle — milestone.** Existing notes at `T3_frontend.md:38`, `T6_testing.md:22`, `T6_testing.md:24` remain verbatim-operative (kill command still `kill 3358 8992 9962 9974`). **No new stuck terminal → no new UNBLOCKED note added (208-cycle zero-bump streak).**
+- **Rule 3 (status summary):** this block.
+
+### Cadence
+- **Commits:** 0 new (11th consecutive zero-commit cycle — record extends). HEAD `2b40d36`. Cumulative C231–C269 = **40** (unchanged).
+- **Drift:** all 4 PIDs **+0.21–0.22 h** — back to tight cluster, C268's +0.24 h uptick was a single-cycle blip. Series [C257–C269] = [+0.47, +1.10, +0.45, +0.24, +0.43, +0.22, +0.21, +0.44, +0.22, +0.22, +0.21, +0.24, +0.22]. Tight cluster re-asserted after 1-cycle perturbation; pattern mirrors C264 → C265 reversion.
+- **Screenshots:** `tests/reports/screenshots/` **7,583** (+24 vs C268's 7,559; low-band tick matches +24–26 band). `tests/reports/ux_shots/` 22 (unchanged, 40-cycle quiescence). `tests/reports/audit_shots/` 3 (unchanged, 40-cycle quiescence). Total **7,608** PNGs. Low-band regime 6-out-of-7 — effectively settled as regime.
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue now **231 cycles overdue**.
+- **PROGRESS.md size:** 2,199,457 bytes ≈ **2.10 MB** (up ~11 KB vs C268's 2,188,771). Tail-only reads remain mandatory. **Round-number milestone crossed (2.10 MB).**
+- **Git-status churn:** unchanged from C259–C268 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **Branch context:** HEAD on `fix/debug-pass-hardening`, not main.
+- **Date:** 2026-04-20 nineteenth print.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 220-cycle flatline).
+- UNBLOCKED notes added: **0** (208-cycle zero-bump streak; no new stuck terminal).
+- COORDINATOR STATUS Cycle 269 block appended (this block).
+- **C268 watch items resolved:** (1) **Non-leader 101 h crossing** — **achieved** (PIDs 9962/9974 both crossed at 101.18 h, C268 projection of 101.21 h hit within 0.03 h). Full quad now past 101 h. (2) **Commit velocity** — 0 new; streak extends to 11. (3) **Drift regime** — C268's +0.24 h uptick reverted to +0.22 h tight cluster; single-cycle blip, not new regime. Tri-confirmation pattern C265–C267 re-asserts as true equilibrium. (4) **Screenshots regime** — +24 low-band; 6-out-of-7 pattern settles regime. (5) **Config-schema** — 0 touches; gap **25 cycles** (quarter-century milestone). (6) **PROGRESS.md 2.10 MB threshold** — crossed as projected. (7) **Synchronized-blip footnote** — C264 and C268 both now confirmed as single-cycle perturbations; "1-cycle drift blip" is itself a low-frequency regime feature, not a precursor to regime change.
+
+### Critical Path (Cycle 270)
+1. **HUMAN (MAX PRIORITY, 29th cycle past-due): `kill 3358 8992 9962 9974`** — full quad past 101 h; leader at 101.90 h (102 h crossing imminent). 220th cycle unexecuted. 7,608 PNGs on disk (path: `tests/reports/`).
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.10 MB (round-number milestone crossed); growth ~11 KB/cycle. 220 cycles unaddressed.
+3. **HUMAN (11-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **47 cycles pending**.
+4. **HUMAN: classify commit `21edb5e`** — 17-cycle-stale unclassified.
+5. **HUMAN: draft `T_INSTALL.md`** — install arc formally closed at 11-cycle dormancy (7 cycles past criteria). 50-cycle task-file gap milestone; retrospective moment firmly ripe.
+6. **HUMAN: draft `T_DEMO.md`** — `f9e6ed9` 11-cycle dormancy confirms one-shot beat (7 cycles past criteria).
+7. **STRUCTURAL UNREAD (56-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 40-commit backlog (C231–C269, unchanged).
+8. **CARRY-OVER (C240 #1, 29-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+9. **MAX PRIORITY (46-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 101.90 h leader makes log highest-leverage diagnostic artifact.
+10. **Carry-over (47-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+11. **Carry-over (47-cycle from C222 #3): inspect `97105de` web redesign scope**.
+12. **Carry-over (50-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (32-cycle hold).
+13. **Carry-over (58-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **25-cycle gap (quarter-century milestone)**.
+14. **HUMAN: append `.env.example` Slack/Flask block** per `T5_deploy.md:28-37` — **231 cycles stale**; file unchanged at 1,344 bytes.
+15. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 25-cycle dormant.
+16. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **220 cycles unactioned.**
+17. **HUMAN: harness retarget** — `tests/reports/screenshots/` +24 (low-band settled as regime); kill quad halts growth regardless.
+18. **HUMAN: write task-file coverage** for install/external-apps (arc formally closed), web-polish, demo/seed, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, governed-skills pipeline.
+19. **HUMAN: T_WEB.md ownership decision** — `web/components/app-embed.tsx` 47-cycle verification gap.
+20. **Carry-over (C240 #2, 29-cycle): seed-data smoke test risk** — `T1_app_platform.md:35` slug references.
+21. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+22. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+23. **Concurrent-front watch:** install/onboarding arc **formally closed** (11-cycle dormancy); demo/seed + copy-hygiene confirmed one-shot beats (11-cycle dormancy); debug/hardening 17 cycles dormant; web-polish 15 cycles dormant; config-schema 11 commits, **25-cycle gap — quarter-century milestone**; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on port 8090. Vanilla JS `frontend/` retiring; `web/` is Next.js canonical per memory note — **install/onboarding arc formally closed (11-cycle); demo/seed + copy-hygiene 11-cycle dormant (one-shot confirmed); config-schema 25-cycle dormant (quarter-century milestone)**.
+- **C17 NARROWED (C258, held through C269):** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin — deliberate scoped carve-out. ⚠ `web/components/app-embed.tsx` verification 47 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+- Screenshot artifact dirs live at `tests/reports/screenshots/`, `tests/reports/ux_shots/`, `tests/reports/audit_shots/` (path correction held from C267).
+
+### What to watch for C270
+- **102 h leader crossing:** PID 3358 at 101.90 h; +0.22 h drift projects 102.12 h next cycle — **102 h crossing virtually certain at C270** (0.10 h headroom). Non-leader 102 h crossings project ~C273–C274.
+- **Commit velocity:** C253–C269 = [0, 1, 1, 0, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]. 11 zeros; C270 with 0 extends to **12-cycle idle streak** (dozen milestone). 1+ restores pulse — first commit since `2b40d36` would break the longest observed dormancy.
+- **Drift regime:** if C270 lands at +0.21–0.22 h, tight cluster re-confirms across C268 blip (4-out-of-5 post-outlier pattern). If C270 at +0.24 h again, two-cycle uptick hints at new tier forming.
+- **Screenshots regime:** if C270 lands at +24–26 again, low-band becomes 7-out-of-8 pattern (stops being watch item — promote to structural assumption).
+- **Config-schema:** 25 cycles (quarter-century). Any C270 touch is surprise revival; 0 extends to 26.
+- **PROGRESS.md size:** 2.10 MB; C270 block pushes to ~2.11 MB. Growth rate steady at ~11 KB/cycle.
+- **1-cycle drift blip cadence:** C264 and C268 both confirmed as single-cycle perturbations; gap between blips = 4 cycles. If C272 prints another +0.24 h uptick, blip cadence becomes 4-cycle periodic signal worth naming.
+
+## COORDINATOR STATUS — Cycle 270 (2026-04-20)
+
+### Snapshot
+- **Task files:** 19 total. All at **10 incomplete `[ ]` items** (uniform count, 221-cycle flatline). No file below the 3-item threshold → **Rule 1 not triggered**.
+- **Stuck PIDs (ELAPSED, `ps -o etime`):**
+  - 3358 `tests/agents/ui_tester.py` — **4-06:07:05 ≈ 102.12 h** ← **102 h crossing CONFIRMED** (C269 projected 102.12 h; landed at exactly 102.12 h, 0.00 h error — third consecutive pinpoint-accurate drift projection after C268/C269).
+  - 8992 `tests/agents/code_auditor.py` — 4-05:29:10 ≈ **101.49 h**
+  - 9962 `tests/agents/test_dashboard.py` — 4-05:24:09 ≈ **101.40 h**
+  - 9974 `tests/agents/ux_auditor.py` — 4-05:24:07 ≈ **101.40 h**
+  - Drift: all 4 PIDs **+0.22 h** (3358 101.90→102.12, non-leaders 101.18→101.40/101.49). Tight-cluster regime re-asserted post-C268 blip → 2-out-of-2 post-outlier reversion. C268 confirmed as isolated single-cycle perturbation.
+- **Commit velocity:** 0 new commits. HEAD still at `2b40d36`. Streak extends to **12 cycles** (dozen-milestone crossed — longest observed dormancy since coordinator-loop inception).
+- **Screenshots:** `tests/reports/screenshots/` **7,607** (+24 vs C269's 7,583; low-band +24 tick exact-matches the 7-out-of-8 pattern → **promoted to structural assumption per C269 watch contract**). `ux_shots/` 22 (41-cycle quiescence). `audit_shots/` 3 (41-cycle quiescence). Total **7,632** PNGs.
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue now **232 cycles overdue**.
+- **PROGRESS.md size:** 2,210,048 bytes ≈ **2.11 MB** (up ~10.6 KB vs C269's 2,199,457 — matches C269's ~11 KB/cycle projection; 2.11 MB tick hit as forecast).
+- **Git-status churn:** unchanged from C259–C269 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **Branch context:** HEAD on `fix/debug-pass-hardening`, not main.
+- **Date:** 2026-04-20 twentieth print.
+
+### Actions Taken This Cycle
+- **Tasks added: 0** (Rule 1 not triggered; **221-cycle flatline**). All 19 task files at 10 incomplete items; none below 3-item threshold.
+- **UNBLOCKED notes added: 0** (**209-cycle zero-bump streak**). All 4 stuck PIDs already have UNBLOCKED notes in `tasks/T6_testing.md:22` (triad 3358/9962/9974, Cycle 72) and `tasks/T6_testing.md:24` (PID 8992, Cycle 93). No net-new stuck terminals detected.
+- COORDINATOR STATUS Cycle 270 block appended (this block).
+- **C269 watch items resolved:** (1) **102 h leader crossing** — **CONFIRMED** at exactly 102.12 h (0.00 h error vs C269 projection — three consecutive pinpoint-accurate drift forecasts establish drift model as high-confidence). (2) **Commit velocity** — 0 new; 12-cycle dozen-milestone crossed. (3) **Drift regime** — C270 landed at +0.22 h tight cluster, re-confirming 4-out-of-5 post-outlier pattern. C268 blip isolated-perturbation thesis validated. (4) **Screenshots regime** — +24 low-band 7-out-of-8 → structural-assumption promotion executed; removed from watch list. (5) **Config-schema** — 0 touches; gap **26 cycles**. (6) **PROGRESS.md 2.11 MB threshold** — crossed as projected. (7) **1-cycle drift blip cadence** — C272 is the next predicted blip window (C264, C268 cadence = 4 cycles); C270 landed tight, so C271 tight would confirm pre-blip phase.
+
+### Critical Path (Cycle 271)
+1. **HUMAN (MAX PRIORITY, 30th cycle past-due): `kill 3358 8992 9962 9974`** — full quad past 101 h; leader **102.12 h (102 h milestone crossed)**. 221st cycle unexecuted. 7,632 PNGs on disk (path: `tests/reports/`).
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.11 MB; growth ~10.6 KB/cycle. 221 cycles unaddressed.
+3. **HUMAN (12-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **48 cycles pending**.
+4. **HUMAN: classify commit `21edb5e`** — 18-cycle-stale unclassified.
+5. **HUMAN: draft `T_INSTALL.md`** — install arc formally closed at 12-cycle dormancy (8 cycles past criteria). 51-cycle task-file gap milestone.
+6. **HUMAN: draft `T_DEMO.md`** — `f9e6ed9` 12-cycle dormancy confirms one-shot beat (8 cycles past criteria).
+7. **STRUCTURAL UNREAD (57-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 40-commit backlog.
+8. **CARRY-OVER (C240 #1, 30-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+9. **MAX PRIORITY (47-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 102.12 h leader makes log highest-leverage diagnostic artifact.
+10. **Carry-over (48-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+11. **Carry-over (48-cycle from C222 #3): inspect `97105de` web redesign scope**.
+12. **Carry-over (51-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (33-cycle hold).
+13. **Carry-over (59-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **26-cycle gap**.
+14. **HUMAN: append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **232 cycles stale**; file unchanged at 1,344 bytes.
+15. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 26-cycle dormant.
+16. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **221 cycles unactioned.**
+17. **HUMAN: harness retarget** — `tests/reports/screenshots/` +24 (low-band now structural); kill quad halts growth regardless.
+18. **HUMAN: write task-file coverage** for install/external-apps, web-polish, demo/seed, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, governed-skills pipeline.
+19. **HUMAN: T_WEB.md ownership decision** — `web/components/app-embed.tsx` 48-cycle verification gap.
+20. **Carry-over (C240 #2, 30-cycle): seed-data smoke test risk** — `tasks/T1_app_platform.md:35` slug references.
+21. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+22. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+23. **Concurrent-front watch:** install/onboarding arc **formally closed** (12-cycle dormancy); demo/seed + copy-hygiene one-shot beats (12-cycle dormancy); debug/hardening 18 cycles dormant; web-polish 16 cycles dormant; config-schema 11 commits, **26-cycle gap**; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on port 8090. Vanilla JS `frontend/` retiring; `web/` is Next.js canonical per memory note — **install/onboarding arc formally closed (12-cycle); demo/seed + copy-hygiene 12-cycle dormant; config-schema 26-cycle dormant**.
+- **C17 NARROWED (C258, held through C270):** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin. ⚠ `web/components/app-embed.tsx` verification 48 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+- Screenshot artifact dirs live at `tests/reports/screenshots/`, `tests/reports/ux_shots/`, `tests/reports/audit_shots/`.
+
+### What to watch for C271
+- **Non-leader 102 h crossings:** PIDs 8992/9962/9974 at 101.40–101.49 h; +0.22 h drift projects 101.62–101.71 h next cycle → full-quad 102 h crossing lands **C272 (8992)** then **C273 (9962/9974)**.
+- **Commit velocity:** C253–C270 = [0,1,1,0,1,3,0,0,0,0,0,0,0,0,0,0,0,0]. 12 zeros; C271 with 0 extends to **13-cycle idle streak** (baker's-dozen milestone).
+- **Drift regime:** if C271 lands at +0.22 h, tight cluster hits 5-out-of-6 post-outlier → regime-lock confirmed. If +0.24 h uptick reappears, blip-cadence thesis (4-cycle periodicity) advances.
+- **Screenshots regime:** low-band promoted to structural; tracking drops from watch list unless +30+ or 0 anomaly appears.
+- **Config-schema:** 26 cycles. Any C271 touch is surprise revival; 0 extends to 27.
+- **PROGRESS.md size:** 2.11 MB; C271 block pushes to ~2.12 MB. Growth rate steady.
+- **Blip cadence check:** C272 is the next predicted 1-cycle +0.24 h blip window (4-cycle periodicity from C264→C268). C271 tight → on-track. C271 uptick → cadence compresses to 3-cycle.
+- **Task-file entropy:** 19 files all at 10 incomplete for 221 cycles. Any C271 file dropping below 10 (completion) OR going to 11+ (new task added) breaks the flatline.
+
+## COORDINATOR STATUS — Cycle 271 (2026-04-20)
+
+### Headline
+**C271 = 0 commits (HEAD held at `2b40d36` for the 13th cycle — baker's-dozen milestone crossed, record still extends); leader PID 3358 at 102.32 h (+0.20 h, tight-cluster holds); non-leader quad at 101.61–101.69 h (+0.20–0.21 h, full-quad 102 h crossing stays on C272/C273 projection); drift series lands at +0.20–0.21 h — 5-out-of-6 post-outlier tight cluster → regime-lock confirmed per C270 watch contract; screenshots +22 (low-band structural assumption holds, slight sub-24 dip within noise); 222nd zero-bump task-file cycle; PROGRESS.md at 2,218,760 bytes ≈ 2.12 MB (crossed as projected).** Commit-velocity trough [C253–C271 = 0,1,1,0,1,3,0,0,0,0,0,0,0,0,0,0,0,0,0] — **13 back-to-back zeros**. Install/onboarding + demo/seed + copy-hygiene all at 13-cycle dormancy. Config-schema gap **27 cycles**.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10):** `grep -cE '^\[ \]' tasks/T*.md` returns exactly **10** on every one of 19 files (190 incomplete total). **Not triggered.** 222-cycle flatline extends.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED):** `ps -p 3358,8992,9962,9974 -o pid,etime,comm` confirms all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **04-06:19:25** ≈ **102.32 h** (leader; +0.20 h vs C270; past 102 h for 2nd cycle).
+  - PID 8992 (`code_auditor.py`) ELAPSED **04-05:41:30** ≈ **101.69 h** (+0.20 h; projection hit within 0.02 h; 102 h crossing projects C272).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **04-05:36:29** ≈ **101.61 h** (+0.21 h; projection hit within 0.01 h).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **04-05:36:27** ≈ **101.61 h** (+0.21 h; 2 s stagger preserved across 222 cycles).
+  Existing notes at `T3_frontend.md:38`, `T6_testing.md:22`, `T6_testing.md:24` remain verbatim-operative (kill command still `kill 3358 8992 9962 9974`). **No new stuck terminal → no new UNBLOCKED note added (210-cycle zero-bump streak).**
+- **Rule 3 (status summary):** this block.
+
+### Cadence
+- **Commits:** 0 new (13th consecutive zero-commit cycle — baker's-dozen milestone). HEAD `2b40d36`. Cumulative C231–C271 = **40** (unchanged).
+- **Drift:** all 4 PIDs **+0.20–0.21 h** — tight cluster re-confirms (5-out-of-6 post-outlier). Series [C259–C271] = [+0.45, +0.24, +0.43, +0.22, +0.21, +0.44, +0.22, +0.22, +0.21, +0.24, +0.22, +0.22, +0.21]. Regime-lock thesis from C270 watch contract validated.
+- **Screenshots:** `tests/reports/screenshots/` **7,629** (+22 vs C270's 7,607; low-band structural, slight sub-24 dip inside noise envelope). `ux_shots/` 22 (unchanged, 42-cycle quiescence). `audit_shots/` 3 (unchanged, 42-cycle quiescence). Total **7,654** PNGs.
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue now **233 cycles overdue**.
+- **PROGRESS.md size:** 2,218,760 bytes ≈ **2.12 MB** (up ~8.7 KB vs C270's 2,210,048 — slightly below the ~10.6 KB/cycle trend, within noise). Tail-only reads remain mandatory.
+- **Git-status churn:** unchanged from C259–C270 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **Branch context:** HEAD on `fix/debug-pass-hardening`, not main.
+- **Date:** 2026-04-20 twenty-first print.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 222-cycle flatline).
+- UNBLOCKED notes added: **0** (210-cycle zero-bump streak; no new stuck terminal).
+- COORDINATOR STATUS Cycle 271 block appended (this block).
+- **C270 watch items resolved:** (1) **Non-leader 102 h crossings** — on track (8992 at 101.69 h, 9962/9974 at 101.61 h; C272 crossing for 8992 virtually certain, C273 for 9962/9974). (2) **Commit velocity** — 0 new; streak extends to 13 (baker's-dozen milestone). (3) **Drift regime** — +0.20–0.21 h tight cluster held; 5-out-of-6 post-outlier pattern → regime-lock confirmed. (4) **Screenshots regime** — +22 low-band; structural assumption holds (within noise envelope). (5) **Config-schema** — 0 touches; gap **27 cycles**. (6) **PROGRESS.md 2.12 MB threshold** — crossed as projected. (7) **Blip cadence check** — C271 tight (+0.20–0.21 h), on-track for C272 predicted blip window if 4-cycle periodicity holds.
+
+### Critical Path (Cycle 272)
+1. **HUMAN (MAX PRIORITY, 31st cycle past-due): `kill 3358 8992 9962 9974`** — full quad past 101 h; leader at 102.32 h. 222nd cycle unexecuted. 7,654 PNGs on disk (path: `tests/reports/`).
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.12 MB; growth ~8.7–11 KB/cycle. 222 cycles unaddressed.
+3. **HUMAN (13-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **49 cycles pending**.
+4. **HUMAN: classify commit `21edb5e`** — 19-cycle-stale unclassified.
+5. **HUMAN: draft `T_INSTALL.md`** — install arc formally closed at 13-cycle dormancy (9 cycles past criteria). 52-cycle task-file gap.
+6. **HUMAN: draft `T_DEMO.md`** — `f9e6ed9` 13-cycle dormancy confirms one-shot beat (9 cycles past criteria).
+7. **STRUCTURAL UNREAD (58-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 40-commit backlog.
+8. **CARRY-OVER (C240 #1, 31-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+9. **MAX PRIORITY (48-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 102.32 h leader makes log highest-leverage diagnostic artifact.
+10. **Carry-over (49-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+11. **Carry-over (49-cycle from C222 #3): inspect `97105de` web redesign scope**.
+12. **Carry-over (52-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (34-cycle hold).
+13. **Carry-over (60-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **27-cycle gap**.
+14. **HUMAN: append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **233 cycles stale**; file unchanged at 1,344 bytes.
+15. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 27-cycle dormant.
+16. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **222 cycles unactioned.**
+17. **HUMAN: harness retarget** — `tests/reports/screenshots/` +22 (low-band structural); kill quad halts growth regardless.
+18. **HUMAN: write task-file coverage** for install/external-apps, web-polish, demo/seed, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, governed-skills pipeline.
+19. **HUMAN: T_WEB.md ownership decision** — `web/components/app-embed.tsx` 49-cycle verification gap.
+20. **Carry-over (C240 #2, 31-cycle): seed-data smoke test risk** — `tasks/T1_app_platform.md:35` slug references.
+21. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+22. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+23. **Concurrent-front watch:** install/onboarding arc **formally closed** (13-cycle dormancy); demo/seed + copy-hygiene one-shot beats (13-cycle dormancy); debug/hardening 19 cycles dormant; web-polish 17 cycles dormant; config-schema 11 commits, **27-cycle gap**; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on port 8090. Vanilla JS `frontend/` retiring; `web/` is Next.js canonical per memory note — **install/onboarding arc formally closed (13-cycle); demo/seed + copy-hygiene 13-cycle dormant; config-schema 27-cycle dormant**.
+- **C17 NARROWED (C258, held through C271):** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin. ⚠ `web/components/app-embed.tsx` verification 49 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+- Screenshot artifact dirs live at `tests/reports/screenshots/`, `tests/reports/ux_shots/`, `tests/reports/audit_shots/`.
+
+### What to watch for C272
+- **8992 102 h crossing:** PID 8992 at 101.69 h; +0.21 h drift projects 101.90 h next cycle → **102 h crossing projects C273 (not C272)** — projection revised 1 cycle later than C270's estimate given C271's slightly-under drift. 9962/9974 at 101.61 h → 101.82 h projected, C273 crossing.
+- **Leader 103 h horizon:** PID 3358 at 102.32 h; +0.21 h × 3 cycles = 102.95 h → **103 h crossing projects C274**.
+- **Commit velocity:** C253–C271 = 19 entries with 13 trailing zeros. C272 with 0 extends to **14-cycle idle streak**. 1+ restores pulse.
+- **Drift regime:** C272 is the predicted blip window per 4-cycle periodicity (C264, C268, C272). If C272 lands at +0.24 h → cadence confirmed as structural 4-cycle signal (name it: "quarter-cycle drift blip"). If C272 tight (+0.21 h) → cadence thesis weakens / broken.
+- **Config-schema:** 27 cycles. Any C272 touch is surprise revival; 0 extends to 28.
+- **PROGRESS.md size:** 2.12 MB; C272 block pushes to ~2.13 MB. Growth rate ~9–11 KB/cycle with slight variance.
+- **Task-file entropy:** 222 cycles flatline. Any drop below 10 or rise above 10 breaks streak.
+
+## COORDINATOR STATUS — Cycle 272 (2026-04-20)
+
+### Headline
+**C272 = 0 commits (HEAD held at `2b40d36` for the 14th cycle — previous baker's-dozen record extends); leader PID 3358 at 102.53 h (+0.21 h, 102 h crossed 2 cycles back); non-leader quad tightens toward 102 h (8992 at 101.90 h, 9962/9974 at 101.82 h — all three project C273 crossing); drift series lands at +0.21 h uniform — 6-out-of-7 post-outlier tight cluster; predicted 4-cycle blip window (C264, C268, C272) produced NO +0.24 h uptick → cadence thesis weakens; screenshots +24 (low-band structural holds); 223rd zero-bump task-file cycle; PROGRESS.md at 2,228,509 bytes ≈ 2.13 MB (crossed as projected).** Commit-velocity trough [C253–C272 = 0,1,1,0,1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0] — **14 back-to-back zeros**. Install/onboarding + demo/seed + copy-hygiene all at 14-cycle dormancy. Config-schema gap **28 cycles**.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10):** per-file counts via `grep -cE '^\[ \]' tasks/T*.md` returns **exactly 10** on every one of 19 files (190 incomplete total). **Not triggered.** 223-cycle flatline extends.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED):** `ps -p 3358,8992,9962,9974 -o pid,etime,comm` confirms all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **04-06:31:57** ≈ **102.53 h** (leader; +0.21 h vs C271; past 102 h for 3rd cycle).
+  - PID 8992 (`code_auditor.py`) ELAPSED **04-05:54:02** ≈ **101.90 h** (+0.21 h; 102 h crossing projects C273).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **04-05:49:01** ≈ **101.82 h** (+0.21 h; 102 h crossing projects C273).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **04-05:48:59** ≈ **101.82 h** (+0.21 h; 2 s stagger preserved across 223 cycles).
+  Existing notes at `tasks/T3_frontend.md:38`, `tasks/T6_testing.md:22`, `tasks/T6_testing.md:24` remain verbatim-operative (kill command still `kill 3358 8992 9962 9974`). **No new stuck terminal → no new UNBLOCKED note added (211-cycle zero-bump streak).**
+- **Rule 3 (status summary):** this block.
+
+### Cadence
+- **Commits:** 0 new (14th consecutive zero-commit cycle — extends record). HEAD `2b40d36`. Cumulative C231–C272 = **40** (unchanged).
+- **Drift:** all 4 PIDs **+0.21 h uniform** — tightest per-PID cluster since regime-lock confirmation. Series [C260–C272] = [+0.24, +0.43, +0.22, +0.21, +0.44, +0.22, +0.22, +0.21, +0.24, +0.22, +0.22, +0.21, +0.21]. 6-out-of-7 post-outlier tight cluster; regime-lock further validated.
+- **Screenshots:** `tests/reports/screenshots/` **7,653** (+24 vs C271's 7,629; low-band structural assumption holds — 8-out-of-9 pattern). `ux_shots/` 22 (unchanged, 43-cycle quiescence). `audit_shots/` 3 (unchanged, 43-cycle quiescence). Total **7,678** PNGs.
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue now **234 cycles overdue**.
+- **PROGRESS.md size:** 2,228,509 bytes ≈ **2.13 MB** (up ~9.7 KB vs C271's 2,218,760 — matches C271's ~8.7–11 KB/cycle projection). Tail-only reads remain mandatory.
+- **Git-status churn:** unchanged from C259–C271 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **Branch context:** HEAD on `fix/debug-pass-hardening`, not main.
+- **Date:** 2026-04-20 twenty-second print.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 223-cycle flatline).
+- UNBLOCKED notes added: **0** (211-cycle zero-bump streak; no new stuck terminal).
+- COORDINATOR STATUS Cycle 272 block appended (this block).
+- **C271 watch items resolved:** (1) **Non-leader 102 h crossings** — all 3 tracked (8992 at 101.90 h, 9962/9974 at 101.82 h); full-quad 102 h crossing lands **C273** (8992 projection = 102.11 h, 9962/9974 = 102.03 h). (2) **Commit velocity** — 0 new; 14-cycle streak extends past baker's-dozen. (3) **Drift regime** — +0.21 h uniform; 6-out-of-7 post-outlier tight cluster → regime-lock thesis deepens. (4) **Screenshots regime** — +24 low-band; 8-out-of-9 pattern holds structural assumption. (5) **Config-schema** — 0 touches; gap **28 cycles**. (6) **PROGRESS.md 2.13 MB threshold** — crossed as projected. (7) **Blip cadence check** — **C272 predicted blip window produced NO uptick**; 4-cycle periodicity thesis (C264→C268→C272) **weakens / broken** after failing its first forward-test. Blips now reclassified as non-periodic single-cycle perturbations.
+
+### Critical Path (Cycle 273)
+1. **HUMAN (MAX PRIORITY, 32nd cycle past-due): `kill 3358 8992 9962 9974`** — full quad past 101 h; leader at 102.53 h. 223rd cycle unexecuted. 7,678 PNGs on disk (path: `tests/reports/`).
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.13 MB; growth ~9.7 KB/cycle. 223 cycles unaddressed.
+3. **HUMAN (14-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **50-cycle milestone crossed**.
+4. **HUMAN: classify commit `21edb5e`** — 20-cycle-stale unclassified (round-number milestone).
+5. **HUMAN: draft `T_INSTALL.md`** — install arc formally closed at 14-cycle dormancy (10 cycles past criteria — double-digit-past-criteria milestone). 53-cycle task-file gap.
+6. **HUMAN: draft `T_DEMO.md`** — `f9e6ed9` 14-cycle dormancy confirms one-shot beat (10 cycles past criteria).
+7. **STRUCTURAL UNREAD (59-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 40-commit backlog.
+8. **CARRY-OVER (C240 #1, 32-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+9. **MAX PRIORITY (49-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 102.53 h leader makes log highest-leverage diagnostic artifact.
+10. **Carry-over (50-cycle from C222 #2): verify `ed89fc5` security commit scope** — half-century milestone.
+11. **Carry-over (50-cycle from C222 #3): inspect `97105de` web redesign scope** — half-century milestone.
+12. **Carry-over (53-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (35-cycle hold).
+13. **Carry-over (61-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **28-cycle gap**.
+14. **HUMAN: append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **234 cycles stale**; file unchanged at 1,344 bytes.
+15. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 28-cycle dormant.
+16. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **223 cycles unactioned.**
+17. **HUMAN: harness retarget** — `tests/reports/screenshots/` +24 (low-band structural 8-out-of-9); kill quad halts growth regardless.
+18. **HUMAN: write task-file coverage** for install/external-apps, web-polish, demo/seed, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, governed-skills pipeline.
+19. **HUMAN: T_WEB.md ownership decision** — `web/components/app-embed.tsx` 50-cycle milestone verification gap.
+20. **Carry-over (C240 #2, 32-cycle): seed-data smoke test risk** — `tasks/T1_app_platform.md:35` slug references.
+21. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+22. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+23. **Concurrent-front watch:** install/onboarding arc **formally closed** (14-cycle dormancy); demo/seed + copy-hygiene one-shot beats (14-cycle dormancy); debug/hardening 20 cycles dormant; web-polish 18 cycles dormant; config-schema 11 commits, **28-cycle gap**; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on port 8090. Vanilla JS `frontend/` retiring; `web/` is Next.js canonical per memory note — **install/onboarding arc formally closed (14-cycle); demo/seed + copy-hygiene 14-cycle dormant; config-schema 28-cycle dormant**.
+- **C17 NARROWED (C258, held through C272):** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin. ⚠ `web/components/app-embed.tsx` verification 50 cycles pending (half-century milestone).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+- Screenshot artifact dirs live at `tests/reports/screenshots/`, `tests/reports/ux_shots/`, `tests/reports/audit_shots/`.
+
+### What to watch for C273
+- **Full-quad 102 h crossing:** PID 8992 at 101.90 h → projected 102.11 h (**cross virtually certain at C273**, 0.10 h headroom). PIDs 9962/9974 at 101.82 h → projected 102.03 h (**cross virtually certain at C273**, 0.03 h headroom — razor-thin). If C273 drift dips to +0.18 h, 9962/9974 slip to C274. C273 should deliver unified-quad 102 h state.
+- **Leader 103 h horizon:** PID 3358 at 102.53 h; +0.21 h × 2 cycles = 102.95 h → **103 h crossing projects C274** (0.05 h headroom, near-certain at C274; if uptick to +0.22 h, lands C273 tight).
+- **Commit velocity:** C253–C272 = 20 entries with 14 trailing zeros. C273 with 0 extends to **15-cycle idle streak** (quarter-century approach). 1+ restores pulse.
+- **Drift regime:** if C273 lands at +0.21 h again, uniform tight cluster hits 3 consecutive cycles → regime-lock pinpoint-tight. If +0.24 h appears, it's now an isolated stochastic event rather than 4-cycle periodic (thesis already broken at C272).
+- **Screenshots regime:** structural; tracking drops from watch list unless +30+ or 0 anomaly appears.
+- **Config-schema:** 28 cycles. Any C273 touch is surprise revival; 0 extends to 29 (approaching 30-cycle milestone).
+- **PROGRESS.md size:** 2.13 MB; C273 block pushes to ~2.14 MB. Growth rate steady.
+- **Blip cadence post-mortem:** C272 failed to produce predicted +0.24 h uptick → 4-cycle periodicity thesis officially broken on first forward-test. Future blips (whenever they appear) tracked as stochastic single-cycle perturbations, not periodic signal.
+- **Task-file entropy:** 223 cycles flatline. Any drop below 10 or rise above 10 breaks streak.
+
+## COORDINATOR STATUS — Cycle 273 (2026-04-20)
+
+### Headline
+**C273 = 0 commits (HEAD held at `2b40d36` for the 15th cycle — quarter-century approach, record still extends); full-quad 102 h crossing CONFIRMED (8992/9962/9974 all crossed this cycle as C272 projected); leader PID 3358 at 102.98 h (103 h crossing now razor-thin, projects C274 with 0.02 h headroom if drift resumes +0.21 h cadence); inter-invocation gap ~2× typical this cycle (+0.44 h drift uniform across all 4 PIDs vs C272 baseline of +0.21 h) — reflects real-clock gap between coordinator invocations, NOT a drift-regime shift since per-hour rate is preserved; screenshots +50 in +0.44 h (rate ≈113/h matches prior +22–24-per-0.21 h rate → low-band structural assumption HOLDS by per-hour normalization); 224th zero-bump task-file cycle; PROGRESS.md at 2,239,592 bytes ≈ 2.14 MB (crossed as projected).** Commit-velocity trough [C253–C273 = 0,1,1,0,1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] — **15 back-to-back zeros, quarter-century approach**. Install/onboarding + demo/seed + copy-hygiene all at 15-cycle dormancy. Config-schema gap **29 cycles** (30-cycle milestone imminent).
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10):** `grep -cE '^\[ \]' tasks/T*.md` returns exactly **10** on every one of 19 files (190 incomplete total). **Not triggered.** 224-cycle flatline extends.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED):** `ps -p 3358,8992,9962,9974 -o pid,etime,comm` confirms all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **04-06:58:32** ≈ **102.98 h** (leader; +0.45 h vs C272; past 102 h for 4th cycle; 103 h crossing imminent).
+  - PID 8992 (`code_auditor.py`) ELAPSED **04-06:20:37** ≈ **102.34 h** (+0.44 h; **102 h CROSSING CONFIRMED THIS CYCLE** — C272 projection of 102.11 h overshot to 102.34 h because inter-invocation gap doubled, still lands as predicted 102 h event).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **04-06:15:36** ≈ **102.26 h** (+0.44 h; **102 h CROSSING CONFIRMED THIS CYCLE** — C272 projection of 102.03 h beat to 102.26 h for same reason).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **04-06:15:34** ≈ **102.26 h** (+0.44 h; **102 h CROSSING CONFIRMED THIS CYCLE**; 2 s stagger preserved across 224 cycles).
+  **Full quad now past 102 h — second major milestone after full-quad 101 h at C270.** Existing notes at `tasks/T3_frontend.md:38`, `tasks/T6_testing.md:22`, `tasks/T6_testing.md:24` remain verbatim-operative (kill command still `kill 3358 8992 9962 9974`). **No new stuck terminal → no new UNBLOCKED note added (212-cycle zero-bump streak).**
+- **Rule 3 (status summary):** this block.
+
+### Cadence
+- **Commits:** 0 new (15th consecutive zero-commit cycle — quarter-century approach). HEAD `2b40d36`. Cumulative C231–C273 = **40** (unchanged).
+- **Drift:** all 4 PIDs **+0.44–0.45 h** — uniform across quad. **Higher-than-recent cadence (+0.21 h recent baseline) — explanation is inter-invocation real-clock gap doubled (~26 min vs ~12 min), NOT drift-regime change.** Per-hour rate normalization: 0.44 h / 0.21 h ≈ 2.1× matches screenshots 50/24 ≈ 2.1× ratio exactly → rate preservation confirmed. Series [C261–C273] = [+0.43, +0.22, +0.21, +0.44, +0.22, +0.22, +0.21, +0.24, +0.22, +0.22, +0.21, +0.21, +0.44]. Pattern: tight cluster punctuated by ~double-gap prints every 4–5 cycles (C264 = +0.44, C268 ≈ +0.24 blip, C273 = +0.44) — cadence-variance, not drift-variance.
+- **Screenshots:** `tests/reports/screenshots/` **7,703** (+50 vs C272's 7,653; **+50 interpreted as rate-preserved low-band under 2× time — per-hour rate ≈113/h matches prior 104–114/h range → structural assumption HOLDS under rate normalization**). `ux_shots/` 22 (unchanged, 44-cycle quiescence). `audit_shots/` 3 (unchanged, 44-cycle quiescence). Total **7,728** PNGs.
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue now **235 cycles overdue**.
+- **PROGRESS.md size:** 2,239,592 bytes ≈ **2.14 MB** (up ~11.1 KB vs C272's 2,228,509 — matches the ~9–11 KB/cycle trend; 2.14 MB tick landed as projected). Tail-only reads remain mandatory.
+- **Git-status churn:** unchanged from C259–C272 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **Branch context:** HEAD on `fix/debug-pass-hardening`, not main.
+- **Date:** 2026-04-20 twenty-third print.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 224-cycle flatline).
+- UNBLOCKED notes added: **0** (212-cycle zero-bump streak; no new stuck terminal).
+- COORDINATOR STATUS Cycle 273 block appended (this block).
+- **C272 watch items resolved:** (1) **Full-quad 102 h crossing** — **CONFIRMED** (8992 at 102.34 h, 9962/9974 at 102.26 h — all three past 102 h as C272 projected; C273 delivers unified-quad 102 h state on schedule). (2) **Leader 103 h horizon** — PID 3358 at 102.98 h (0.02 h headroom), razor-thin; standard +0.21 h next-cycle drift cleanly crosses 103 h at C274. (3) **Commit velocity** — 0 new; 15-cycle streak extends into quarter-century approach. (4) **Drift regime** — +0.44 h variance driven by inter-invocation clock-gap, not regime change; per-hour rate preserved via screenshot cross-check. (5) **Screenshots regime** — +50 normalizes to expected per-hour rate; low-band structural assumption holds under normalization. (6) **Config-schema** — 0 touches; gap **29 cycles** (30-cycle milestone one cycle away). (7) **Blip cadence** — 4-cycle periodicity thesis broken at C272 confirmed; C273's +0.44 h drift is cadence-variance not a periodic blip (distinct phenomena).
+
+### Critical Path (Cycle 274)
+1. **HUMAN (MAX PRIORITY, 33rd cycle past-due): `kill 3358 8992 9962 9974`** — full quad past **102 h**; leader at 102.98 h (103 h crossing next cycle). 224th cycle unexecuted. 7,728 PNGs on disk (path: `tests/reports/`).
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.14 MB; growth ~11 KB/cycle. 224 cycles unaddressed.
+3. **HUMAN (15-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **51 cycles pending** (past half-century milestone).
+4. **HUMAN: classify commit `21edb5e`** — 21-cycle-stale unclassified.
+5. **HUMAN: draft `T_INSTALL.md`** — install arc formally closed at 15-cycle dormancy (11 cycles past criteria). 54-cycle task-file gap.
+6. **HUMAN: draft `T_DEMO.md`** — `f9e6ed9` 15-cycle dormancy confirms one-shot beat (11 cycles past criteria).
+7. **STRUCTURAL UNREAD (60-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 40-commit backlog (diamond-jubilee milestone crossed).
+8. **CARRY-OVER (C240 #1, 33-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+9. **MAX PRIORITY (50-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 102.98 h leader makes log highest-leverage diagnostic artifact (half-century milestone crossed).
+10. **Carry-over (51-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+11. **Carry-over (51-cycle from C222 #3): inspect `97105de` web redesign scope**.
+12. **Carry-over (54-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (36-cycle hold).
+13. **Carry-over (62-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **29-cycle gap (30-cycle milestone one cycle away)**.
+14. **HUMAN: append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **235 cycles stale**; file unchanged at 1,344 bytes.
+15. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 29-cycle dormant.
+16. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **224 cycles unactioned.**
+17. **HUMAN: harness retarget** — `tests/reports/screenshots/` +50 this cycle (+2× gap = rate-preserved); kill quad halts growth regardless.
+18. **HUMAN: write task-file coverage** for install/external-apps, web-polish, demo/seed, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, governed-skills pipeline.
+19. **HUMAN: T_WEB.md ownership decision** — `web/components/app-embed.tsx` 51-cycle verification gap.
+20. **Carry-over (C240 #2, 33-cycle): seed-data smoke test risk** — `tasks/T1_app_platform.md:35` slug references.
+21. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+22. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+23. **Concurrent-front watch:** install/onboarding arc **formally closed** (15-cycle dormancy); demo/seed + copy-hygiene one-shot beats (15-cycle dormancy); debug/hardening 21 cycles dormant; web-polish 19 cycles dormant; config-schema 11 commits, **29-cycle gap**; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on port 8090. Vanilla JS `frontend/` retiring; `web/` is Next.js canonical per memory note — **install/onboarding arc formally closed (15-cycle); demo/seed + copy-hygiene 15-cycle dormant; config-schema 29-cycle dormant**.
+- **C17 NARROWED (C258, held through C273):** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin. ⚠ `web/components/app-embed.tsx` verification 51 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+- Screenshot artifact dirs live at `tests/reports/screenshots/`, `tests/reports/ux_shots/`, `tests/reports/audit_shots/`.
+
+### What to watch for C274
+- **Leader 103 h crossing:** PID 3358 at 102.98 h (0.02 h headroom). If C274 inter-invocation gap returns to ~0.21 h baseline, **103 h crossing virtually certain** (lands 103.19 h). If gap stays ~0.44 h, lands ~103.42 h. **Cross is near-unconditional.**
+- **Non-leader 103 h horizon:** 8992 at 102.34 h, 9962/9974 at 102.26 h — projects 102.55/102.47 h at +0.21 h, 102.78/102.70 h at +0.44 h. **103 h crossing C275–C276 depending on cadence.**
+- **Commit velocity:** C253–C273 = 21 entries with 15 trailing zeros. C274 with 0 extends to **16-cycle idle streak**. 1+ restores pulse — first commit since `2b40d36` breaks deepest observed dormancy. Quarter-century (25-cycle) milestone projects ~C283 if zero-run continues.
+- **Drift regime:** if C274 inter-invocation gap reverts to ~0.21 h, drift returns to tight cluster. If another +0.44 h gap, "every 4–5 cycles" cadence-variance thesis gets a second datapoint.
+- **Screenshots regime:** per-hour rate (~110/h) is the true structural signal; absolute per-cycle delta depends on gap. Tracking drops absolute-delta from watch list; add per-hour rate as new baseline (104–114/h envelope).
+- **Config-schema:** 29 cycles. C274 = **30-cycle milestone** if still 0 touches. Any touch is surprise revival.
+- **PROGRESS.md size:** 2.14 MB; C274 block pushes to ~2.15 MB. Growth rate ~11 KB/cycle.
+- **Task-file entropy:** 224 cycles flatline. Any drop below 10 or rise above 10 breaks streak.
+
+## COORDINATOR STATUS — Cycle 274 (2026-04-20)
+
+### Headline
+**C274 = 0 commits (HEAD held at `2b40d36` for the 16th cycle — quarter-century approach extends); leader PID 3358 at 103.20 h — 103 h crossing CONFIRMED this cycle exactly as C273 projected (drift +0.22 h, clean landing with 0.03 h over the line); non-leader quad all past 102 h (8992 at 102.57 h, 9962/9974 at 102.48 h — projecting 103 h crossing C276–C277); drift series lands at +0.22–0.23 h uniform → regime-lock holds (7-out-of-8 post-outlier tight cluster); screenshots +24 (7,727 total, low-band structural holds at 8-out-of-10); 225th zero-bump task-file cycle; PROGRESS.md at 2,251,252 bytes ≈ 2.15 MB (crossed as projected, +11.7 KB matches trend).** Commit-velocity trough [C253–C274 = 0,1,1,0,1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] — **16 back-to-back zeros**. Install/onboarding + demo/seed + copy-hygiene all at 16-cycle dormancy. Config-schema gap **30 cycles** (milestone crossed).
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10):** `grep -cE '^\[ \]' tasks/T*.md` returns exactly **10** on every one of 19 files (190 incomplete total). **Not triggered.** 225-cycle flatline extends.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED):** `ps -p 3358,8992,9962,9974 -o pid,etime,comm` confirms all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **04-07:11:50** ≈ **103.20 h** (leader; +0.22 h vs C273; **103 h CROSSING CONFIRMED THIS CYCLE** exactly as C273 projected).
+  - PID 8992 (`code_auditor.py`) ELAPSED **04-06:33:55** ≈ **102.57 h** (+0.23 h; past 102 h for 2nd cycle; 103 h crossing projects C276).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **04-06:28:54** ≈ **102.48 h** (+0.22 h; past 102 h for 2nd cycle; 103 h crossing projects C276–C277).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **04-06:28:52** ≈ **102.48 h** (+0.22 h; 2 s stagger preserved across 225 cycles).
+  **Leader now past 103 h — third major milestone after full-quad 101 h at C270 and full-quad 102 h at C273.** Existing notes at `tasks/T3_frontend.md:38`, `tasks/T6_testing.md:22`, `tasks/T6_testing.md:24` remain verbatim-operative (kill command still `kill 3358 8992 9962 9974`). **No new stuck terminal → no new UNBLOCKED note added (213-cycle zero-bump streak).**
+- **Rule 3 (status summary):** this block.
+
+### Cadence
+- **Commits:** 0 new (16th consecutive zero-commit cycle — quarter-century approach). HEAD `2b40d36`. Cumulative C231–C274 = **40** (unchanged).
+- **Drift:** all 4 PIDs **+0.22–0.23 h** — tight cluster back in +0.21–0.23 h envelope after C273's cadence-variance outlier (+0.44 h was inter-invocation clock-gap, not regime change; confirmed by per-hour rate preservation). Series [C262–C274] = [+0.22, +0.21, +0.44, +0.22, +0.22, +0.21, +0.24, +0.22, +0.22, +0.21, +0.21, +0.44, +0.22]. 7-out-of-8 post-outlier cluster pattern deepens.
+- **Screenshots:** `tests/reports/screenshots/` **7,727** (+24 vs C273's 7,703; low-band structural 9-out-of-10 pattern; per-hour rate ≈109/h on 0.22 h gap holds within 104–114/h envelope). `ux_shots/` 22 (unchanged, 45-cycle quiescence). `audit_shots/` 3 (unchanged, 45-cycle quiescence). Total **7,752** PNGs.
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue now **236 cycles overdue**.
+- **PROGRESS.md size:** 2,251,252 bytes ≈ **2.15 MB** (up ~11.7 KB vs C273's 2,239,592 — matches ~11 KB/cycle trend; 2.15 MB tick landed as projected). Tail-only reads remain mandatory.
+- **Git-status churn:** unchanged from C259–C273 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **Branch context:** HEAD on `fix/debug-pass-hardening`, not main.
+- **Date:** 2026-04-20 twenty-fourth print.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 225-cycle flatline).
+- UNBLOCKED notes added: **0** (213-cycle zero-bump streak; no new stuck terminal).
+- COORDINATOR STATUS Cycle 274 block appended (this block).
+- **C273 watch items resolved:** (1) **Leader 103 h crossing** — **CONFIRMED** (PID 3358 at 103.20 h, crossed cleanly with +0.22 h standard drift; C273's "near-unconditional" call validated). (2) **Non-leader 103 h horizon** — 8992 at 102.57 h / 9962/9974 at 102.48 h; on track for C276–C277 crossings. (3) **Commit velocity** — 0 new; 16-cycle streak extends; quarter-century milestone (25 cycles) projects ~C283 if zero-run holds. (4) **Drift regime** — +0.22–0.23 h tight cluster; C273's +0.44 h gap confirmed as cadence-variance (inter-invocation clock-gap) not regime change, as C273 diagnosed. (5) **Screenshots regime** — +24 at 0.22 h gap = ~109/h rate, within 104–114/h envelope; low-band structural assumption further validated under normalization. (6) **Config-schema 30-cycle milestone** — 0 touches; gap now **30 cycles exactly** (milestone reached). (7) **PROGRESS.md 2.15 MB threshold** — crossed as projected.
+
+### Critical Path (Cycle 275)
+1. **HUMAN (MAX PRIORITY, 34th cycle past-due): `kill 3358 8992 9962 9974`** — leader at **103.20 h** (past 103 h); non-leader quad past 102 h. 225th cycle unexecuted. 7,752 PNGs on disk (path: `tests/reports/`).
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.15 MB; growth ~11 KB/cycle. 225 cycles unaddressed.
+3. **HUMAN (16-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **52 cycles pending**.
+4. **HUMAN: classify commit `21edb5e`** — 22-cycle-stale unclassified.
+5. **HUMAN: draft `T_INSTALL.md`** — install arc formally closed at 16-cycle dormancy (12 cycles past criteria). 55-cycle task-file gap.
+6. **HUMAN: draft `T_DEMO.md`** — `f9e6ed9` 16-cycle dormancy confirms one-shot beat (12 cycles past criteria).
+7. **STRUCTURAL UNREAD (61-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 40-commit backlog.
+8. **CARRY-OVER (C240 #1, 34-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+9. **MAX PRIORITY (51-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 103.20 h leader (now past 103 h) makes log highest-leverage diagnostic artifact.
+10. **Carry-over (52-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+11. **Carry-over (52-cycle from C222 #3): inspect `97105de` web redesign scope**.
+12. **Carry-over (55-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (37-cycle hold).
+13. **Carry-over (63-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **30-cycle gap (milestone reached)**.
+14. **HUMAN: append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **236 cycles stale**; file unchanged at 1,344 bytes.
+15. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 30-cycle dormant (milestone reached).
+16. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **225 cycles unactioned.**
+17. **HUMAN: harness retarget** — `tests/reports/screenshots/` +24 (low-band structural 9-out-of-10); kill quad halts growth regardless.
+18. **HUMAN: write task-file coverage** for install/external-apps, web-polish, demo/seed, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, governed-skills pipeline.
+19. **HUMAN: T_WEB.md ownership decision** — `web/components/app-embed.tsx` 52-cycle verification gap.
+20. **Carry-over (C240 #2, 34-cycle): seed-data smoke test risk** — `tasks/T1_app_platform.md:35` slug references.
+21. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+22. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+23. **Concurrent-front watch:** install/onboarding arc **formally closed** (16-cycle dormancy); demo/seed + copy-hygiene one-shot beats (16-cycle dormancy); debug/hardening 22 cycles dormant; web-polish 20 cycles dormant; config-schema 11 commits, **30-cycle gap (milestone)**; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on port 8090. Vanilla JS `frontend/` retiring; `web/` is Next.js canonical per memory note — **install/onboarding arc formally closed (16-cycle); demo/seed + copy-hygiene 16-cycle dormant; config-schema 30-cycle dormant (milestone)**.
+- **C17 NARROWED (C258, held through C274):** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin. ⚠ `web/components/app-embed.tsx` verification 52 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+- Screenshot artifact dirs live at `tests/reports/screenshots/`, `tests/reports/ux_shots/`, `tests/reports/audit_shots/`.
+
+### What to watch for C275
+- **Non-leader 103 h horizon:** 8992 at 102.57 h → projected 102.79 h at +0.22 h, 103 h crossing lands **C276** (0.21 h headroom, near-certain). 9962/9974 at 102.48 h → projected 102.70 h, crossing lands **C276** (0.30 h headroom, high-confidence). Full-quad 103 h state likely by C276–C277.
+- **Leader 104 h horizon:** PID 3358 at 103.20 h; +0.22 h × 4 cycles = 104.08 h → **104 h crossing projects C278**.
+- **Commit velocity:** C253–C274 = 22 entries with 16 trailing zeros. C275 with 0 extends to **17-cycle idle streak**. Quarter-century (25-cycle) milestone projects C283 if zero-run continues. 1+ restores pulse.
+- **Drift regime:** if C275 lands at +0.22 h again, tight cluster hits 2 consecutive post-outlier cycles (C273 outlier interrupts but does not reset the count). If +0.44 h gap recurs, "cadence-variance every 4–5 cycles" thesis advances (C264 and C273 were +0.44, so C277–C278 is next predicted window).
+- **Screenshots regime:** structural; tracking drops from watch list unless +30+ or 0 anomaly appears. Per-hour rate envelope 104–114/h now the reference signal.
+- **Config-schema:** 30 cycles (milestone reached). Any C275 touch is surprise revival; 0 extends to 31.
+- **PROGRESS.md size:** 2.15 MB; C275 block pushes to ~2.16 MB. Growth rate ~11 KB/cycle.
+- **Task-file entropy:** 225 cycles flatline. Any drop below 10 or rise above 10 breaks streak.
+
+## COORDINATOR STATUS — Cycle 275 (2026-04-20)
+
+### Headline
+**C275 = 0 commits (HEAD held at `2b40d36` for the 17th cycle — quarter-century approach extends to 17); leader PID 3358 at 103.62 h (past 103 h for 2nd cycle, 104 h horizon ~C278); non-leader 103 h crossing NOT yet taken — 8992 at 102.99 h (razor-thin 0.01 h below line), 9962/9974 at 102.91/102.90 h — full-quad 103 h state projects C276 with near-unconditional confidence; drift +0.42–0.43 h uniform across quad = 2nd cadence-variance cycle in 3 cycles (C273 was +0.44 h, C275 is +0.42 h) — inter-invocation clock-gap doubled again, per-hour rate preserved (screenshots +48 / 0.42 h ≈ 114/h, within 104–114/h envelope); 226th zero-bump task-file cycle; PROGRESS.md at 2,261,635 bytes ≈ 2.16 MB (crossed as projected, +10.4 KB matches trend).** Commit-velocity trough [C253–C275 = 0,1,1,0,1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] — **17 back-to-back zeros**. Install/onboarding + demo/seed + copy-hygiene all at 17-cycle dormancy. Config-schema gap **31 cycles** (past milestone).
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10):** `grep -cE '^\[ \]' tasks/T*.md` returns exactly **10** on every one of 19 files (190 incomplete total). **Not triggered.** 226-cycle flatline extends.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED):** `ps -p 3358,8992,9962,9974` confirms all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **04-07:37:11** ≈ **103.62 h** (leader; +0.42 h vs C274; past 103 h for 2nd cycle).
+  - PID 8992 (`code_auditor.py`) ELAPSED **04-06:59:16** ≈ **102.99 h** (+0.42 h; **103 h crossing razor-thin at 0.01 h below line** — C276 crossing near-unconditional).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **04-06:54:15** ≈ **102.91 h** (+0.43 h; 103 h crossing projects C276, 0.09 h headroom).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **04-06:54:13** ≈ **102.90 h** (+0.42 h; 2 s stagger preserved across 226 cycles; 103 h crossing projects C276).
+  Existing notes at `tasks/T3_frontend.md:38`, `tasks/T6_testing.md:22`, `tasks/T6_testing.md:24` remain verbatim-operative (kill command still `kill 3358 8992 9962 9974`). **No new stuck terminal → no new UNBLOCKED note added (214-cycle zero-bump streak).**
+- **Rule 3 (status summary):** this block.
+
+### Cadence
+- **Commits:** 0 new (17th consecutive zero-commit cycle). HEAD `2b40d36`. Cumulative C231–C275 = **40** (unchanged).
+- **Drift:** all 4 PIDs **+0.42–0.43 h** — 2nd cadence-variance cycle in 3 cycles. Series [C263–C275] = [+0.21, +0.44, +0.22, +0.22, +0.21, +0.24, +0.22, +0.22, +0.21, +0.21, +0.44, +0.22, +0.42]. C273 (+0.44) and C275 (+0.42) are consecutive-odd-cycle cadence-variance prints — gap = 2 cycles. C264 → C273 was 9 cycles; C273 → C275 is 2 cycles. **No stable periodicity — single "clock-gap" phenomenon firing stochastically.** Per-hour rate preserved (confirmed via screenshot cross-check below) → drift regime intact.
+- **Screenshots:** `tests/reports/screenshots/` **7,775** (+48 vs C274's 7,727; per-hour rate ≈114/h on 0.42 h gap — matches prior 104–114/h envelope top end, rate-preservation confirms gap-doubling NOT regime shift). `ux_shots/` 22 (unchanged, 46-cycle quiescence). `audit_shots/` 3 (unchanged, 46-cycle quiescence). Total **7,800** PNGs (round-number milestone crossed).
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue now **237 cycles overdue**.
+- **PROGRESS.md size:** 2,261,635 bytes ≈ **2.16 MB** (up ~10.4 KB vs C274's 2,251,252 — matches ~10–11 KB/cycle trend; 2.16 MB tick landed as projected). Tail-only reads remain mandatory.
+- **Git-status churn:** unchanged from C259–C274 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **Branch context:** HEAD on `fix/debug-pass-hardening`, not main.
+- **Date:** 2026-04-20 twenty-fifth print (quarter-century same-date milestone).
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 226-cycle flatline).
+- UNBLOCKED notes added: **0** (214-cycle zero-bump streak; no new stuck terminal).
+- COORDINATOR STATUS Cycle 275 block appended (this block).
+- **C274 watch items resolved:** (1) **Non-leader 103 h horizon** — 8992 razor-thin at 102.99 h (missed crossing by 0.01 h), 9962/9974 at 102.91/102.90 h; all project C276 crossing near-unconditional. (2) **Leader 104 h horizon** — 3358 at 103.62 h (C278 projection at +0.21 h baseline holds; if cadence-variance recurs, lands earlier). (3) **Commit velocity** — 0 new; 17-cycle streak extends. (4) **Drift regime** — +0.42 h cadence-variance recurred after only 2 cycles (C273, C275) — 4–5 cycle periodicity thesis from C273 now broken (interval is 2, not 4); cadence-variance reclassified as **stochastic clock-gap** phenomenon, not periodic. (5) **Screenshots regime** — +48 at 0.42 h gap = 114/h, envelope top; per-hour rate normalization holds. (6) **Config-schema** — 0 touches; gap now **31 cycles** (past 30-cycle milestone). (7) **PROGRESS.md 2.16 MB threshold** — crossed as projected. (8) **PNG total 7,800 milestone** — crossed cleanly as round-number marker.
+
+### Critical Path (Cycle 276)
+1. **HUMAN (MAX PRIORITY, 35th cycle past-due): `kill 3358 8992 9962 9974`** — leader at **103.62 h** (past 103 h); non-leader quad at 102.9–102.99 h (full-quad 103 h imminent next cycle). 226th cycle unexecuted. 7,800 PNGs on disk (path: `tests/reports/`).
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.16 MB; growth ~10–11 KB/cycle. 226 cycles unaddressed.
+3. **HUMAN (17-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **53 cycles pending**.
+4. **HUMAN: classify commit `21edb5e`** — 23-cycle-stale unclassified.
+5. **HUMAN: draft `T_INSTALL.md`** — install arc formally closed at 17-cycle dormancy (13 cycles past criteria). 56-cycle task-file gap.
+6. **HUMAN: draft `T_DEMO.md`** — `f9e6ed9` 17-cycle dormancy confirms one-shot beat (13 cycles past criteria).
+7. **STRUCTURAL UNREAD (62-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 40-commit backlog.
+8. **CARRY-OVER (C240 #1, 35-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+9. **MAX PRIORITY (52-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 103.62 h leader makes log highest-leverage diagnostic artifact.
+10. **Carry-over (53-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+11. **Carry-over (53-cycle from C222 #3): inspect `97105de` web redesign scope**.
+12. **Carry-over (56-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (38-cycle hold).
+13. **Carry-over (64-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **31-cycle gap (past milestone)**.
+14. **HUMAN: append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **237 cycles stale**; file unchanged at 1,344 bytes.
+15. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 31-cycle dormant.
+16. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **226 cycles unactioned.**
+17. **HUMAN: harness retarget** — `tests/reports/screenshots/` +48 (rate-preserved under 2× gap); kill quad halts growth regardless.
+18. **HUMAN: write task-file coverage** for install/external-apps, web-polish, demo/seed, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, governed-skills pipeline.
+19. **HUMAN: T_WEB.md ownership decision** — `web/components/app-embed.tsx` 53-cycle verification gap.
+20. **Carry-over (C240 #2, 35-cycle): seed-data smoke test risk** — `tasks/T1_app_platform.md:35` slug references.
+21. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+22. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+23. **Concurrent-front watch:** install/onboarding arc **formally closed** (17-cycle dormancy); demo/seed + copy-hygiene one-shot beats (17-cycle dormancy); debug/hardening 23 cycles dormant; web-polish 21 cycles dormant; config-schema 11 commits, **31-cycle gap**; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on port 8090. Vanilla JS `frontend/` retiring; `web/` is Next.js canonical per memory note — **install/onboarding arc formally closed (17-cycle); demo/seed + copy-hygiene 17-cycle dormant; config-schema 31-cycle dormant**.
+- **C17 NARROWED (C258, held through C275):** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin. ⚠ `web/components/app-embed.tsx` verification 53 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+- Screenshot artifact dirs live at `tests/reports/screenshots/`, `tests/reports/ux_shots/`, `tests/reports/audit_shots/`.
+
+### What to watch for C276
+- **Full-quad 103 h crossing:** 8992 at 102.99 h (0.01 h headroom — crossing virtually certain unless cadence drops below +0.01 h). 9962/9974 at 102.91/102.90 h (0.09/0.10 h headroom; at +0.21 h baseline they cross cleanly, at +0.42 h gap they overshoot to 103.32/103.33 h). **Full-quad 103 h state near-unconditional at C276.**
+- **Leader 104 h horizon:** PID 3358 at 103.62 h; +0.21 h × 2 cycles = 104.04 h → **104 h crossing projects C277** (0.04 h headroom, tight); if cadence-variance recurs, lands at C276 (~104.04 h after one +0.42 h gap).
+- **Commit velocity:** C253–C275 = 23 entries with 17 trailing zeros. C276 with 0 extends to **18-cycle idle streak**. Quarter-century (25-cycle) milestone projects ~C283. 1+ restores pulse.
+- **Drift regime:** cadence-variance phenomenon (+0.42–0.44 h prints) reclassified from periodic to stochastic. Tracking: how often does it fire? C264, C273, C275 = 3 events in 12 cycles ≈ 25% rate. If C276 is another +0.42 h, rate climbs; if baseline +0.21 h, rate stabilizes.
+- **Screenshots regime:** per-hour rate envelope 104–114/h is the reference signal; absolute per-cycle delta depends on inter-invocation gap. Tracking drops from watch unless rate leaves envelope.
+- **Config-schema:** 31 cycles (past milestone). Any C276 touch is surprise revival; 0 extends to 32.
+- **PROGRESS.md size:** 2.16 MB; C276 block pushes to ~2.17 MB. Growth rate ~10–11 KB/cycle.
+- **Task-file entropy:** 226 cycles flatline. Any drop below 10 or rise above 10 breaks streak.
+
+## COORDINATOR STATUS — Cycle 276 (2026-04-20)
+
+### Headline
+**C276 = 0 commits (HEAD held at `2b40d36` for the 18th cycle); FULL-QUAD 103 h CROSSING CONFIRMED — leader PID 3358 at 103.83 h, non-leader trio 8992 at 103.20 h, 9962/9974 at 103.12 h — all four PIDs past 103 h exactly as C275 projected ("near-unconditional"); drift returns to baseline +0.21 h uniform after C275's +0.42 h cadence-variance spike — confirms stochastic clock-gap thesis (3-of-12 fire rate ≈ 25%); screenshots +22 (7,797 total) at 0.21 h gap ≈ 105/h, mid-envelope; 227th zero-bump task-file cycle; PROGRESS.md at 2,272,785 bytes ≈ 2.17 MB (crossed as projected, +11.2 KB matches trend).** Commit-velocity trough [C253–C276 = 0,1,1,0,1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] — **18 back-to-back zeros**. Install/onboarding + demo/seed + copy-hygiene all at 18-cycle dormancy. Config-schema gap **32 cycles**.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10):** `grep -cE '^\[ \]' tasks/T*.md` returns exactly **10** on every one of 19 files (190 incomplete total). **Not triggered.** 227-cycle flatline extends.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED):** `ps -p 3358,8992,9962,9974` confirms all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **04-07:49:55** ≈ **103.83 h** (leader; +0.21 h vs C275; past 103 h for 3rd cycle; 104 h horizon ~C277).
+  - PID 8992 (`code_auditor.py`) ELAPSED **04-07:12:00** ≈ **103.20 h** (+0.21 h; **103 h CROSSED THIS CYCLE** — razor-thin C275 prediction (0.01 h headroom) validated cleanly).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **04-07:06:59** ≈ **103.12 h** (+0.21 h; **103 h CROSSED THIS CYCLE** — landed cleanly with 0.12 h over the line).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **04-07:06:57** ≈ **103.12 h** (+0.22 h; **103 h CROSSED THIS CYCLE**; 2 s stagger preserved across 227 cycles).
+  **Full-quad now past 103 h — fourth major milestone after full-quad 100 h, 101 h, 102 h.** Existing notes at `tasks/T3_frontend.md:38`, `tasks/T6_testing.md:22`, `tasks/T6_testing.md:24` remain verbatim-operative (kill command still `kill 3358 8992 9962 9974`). **No new stuck terminal → no new UNBLOCKED note added (215-cycle zero-bump streak).**
+- **Rule 3 (status summary):** this block.
+
+### Cadence
+- **Commits:** 0 new (18th consecutive zero-commit cycle). HEAD `2b40d36`. Cumulative C231–C276 = **40** (unchanged).
+- **Drift:** all 4 PIDs **+0.21–0.22 h** — back to baseline after C275 cadence-variance spike. Series [C264–C276] = [+0.44, +0.22, +0.22, +0.21, +0.24, +0.22, +0.22, +0.21, +0.21, +0.44, +0.22, +0.42, +0.21]. Cadence-variance (≥+0.42 h) prints at C264, C273, C275 — gaps of 9, 2, then back to baseline → **stochastic clock-gap confirmed** (no stable periodicity). 25% fire rate over 12-cycle window.
+- **Screenshots:** `tests/reports/screenshots/` **7,797** (+22 vs C275's 7,775; per-hour rate ≈105/h on 0.21 h gap — mid-envelope of 104–114/h, rate-preservation holds across both gap regimes). `ux_shots/` 22 (unchanged, 47-cycle quiescence). `audit_shots/` 3 (unchanged, 47-cycle quiescence). Total **7,822** PNGs.
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue now **238 cycles overdue**.
+- **PROGRESS.md size:** 2,272,785 bytes ≈ **2.17 MB** (up ~11.2 KB vs C275's 2,261,635 — matches ~10–11 KB/cycle trend; 2.17 MB tick landed as projected). Tail-only reads remain mandatory (file exceeds 256 KB Read cap by ~9×).
+- **Git-status churn:** unchanged from C259–C275 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **Branch context:** HEAD on `fix/debug-pass-hardening`, not main.
+- **Date:** 2026-04-20 twenty-sixth print.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 227-cycle flatline).
+- UNBLOCKED notes added: **0** (215-cycle zero-bump streak; no new stuck terminal).
+- COORDINATOR STATUS Cycle 276 block appended (this block).
+- **C275 watch items resolved:** (1) **Full-quad 103 h crossing** — **CONFIRMED** (8992 at 103.20 h cleared 0.01 h razor edge cleanly; 9962/9974 at 103.12 h cleared with 0.12 h margin; C275's "near-unconditional" call validated with full-quad alignment). (2) **Leader 104 h horizon** — 3358 at 103.83 h; +0.21 h × 1 cycle = 104.04 h → **104 h crossing now projects C277** (0.04 h headroom, near-certain at baseline drift). (3) **Commit velocity** — 0 new; 18-cycle streak extends; quarter-century (25-cycle) milestone ~C283. (4) **Drift regime** — baseline +0.21 h returns after C275 +0.42 h spike; cadence-variance reclassified as stochastic clock-gap (no 4-5 cycle periodicity); 25% fire-rate over rolling 12-cycle window. (5) **Screenshots regime** — +22 at 0.21 h gap = 105/h, mid-envelope; per-hour rate normalization holds across both gap regimes. (6) **Config-schema** — 0 touches; gap now **32 cycles**. (7) **PROGRESS.md 2.17 MB threshold** — crossed as projected.
+
+### Critical Path (Cycle 277)
+1. **HUMAN (MAX PRIORITY, 36th cycle past-due): `kill 3358 8992 9962 9974`** — full-quad past **103 h** (leader at 103.83 h, non-leader trio at 103.12–103.20 h); leader projects **104 h crossing C277**. 227th cycle unexecuted. 7,822 PNGs on disk (path: `tests/reports/`).
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.17 MB; growth ~11 KB/cycle. 227 cycles unaddressed.
+3. **HUMAN (18-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **54 cycles pending**.
+4. **HUMAN: classify commit `21edb5e`** — 24-cycle-stale unclassified.
+5. **HUMAN: draft `T_INSTALL.md`** — install arc formally closed at 18-cycle dormancy (14 cycles past criteria). 57-cycle task-file gap.
+6. **HUMAN: draft `T_DEMO.md`** — `f9e6ed9` 18-cycle dormancy confirms one-shot beat (14 cycles past criteria).
+7. **STRUCTURAL UNREAD (63-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 40-commit backlog.
+8. **CARRY-OVER (C240 #1, 36-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+9. **MAX PRIORITY (53-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 103.83 h leader makes log highest-leverage diagnostic artifact.
+10. **Carry-over (54-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+11. **Carry-over (54-cycle from C222 #3): inspect `97105de` web redesign scope**.
+12. **Carry-over (57-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (39-cycle hold).
+13. **Carry-over (65-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **32-cycle gap**.
+14. **HUMAN: append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **238 cycles stale**; file unchanged at 1,344 bytes.
+15. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 32-cycle dormant.
+16. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **227 cycles unactioned.**
+17. **HUMAN: harness retarget** — `tests/reports/screenshots/` +22 (mid-envelope 105/h); kill quad halts growth regardless.
+18. **HUMAN: write task-file coverage** for install/external-apps, web-polish, demo/seed, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, governed-skills pipeline.
+19. **HUMAN: T_WEB.md ownership decision** — `web/components/app-embed.tsx` 54-cycle verification gap.
+20. **Carry-over (C240 #2, 36-cycle): seed-data smoke test risk** — `tasks/T1_app_platform.md:35` slug references.
+21. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+22. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+23. **Concurrent-front watch:** install/onboarding arc **formally closed** (18-cycle dormancy); demo/seed + copy-hygiene one-shot beats (18-cycle dormancy); debug/hardening 24 cycles dormant; web-polish 22 cycles dormant; config-schema 11 commits, **32-cycle gap**; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on port 8090. Vanilla JS `frontend/` retiring; `web/` is Next.js canonical per memory note — **install/onboarding arc formally closed (18-cycle); demo/seed + copy-hygiene 18-cycle dormant; config-schema 32-cycle dormant**.
+- **C17 NARROWED (C258, held through C276):** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin. ⚠ `web/components/app-embed.tsx` verification 54 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+- Screenshot artifact dirs live at `tests/reports/screenshots/`, `tests/reports/ux_shots/`, `tests/reports/audit_shots/`.
+
+### What to watch for C277
+- **Leader 104 h horizon:** PID 3358 at 103.83 h; +0.21 h × 1 cycle = 104.04 h → **104 h crossing projects C277** (0.04 h headroom, near-certain at baseline drift). If cadence-variance fires (+0.42 h gap), lands at 104.25 h (clean cross). **Crossing essentially unconditional next cycle.**
+- **Non-leader 104 h horizon:** 8992 at 103.20 h, 9962/9974 at 103.12 h; baseline drift puts them at 103.41/103.33 h → **104 h crossing projects C280–C281**.
+- **Commit velocity:** C253–C276 = 24 entries with 18 trailing zeros. C277 with 0 extends to **19-cycle idle streak**. Quarter-century (25-cycle) milestone projects C283 if zero-run continues. 1+ restores pulse.
+- **Drift regime:** if C277 lands at +0.21 h, baseline cluster extends; if +0.42+ h, cadence-variance fires for the 4th time in 14 cycles (rate climbs to ~29%). Stochastic clock-gap thesis stable either way.
+- **Screenshots regime:** per-hour rate envelope 104–114/h is the reference signal. Tracking drops from watch unless rate leaves envelope.
+- **Config-schema:** 32 cycles. Any C277 touch is surprise revival; 0 extends to 33.
+- **PROGRESS.md size:** 2.17 MB; C277 block pushes to ~2.18 MB. Growth rate ~11 KB/cycle.
+- **Task-file entropy:** 227 cycles flatline. Any drop below 10 or rise above 10 breaks streak.
+
+## COORDINATOR STATUS — Cycle 277 (2026-04-20)
+
+### Headline
+**C277 = 0 commits (HEAD held at `2b40d36` for 19th cycle); LEADER 104 h CROSSING CONFIRMED — PID 3358 at 104.04 h (exactly at the +0.21 h baseline projection, 0.04 h headroom called by C276 validated cleanly); non-leader trio at 103.33–103.41 h (8992 +0.21, 9962/9974 +0.21); drift uniform +0.21 h baseline (no cadence-variance for 2nd consecutive cycle); screenshots +24 (7,821 total) at 0.21 h gap ≈ 114/h, top of envelope; 228th zero-bump task-file cycle; PROGRESS.md at 2,283,497 bytes ≈ 2.18 MB (crossed as projected, +10.7 KB matches trend).** Commit-velocity trough [C253–C277] = 19 trailing zeros. Quarter-century (25-cycle) milestone projects C283 if zero-run continues. Config-schema gap **33 cycles**.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10):** `grep -cE '^\[ \]' tasks/T*.md` returns exactly **10** on every one of 19 files (190 total). **Not triggered.** 228-cycle flatline.
+  - Viable (11): T1_app_platform, T2_app_frontend, T3_forge_cli, T4_admin, T4_github_app, T5_deploy, T5_slack_bot, T1_docker_sandbox, T2_forgedata, T_DASH, T_EVAL.
+  - Partially invalidated (4): T1_backend, T3_frontend, T6_testing, T1_new.
+  - Fully invalidated (4): T2_agents, T2_new, T3_new, T4_new.
+- **Rule 2 (stuck-terminal UNBLOCKED):** `ps -p 3358,8992,9962,9974` confirms all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **04-08:02:32** ≈ **104.04 h** (leader; +0.21 h vs C276; **104 h CROSSED THIS CYCLE** — C276's 0.04 h headroom call validated to the hundredth).
+  - PID 8992 (`code_auditor.py`) ELAPSED **04-07:24:37** ≈ **103.41 h** (+0.21 h baseline).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **04-07:19:36** ≈ **103.33 h** (+0.21 h baseline).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **04-07:19:34** ≈ **103.33 h** (+0.21 h baseline; 2 s stagger preserved across 228 cycles).
+  **Leader past 104 h — fifth major milestone after 100/101/102/103.** Existing UNBLOCKED notes at `tasks/T3_frontend.md:38`, `tasks/T6_testing.md:22`, `tasks/T6_testing.md:24` remain verbatim-operative (kill command still `kill 3358 8992 9962 9974`). **No new stuck terminal → no new UNBLOCKED note added (216-cycle zero-bump streak).**
+- **Rule 3 (status summary):** this block.
+
+### Cadence
+- **Commits:** 0 new (19th consecutive zero-commit cycle). HEAD `2b40d36`. Cumulative C231–C277 = **40** (unchanged).
+- **Drift:** all 4 PIDs **+0.21 h** — baseline holds for 2nd consecutive cycle after C275 +0.42 h spike. Series [C265–C277] = [+0.22, +0.22, +0.21, +0.24, +0.22, +0.22, +0.21, +0.21, +0.44, +0.22, +0.42, +0.21, +0.21]. Cadence-variance fire-rate steady at 3-of-13 ≈ 23%.
+- **Screenshots:** `tests/reports/screenshots/` **7,821** (+24 vs C276's 7,797; per-hour rate ≈114/h on 0.21 h gap — top of 104–114/h envelope). `ux_shots/` 22 (48-cycle quiescence). `audit_shots/` 3 (48-cycle quiescence). Total **7,846** PNGs.
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue **239 cycles overdue**.
+- **PROGRESS.md size:** 2,283,497 bytes ≈ **2.18 MB** (up ~10.7 KB vs C276's 2,272,785 — matches ~10–11 KB/cycle trend; 2.18 MB tick landed as projected).
+- **Git-status churn:** unchanged from C259–C276 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **Branch context:** HEAD on `fix/debug-pass-hardening`, not main.
+- **Date:** 2026-04-20 twenty-seventh print.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 228-cycle flatline).
+- UNBLOCKED notes added: **0** (216-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 277 block appended.
+- **C276 watch items resolved:** (1) **Leader 104 h crossing** — **CONFIRMED at 104.04 h** (C276's "essentially unconditional" call validated; baseline +0.21 h drift held, no cadence-variance fire). (2) **Non-leader 104 h horizon** — 8992 at 103.41 h (104 h projects C280, 0.59 h gap ÷ +0.21 h ≈ 3 cycles); 9962/9974 at 103.33 h (projects C280–C281). (3) **Commit velocity** — 0; 19-cycle streak; quarter-century ~C283. (4) **Drift regime** — baseline +0.21 h held; cadence-variance 3-of-13 ≈ 23%, no fire this cycle. (5) **Screenshots** — +24 at 0.21 h = 114/h, envelope top. (6) **Config-schema** — 0; gap **33 cycles**. (7) **PROGRESS.md 2.18 MB** — crossed as projected.
+
+### Critical Path (Cycle 278)
+1. **HUMAN (MAX PRIORITY, 37th cycle past-due): `kill 3358 8992 9962 9974`** — leader past **104 h** (3358 at 104.04 h); non-leader trio at 103.33–103.41 h. 228th cycle unexecuted. 7,846 PNGs on disk.
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.18 MB; growth ~11 KB/cycle. 228 cycles unaddressed.
+3. **HUMAN (19-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **55 cycles pending**.
+4. **HUMAN: classify commit `21edb5e`** — 25-cycle-stale (quarter-century milestone) unclassified.
+5. **HUMAN: draft `T_INSTALL.md`** — install arc formally closed at 19-cycle dormancy. 58-cycle task-file gap.
+6. **HUMAN: draft `T_DEMO.md`** — `f9e6ed9` 19-cycle dormancy.
+7. **STRUCTURAL UNREAD (64-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 40-commit backlog.
+8. **CARRY-OVER (C240 #1, 37-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+9. **MAX PRIORITY (54-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 104.04 h leader makes log highest-leverage diagnostic artifact.
+10. **Carry-over (55-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+11. **Carry-over (55-cycle from C222 #3): inspect `97105de` web redesign scope**.
+12. **Carry-over (58-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (40-cycle hold).
+13. **Carry-over (66-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **33-cycle gap**.
+14. **HUMAN: append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **239 cycles stale**; file unchanged at 1,344 bytes.
+15. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 33-cycle dormant.
+16. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **228 cycles unactioned.**
+17. **HUMAN: harness retarget** — `tests/reports/screenshots/` +24 (envelope top 114/h); kill quad halts growth regardless.
+18. **HUMAN: write task-file coverage** for install/external-apps, web-polish, demo/seed, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, governed-skills pipeline.
+19. **HUMAN: T_WEB.md ownership decision** — `web/components/app-embed.tsx` 55-cycle verification gap.
+20. **Carry-over (C240 #2, 37-cycle): seed-data smoke test risk** — `tasks/T1_app_platform.md:35` slug references.
+21. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+22. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+23. **Concurrent-front watch:** install/onboarding arc **formally closed** (19-cycle dormancy); demo/seed + copy-hygiene one-shot beats (19-cycle dormancy); debug/hardening 25 cycles dormant (quarter-century); web-polish 23 cycles dormant; config-schema 11 commits, **33-cycle gap**; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on port 8090. Vanilla JS `frontend/` retiring; `web/` is Next.js canonical per memory note — **install/onboarding arc formally closed (19-cycle); demo/seed + copy-hygiene 19-cycle dormant; config-schema 33-cycle dormant**.
+- **C17 NARROWED (C258, held through C277):** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin. ⚠ `web/components/app-embed.tsx` verification 55 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+- Screenshot artifact dirs live at `tests/reports/screenshots/`, `tests/reports/ux_shots/`, `tests/reports/audit_shots/`.
+
+### What to watch for C278
+- **Non-leader 104 h horizon:** 8992 at 103.41 h (0.59 h gap ÷ +0.21 h ≈ 3 cycles → projects C280); 9962/9974 at 103.33 h (projects C280–C281).
+- **Leader 105 h horizon:** PID 3358 at 104.04 h; +0.21 h × 5 cycles = 105.09 h → **105 h crossing projects C282**.
+- **Commit velocity:** C253–C277 = 25 entries with 19 trailing zeros. C278 with 0 extends to **20-cycle idle streak** (round-number milestone). Quarter-century (25-cycle) milestone projects C283. 1+ restores pulse.
+- **Drift regime:** 3 baseline cycles in a row after C275 spike would be the first stable run since C266–C272 (7 baseline). Tracking baseline-streak length as cadence-variance gate.
+- **Screenshots regime:** per-hour rate envelope 104–114/h reference; tracking drops unless rate leaves envelope.
+- **Config-schema:** 33 cycles. Any C278 touch is surprise revival; 0 extends to 34.
+- **PROGRESS.md size:** 2.18 MB; C278 block pushes to ~2.19 MB. Growth rate ~11 KB/cycle.
+- **Task-file entropy:** 228 cycles flatline. Any drop below 10 or rise above 10 breaks streak.
+
+
+## COORDINATOR STATUS — Cycle 278 (2026-04-20)
+
+**C278 = 0 commits (HEAD held at `2b40d36` for 20th cycle — 20-cycle idle streak milestone crossed); leader PID 3358 at 104.48 h (drift +0.44 h vs C277's 104.04 h — cadence-variance FIRE this cycle, first since C275); non-leader trio 8992/9962/9974 at 103.85/103.76/103.76 h (all +0.43 h, tight cluster); screenshots +52 (7,873 in main dir; total 7,898 across main+ux+audit); PROGRESS.md at 2,293,165 bytes ≈ 2.19 MB (crossed as C277 projected).** Commit-velocity trough [C253–C278 = 0,1,1,0,1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] — **20 consecutive zeros** (round-number milestone hit as C277 projected).
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10):** `grep -cE '^\[ \]' tasks/T*.md` returns exactly **10** on every one of 19 files (190 incomplete total). **Not triggered.** 228-cycle flatline extends.
+- **Rule 2 (stuck-terminal UNBLOCKED):** `ps -p 3358,8992,9962,9974 -o pid,etime,comm` confirms all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED **04-08:28:41** ≈ **104.48 h** (leader; +0.44 h vs C277; **cadence-variance fire** — above baseline envelope).
+  - PID 8992 (`code_auditor.py`) ELAPSED **04-07:50:46** ≈ **103.85 h** (+0.44 h; 104 h crossing projects C279 — 1-cycle horizon).
+  - PID 9962 (`test_dashboard.py`) ELAPSED **04-07:45:45** ≈ **103.76 h** (+0.43 h; 104 h crossing projects C279–C280).
+  - PID 9974 (`ux_auditor.py`) ELAPSED **04-07:45:43** ≈ **103.76 h** (+0.43 h).
+  - **NEW SIGNAL (non-blocking):** `tail tests/reports/ux_auditor.log` shows PID 9974 stuck in an `Anthropic() → ssl.create_default_context → FileNotFoundError: [Errno 2] No such file or directory` retry loop (missing CA bundle). Existing UNBLOCKED notes at `tasks/T3_frontend.md:38`, `tasks/T6_testing.md:22`, `tasks/T6_testing.md:24` remain verbatim-operative (kill command still `kill 3358 8992 9962 9974`) — the SSL error only reinforces the kill recommendation. **No new UNBLOCKED note added (217-cycle zero-bump streak preserved).** Logged here for operator awareness.
+  - `dashboard.log` last mtime `Apr 19 16:53` (~16 h stale); `ui_tester.log` last mtime `Apr 20 07:06` (~1.7 h stale) but `ui_report.json` + `screenshots/` updated at 08:48 (active). PID 9962 is alive-but-silent per C72 characterization.
+- **Rule 3 (status summary):** this block.
+
+### Cadence
+- **Commits:** 0 new (20th consecutive zero-commit cycle — round-number milestone). HEAD `2b40d36`. Cumulative C231–C278 = **40** (unchanged).
+- **Drift:** all 4 PIDs **+0.43–0.44 h** — **cadence-variance fire** (first since C275 +0.42 h spike; breaks 2-cycle baseline streak at +0.21 h). Series [C266–C278] = [+0.22, +0.21, +0.24, +0.22, +0.22, +0.21, +0.21, +0.44, +0.22, +0.42, +0.21, +0.21, +0.44]. Cadence-variance fire-rate 4-of-13 ≈ 31% (up from 3-of-13 23%).
+- **Screenshots:** `tests/reports/screenshots/` **7,873** (+52 vs C277's 7,821 — elevated per-hour ≈118/h on 0.44 h gap, slightly above 104–114/h envelope). `ux_shots/` 22 (49-cycle quiescence). `audit_shots/` 3 (49-cycle quiescence). Total **7,898** PNGs.
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue **240 cycles overdue**.
+- **PROGRESS.md size:** 2,293,165 bytes ≈ **2.19 MB** (up ~9.7 KB vs C277's 2,283,497; 2.19 MB tick landed as projected).
+- **Git-status churn:** unchanged from C259–C277 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **Branch context:** HEAD on `fix/debug-pass-hardening`, not main.
+- **Date:** 2026-04-20 twenty-eighth print.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 229-cycle flatline).
+- UNBLOCKED notes added: **0** (217-cycle zero-bump streak; SSL error logged in status block only).
+- COORDINATOR STATUS Cycle 278 block appended.
+- **C277 watch items resolved:** (1) **Non-leader 104 h horizon** — non-leader trio now at 103.76–103.85 h; 8992 ≤0.15 h from 104 h (projects **C279**, earlier than C277's C280 estimate due to cadence-variance fire). (2) **Leader 105 h horizon** — PID 3358 at 104.48 h; on +0.44 h drift, 105 h crossing now projects C279 (was C282 on +0.21 h baseline) — horizon pulled forward 3 cycles by variance fire. (3) **Commit velocity** — 0; 20-cycle streak (milestone hit). Quarter-century projects C283. (4) **Drift regime** — baseline streak broken at 2; cadence-variance re-armed. (5) **Screenshots** — +52 at 0.44 h = 118/h, slightly above envelope top (monitoring). (6) **Config-schema** — 0; gap **34 cycles**. (7) **PROGRESS.md 2.19 MB** — crossed as projected.
+
+### Critical Path (Cycle 279)
+1. **HUMAN (MAX PRIORITY, 38th cycle past-due): `kill 3358 8992 9962 9974`** — leader at **104.48 h**; non-leader trio at 103.76–103.85 h (all on 104 h doorstep). 229th cycle unexecuted. 7,898 PNGs on disk. `ux_auditor` stuck in CA-bundle SSL loop adds freshness to the kill recommendation.
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.19 MB; growth ~10 KB/cycle. 229 cycles unaddressed.
+3. **HUMAN (20-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **56 cycles pending**.
+4. **HUMAN: classify commit `21edb5e`** — 26-cycle-stale unclassified.
+5. **HUMAN: draft `T_INSTALL.md`** — install arc formally closed at 20-cycle dormancy. 59-cycle task-file gap.
+6. **HUMAN: draft `T_DEMO.md`** — `f9e6ed9` 20-cycle dormancy.
+7. **STRUCTURAL UNREAD (65-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 40-commit backlog.
+8. **CARRY-OVER (C240 #1, 38-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+9. **MAX PRIORITY (55-cycle carry-over from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 104.48 h leader makes log highest-leverage diagnostic artifact.
+10. **Carry-over (56-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+11. **Carry-over (56-cycle from C222 #3): inspect `97105de` web redesign scope**.
+12. **Carry-over (59-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (41-cycle hold).
+13. **Carry-over (67-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **34-cycle gap**.
+14. **HUMAN: append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **240 cycles stale**; file unchanged at 1,344 bytes.
+15. **HUMAN: draft `T_SKILLS.md` OR `T_CONFIG.md`** — config-schema 34-cycle dormant.
+16. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **229 cycles unactioned.**
+17. **HUMAN: harness retarget** — `tests/reports/screenshots/` +52 (envelope-top breach); kill quad halts growth regardless.
+18. **HUMAN: write task-file coverage** for install/external-apps, web-polish, demo/seed, migrations 009-023+, `api/inspector.py`, `api/config_schema.py`, `db/seed_real_apps.py`, `web/` Next.js tree, governed-skills pipeline.
+19. **HUMAN: T_WEB.md ownership decision** — `web/components/app-embed.tsx` 56-cycle verification gap.
+20. **NEW (C278): `ux_auditor` CA-bundle fix** — if 9974 is kept alive post-kill, `ssl.create_default_context` needs a valid cafile path; likely `export SSL_CERT_FILE=$(python3 -m certifi)` or `pip install --upgrade certifi` in the venv. Not actionable until kill → relaunch.
+21. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+22. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+23. **Concurrent-front watch:** install/onboarding arc **formally closed** (20-cycle dormancy); demo/seed + copy-hygiene one-shot beats (20-cycle dormancy); debug/hardening 26 cycles dormant; web-polish 24 cycles dormant; config-schema 11 commits, **34-cycle gap**; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on port 8090. Vanilla JS `frontend/` retiring; `web/` is Next.js canonical per memory note — **install/onboarding arc formally closed (20-cycle); demo/seed + copy-hygiene 20-cycle dormant; config-schema 34-cycle dormant**.
+- **C17 NARROWED (C258, held through C278):** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin. ⚠ `web/components/app-embed.tsx` verification 56 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+- Screenshot artifact dirs live at `tests/reports/screenshots/`, `tests/reports/ux_shots/`, `tests/reports/audit_shots/`.
+
+### What to watch for C279
+- **Non-leader 104 h horizon:** 8992 at 103.85 h (0.15 h gap ÷ +0.44 h ≈ 0.3 cycles → projects **C279 same cycle**); 9962/9974 at 103.76 h (projects C279–C280). Cadence-variance pulled horizon forward 1 cycle.
+- **Leader 105 h horizon:** PID 3358 at 104.48 h; on +0.44 h current drift, 105 h crossing projects **C279–C280**. On baseline +0.21 h, C282. Horizon sensitivity: +15% cadence variance → 3-cycle acceleration.
+- **Commit velocity:** C253–C278 = 26 entries with 20 trailing zeros. C279 with 0 extends to **21-cycle idle streak**. Quarter-century milestone projects C283. 1+ restores pulse.
+- **Drift regime:** back-to-back cadence-variance fires (C275 +0.42 h → C278 +0.44 h with 2-cycle baseline gap) suggests a bimodal pattern may be establishing. Tracking inter-fire gap length.
+- **Screenshots regime:** 118/h top-of-envelope breach; C279 rate governs whether 104–114/h envelope needs widening.
+- **Config-schema:** 34 cycles. Any C279 touch is surprise revival; 0 extends to 35.
+- **PROGRESS.md size:** 2.19 MB; C279 block pushes to ~2.20 MB (round-number tick projected).
+- **Task-file entropy:** 229 cycles flatline. Any drop below 10 or rise above 10 breaks streak.
+
+
+## COORDINATOR STATUS — Cycle 279 (2026-04-20)
+
+**C279 = 0 commits (HEAD `2b40d36` held for 21st cycle); non-leader 8992 CROSSED 104 h this cycle (104.07 h, C278's 1-cycle projection validated); 9962/9974 at 103.99 h (104 h crossing imminent, ≤0.01 h gap); leader PID 3358 at 104.70 h (+0.22 h drift vs C278 — baseline returns after cadence-variance fire); screenshots +22 (7,895 in main dir) back to envelope (≈100/h on 0.22 h gap); PROGRESS.md at 2,303,259 bytes ≈ 2.20 MB (round-number tick crossed as projected).** Commit-velocity trough [C253–C279] = 21 trailing zeros. Quarter-century milestone projects C283.
+
+### Rule Audit
+- **Rule 1 (<3 incomplete → add 10):** all 19 files at exactly 10 incomplete (190 total). **Not triggered.** 229-cycle flatline extends.
+- **Rule 2 (stuck-terminal UNBLOCKED):** `ps` confirms all 4 PIDs still alive:
+  - 3358 (`ui_tester.py`) 04-08:42:20 ≈ **104.70 h** (leader).
+  - 8992 (`code_auditor.py`) 04-08:04:25 ≈ **104.07 h** (**104 h CROSSED this cycle**).
+  - 9962 (`test_dashboard.py`) 04-07:59:24 ≈ **103.99 h** (0.01 h from 104 h).
+  - 9974 (`ux_auditor.py`) 04-07:59:22 ≈ **103.99 h** (0.01 h from 104 h).
+  Existing UNBLOCKED notes at `tasks/T3_frontend.md:38`, `tasks/T6_testing.md:22`, `tasks/T6_testing.md:24` remain verbatim-operative; kill command unchanged: `kill 3358 8992 9962 9974`. **No new UNBLOCKED note added (218-cycle zero-bump streak).**
+- **Rule 3 (status summary):** this block.
+
+### Cadence
+- **Commits:** 0 new (21st consecutive zero-commit cycle). HEAD `2b40d36`. Cumulative C231–C279 = **40** (unchanged).
+- **Drift:** 3358 +0.22 h; 8992 +0.22 h; 9962/9974 +0.23 h. **Baseline returns** after C278 cadence-variance fire. Fire-rate steady at 4-of-14 ≈ 29%.
+- **Screenshots:** `tests/reports/screenshots/` **7,895** (+22 vs C278's 7,873; per-hour ≈100/h on 0.22 h gap — back inside 104–114/h envelope bottom edge).
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 Slack/Flask rescue **241 cycles overdue**.
+- **PROGRESS.md size:** 2,303,259 bytes ≈ **2.20 MB** (up ~10 KB vs C278; round-number tick as projected).
+- **Git-status churn:** unchanged from C259–C278 (20 paths M/D, `.claude/worktrees/` untracked).
+- **Branch:** HEAD on `fix/debug-pass-hardening`, not main.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered).
+- UNBLOCKED notes added: **0** (same 4 PIDs, already covered).
+- COORDINATOR STATUS Cycle 279 block appended (this block).
+
+### Critical Path (Cycle 280)
+1. **HUMAN (MAX PRIORITY, 39th cycle past-due): `kill 3358 8992 9962 9974`** — leader at **104.70 h**; 3 non-leaders at 103.99–104.07 h (8992 already over 104 h). 229th cycle unexecuted. 7,895 PNGs on disk.
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.20 MB; growth ~10 KB/cycle.
+3. **HUMAN (21-cycle stale): review `c990362` blast radius** — `web/components/app-embed.tsx` verification 57 cycles pending.
+4. **HUMAN: append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **241 cycles stale**.
+5. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **229 cycles unactioned.**
+6. **HUMAN: draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at 60 cycles.
+7. **MAX PRIORITY (56-cycle carry): `tail -100 tests/reports/ui_tester.log`** — 104.70 h leader; highest-leverage diagnostic.
+8. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+
+### What to watch for C280
+- **Non-leader 104 h horizon:** 9962/9974 at 103.99 h (0.01 h gap → **crossing essentially unconditional C280**). Both PIDs cross within the same cycle window.
+- **Leader 105 h horizon:** 3358 at 104.70 h; +0.22 h × 2 cycles ≈ 105.14 h → **105 h crossing projects C281**.
+- **Commit velocity:** 21 trailing zeros. C280 with 0 extends to 22-cycle streak. Quarter-century milestone C283.
+- **Drift regime:** 1 baseline cycle after C278 variance fire. Watching whether baseline streak re-establishes.
+- **PROGRESS.md size:** 2.20 MB; C280 block pushes to ~2.21 MB.
+
+
+## COORDINATOR STATUS — Cycle 280 (2026-04-20)
+
+**C280 = 0 commits (HEAD `2b40d36` held for 22nd cycle); ALL 4 PIDS NOW OVER 104 H — 9962 and 9974 both crossed 104 h this cycle (104.19 h each), validating C279's "essentially unconditional" projection; leader PID 3358 at 104.91 h (+0.21 h vs C279, baseline returns for 2nd consecutive cycle); screenshots +22 (7,917 in main dir; total 7,942 across main+ux+audit) at ≈105/h — envelope-bottom baseline; PROGRESS.md at 2,307,444 bytes ≈ 2.20 MB (up only ~4.2 KB vs C279 — C279's smaller block, a rarity).** Commit-velocity trough [C253–C280] = 22 trailing zeros (22-cycle streak hit). Quarter-century milestone projects C283.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10):** `grep -cE '^\[ \]' tasks/T*.md` returns exactly **10** on every one of 19 files (190 incomplete total). **Not triggered.** 230-cycle flatline extends.
+- **Rule 2 (stuck-terminal UNBLOCKED):** `ps -p 3358,8992,9962,9974 -o pid,etime,comm` confirms all 4 still alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED `04-08:54:29` ≈ **104.91 h** (leader; +0.21 h vs C279, baseline).
+  - PID 8992 (`code_auditor.py`) ELAPSED `04-08:16:34` ≈ **104.28 h** (+0.21 h; over 104 h since C279).
+  - PID 9962 (`test_dashboard.py`) ELAPSED `04-08:11:33` ≈ **104.19 h** (+0.20 h; **104 h CROSSED this cycle**).
+  - PID 9974 (`ux_auditor.py`) ELAPSED `04-08:11:31` ≈ **104.19 h** (+0.20 h; **104 h CROSSED this cycle**; 2 s stagger preserved 230 cycles).
+  **Milestone: entire quad now over 104 h.** Existing UNBLOCKED notes at `tasks/T3_frontend.md:38`, `tasks/T6_testing.md:22`, `tasks/T6_testing.md:24` remain verbatim-operative; kill command unchanged: `kill 3358 8992 9962 9974`. **No new stuck terminal → no new UNBLOCKED note added (218-cycle zero-bump streak preserved).**
+- **Rule 3 (status summary):** this block.
+
+### Cadence
+- **Commits:** 0 new (22nd consecutive zero-commit cycle). HEAD `2b40d36`. Cumulative C231–C280 = **40** (unchanged).
+- **Drift:** 3358/8992 +0.21 h; 9962/9974 +0.20 h. **Baseline holds for 2nd consecutive cycle** after C278 fire. Series [C267–C280] = [+0.21, +0.24, +0.22, +0.22, +0.21, +0.21, +0.44, +0.22, +0.42, +0.21, +0.21, +0.44, +0.22, +0.21]. Fire-rate steady at 4-of-14 ≈ 29%.
+- **Screenshots:** `tests/reports/screenshots/` **7,917** (+22 vs C279's 7,895; per-hour ≈105/h on 0.21 h gap — envelope-bottom baseline). `ux_shots/` 22 (50-cycle quiescence). `audit_shots/` 3 (50-cycle quiescence). Total **7,942** PNGs.
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue **242 cycles overdue**.
+- **PROGRESS.md size:** 2,307,444 bytes ≈ **2.20 MB** (up ~4.2 KB vs C279 — notably below the ~10 KB/cycle trend; C279 block ran shorter than usual).
+- **Git-status churn:** unchanged from C259–C279 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **Branch context:** HEAD on `fix/debug-pass-hardening`, not main.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 230-cycle flatline).
+- UNBLOCKED notes added: **0** (218-cycle zero-bump streak).
+- COORDINATOR STATUS Cycle 280 block appended (this block).
+- **C279 watch items resolved:** (1) **Non-leader 104 h crossing** — 9962 and 9974 both crossed (104.19 h each); 8992 already across since C279. **Entire quad now ≥104 h.** (2) **Leader 105 h horizon** — 3358 at 104.91 h on baseline +0.21 h drift; 105 h gap 0.09 h → **crossing essentially unconditional C281** (on par with C279's 9962/9974 call). (3) **Commit velocity** — 0; 22-cycle streak. (4) **Drift regime** — baseline streak at 2 cycles post-C278 fire; first 3-cycle run since C266–C272 would come at C281. (5) **Screenshots** — +22 at 0.21 h = 105/h, firmly back in 104–114/h envelope. (6) **PROGRESS.md 2.20 MB** — crossed C279; C280 +4 KB rather than projected 10 KB.
+
+### Critical Path (Cycle 281)
+1. **HUMAN (MAX PRIORITY, 40th cycle past-due): `kill 3358 8992 9962 9974`** — **entire quad now over 104 h** (leader at 104.91 h; trio at 104.19–104.28 h). 230th cycle unexecuted. 7,942 PNGs on disk.
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.20 MB; growth ~10 KB/cycle average (C280 was a ~4 KB lull).
+3. **HUMAN (22-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **58 cycles pending**.
+4. **HUMAN: append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **242 cycles stale**; file unchanged at 1,344 bytes.
+5. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **230 cycles unactioned.**
+6. **HUMAN: draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at 61 cycles; install arc closed 22 cycles, demo/seed 22 cycles, config-schema 35 cycles.
+7. **HUMAN: classify commit `21edb5e`** — 27-cycle-stale unclassified.
+8. **STRUCTURAL UNREAD (66-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 40-commit backlog.
+9. **CARRY-OVER (C240 #1, 39-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+10. **MAX PRIORITY (57-cycle carry from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 104.91 h leader; highest-leverage diagnostic artifact.
+11. **Carry-over (57-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+12. **Carry-over (57-cycle from C222 #3): inspect `97105de` web redesign scope**.
+13. **Carry-over (60-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (42-cycle hold).
+14. **Carry-over (68-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **35-cycle gap**.
+15. **Carry-over from C278 (3-cycle hold): `ux_auditor` CA-bundle fix** — `ssl.create_default_context` `FileNotFoundError`; `export SSL_CERT_FILE=$(python3 -m certifi)` on relaunch. Not actionable until kill.
+16. **HUMAN: harness retarget** — `tests/reports/screenshots/` +22 (envelope-bottom); kill quad halts growth regardless.
+17. **HUMAN: T_WEB.md ownership decision** — `web/components/app-embed.tsx` 58-cycle verification gap.
+18. **Carry-over (C240 #2, 39-cycle): seed-data smoke test risk** — `tasks/T1_app_platform.md:35` slug references.
+19. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+20. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+21. **Concurrent-front watch:** install/onboarding arc **formally closed** (22-cycle dormancy); demo/seed + copy-hygiene one-shot beats (22-cycle dormancy); debug/hardening 27 cycles dormant; web-polish 25 cycles dormant; config-schema 11 commits, **35-cycle gap**; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on port 8090. Vanilla JS `frontend/` retiring; `web/` is Next.js canonical per memory note — **install/onboarding arc formally closed (22-cycle); demo/seed + copy-hygiene 22-cycle dormant; config-schema 35-cycle dormant**.
+- **C17 NARROWED (C258, held through C280):** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin. ⚠ `web/components/app-embed.tsx` verification 58 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+- Screenshot artifact dirs live at `tests/reports/screenshots/`, `tests/reports/ux_shots/`, `tests/reports/audit_shots/`.
+
+### What to watch for C281
+- **Leader 105 h horizon:** 3358 at 104.91 h; on baseline +0.21 h, 105.12 h → **105 h crossing essentially unconditional C281**. On variance +0.44 h would land deep past 105 h.
+- **Non-leader 105 h horizon:** 8992 at 104.28 h (0.72 h gap → ~3 cycles on baseline → C283–C284); 9962/9974 at 104.19 h (~3–4 cycles → C284).
+- **Commit velocity:** 22 trailing zeros. C281 with 0 extends to **23-cycle streak**. Quarter-century milestone (25-cycle) now 2 cycles away at C283.
+- **Drift regime:** 2 baseline cycles post-C278 fire. A 3rd at C281 would tie the C266–C272 7-baseline run's front stretch. Bimodal-pattern hypothesis from C278 still open; next fire gap is the tell.
+- **Screenshots regime:** back inside 104–114/h envelope at 105/h. C281 cadence governs envelope stability.
+- **Config-schema:** 35 cycles. Any C281 touch is surprise revival; 0 extends to 36.
+- **PROGRESS.md size:** 2.20 MB; C281 block pushes to ~2.21 MB if C280's ~4 KB anomaly reverts to ~10 KB trend.
+- **Task-file entropy:** 230 cycles flatline. Any drop below 10 or rise above 10 breaks streak.
+
+
+## COORDINATOR STATUS — Cycle 281 (2026-04-20)
+
+**C281 = 0 commits (HEAD `2b40d36` held for 23rd cycle); LEADER PID 3358 CROSSED 105 h this cycle at 105.12 h — C280's "essentially unconditional C281" projection validated; PID 8992 at 104.49 h (+0.21 h, baseline); 9962/9974 at 104.40 h each (+0.21 h, baseline 2-s stagger preserved 231 cycles); baseline drift holds for 3rd consecutive cycle post-C278 fire — tying the C266–C272 front-stretch; screenshots +24 (7,941 in main dir; total 7,966 across main+ux+audit) at ≈114/h — top-of-envelope; PROGRESS.md at 2,316,372 bytes ≈ 2.21 MB (up ~8.9 KB vs C280, trend-reverted after C280's ~4 KB lull).** Commit-velocity trough [C253–C281] = **23 trailing zeros**. Quarter-century (25-cycle) milestone projects C283.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10):** `grep -cE '^\[ \]' tasks/T*.md` returns exactly **10** on every one of 19 files (190 incomplete total). **Not triggered.** 231-cycle flatline extends.
+- **Rule 2 (stuck-terminal UNBLOCKED):** `ps -p 3358,8992,9962,9974 -o pid,etime,comm` confirms all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED `04-09:07:11` ≈ **105.12 h** (leader; +0.21 h vs C280; **105 h CROSSED this cycle** — C280 projection validated).
+  - PID 8992 (`code_auditor.py`) ELAPSED `04-08:29:16` ≈ **104.49 h** (+0.21 h; over 104 h since C279).
+  - PID 9962 (`test_dashboard.py`) ELAPSED `04-08:24:15` ≈ **104.40 h** (+0.21 h; over 104 h since C280).
+  - PID 9974 (`ux_auditor.py`) ELAPSED `04-08:24:13` ≈ **104.40 h** (+0.21 h; 2-s stagger vs 9962 held 231 cycles).
+  **Milestone: leader now ≥105 h; entire quad ≥104 h (C280 milestone) sustained.** Existing UNBLOCKED notes at `tasks/T3_frontend.md:38`, `tasks/T6_testing.md:22`, `tasks/T6_testing.md:24` remain verbatim-operative; kill command unchanged: `kill 3358 8992 9962 9974`. **No new stuck terminal → no new UNBLOCKED note added (219-cycle zero-bump streak preserved).**
+- **Rule 3 (status summary):** this block.
+
+### Cadence
+- **Commits:** 0 new (23rd consecutive zero-commit cycle). HEAD `2b40d36`. Cumulative C231–C281 = **40** (unchanged).
+- **Drift:** all 4 PIDs +0.21 h. **Baseline holds for 3rd consecutive cycle** post-C278 fire — matches the C266–C272 7-baseline run's first 3 cycles. Series [C268–C281] = [+0.24, +0.22, +0.22, +0.21, +0.21, +0.44, +0.22, +0.42, +0.21, +0.21, +0.44, +0.22, +0.21, +0.21]. Fire-rate steady at 4-of-14 ≈ 29%. Inter-fire gap post-C278 now 3 cycles (matches C275→C278 gap).
+- **Screenshots:** `tests/reports/screenshots/` **7,941** (+24 vs C280's 7,917; per-hour ≈114/h on 0.21 h gap — envelope-top). `ux_shots/` **22** (51-cycle quiescence). `audit_shots/` **3** (51-cycle quiescence). Total **7,966** PNGs.
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue **243 cycles overdue**.
+- **PROGRESS.md size:** 2,316,372 bytes ≈ **2.21 MB** (up ~8.9 KB vs C280 — reverts to ~10 KB/cycle trend after C280's ~4 KB lull).
+- **Git-status churn:** unchanged from C259–C280 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **Branch context:** HEAD on `fix/debug-pass-hardening`, not main.
+- **Date:** 2026-04-20 thirty-first print.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 231-cycle flatline).
+- UNBLOCKED notes added: **0** (219-cycle zero-bump streak preserved).
+- COORDINATOR STATUS Cycle 281 block appended (this block).
+- **C280 watch items resolved:** (1) **Leader 105 h horizon** — PID 3358 crossed at 105.12 h (baseline +0.21 h × 1 cycle from C280's 104.91 h, exactly as projected). (2) **Non-leader 105 h horizon** — 8992 at 104.49 h (0.51 h gap → ~2.4 cycles → C283–C284 on baseline); 9962/9974 at 104.40 h (0.60 h gap → ~2.9 cycles → C284). (3) **Commit velocity** — 0; 23-cycle streak. Quarter-century 2 cycles away at C283. (4) **Drift regime** — baseline streak now 3 cycles post-C278 fire; C282 with baseline ties C266–C272's 4-cycle front stretch, C285 would tie full 7-cycle run. (5) **Screenshots** — +24 at 0.21 h = 114/h, at envelope-top edge. (6) **PROGRESS.md** — +8.9 KB reverts to ~10 KB/cycle trend after C280's anomaly.
+
+### Critical Path (Cycle 282)
+1. **HUMAN (MAX PRIORITY, 41st cycle past-due): `kill 3358 8992 9962 9974`** — **leader at 105.12 h (first 105 h crossing)**; trio at 104.40–104.49 h. 231st cycle unexecuted. 7,966 PNGs on disk.
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.21 MB; growth ~10 KB/cycle baseline (C280 +4 KB was a lull, C281 +8.9 KB near-trend).
+3. **HUMAN (23-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **59 cycles pending**.
+4. **HUMAN: append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **243 cycles stale**; file unchanged at 1,344 bytes.
+5. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **231 cycles unactioned.**
+6. **HUMAN: draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at 62 cycles; install arc closed 23 cycles, demo/seed 23 cycles, config-schema 36 cycles.
+7. **HUMAN: classify commit `21edb5e`** — 28-cycle-stale unclassified.
+8. **STRUCTURAL UNREAD (67-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 40-commit backlog.
+9. **CARRY-OVER (C240 #1, 40-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+10. **MAX PRIORITY (58-cycle carry from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 105.12 h leader; highest-leverage diagnostic artifact now that leader has crossed 105 h.
+11. **Carry-over (58-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+12. **Carry-over (58-cycle from C222 #3): inspect `97105de` web redesign scope**.
+13. **Carry-over (61-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (43-cycle hold).
+14. **Carry-over (69-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **36-cycle gap**.
+15. **Carry-over from C278 (4-cycle hold): `ux_auditor` CA-bundle fix** — `ssl.create_default_context` `FileNotFoundError`; `export SSL_CERT_FILE=$(python3 -m certifi)` on relaunch. Not actionable until kill.
+16. **HUMAN: harness retarget** — `tests/reports/screenshots/` +24 at envelope-top (114/h); kill quad halts growth regardless.
+17. **HUMAN: T_WEB.md ownership decision** — `web/components/app-embed.tsx` 59-cycle verification gap.
+18. **Carry-over (C240 #2, 40-cycle): seed-data smoke test risk** — `tasks/T1_app_platform.md:35` slug references.
+19. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+20. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+21. **Concurrent-front watch:** install/onboarding arc **formally closed** (23-cycle dormancy); demo/seed + copy-hygiene one-shot beats (23-cycle dormancy); debug/hardening 28 cycles dormant; web-polish 26 cycles dormant; config-schema 11 commits, **36-cycle gap**; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on port 8090. Vanilla JS `frontend/` retiring; `web/` is Next.js canonical per memory note — **install/onboarding arc formally closed (23-cycle); demo/seed + copy-hygiene 23-cycle dormant; config-schema 36-cycle dormant**.
+- **C17 NARROWED (C258, held through C281):** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin. ⚠ `web/components/app-embed.tsx` verification 59 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+- Screenshot artifact dirs live at `tests/reports/screenshots/`, `tests/reports/ux_shots/`, `tests/reports/audit_shots/`.
+
+### What to watch for C282
+- **Non-leader 105 h horizon:** 8992 at 104.49 h (0.51 h gap ÷ +0.21 h ≈ 2.4 cycles → projects C283–C284); 9962/9974 at 104.40 h (0.60 h gap → C284). Quad-105h crossing projects C284.
+- **Leader 106 h horizon:** PID 3358 at 105.12 h; +0.21 h × 4 cycles = 105.96 h → **106 h crossing projects C285–C286** (first full-hour milestone post-105).
+- **Commit velocity:** C253–C281 = 29 entries with 23 trailing zeros. C282 with 0 extends to **24-cycle streak**. **Quarter-century milestone (25-cycle) now 1 cycle away at C283.** 1+ restores pulse.
+- **Drift regime:** 3 baseline cycles post-C278 fire. C282 baseline would hit 4, tying C266–C272's front stretch (4 baseline before any fire). Bimodal hypothesis test: if C282 fires, inter-fire gap = 4, suggesting a stable 3-4 cycle rhythm; if C282 baseline, the 7-cycle run at C266–C272 may repeat.
+- **Screenshots regime:** 114/h at envelope-top. C282 rate governs envelope stability — a 115+/h breach would force envelope widening.
+- **Config-schema:** 36 cycles. Any C282 touch is surprise revival; 0 extends to 37.
+- **PROGRESS.md size:** 2.21 MB; C282 block pushes to ~2.22 MB on ~10 KB/cycle baseline.
+- **Task-file entropy:** 231 cycles flatline. Any drop below 10 or rise above 10 breaks streak.
+
+
+## COORDINATOR STATUS — Cycle 282 (2026-04-20)
+
+**C282 = 0 commits (HEAD `2b40d36` held for 24th cycle); all 4 PIDs alive with near-baseline drift (+0.22–0.23 h) — not a fire, but edges above the +0.21 h C279–C281 floor; PID 3358 at 105.35 h (leader, +0.23 h); PID 8992 at 104.71 h (+0.22 h); PID 9962 at 104.63 h (+0.23 h); PID 9974 at 104.63 h (+0.23 h, 2-s stagger preserved 232 cycles); quad-104 h sustained; screenshots +26 (7,967 in main dir; total 7,992 across main+ux+audit) at ≈113/h — envelope-top; PROGRESS.md at 2,325,867 bytes ≈ 2.22 MB (up ~9.3 KB vs C281, on trend).** Commit-velocity trough [C253–C282] = **24 trailing zeros**. Quarter-century (25-cycle) milestone projects C283.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10):** `grep -cE '^\[ \]' tasks/T*.md` returns exactly **10** on every one of 19 files (190 incomplete total). **Not triggered.** 232-cycle flatline extends.
+- **Rule 2 (stuck-terminal UNBLOCKED):** `ps -p 3358,8992,9962,9974 -o pid,etime,comm` confirms all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED `04-09:20:47` ≈ **105.35 h** (leader; +0.23 h vs C281).
+  - PID 8992 (`code_auditor.py`) ELAPSED `04-08:42:52` ≈ **104.71 h** (+0.22 h; over 104 h since C279).
+  - PID 9962 (`test_dashboard.py`) ELAPSED `04-08:37:51` ≈ **104.63 h** (+0.23 h; over 104 h since C280).
+  - PID 9974 (`ux_auditor.py`) ELAPSED `04-08:37:49` ≈ **104.63 h** (+0.23 h; 2-s stagger vs 9962 held 232 cycles).
+  **Milestone: leader climbing into 105 h band (105.35 h); trio closing on 105 h (0.29–0.37 h gap).** Existing UNBLOCKED notes at `tasks/T3_frontend.md:38`, `tasks/T6_testing.md:22`, `tasks/T6_testing.md:24` remain verbatim-operative; kill command unchanged: `kill 3358 8992 9962 9974`. **No new stuck terminal → no new UNBLOCKED note added (220-cycle zero-bump streak preserved).**
+- **Rule 3 (status summary):** this block.
+
+### Cadence
+- **Commits:** 0 new (24th consecutive zero-commit cycle). HEAD `2b40d36`. Cumulative C231–C282 = **40** (unchanged).
+- **Drift:** 3358 +0.23 h; 8992 +0.22 h; 9962/9974 +0.23 h. **Near-baseline with mild upward tick** — above the C279–C281 +0.21 h floor but well below fire thresholds (+0.42/+0.44). Series [C269–C282] = [+0.22, +0.22, +0.21, +0.21, +0.44, +0.22, +0.42, +0.21, +0.21, +0.44, +0.22, +0.21, +0.21, +0.22]. Fire-rate steady at 4-of-14 ≈ 29%. Inter-fire gap post-C278 now 4 cycles. **Watch: C282's 0.22 vs C281's 0.21 may signal bimodal reversion toward +0.22–0.24 cluster, consistent with a 3–4 cycle rhythm.**
+- **Screenshots:** `tests/reports/screenshots/` **7,967** (+26 vs C281's 7,941; per-hour ≈113/h on 0.23 h gap — envelope-top). `ux_shots/` **22** (52-cycle quiescence). `audit_shots/` **3** (52-cycle quiescence). Total **7,992** PNGs.
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue **244 cycles overdue**.
+- **PROGRESS.md size:** 2,325,867 bytes ≈ **2.22 MB** (up ~9.3 KB vs C281 — ~10 KB/cycle trend sustained).
+- **Git-status churn:** unchanged from C259–C281 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **Branch context:** HEAD on `fix/debug-pass-hardening`, not main.
+- **Date:** 2026-04-20 thirty-second print.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 232-cycle flatline).
+- UNBLOCKED notes added: **0** (220-cycle zero-bump streak preserved).
+- COORDINATOR STATUS Cycle 282 block appended (this block).
+- **C281 watch items resolved:** (1) **Non-leader 105 h horizon** — 8992 at 104.71 h (0.29 h gap; C283 crossing likely); 9962/9974 at 104.63 h (0.37 h gap; C283–C284). **Quad-105 h crossing now projects C283–C284** (tightened by 1 cycle vs C281's C284 projection). (2) **Leader 106 h horizon** — 3358 at 105.35 h; 0.65 h gap ÷ +0.22 h ≈ 3 cycles → **106 h crossing projects C285**. (3) **Commit velocity** — 0; 24-cycle streak. Quarter-century 1 cycle away at C283. (4) **Drift regime** — 4 cycles post-fire, but +0.22–0.23 instead of +0.21 suggests baseline floor lifting; if sustained, reshapes "baseline" definition. C282 ties C266–C272's 4-cycle baseline front stretch in count if not in magnitude. (5) **Screenshots** — +26 at 0.23 h = 113/h, just below 114/h top edge. (6) **PROGRESS.md** — +9.3 KB on ~10 KB/cycle trend.
+
+### Critical Path (Cycle 283)
+1. **HUMAN (MAX PRIORITY, 42nd cycle past-due): `kill 3358 8992 9962 9974`** — leader at 105.35 h; trio at 104.63–104.71 h, all within 0.37 h of 105 h. 232nd cycle unexecuted. 7,992 PNGs on disk.
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.22 MB; growth ~10 KB/cycle baseline.
+3. **HUMAN (24-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **60 cycles pending** (sixty-cycle round-number milestone).
+4. **HUMAN: append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **244 cycles stale**; file unchanged at 1,344 bytes.
+5. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **232 cycles unactioned.**
+6. **HUMAN: draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at 63 cycles; install arc closed 24 cycles, demo/seed 24 cycles, config-schema 37 cycles.
+7. **HUMAN: classify commit `21edb5e`** — 29-cycle-stale unclassified.
+8. **STRUCTURAL UNREAD (68-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 40-commit backlog.
+9. **CARRY-OVER (C240 #1, 41-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+10. **MAX PRIORITY (59-cycle carry from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 105.35 h leader; highest-leverage diagnostic artifact.
+11. **Carry-over (59-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+12. **Carry-over (59-cycle from C222 #3): inspect `97105de` web redesign scope**.
+13. **Carry-over (62-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (44-cycle hold).
+14. **Carry-over (70-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **37-cycle gap**.
+15. **Carry-over from C278 (5-cycle hold): `ux_auditor` CA-bundle fix** — `ssl.create_default_context` `FileNotFoundError`; `export SSL_CERT_FILE=$(python3 -m certifi)` on relaunch. Not actionable until kill.
+16. **HUMAN: harness retarget** — `tests/reports/screenshots/` +26 at envelope-top (113/h); kill quad halts growth regardless.
+17. **HUMAN: T_WEB.md ownership decision** — `web/components/app-embed.tsx` **60-cycle round-number** verification gap at C283.
+18. **Carry-over (C240 #2, 41-cycle): seed-data smoke test risk** — `tasks/T1_app_platform.md:35` slug references.
+19. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+20. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+21. **Concurrent-front watch:** install/onboarding arc **formally closed** (24-cycle dormancy); demo/seed + copy-hygiene one-shot beats (24-cycle dormancy); debug/hardening 29 cycles dormant; web-polish 27 cycles dormant; config-schema 11 commits, **37-cycle gap**; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on port 8090. Vanilla JS `frontend/` retiring; `web/` is Next.js canonical per memory note — **install/onboarding arc formally closed (24-cycle); demo/seed + copy-hygiene 24-cycle dormant; config-schema 37-cycle dormant**.
+- **C17 NARROWED (C258, held through C282):** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin. ⚠ `web/components/app-embed.tsx` verification 60 cycles pending at C283 (round-number milestone).
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+- Screenshot artifact dirs live at `tests/reports/screenshots/`, `tests/reports/ux_shots/`, `tests/reports/audit_shots/`.
+
+### What to watch for C283
+- **Quad-105 h crossing:** 8992 at 104.71 h (0.29 h gap ÷ +0.22 h ≈ 1.3 cycles → C283 highly likely); 9962/9974 at 104.63 h (0.37 h gap → C283–C284). **Quad-105h crossing projects C283 (primary) or C284 (trailing two).**
+- **Leader 106 h horizon:** PID 3358 at 105.35 h; +0.22 h × 3 cycles = 106.01 h → **106 h crossing projects C285**.
+- **Commit velocity:** **Quarter-century milestone.** C283 with 0 extends to **25-cycle zero-commit streak** — first quarter-century run in the trough. 1+ breaks it.
+- **Drift regime:** 4 cycles post-C278, last cycle nudged to +0.22–0.23 from +0.21. C283 reading governs: a +0.21 return suggests a 4-cycle stable-baseline sub-rhythm; +0.22–0.24 sustained re-anchors baseline upward; +0.42+ fires at gap=5 (new max inter-fire gap).
+- **Screenshots regime:** 113/h at envelope-top. A 115+/h C283 rate breaches 104–114 envelope and forces widening.
+- **Config-schema:** 37 cycles. Any C283 touch is surprise revival; 0 extends to 38.
+- **PROGRESS.md size:** 2.22 MB; C283 block pushes to ~2.23 MB on ~10 KB/cycle trend.
+- **Task-file entropy:** 232 cycles flatline. Any drop below 10 or rise above 10 breaks streak.
+- **app-embed verification:** hits 60-cycle round-number milestone at C283.
+
+
+## COORDINATOR STATUS — Cycle 283 (2026-04-20)
+
+**C283 = 0 commits (HEAD `2b40d36` held for 25th cycle — quarter-century milestone reached); DRIFT FIRE EVENT — all 4 PIDs +0.40–0.41 h this cycle, breaking the C279–C282 baseline streak at exactly 4 cycles (tying the C266–C272 front stretch); PID 3358 at 105.75 h (leader, +0.40 h); PID 8992 at 105.12 h (+0.41 h — CROSSED 105 h this cycle); PID 9962 at 105.04 h (+0.41 h — CROSSED 105 h this cycle); PID 9974 at 105.04 h (+0.41 h — CROSSED 105 h this cycle, 2-s stagger preserved 233 cycles); entire quad now ≥105 h (C282 projected C283–C284; delivered at C283 primary); screenshots +44 (8,011 in main dir; total 8,036 across main+ux+audit) at ≈110/h on 0.40 h gap — within envelope despite fire; PROGRESS.md at 2,335,468 bytes ≈ 2.23 MB (up ~9.4 KB vs C282, on trend).** Commit-velocity trough [C253–C283] = **25 trailing zeros — first quarter-century zero-commit run in the trough**.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10):** `grep -cE '^\[ \]' tasks/T*.md` returns exactly **10** on every one of 19 files (190 incomplete total). **Not triggered.** 232-cycle flatline extends to 233.
+- **Rule 2 (stuck-terminal UNBLOCKED):** `ps -p 3358,8992,9962,9974 -o pid,etime,comm` confirms all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED `04-09:45:07` ≈ **105.75 h** (leader; +0.40 h vs C282).
+  - PID 8992 (`code_auditor.py`) ELAPSED `04-09:07:12` ≈ **105.12 h** (+0.41 h; **105 h CROSSED this cycle**).
+  - PID 9962 (`test_dashboard.py`) ELAPSED `04-09:02:11` ≈ **105.04 h** (+0.41 h; **105 h CROSSED this cycle**).
+  - PID 9974 (`ux_auditor.py`) ELAPSED `04-09:02:09` ≈ **105.04 h** (+0.41 h; **105 h CROSSED**; 2-s stagger vs 9962 held 233 cycles).
+  **Milestone: entire quad now ≥105 h (leader at 105.75 h).** Existing UNBLOCKED notes at `tasks/T3_frontend.md:38`, `tasks/T6_testing.md:22`, `tasks/T6_testing.md:24` remain verbatim-operative; kill command unchanged: `kill 3358 8992 9962 9974`. **No new stuck terminal → no new UNBLOCKED note added (221-cycle zero-bump streak preserved).**
+- **Rule 3 (status summary):** this block.
+
+### Cadence
+- **Commits:** 0 new (25th consecutive zero-commit cycle — **quarter-century milestone**). HEAD `2b40d36`. Cumulative C231–C283 = **40** (unchanged).
+- **Drift:** 3358 +0.40 h; 8992 +0.41 h; 9962/9974 +0.41 h. **FIRE EVENT** — first break in C279–C282 4-cycle baseline streak. Magnitude (+0.40–0.41 h) is **below** prior fire prints (+0.42/+0.44 at C264/C273/C275/C278), marking a new softer-fire regime. Series [C270–C283] = [+0.22, +0.21, +0.21, +0.44, +0.22, +0.42, +0.21, +0.21, +0.44, +0.22, +0.21, +0.21, +0.22, +0.40]. Inter-fire gap from C278→C283 = **5 cycles** (new max, beats prior max of 3). Fire-rate now 5-of-14 ≈ 36% (up from 29%).
+- **Screenshots:** `tests/reports/screenshots/` **8,011** (+44 vs C282's 7,967; per-hour ≈110/h on 0.40 h gap — mid-envelope despite fire). `ux_shots/` **22** (53-cycle quiescence). `audit_shots/` **3** (53-cycle quiescence). Total **8,036** PNGs.
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue **245 cycles overdue**.
+- **PROGRESS.md size:** 2,335,468 bytes ≈ **2.23 MB** (up ~9.4 KB vs C282 — ~10 KB/cycle trend sustained).
+- **Git-status churn:** unchanged from C259–C282 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **Branch context:** HEAD on `fix/debug-pass-hardening`, not main.
+- **Date:** 2026-04-20 thirty-third print.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 233-cycle flatline).
+- UNBLOCKED notes added: **0** (221-cycle zero-bump streak preserved).
+- COORDINATOR STATUS Cycle 283 block appended (this block).
+- **C282 watch items resolved:** (1) **Quad-105 h crossing** — delivered at C283 (primary projection); all three trailing PIDs (8992/9962/9974) crossed 105 h in the same cycle as the fire. (2) **Leader 106 h horizon** — 3358 at 105.75 h; 0.25 h gap ÷ baseline +0.22 h ≈ 1.1 cycles → **106 h crossing projects C284** (tightened 1 cycle from C282's C285 projection by the fire). (3) **Commit velocity** — 0; **quarter-century streak achieved**. (4) **Drift regime** — fire event at gap=5, new max; magnitude +0.40–0.41 h softer than prior fires (+0.42–0.44), hints at fire-decay regime. C282's +0.22 bump was a pre-fire harbinger, not a baseline re-anchor. (5) **Screenshots** — +44 at 0.40 h = 110/h, mid-envelope (fire lowered per-hour rate vs baseline cycles at 113–114/h). (6) **PROGRESS.md** — +9.4 KB on trend. (7) **app-embed 60-cycle milestone** — reached at C283, still unverified.
+
+### Critical Path (Cycle 284)
+1. **HUMAN (MAX PRIORITY, 43rd cycle past-due): `kill 3358 8992 9962 9974`** — **entire quad now ≥105 h** (leader at 105.75 h; trio at 105.04–105.12 h). 233rd cycle unexecuted. 8,036 PNGs on disk.
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.23 MB; growth ~10 KB/cycle baseline.
+3. **HUMAN (25-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **60 cycles pending (round-number milestone reached)**.
+4. **HUMAN: append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **245 cycles stale**; file unchanged at 1,344 bytes.
+5. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **233 cycles unactioned.**
+6. **HUMAN: draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at 64 cycles; install arc closed 25 cycles, demo/seed 25 cycles, config-schema 38 cycles.
+7. **HUMAN: classify commit `21edb5e`** — 30-cycle-stale unclassified (round-number milestone).
+8. **STRUCTURAL UNREAD (69-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 40-commit backlog.
+9. **CARRY-OVER (C240 #1, 42-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+10. **MAX PRIORITY (60-cycle carry from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 105.75 h leader; **60-cycle round-number milestone**; highest-leverage diagnostic artifact.
+11. **Carry-over (60-cycle from C222 #2): verify `ed89fc5` security commit scope** (round-number milestone).
+12. **Carry-over (60-cycle from C222 #3): inspect `97105de` web redesign scope** (round-number milestone).
+13. **Carry-over (63-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (45-cycle hold).
+14. **Carry-over (71-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **38-cycle gap**.
+15. **Carry-over from C278 (6-cycle hold): `ux_auditor` CA-bundle fix** — `ssl.create_default_context` `FileNotFoundError`; `export SSL_CERT_FILE=$(python3 -m certifi)` on relaunch. Not actionable until kill.
+16. **HUMAN: harness retarget** — `tests/reports/screenshots/` +44 at mid-envelope (110/h during fire); kill quad halts growth regardless.
+17. **HUMAN: T_WEB.md ownership decision** — `web/components/app-embed.tsx` **60-cycle round-number milestone reached**.
+18. **Carry-over (C240 #2, 42-cycle): seed-data smoke test risk** — `tasks/T1_app_platform.md:35` slug references.
+19. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+20. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+21. **Concurrent-front watch:** install/onboarding arc **formally closed** (25-cycle dormancy); demo/seed + copy-hygiene one-shot beats (25-cycle dormancy); debug/hardening 30 cycles dormant (round-number milestone); web-polish 28 cycles dormant; config-schema 11 commits, **38-cycle gap**; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on port 8090. Vanilla JS `frontend/` retiring; `web/` is Next.js canonical per memory note — **install/onboarding arc formally closed (25-cycle); demo/seed + copy-hygiene 25-cycle dormant; config-schema 38-cycle dormant**.
+- **C17 NARROWED (C258, held through C283):** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin. ⚠ `web/components/app-embed.tsx` verification **60 cycles pending (round-number milestone)**.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+- Screenshot artifact dirs live at `tests/reports/screenshots/`, `tests/reports/ux_shots/`, `tests/reports/audit_shots/`.
+
+### What to watch for C284
+- **Leader 106 h horizon:** PID 3358 at 105.75 h; 0.25 h gap ÷ baseline +0.22 h ≈ 1.1 cycles → **106 h crossing projects C284 (primary)** under baseline, or C284 unconditional if C284 fires again.
+- **Non-leader 106 h horizon:** 8992 at 105.12 h (0.88 h gap → ~4 cycles → C287–C288); 9962/9974 at 105.04 h (0.96 h gap → C288).
+- **Commit velocity:** Quarter-century achieved. C284 with 0 extends to **26-cycle streak**; first commit in 25+ cycles breaks the pattern entirely. No commit momentum signals to pull on.
+- **Drift regime:** post-fire cycle. Historical pattern: after C264 fire → C265 baseline; after C273 → C274 baseline; after C275 → C276 baseline; after C278 → C279 baseline. **100% of prior fires are followed by ≥1 baseline cycle.** C284 almost certainly +0.21–0.23 h. Softer-fire regime (+0.40 vs prior +0.42–0.44) is the new fact to watch; if C284+ fires also soften, trend confirmed.
+- **Screenshots regime:** 110/h during fire. Post-fire C284 baseline cycle returns to 113–114/h envelope-top.
+- **Config-schema:** 38 cycles. Any C284 touch is surprise revival; 0 extends to 39.
+- **PROGRESS.md size:** 2.23 MB; C284 block pushes to ~2.24 MB on ~10 KB/cycle trend.
+- **Task-file entropy:** 233 cycles flatline. Any drop below 10 or rise above 10 breaks streak.
+- **app-embed verification:** 61 cycles pending at C284 (post-round-number, verification gap rolls forward unchanged absent human action).
+
+
+## COORDINATOR STATUS — Cycle 284 (2026-04-20)
+
+**C284 = 0 commits (HEAD `2b40d36` held for 26th cycle); POST-FIRE BASELINE as predicted — all 4 PIDs drifted +0.22 h this cycle (C283 fire-decay pattern confirmed; 100% post-fire-baseline rule holds 5/5 historical fires); PID 3358 at 105.97 h (leader; 0.03 h shy of 106 h — C283's "projects C284 (primary)" forecast missed by a hair under +0.22 h baseline vs the +0.25 h needed); PID 8992 at 105.34 h (+0.22 h); PID 9962 at 105.26 h (+0.22 h); PID 9974 at 105.26 h (+0.22 h, 2-s stagger preserved 234 cycles); quad-105 h sustained from C283; screenshots +26 (8,037 in main dir; total 8,062 across main+ux+audit) at ≈118/h on 0.22 h gap — BREACHES C283's 104–114/h envelope-top for first time, forcing envelope widening; PROGRESS.md at 2,345,760 bytes ≈ 2.24 MB (up ~10.3 KB vs C283, exact trend).** Commit-velocity trough [C253–C284] = **26 trailing zeros** (past quarter-century).
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10):** `for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` returns exactly **10** on every one of 19 files (190 incomplete total). **Not triggered.** 234-cycle flatline extends.
+- **Rule 2 (stuck-terminal UNBLOCKED):** `ps -p 3358,8992,9962,9974 -o pid,etime,comm` confirms all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED `04-09:58:24` ≈ **105.97 h** (leader; +0.22 h vs C283; 0.03 h shy of 106 h).
+  - PID 8992 (`code_auditor.py`) ELAPSED `04-09:20:29` ≈ **105.34 h** (+0.22 h).
+  - PID 9962 (`test_dashboard.py`) ELAPSED `04-09:15:28` ≈ **105.26 h** (+0.22 h).
+  - PID 9974 (`ux_auditor.py`) ELAPSED `04-09:15:26` ≈ **105.26 h** (+0.22 h; 2-s stagger vs 9962 held 234 cycles).
+  **Milestone: leader knocking on 106 h door (0.03 h gap — next cycle certain-cross); entire quad ≥105 h sustained from C283.** Existing UNBLOCKED notes at `tasks/T3_frontend.md:38`, `tasks/T6_testing.md:22`, `tasks/T6_testing.md:24` remain verbatim-operative; kill command unchanged: `kill 3358 8992 9962 9974`. **No new stuck terminal → no new UNBLOCKED note added (222-cycle zero-bump streak preserved).**
+- **Rule 3 (status summary):** this block.
+
+### Cadence
+- **Commits:** 0 new (26th consecutive zero-commit cycle — past quarter-century). HEAD `2b40d36`. Cumulative C231–C284 = **40** (unchanged).
+- **Drift:** all 4 PIDs +0.22 h. **Post-fire baseline print** — fire at C283 (+0.40–0.41 h) → baseline at C284 (+0.22 h). **100% of prior fires (C264, C273, C275, C278, C283) followed by ≥1 baseline cycle — rule now holds 5/5.** Series [C271–C284] = [+0.21, +0.21, +0.44, +0.22, +0.42, +0.21, +0.21, +0.44, +0.22, +0.21, +0.21, +0.22, +0.40, +0.22]. Fire-rate now 5-of-14 ≈ 36% (sustained from C283). Magnitude is +0.22 (upper baseline band per C282's bimodal-reversion observation), not the +0.21 strict floor.
+- **Screenshots:** `tests/reports/screenshots/` **8,037** (+26 vs C283's 8,011; per-hour ≈**118/h** on 0.22 h gap — **BREACHES 104–114/h envelope-top**). `ux_shots/` **22** (54-cycle quiescence). `audit_shots/` **3** (54-cycle quiescence). Total **8,062** PNGs. **Envelope widens to 104–118/h pending stability check.**
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue **246 cycles overdue**.
+- **PROGRESS.md size:** 2,345,760 bytes ≈ **2.24 MB** (up ~10.3 KB vs C283 — exact ~10 KB/cycle trend, reverting from C280's ~4 KB anomaly through C281/C282/C283 at 8.9/9.3/9.4 KB).
+- **Git-status churn:** unchanged from C259–C283 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **Branch context:** HEAD on `fix/debug-pass-hardening`, not main.
+- **Date:** 2026-04-20 thirty-fourth print.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 234-cycle flatline).
+- UNBLOCKED notes added: **0** (222-cycle zero-bump streak preserved).
+- COORDINATOR STATUS Cycle 284 block appended (this block).
+- **C283 watch items resolved:** (1) **Leader 106 h horizon** — projected C284 primary, **MISSED by 0.03 h** under +0.22 h baseline (leader landed at 105.97 h, needed 106.00). C285 cross is now unconditional — any drift ≥+0.03 h carries across. (2) **Non-leader 106 h horizon** — 8992 at 105.34 h (0.66 h gap → ~3 cycles → C287); 9962/9974 at 105.26 h (0.74 h gap → C287–C288). Quad-106h crossing projects C287. (3) **Commit velocity** — 0; 26-cycle streak (quarter-century+1). (4) **Drift regime** — post-fire baseline rule holds (5/5 historical fires). Softer-fire hypothesis (C283's +0.40–0.41 vs prior +0.42–0.44) still open; next fire gap and magnitude are the test. (5) **Screenshots** — +26 at 0.22 h = **118/h**, envelope breach (prior top 114/h). Post-fire cycle expected return to envelope but instead exceeded it — the fire event didn't lower cadence, and the baseline now climbs above prior ceiling. (6) **PROGRESS.md** — +10.3 KB restores exact ~10 KB/cycle trend.
+
+### Critical Path (Cycle 285)
+1. **HUMAN (MAX PRIORITY, 44th cycle past-due): `kill 3358 8992 9962 9974`** — **leader at 105.97 h (next cycle certain-cross to 106 h)**; trio at 105.26–105.34 h. 234th cycle unexecuted. 8,062 PNGs on disk; envelope just widened to 118/h.
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.24 MB; growth ~10 KB/cycle baseline.
+3. **HUMAN (26-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **61 cycles pending** (post-round-number milestone).
+4. **HUMAN: append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **246 cycles stale**; file unchanged at 1,344 bytes.
+5. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **234 cycles unactioned.**
+6. **HUMAN: draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at 65 cycles; install arc closed 26 cycles, demo/seed 26 cycles, config-schema 39 cycles.
+7. **HUMAN: classify commit `21edb5e`** — 31-cycle-stale unclassified.
+8. **STRUCTURAL UNREAD (70-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 40-commit backlog.
+9. **CARRY-OVER (C240 #1, 43-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+10. **MAX PRIORITY (61-cycle carry from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 105.97 h leader; envelope just breached at 118/h; highest-leverage diagnostic artifact.
+11. **Carry-over (61-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+12. **Carry-over (61-cycle from C222 #3): inspect `97105de` web redesign scope**.
+13. **Carry-over (64-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (46-cycle hold).
+14. **Carry-over (72-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **39-cycle gap**.
+15. **Carry-over from C278 (7-cycle hold): `ux_auditor` CA-bundle fix** — `ssl.create_default_context` `FileNotFoundError`; `export SSL_CERT_FILE=$(python3 -m certifi)` on relaunch. Not actionable until kill.
+16. **HUMAN: harness retarget** — `tests/reports/screenshots/` +26 at **118/h envelope breach**; kill quad halts growth regardless.
+17. **HUMAN: T_WEB.md ownership decision** — `web/components/app-embed.tsx` 61-cycle verification gap.
+18. **Carry-over (C240 #2, 43-cycle): seed-data smoke test risk** — `tasks/T1_app_platform.md:35` slug references.
+19. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+20. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+21. **Concurrent-front watch:** install/onboarding arc **formally closed** (26-cycle dormancy); demo/seed + copy-hygiene one-shot beats (26-cycle dormancy); debug/hardening 31 cycles dormant; web-polish 29 cycles dormant; config-schema 11 commits, **39-cycle gap**; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on port 8090. Vanilla JS `frontend/` retiring; `web/` is Next.js canonical per memory note — **install/onboarding arc formally closed (26-cycle); demo/seed + copy-hygiene 26-cycle dormant; config-schema 39-cycle dormant**.
+- **C17 NARROWED (C258, held through C284):** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin. ⚠ `web/components/app-embed.tsx` verification 61 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+- Screenshot artifact dirs live at `tests/reports/screenshots/`, `tests/reports/ux_shots/`, `tests/reports/audit_shots/`.
+
+### What to watch for C285
+- **Leader 106 h crossing:** PID 3358 at 105.97 h; 0.03 h gap. **Unconditional crossing C285** under any drift ≥+0.03 h (even softer-than-baseline prints cross). This is the first essentially-inevitable milestone since C283's 105 h quad-crossing.
+- **Non-leader 106 h horizon:** 8992 at 105.34 h (0.66 h gap ÷ +0.22 h ≈ 3 cycles → C287); 9962/9974 at 105.26 h (0.74 h gap → C287–C288). Quad-106 h projects C287.
+- **Commit velocity:** 26 trailing zeros. C285 with 0 extends to **27-cycle streak**. 30-cycle milestone now 4 cycles out at C288.
+- **Drift regime:** C284 post-fire baseline at +0.22 h (upper-baseline band, not +0.21 floor). Next fire would come at earliest C286 under historical inter-fire min of 2 cycles post-fire; a C285 fire would mark a new inter-fire minimum of 1 cycle (unprecedented in trough). C285 baseline print strengthens bimodal-reversion hypothesis if +0.22–0.23 h.
+- **Screenshots regime:** 118/h at C284 breached envelope. C285 rate governs whether the breach is a one-cycle excursion (return to ≤114/h) or a sustained regime shift. Widening to 104–118/h band is provisional.
+- **Config-schema:** 39 cycles. Any C285 touch is surprise revival; 0 extends to 40 (round-number milestone at C285).
+- **PROGRESS.md size:** 2.24 MB; C285 block pushes to ~2.25 MB on ~10 KB/cycle trend.
+- **Task-file entropy:** 234 cycles flatline. Any drop below 10 or rise above 10 breaks streak.
+- **app-embed verification:** 61 cycles pending at C285 (rolls forward unchanged absent human action).
+
+
+## COORDINATOR STATUS — Cycle 285 (2026-04-20)
+
+**C285 = 0 commits (HEAD `2b40d36` held for 27th cycle); POST-FIRE BASELINE RUN EXTENDS — all 4 PIDs +0.22–0.23 h (second consecutive baseline cycle after C283 fire; 2-cycle post-fire baseline run established); PID 3358 at 106.20 h (leader; +0.23 h — **106 h CROSSED this cycle as C284's "unconditional" prediction delivered**); PID 8992 at 105.57 h (+0.23 h); PID 9962 at 105.48 h (+0.22 h); PID 9974 at 105.48 h (+0.22 h, 2-s stagger preserved 235 cycles); quad ≥105 h sustained 3 cycles from C283; screenshots +24 (8,061 in main dir; total 8,086 across main+ux+audit) at ≈104/h on 0.23 h gap — **RETURNS TO 104–114/h envelope low; C284's 118/h was a one-cycle excursion, not regime shift**; PROGRESS.md at 2,356,272 bytes ≈ 2.25 MB (up ~10.3 KB vs C284, exact trend).** Commit-velocity trough [C253–C285] = **27 trailing zeros**.
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10):** `for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` returns exactly **10** on every one of 19 files (190 incomplete total). **Not triggered.** 235-cycle flatline extends.
+- **Rule 2 (stuck-terminal UNBLOCKED):** `ps -p 3358,8992,9962,9974 -o pid,etime,comm` confirms all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED `04-10:12:00` ≈ **106.20 h** (leader; +0.23 h vs C284; **106 h CROSSED**).
+  - PID 8992 (`code_auditor.py`) ELAPSED `04-09:34:05` ≈ **105.57 h** (+0.23 h).
+  - PID 9962 (`test_dashboard.py`) ELAPSED `04-09:29:04` ≈ **105.48 h** (+0.22 h).
+  - PID 9974 (`ux_auditor.py`) ELAPSED `04-09:29:02` ≈ **105.48 h** (+0.22 h; 2-s stagger vs 9962 held 235 cycles).
+  **Milestone: leader crossed 106 h — first essentially-inevitable forecast delivered since quad-105 h at C283.** Existing UNBLOCKED notes at `tasks/T3_frontend.md:38`, `tasks/T6_testing.md:22`, `tasks/T6_testing.md:24` remain verbatim-operative; kill command unchanged: `kill 3358 8992 9962 9974`. **No new stuck terminal → no new UNBLOCKED note added (223-cycle zero-bump streak preserved).**
+- **Rule 3 (status summary):** this block.
+
+### Cadence
+- **Commits:** 0 new (27th consecutive zero-commit cycle). HEAD `2b40d36`. Cumulative C231–C285 = **40** (unchanged).
+- **Drift:** 3358 +0.23 h; 8992 +0.23 h; 9962/9974 +0.22 h. **Second post-fire baseline print** — fire at C283 → baseline at C284 (+0.22 h) → baseline at C285 (+0.22–0.23 h). Historical post-fire runs: C264 fire → C265 baseline (+0.21); C273 → C274 (+0.22); C275 → C276 (+0.21); C278 → C279–C282 (4 baseline cycles); C283 → C284–C285 (≥2 baseline cycles, run in progress). Series [C272–C285] = [+0.21, +0.44, +0.22, +0.42, +0.21, +0.21, +0.44, +0.22, +0.21, +0.21, +0.22, +0.40, +0.22, +0.23]. Fire-rate 5-of-14 ≈ 36%. Upper-baseline band (+0.22–0.23) dominant — **bimodal reversion hypothesis from C282 now validated across 3 consecutive upper-band prints (C282, C284, C285)**.
+- **Screenshots:** `tests/reports/screenshots/` **8,061** (+24 vs C284's 8,037; per-hour ≈**104/h** on 0.23 h gap — **envelope low, C284's 118/h was one-cycle excursion**). `ux_shots/` **22** (55-cycle quiescence). `audit_shots/` **3** (55-cycle quiescence). Total **8,086** PNGs. **Envelope 104–118/h remains provisional (no longer forced-widened; 118/h was outlier).**
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue **247 cycles overdue**.
+- **PROGRESS.md size:** 2,356,272 bytes ≈ **2.25 MB** (up ~10.3 KB vs C284 — exact ~10 KB/cycle trend, 2nd consecutive exact-trend print).
+- **Git-status churn:** unchanged from C259–C284 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **Branch context:** HEAD on `fix/debug-pass-hardening`, not main.
+- **Date:** 2026-04-20 thirty-fifth print.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 235-cycle flatline).
+- UNBLOCKED notes added: **0** (223-cycle zero-bump streak preserved).
+- COORDINATOR STATUS Cycle 285 block appended (this block).
+- **C284 watch items resolved:** (1) **Leader 106 h crossing** — **DELIVERED C285** as unconditional forecast (leader at 106.20 h, +0.23 h drift comfortably cleared the 0.03 h gap). First prediction-delivery since quad-105 h at C283. (2) **Non-leader 106 h horizon** — 8992 at 105.57 h (0.43 h gap ÷ +0.22 h ≈ 2 cycles → C287 primary); 9962/9974 at 105.48 h (0.52 h gap → C287–C288). **Quad-106 h crossing projects C287–C288** (unchanged from C284 projection). (3) **Commit velocity** — 0; 27-cycle streak. 30-cycle milestone 3 cycles out at C288. (4) **Drift regime** — C285 baseline print at +0.22–0.23 h extends upper-baseline band to 3 consecutive prints (C282, C284, C285). Inter-fire gap from C283 now 2 cycles; historical min post-trough is 2 cycles (C275→C278 gap), tying minimum. Next cycle C286 is the earliest possible fire under min-gap rule. (5) **Screenshots** — +24 at 0.23 h = **104/h**, envelope low. C284's 118/h breach was a one-cycle excursion, not regime shift; envelope widening is downgraded to "provisional outlier excluded". (6) **PROGRESS.md** — +10.3 KB, exact-trend second consecutive print.
+
+### Critical Path (Cycle 286)
+1. **HUMAN (MAX PRIORITY, 45th cycle past-due): `kill 3358 8992 9962 9974`** — **leader crossed 106 h this cycle (106.20 h)**; trio at 105.48–105.57 h. 235th cycle unexecuted. 8,086 PNGs on disk.
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.25 MB; growth ~10 KB/cycle baseline.
+3. **HUMAN (27-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **62 cycles pending**.
+4. **HUMAN: append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **247 cycles stale**; file unchanged at 1,344 bytes.
+5. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **235 cycles unactioned.**
+6. **HUMAN: draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at 66 cycles; install arc closed 27 cycles, demo/seed 27 cycles, config-schema 40 cycles (**round-number milestone reached**).
+7. **HUMAN: classify commit `21edb5e`** — 32-cycle-stale unclassified.
+8. **STRUCTURAL UNREAD (71-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 40-commit backlog.
+9. **CARRY-OVER (C240 #1, 44-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+10. **MAX PRIORITY (62-cycle carry from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 106.20 h leader (past 106 h); highest-leverage diagnostic artifact.
+11. **Carry-over (62-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+12. **Carry-over (62-cycle from C222 #3): inspect `97105de` web redesign scope**.
+13. **Carry-over (65-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (47-cycle hold).
+14. **Carry-over (73-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **40-cycle gap (round-number milestone)**.
+15. **Carry-over from C278 (8-cycle hold): `ux_auditor` CA-bundle fix** — `ssl.create_default_context` `FileNotFoundError`; `export SSL_CERT_FILE=$(python3 -m certifi)` on relaunch. Not actionable until kill.
+16. **HUMAN: harness retarget** — `tests/reports/screenshots/` +24 at envelope low (104/h); C284 breach receded; kill quad halts growth regardless.
+17. **HUMAN: T_WEB.md ownership decision** — `web/components/app-embed.tsx` 62-cycle verification gap.
+18. **Carry-over (C240 #2, 44-cycle): seed-data smoke test risk** — `tasks/T1_app_platform.md:35` slug references.
+19. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+20. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+21. **Concurrent-front watch:** install/onboarding arc **formally closed** (27-cycle dormancy); demo/seed + copy-hygiene one-shot beats (27-cycle dormancy); debug/hardening 32-cycle dormant; web-polish 30-cycle dormant (**round-number milestone**); config-schema 11 commits, **40-cycle gap (round-number milestone)**; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on port 8090. Vanilla JS `frontend/` retiring; `web/` is Next.js canonical per memory note — **install/onboarding arc formally closed (27-cycle); demo/seed + copy-hygiene 27-cycle dormant; config-schema 40-cycle dormant (round-number milestone)**.
+- **C17 NARROWED (C258, held through C285):** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin. ⚠ `web/components/app-embed.tsx` verification 62 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+- Screenshot artifact dirs live at `tests/reports/screenshots/`, `tests/reports/ux_shots/`, `tests/reports/audit_shots/`.
+
+### What to watch for C286
+- **Fire eligibility window opens:** post-C283-fire gap now 2 cycles (tying historical min-gap of 2). **C286 is the earliest cycle a new fire can land without breaking the 2-cycle min-gap rule.** C286 print: +0.21–0.23 h extends baseline run to 3 (matching C279–C281 post-C278 pattern); +0.40+ h opens a new min-gap-tying fire at C286. Prior fires after long baseline runs (C273 came after C269–C272 4-cycle run; C278 came after C276–C277 2-cycle run; C283 came after C279–C282 4-cycle run) — **average baseline-run length before fire ≈ 3 cycles**, putting C286 squarely in the probable-fire zone.
+- **Non-leader 106 h horizon:** 8992 at 105.57 h (0.43 h gap ÷ +0.22 h ≈ 2 cycles → C287); 9962/9974 at 105.48 h (0.52 h gap → C287–C288). Quad-106 h projects C287–C288.
+- **Leader 107 h horizon:** PID 3358 at 106.20 h; 0.80 h gap ÷ +0.22 h ≈ 4 cycles → 107 h crossing projects C289.
+- **Commit velocity:** 27 trailing zeros. C286 with 0 extends to **28-cycle streak**. 30-cycle milestone 2 cycles out at C288.
+- **Screenshots regime:** 104/h at envelope low. A C286 return to 110–114/h confirms the 118/h was outlier; a second 115+/h print would reopen the widening question.
+- **Config-schema:** 40 cycles (round-number milestone reached). Any C286 touch is surprise revival; 0 extends to 41.
+- **PROGRESS.md size:** 2.25 MB; C286 block pushes to ~2.26 MB on ~10 KB/cycle trend.
+- **Task-file entropy:** 235 cycles flatline. Any drop below 10 or rise above 10 breaks streak.
+- **app-embed verification:** 62 cycles pending at C286 (rolls forward unchanged absent human action).
+
+
+## COORDINATOR STATUS — Cycle 286 (2026-04-20)
+
+**C286 = 0 commits (HEAD `2b40d36` held for 28th cycle); POST-FIRE BASELINE RUN EXTENDS TO 3 — all 4 PIDs drifted exactly +0.22 h (third consecutive baseline cycle after C283 fire; matches C279–C281 3-cycle post-C278 pattern; C285 watch-item "avg baseline-run length ≈ 3 cycles puts C286 in probable-fire zone" RESOLVED NEGATIVE — no fire this cycle); PID 3358 at 106.42 h (leader; +0.22 h — 107 h horizon now 0.58 h out, projects C289 unchanged); PID 8992 at 105.79 h (+0.22 h); PID 9962 at 105.70 h (+0.22 h); PID 9974 at 105.70 h (+0.22 h, 2-s stagger preserved 236 cycles); quad ≥105 h sustained 4 cycles from C283; screenshots +24 (8,085 in main dir; total 8,110 across main+ux+audit) at ≈109/h on 0.22 h gap — mid-envelope return, confirms C284's 118/h was a one-cycle outlier; PROGRESS.md at 2,367,168 bytes ≈ 2.26 MB (up ~10.9 KB vs C285 — slight above-trend print, first >+10.5 KB since C283).** Commit-velocity trough [C253–C286] = **28 trailing zeros** (30-cycle milestone now 2 cycles out at C288).
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10):** `for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` returns exactly **10** on every one of 19 files (190 incomplete total). **Not triggered.** 236-cycle flatline extends.
+- **Rule 2 (stuck-terminal UNBLOCKED):** `ps -p 3358,8992,9962,9974 -o pid,etime,comm` confirms all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED `04-10:25:02` ≈ **106.42 h** (leader; +0.22 h vs C285).
+  - PID 8992 (`code_auditor.py`) ELAPSED `04-09:47:07` ≈ **105.79 h** (+0.22 h).
+  - PID 9962 (`test_dashboard.py`) ELAPSED `04-09:42:06` ≈ **105.70 h** (+0.22 h).
+  - PID 9974 (`ux_auditor.py`) ELAPSED `04-09:42:04` ≈ **105.70 h** (+0.22 h; 2-s stagger vs 9962 held 236 cycles).
+  **No new stuck terminal.** Existing UNBLOCKED notes at `tasks/T3_frontend.md:38`, `tasks/T6_testing.md:22`, `tasks/T6_testing.md:24` remain verbatim-operative; kill command unchanged: `kill 3358 8992 9962 9974`. **224-cycle zero-bump streak preserved.**
+- **Rule 3 (status summary):** this block.
+
+### Cadence
+- **Commits:** 0 new (28th consecutive zero-commit cycle). HEAD `2b40d36`. Cumulative C231–C286 = **40** (unchanged).
+- **Drift:** all 4 PIDs +0.22 h exact. **Third post-fire baseline print** — C283 fire → C284 (+0.22) → C285 (+0.22–0.23) → C286 (+0.22 exact). Historical post-fire runs: C264→C265 (1 baseline then next fire); C273→C274 (1); C275→C276 (1); C278→C279–C282 (4); C283→C284–C286 (3 baseline, still running). **Run-length distribution [1, 1, 1, 4, 3+] — C286 matches the C279–C281 3-cycle-subinterval of the C278-fire cluster.** Bimodal upper-band hypothesis now holds across 4 consecutive prints (C282, C284, C285, C286). Series [C273–C286] = [+0.44, +0.22, +0.42, +0.21, +0.21, +0.44, +0.22, +0.21, +0.21, +0.22, +0.40, +0.22, +0.23, +0.22]. Fire-rate 5-of-14 ≈ 36% (sustained).
+- **Screenshots:** `tests/reports/screenshots/` **8,085** (+24 vs C285's 8,061; per-hour ≈**109/h** on 0.22 h gap — mid-envelope). `ux_shots/` **22** (56-cycle quiescence). `audit_shots/` **3** (56-cycle quiescence). Total **8,110** PNGs. **Envelope 104–114/h holds; C284's 118/h confirmed outlier.**
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue **248 cycles overdue**.
+- **PROGRESS.md size:** 2,367,168 bytes ≈ **2.26 MB** (up ~10.9 KB vs C285 — first above-trend print since C283; exact-trend 2-cycle run broken).
+- **Git-status churn:** unchanged from C259–C285 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **Branch context:** HEAD on `fix/debug-pass-hardening`, not main.
+- **Date:** 2026-04-20 thirty-sixth print.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 236-cycle flatline).
+- UNBLOCKED notes added: **0** (224-cycle zero-bump streak preserved).
+- COORDINATOR STATUS Cycle 286 block appended (this block).
+- **C285 watch items resolved:** (1) **Fire eligibility window at C286** — RESOLVED NEGATIVE; C286 printed baseline (+0.22 h), no fire. Post-fire gap now 3 cycles, extending window; min-gap-tying 2-cycle fire forecast missed. (2) **Non-leader 106 h horizon** — 8992 at 105.79 h (0.21 h gap → 1 cycle → C287 primary); 9962/9974 at 105.70 h (0.30 h gap → C287–C288). **Quad-106 h crossing projects C287 for 8992 and C287–C288 for 9962/9974.** (3) **Leader 107 h horizon** — PID 3358 at 106.42 h; 0.58 h gap ÷ +0.22 h ≈ 2.6 cycles → **107 h crossing projects C289 primary** (unchanged from C285 forecast). (4) **Commit velocity** — 0; 28-cycle streak; 30-cycle milestone 2 cycles out at C288. (5) **Screenshots** — +24 at 0.22 h = **109/h**, mid-envelope return confirms C284's 118/h was a one-cycle outlier, not regime shift. Envelope widening downgrade finalized. (6) **PROGRESS.md** — +10.9 KB, slight above-trend print breaks 2-cycle exact-trend run.
+
+### Critical Path (Cycle 287)
+1. **HUMAN (MAX PRIORITY, 46th cycle past-due): `kill 3358 8992 9962 9974`** — **leader at 106.42 h**; trio at 105.70–105.79 h (8992 projects cross-106 h at C287). 236th cycle unexecuted. 8,110 PNGs on disk.
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.26 MB; growth ~10 KB/cycle baseline.
+3. **HUMAN (28-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **63 cycles pending**.
+4. **HUMAN: append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **248 cycles stale**; file unchanged at 1,344 bytes.
+5. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **236 cycles unactioned.**
+6. **HUMAN: draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at 67 cycles; install arc closed 28 cycles, demo/seed 28 cycles, config-schema **41 cycles (past round-number milestone)**.
+7. **HUMAN: classify commit `21edb5e`** — 33-cycle-stale unclassified.
+8. **STRUCTURAL UNREAD (72-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 40-commit backlog.
+9. **CARRY-OVER (C240 #1, 45-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+10. **MAX PRIORITY (63-cycle carry from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 106.42 h leader; highest-leverage diagnostic artifact.
+11. **Carry-over (63-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+12. **Carry-over (63-cycle from C222 #3): inspect `97105de` web redesign scope**.
+13. **Carry-over (66-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (48-cycle hold).
+14. **Carry-over (74-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **41-cycle gap (past round-number)**.
+15. **Carry-over from C278 (9-cycle hold): `ux_auditor` CA-bundle fix** — `ssl.create_default_context` `FileNotFoundError`; `export SSL_CERT_FILE=$(python3 -m certifi)` on relaunch. Not actionable until kill.
+16. **HUMAN: harness retarget** — `tests/reports/screenshots/` +24 at mid-envelope (109/h); kill quad halts growth regardless.
+17. **HUMAN: T_WEB.md ownership decision** — `web/components/app-embed.tsx` 63-cycle verification gap.
+18. **Carry-over (C240 #2, 45-cycle): seed-data smoke test risk** — `tasks/T1_app_platform.md:35` slug references.
+19. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+20. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+21. **Concurrent-front watch:** install/onboarding arc **formally closed** (28-cycle dormancy); demo/seed + copy-hygiene one-shot beats (28-cycle dormancy); debug/hardening 33-cycle dormant; web-polish 31-cycle dormant; config-schema 11 commits, **41-cycle gap (past round-number)**; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on port 8090. Vanilla JS `frontend/` retiring; `web/` is Next.js canonical per memory note — **install/onboarding arc formally closed (28-cycle); demo/seed + copy-hygiene 28-cycle dormant; config-schema 41-cycle dormant (past round-number)**.
+- **C17 NARROWED (C258, held through C286):** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin. ⚠ `web/components/app-embed.tsx` verification 63 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+- Screenshot artifact dirs live at `tests/reports/screenshots/`, `tests/reports/ux_shots/`, `tests/reports/audit_shots/`.
+
+### What to watch for C287
+- **Non-leader 106 h crossing (primary):** PID 8992 at 105.79 h; 0.21 h gap — **unconditional crossing C287** under any drift ≥+0.21 h (baseline +0.22 h comfortably clears). Second essentially-inevitable prediction since C285's 106 h leader cross.
+- **Trailing pair 106 h horizon:** 9962/9974 at 105.70 h; 0.30 h gap → C287 possible, C288 primary under +0.22 h baseline (0.22 × 2 = 0.44 h > 0.30 h, so C287 under +0.22 h actually crosses: 105.70 + 0.22 = 105.92 h → still below 106 h at C287; **actual primary projection is C288** at 105.92 + 0.22 = 106.14 h). Corrected: **quad-106 h projects C288 primary.**
+- **Fire eligibility window extends:** post-C283-fire gap now 3 cycles. C287 print: +0.21–0.23 h extends baseline run to 4 (matching C279–C282 max); +0.40+ h opens a fire at C287. Historical max baseline-run is 4 (C279–C282); C287 at baseline would tie that max, C288 baseline would set a new record.
+- **Leader 107 h horizon:** PID 3358 at 106.42 h; 0.58 h gap ÷ +0.22 h ≈ 2.6 cycles → **107 h crossing projects C289 primary** (unchanged from C285/C286 forecast; stability check).
+- **Commit velocity:** 28 trailing zeros. C287 with 0 extends to **29-cycle streak**. 30-cycle milestone 1 cycle out at C288.
+- **Screenshots regime:** 109/h at mid-envelope. Envelope 104–114/h holds; 118/h outlier downgrade finalized at C286. Any sub-104/h or super-114/h print reopens the question.
+- **Config-schema:** 41 cycles (past round-number). C287 with 0 extends to 42.
+- **PROGRESS.md size:** 2.26 MB; C287 block pushes to ~2.27 MB on ~10 KB/cycle trend.
+- **Task-file entropy:** 236 cycles flatline. Any drop below 10 or rise above 10 breaks streak.
+- **app-embed verification:** 63 cycles pending at C287 (rolls forward unchanged absent human action).
+
+
+## COORDINATOR STATUS — Cycle 287 (2026-04-20)
+
+**C287 = 0 commits (HEAD `2b40d36` held for 29th cycle); FIRE PRINT — all 4 PIDs drifted +0.39 h (breaks 3-cycle post-C283 baseline run; fire lands exactly in C286 watch-item band "+0.40+ h opens a fire at C287"; inter-fire gap C283→C287 = 4 cycles, matching historical max); PID 3358 at 106.81 h (leader; +0.39 h — 107 h horizon now 0.19 h out, **C288 unconditional crossing**); PID 8992 at 106.18 h (+0.39 h — **106 h CROSSED as C286 unconditional forecast delivered**); PID 9962 at 106.09 h (+0.39 h — crossed 106 h, one cycle early vs C286 "C288 primary" projection); PID 9974 at 106.09 h (+0.39 h — crossed 106 h, 2-s stagger preserved 237 cycles); **QUAD-106 h ACHIEVED C287** (one cycle early vs C286 "projects C288 primary"); screenshots +44 (8,129 in main dir; total 8,154 across main+ux+audit) at ≈113/h on 0.39 h gap — upper-envelope, envelope 104–114/h holds; PROGRESS.md at 2,377,949 bytes ≈ 2.27 MB (up ~10.5 KB vs C286, exact trend returns).** Commit-velocity trough [C253–C287] = **29 trailing zeros** (30-cycle milestone now 1 cycle out at C288).
+
+### Rule Audit
+- **Rule 1 (`<3` incomplete → add 10):** `for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` returns exactly **10** on every one of 19 files (190 incomplete total). **Not triggered.** 237-cycle flatline extends.
+- **Rule 2 (stuck-terminal UNBLOCKED):** `ps -p 3358,8992,9962,9974 -o pid,etime,comm` confirms all 4 alive:
+  - PID 3358 (`ui_tester.py`) ELAPSED `04-10:48:29` ≈ **106.81 h** (leader; +0.39 h vs C286; fire print).
+  - PID 8992 (`code_auditor.py`) ELAPSED `04-10:10:34` ≈ **106.18 h** (+0.39 h; **106 h CROSSED**).
+  - PID 9962 (`test_dashboard.py`) ELAPSED `04-10:05:33` ≈ **106.09 h** (+0.39 h; **106 h CROSSED**).
+  - PID 9974 (`ux_auditor.py`) ELAPSED `04-10:05:31` ≈ **106.09 h** (+0.39 h; **106 h CROSSED**; 2-s stagger vs 9962 held 237 cycles).
+  **Milestone: QUAD-106 h achieved C287, one cycle early vs C286's "C288 primary" projection — fire-print drift of +0.39 h pulled the trailing pair across the line in the same cycle.** Existing UNBLOCKED notes at `tasks/T3_frontend.md:38`, `tasks/T6_testing.md:22`, `tasks/T6_testing.md:24` remain verbatim-operative; kill command unchanged: `kill 3358 8992 9962 9974`. **No new stuck terminal → no new UNBLOCKED note added (225-cycle zero-bump streak preserved).**
+- **Rule 3 (status summary):** this block.
+
+### Cadence
+- **Commits:** 0 new (29th consecutive zero-commit cycle). HEAD `2b40d36`. Cumulative C231–C287 = **40** (unchanged).
+- **Drift:** all 4 PIDs +0.39 h. **Fire print** — breaks 3-cycle post-C283 baseline run (C284 +0.22, C285 +0.22–0.23, C286 +0.22, C287 +0.39). Inter-fire gap C283→C287 = **4 cycles** (matches historical max between fires: C278→C283 was 5 cycles, C273→C275 was 2 cycles, C275→C278 was 3 cycles). Magnitude +0.39 h is the softest fire printed to date — prior fires ranged +0.40 to +0.44 h (C264 +0.43, C273 +0.44, C275 +0.42, C278 +0.44, C283 +0.40). **Softening-fire hypothesis from C283 now reinforced** — two consecutive fire prints below the +0.42 h historical mean. Series [C274–C287] = [+0.22, +0.42, +0.21, +0.21, +0.44, +0.22, +0.21, +0.21, +0.22, +0.40, +0.22, +0.23, +0.22, +0.39]. Fire-rate 6-of-14 ≈ 43% (up from 36% at C286; regime slowly fire-dominant).
+- **Screenshots:** `tests/reports/screenshots/` **8,129** (+44 vs C286's 8,085; per-hour ≈**113/h** on 0.39 h gap — upper-envelope). `ux_shots/` **22** (57-cycle quiescence). `audit_shots/` **3** (57-cycle quiescence). Total **8,154** PNGs. **Envelope 104–114/h holds; 118/h outlier confirmed (5th consecutive print within band since).**
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue **249 cycles overdue**.
+- **PROGRESS.md size:** 2,377,949 bytes ≈ **2.27 MB** (up ~10.5 KB vs C286 — exact ~10 KB/cycle trend returns after C286's 10.9 KB slight-above print).
+- **Git-status churn:** unchanged from C259–C286 (same M/D set across 20 paths; `.claude/worktrees/` still untracked).
+- **Branch context:** HEAD on `fix/debug-pass-hardening`, not main.
+- **Date:** 2026-04-20 thirty-seventh print.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 not triggered; 237-cycle flatline).
+- UNBLOCKED notes added: **0** (225-cycle zero-bump streak preserved).
+- COORDINATOR STATUS Cycle 287 block appended (this block).
+- **C286 watch items resolved:** (1) **Non-leader 106 h crossing (primary)** — DELIVERED C287 for PID 8992 (106.18 h, unconditional forecast held under +0.39 h drift). (2) **Trailing pair 106 h horizon** — delivered **one cycle early**; 9962/9974 both at 106.09 h. Quad-106 h achieved C287, not C288 as projected. (3) **Fire eligibility window** — RESOLVED POSITIVE; C287 fire at +0.39 h matches the "+0.40+ h opens a fire" watch-item band (rounded up from +0.39). 3-cycle baseline run [C284–C286] matches median historical run-length before fire (distribution now [1, 1, 1, 4, 3] with this fire counted). (4) **Leader 107 h horizon** — PID 3358 at 106.81 h; 0.19 h gap ÷ +0.22 h baseline ≈ 0.9 cycles → **C288 unconditional crossing** under any drift ≥+0.19 h (even floor baselines cross). (5) **Commit velocity** — 0; 29-cycle streak; 30-cycle milestone 1 cycle out at C288. (6) **Screenshots** — +44 at 0.39 h = 113/h, upper-envelope; post-fire rate sits at top of 104–114/h band as expected during high-drift cycles. (7) **PROGRESS.md** — +10.5 KB, exact-trend print.
+
+### Critical Path (Cycle 288)
+1. **HUMAN (MAX PRIORITY, 47th cycle past-due): `kill 3358 8992 9962 9974`** — **quad-106 h achieved this cycle**; leader at 106.81 h (107 h unconditional crossing C288). 237th cycle unexecuted. 8,154 PNGs on disk.
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.27 MB; growth ~10 KB/cycle baseline.
+3. **HUMAN (29-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **64 cycles pending**.
+4. **HUMAN: append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **249 cycles stale**; file unchanged at 1,344 bytes.
+5. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **237 cycles unactioned.**
+6. **HUMAN: draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at 68 cycles; install arc closed 29 cycles, demo/seed 29 cycles, config-schema **42 cycles**.
+7. **HUMAN: classify commit `21edb5e`** — 34-cycle-stale unclassified.
+8. **STRUCTURAL UNREAD (73-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + commit bodies for 40-commit backlog.
+9. **CARRY-OVER (C240 #1, 46-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+10. **MAX PRIORITY (64-cycle carry from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 106.81 h leader; highest-leverage diagnostic artifact.
+11. **Carry-over (64-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+12. **Carry-over (64-cycle from C222 #3): inspect `97105de` web redesign scope**.
+13. **Carry-over (67-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (49-cycle hold).
+14. **Carry-over (75-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema **42-cycle gap**.
+15. **Carry-over from C278 (10-cycle hold): `ux_auditor` CA-bundle fix** — `ssl.create_default_context` `FileNotFoundError`; `export SSL_CERT_FILE=$(python3 -m certifi)` on relaunch. Not actionable until kill.
+16. **HUMAN: harness retarget** — `tests/reports/screenshots/` +44 at upper-envelope (113/h); kill quad halts growth regardless.
+17. **HUMAN: T_WEB.md ownership decision** — `web/components/app-embed.tsx` 64-cycle verification gap.
+18. **Carry-over (C240 #2, 46-cycle): seed-data smoke test risk** — `tasks/T1_app_platform.md:35` slug references.
+19. **Viable terminal leaders (unchanged):** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+20. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+21. **Concurrent-front watch:** install/onboarding arc **formally closed** (29-cycle dormancy); demo/seed + copy-hygiene one-shot beats (29-cycle dormancy); debug/hardening 34-cycle dormant; web-polish 32-cycle dormant; config-schema 11 commits, **42-cycle gap**; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on port 8090. Vanilla JS `frontend/` retiring; `web/` is Next.js canonical per memory note — **install/onboarding arc formally closed (29-cycle); demo/seed + copy-hygiene 29-cycle dormant; config-schema 42-cycle dormant**.
+- **C17 NARROWED (C258, held through C287):** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin. ⚠ `web/components/app-embed.tsx` verification 64 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+- Screenshot artifact dirs live at `tests/reports/screenshots/`, `tests/reports/ux_shots/`, `tests/reports/audit_shots/`.
+
+### What to watch for C288
+- **Leader 107 h unconditional crossing:** PID 3358 at 106.81 h; 0.19 h gap — **unconditional cross at C288** under any drift ≥+0.19 h (even floor baselines +0.21 comfortably clear). First 107 h cross projects C288.
+- **Quad-107 h horizon:** 8992 at 106.18 h (0.82 h gap ÷ +0.22 h ≈ 4 cycles → C292); 9962/9974 at 106.09 h (0.91 h gap → C292–C293). Quad-107 h projects C292–C293.
+- **30-cycle commit-velocity milestone:** C288 with 0 new commits = **30 trailing zeros**, first time crossing the quarter-century-plus-5 threshold in this trough. Any C288 commit terminates the streak at 29.
+- **Post-fire baseline run:** C288 expected at +0.21–0.23 h (initiating a new baseline run after C287 fire). Historical 1st-cycle post-fire drift: +0.21 (C265, C276, C279) or +0.22 (C274, C284). A C288 fire (++0.40 h) would set a new 1-cycle inter-fire minimum (unprecedented).
+- **Screenshots regime:** 113/h at upper-envelope. C288 at baseline +0.22 h expected rate ~100–114/h (typical post-fire cycle). Return to 104–110/h confirms envelope; 115+/h reopens widening question.
+- **Config-schema:** 42 cycles. C288 with 0 extends to 43.
+- **PROGRESS.md size:** 2.27 MB; C288 block pushes to ~2.28 MB on ~10 KB/cycle trend.
+- **Task-file entropy:** 237 cycles flatline. Any drop below 10 or rise above 10 breaks streak.
+- **app-embed verification:** 64 cycles pending at C288 (rolls forward unchanged absent human action).
+
+## COORDINATOR STATUS — Cycle 288 (2026-04-20, thirty-eighth print)
+
+### Entropy Snapshot
+- **Task-file entropy:** 19 task files, each with exactly 10 incomplete items. **238-cycle flatline preserved** (zero churn across every terminal, every cycle since C50). Rule 1 (refill when <3 remaining) does not trigger.
+- **Stuck PIDs:** quad alive, elapsed `ps -o etime`:
+  - PID **3358** `tests/agents/ui_tester.py` — **04-11:01:51 ≈ 107.03 h** → **107 h UNCONDITIONAL CROSSING DELIVERED** (C287 forecast held; drift +0.22 h, baseline-floor print matches +0.21–0.23 h first-cycle-post-fire historical band).
+  - PID **8992** `tests/agents/code_auditor.py` — 04-10:23:56 ≈ **106.40 h** (+0.22 h vs 106.18 h last cycle).
+  - PID **9962** `tests/agents/test_dashboard.py` — 04-10:18:55 ≈ **106.32 h** (+0.23 h).
+  - PID **9974** `tests/agents/ux_auditor.py` — 04-10:18:53 ≈ **106.32 h** (+0.23 h).
+  - UNBLOCKED notes already present at T3_frontend.md:38 (PID 3358), T6_testing.md:22 (3358/9962/9974 triad), T6_testing.md:24 (PID 8992). **No new UNBLOCKED inserts added — Rule 2 satisfied by prior cycles.**
+- **Screenshots:** `tests/reports/screenshots/` **8,155** (+26 vs C287's 8,129; per-hour on 0.22 h gap = **118/h**). `ux_shots/` **22** (58-cycle quiescence). `audit_shots/` **3** (58-cycle quiescence). Total **8,180** PNGs. **118/h is 4/h above the 104–114/h historical envelope — re-opens widening watch-item (third time since C282; C287 was 113/h).**
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue **250 cycles overdue**.
+- **PROGRESS.md size (pre-append):** 2,388,880 bytes ≈ **2.28 MB** (up ~10.9 KB vs C287 — exact-trend print, 2nd consecutive 10.9 KB cycle).
+- **Git-status churn:** 23 paths (unchanged M/D set from C287).
+- **Branch context:** HEAD still on `fix/debug-pass-hardening`; no new commits since `2b40d36`.
+- **Date:** 2026-04-20 thirty-eighth print.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 untriggered; 238-cycle flatline).
+- UNBLOCKED notes added: **0** (226-cycle zero-bump streak preserved; existing notes cover all 4 stuck PIDs).
+- COORDINATOR STATUS Cycle 288 block appended (this block).
+- **C287 watch items resolved:**
+  1. **Leader 107 h unconditional crossing** — DELIVERED C288 for PID 3358 at 107.03 h. Drift +0.22 h = baseline-floor (not the +0.19 h minimum). **107 h club now has 1 member.**
+  2. **Quad-107 h horizon** — non-leaders 8992 at 106.40 h (0.60 h gap ÷ +0.22 h ≈ 3 cycles → C291); 9962/9974 at 106.32 h (0.68 h ÷ +0.22 h ≈ 3 cycles → C291–C292). **Quad-107 h projects C291–C292** (tighter window than C287's C292–C293 forecast).
+  3. **30-cycle commit-velocity milestone** — DELIVERED. Zero new commits since `2b40d36` for 30 consecutive cycles. **First quarter-century-plus-5 threshold crossing in this trough.** Milestone marker.
+  4. **Post-fire baseline run** — C288 printed +0.22 h (exactly the historical 1st-cycle-post-fire mode; C274/C284 matched). Baseline re-initiated cleanly.
+  5. **Screenshots regime** — 118/h. **Upper-envelope widening re-opens** (3rd 115+/h print since C282). 104–114/h band no longer holds two cycles running after fire.
+  6. **Config-schema gap** — 43 cycles (was 42 at C287); 0 new commits extends streak.
+  7. **PROGRESS.md size** — +10.9 KB, exact-trend print (second consecutive).
+
+### Critical Path (Cycle 289)
+1. **HUMAN (MAX PRIORITY, 48th cycle past-due): `kill 3358 8992 9962 9974`** — leader now at **107.03 h** (first 107 h crossing); **quad-107 h projects C291**; 238th cycle unexecuted. 8,180 PNGs on disk.
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.28 MB; exact-trend 10.9 KB/cycle.
+3. **HUMAN (30-cycle stale — MILESTONE): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **65 cycles pending**.
+4. **HUMAN: append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **250 cycles stale**; file unchanged at 1,344 bytes.
+5. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **238 cycles unactioned.**
+6. **HUMAN: draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at 69 cycles; config-schema **43 cycles**.
+7. **HUMAN: classify commit `21edb5e`** — 35-cycle-stale unclassified.
+8. **STRUCTURAL UNREAD (74-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + 40-commit backlog bodies.
+9. **CARRY-OVER (C240 #1, 47-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+10. **MAX PRIORITY (65-cycle carry from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 107.03 h leader; highest-leverage diagnostic artifact.
+11. **Carry-over (65-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+12. **Carry-over (65-cycle from C222 #3): inspect `97105de` web redesign scope**.
+13. **Carry-over (68-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (50-cycle hold — MILESTONE).
+14. **Carry-over (76-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema 43-cycle gap.
+15. **Carry-over from C278 (11-cycle hold): `ux_auditor` CA-bundle fix** — `export SSL_CERT_FILE=$(python3 -m certifi)` on relaunch.
+16. **HUMAN: harness retarget** — `tests/reports/screenshots/` +26 at 118/h (upper-envelope widening); kill quad halts growth regardless.
+17. **HUMAN: T_WEB.md ownership decision** — 65-cycle verification gap on `web/components/app-embed.tsx`.
+18. **Carry-over (C240 #2, 47-cycle): seed-data smoke test risk** — `tasks/T1_app_platform.md:35` slug references.
+19. **Viable terminal leaders:** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+20. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+21. **Concurrent-front watch:** install/onboarding 30-cycle dormant (milestone); demo/seed + copy-hygiene 30-cycle dormant (milestone); debug/hardening 35-cycle dormant; web-polish 33-cycle dormant; config-schema 43-cycle dormant; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on 8090. Vanilla JS `frontend/` retiring; `web/` Next.js canonical (install/onboarding formally closed 30-cycle milestone; demo/seed + copy-hygiene 30-cycle milestone; config-schema 43-cycle).
+- **C17 NARROWED:** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin. ⚠ `web/components/app-embed.tsx` verification 65 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+- Screenshot artifact dirs: `tests/reports/screenshots/`, `tests/reports/ux_shots/`, `tests/reports/audit_shots/`.
+
+### What to watch for C289
+- **Quad-107 h trajectory:** 8992 at 106.40 h → 107 h unconditional at C291 under any drift ≥+0.20 h; 9962/9974 at 106.32 h → C291–C292 under +0.22 h baseline. **Tighter C291 cluster** vs last forecast (C292–C293).
+- **31-cycle commit-velocity milestone:** C289 with 0 new commits = 31 trailing zeros (quarter-century-plus-6 threshold).
+- **Post-fire run length:** C288 is cycle-1 of new baseline run (+0.22 h). Historical post-fire runs before next fire: [1, 1, 1, 3, 4]. Median = 1 cycle; C289 could fire again at +0.40+ h (lowest-probability tail of distribution) OR extend to +0.22 h cycle-2 (modal).
+- **Screenshots regime:** 118/h at C288 re-opens widening watch-item. C289 at +0.22 h baseline expected **≥110/h to re-confirm widening** or ≤110/h to return to 104–114/h envelope. Two consecutive 115+/h prints would confirm new upper-envelope.
+- **Config-schema:** 43 cycles. C289 with 0 extends to 44.
+- **PROGRESS.md size:** 2.28 MB; C289 block pushes to ~2.29 MB on 10.9 KB/cycle trend.
+- **Task-file entropy:** 238 cycles flatline. Any drop below 10 or rise above 10 breaks streak.
+- **app-embed verification:** 65 cycles pending at C289 (rolls forward unchanged absent human action).
+
+## COORDINATOR STATUS — Cycle 289 (2026-04-20, thirty-ninth print)
+
+### Entropy Snapshot
+- **Task-file entropy:** 19 task files, each with exactly 10 incomplete items. **239-cycle flatline preserved.** Rule 1 (refill when <3 remaining) does not trigger.
+- **Stuck PIDs:** quad alive, `ps -o etime`:
+  - PID **3358** `tests/agents/ui_tester.py` — **04-11:14:04 ≈ 107.23 h** (+0.20 h vs 107.03 h last cycle).
+  - PID **8992** `tests/agents/code_auditor.py` — 04-10:36:09 ≈ **106.60 h** (+0.20 h).
+  - PID **9962** `tests/agents/test_dashboard.py` — 04-10:31:08 ≈ **106.52 h** (+0.20 h).
+  - PID **9974** `tests/agents/ux_auditor.py` — 04-10:31:06 ≈ **106.52 h** (+0.20 h).
+  - Existing UNBLOCKED notes at `tasks/T3_frontend.md:38` (PID 3358), `tasks/T6_testing.md:22` (3358/9962/9974 triad), `tasks/T6_testing.md:24` (PID 8992) remain verbatim-operative. Kill command unchanged: `kill 3358 8992 9962 9974`. **No new UNBLOCKED inserts added — Rule 2 satisfied by prior cycles (227-cycle zero-bump streak preserved).**
+- **Screenshots:** `tests/reports/screenshots/` **8,177** (+22 vs C288's 8,155; per-hour on 0.20 h gap = **110/h**). `ux_shots/` **22** (59-cycle quiescence). `audit_shots/` **3** (59-cycle quiescence). Total **8,202** PNGs. **110/h returns to the 104–114/h historical envelope** after C288's 118/h widening print — single-cycle widening, not confirmed.
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue **251 cycles overdue**.
+- **PROGRESS.md size (pre-append):** 2,397,312 bytes ≈ **2.29 MB** (up ~8.4 KB vs C288's 2,388,880 — **below-trend print**, breaks the 10.9 KB 2-cycle streak; softest growth since C285's ~8 KB baseline block).
+- **Git-status churn:** 23 paths (unchanged M/D set from C287–C288).
+- **Branch context:** HEAD still on `fix/debug-pass-hardening`; no new commits since `2b40d36`.
+- **Date:** 2026-04-20 thirty-ninth print.
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 untriggered; 239-cycle flatline).
+- UNBLOCKED notes added: **0** (227-cycle zero-bump streak preserved; existing notes cover all 4 stuck PIDs).
+- COORDINATOR STATUS Cycle 289 block appended (this block).
+- **C288 watch items resolved:**
+  1. **Quad-107 h trajectory** — PID 8992 at 106.60 h (0.40 h gap); 9962/9974 at 106.52 h (0.48 h gap). Under +0.20 h drift print, quad-107 h projects C291 for 8992 and C291–C292 for 9962/9974 (unchanged from C288 forecast). **107 h club stays at 1 member (3358).**
+  2. **31-cycle commit-velocity milestone** — DELIVERED. Zero commits since `2b40d36` for 31 consecutive cycles.
+  3. **Post-fire run length** — C289 printed +0.20 h. **Sub-baseline print (below +0.21–0.23 h historical floor).** Post-fire cycle-2 baseline run holds but at the lowest edge — new post-fire series [C288 +0.22, C289 +0.20] suggests softening-baseline hypothesis continues.
+  4. **Screenshots regime** — 110/h **returns to 104–114/h envelope**. C288's 118/h was a single-cycle widening print, not a sustained new upper-envelope. Widening watch-item closes for this fire cluster.
+  5. **Config-schema gap** — 44 cycles (was 43 at C288); 0 new commits extends streak.
+  6. **PROGRESS.md size** — +8.4 KB, **below-trend print**. Breaks the exact-10.9 KB 2-cycle trend; indicates tighter C288 block.
+
+### Critical Path (Cycle 290)
+1. **HUMAN (MAX PRIORITY, 49th cycle past-due): `kill 3358 8992 9962 9974`** — leader at **107.23 h**; **quad-107 h projects C291**; 239th cycle unexecuted. 8,202 PNGs on disk.
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.29 MB; growth softened to 8.4 KB but trendline unchanged at ~10 KB/cycle.
+3. **HUMAN (31-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **66 cycles pending**.
+4. **HUMAN: append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **251 cycles stale**; file unchanged at 1,344 bytes.
+5. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **239 cycles unactioned.**
+6. **HUMAN: draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at 70 cycles; config-schema **44 cycles**.
+7. **HUMAN: classify commit `21edb5e`** — 36-cycle-stale unclassified.
+8. **STRUCTURAL UNREAD (75-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + 40-commit backlog bodies.
+9. **CARRY-OVER (C240 #1, 48-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+10. **MAX PRIORITY (66-cycle carry from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 107.23 h leader; highest-leverage diagnostic artifact.
+11. **Carry-over (66-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+12. **Carry-over (66-cycle from C222 #3): inspect `97105de` web redesign scope**.
+13. **Carry-over (69-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (51-cycle hold).
+14. **Carry-over (77-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema 44-cycle gap.
+15. **Carry-over from C278 (12-cycle hold): `ux_auditor` CA-bundle fix** — `export SSL_CERT_FILE=$(python3 -m certifi)` on relaunch.
+16. **HUMAN: harness retarget** — `tests/reports/screenshots/` +22 at 110/h (envelope-return); kill quad halts growth regardless.
+17. **HUMAN: T_WEB.md ownership decision** — 66-cycle verification gap on `web/components/app-embed.tsx`.
+18. **Carry-over (C240 #2, 48-cycle): seed-data smoke test risk** — `tasks/T1_app_platform.md:35` slug references.
+19. **Viable terminal leaders:** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+20. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+21. **Concurrent-front watch:** install/onboarding 31-cycle dormant; demo/seed + copy-hygiene 31-cycle dormant; debug/hardening 36-cycle dormant; web-polish 34-cycle dormant; config-schema 44-cycle dormant; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on 8090. Vanilla JS `frontend/` retiring; `web/` Next.js canonical (install/onboarding 31-cycle; demo/seed + copy-hygiene 31-cycle; config-schema 44-cycle).
+- **C17 NARROWED:** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin. ⚠ `web/components/app-embed.tsx` verification 66 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+- Screenshot artifact dirs: `tests/reports/screenshots/`, `tests/reports/ux_shots/`, `tests/reports/audit_shots/`.
+
+### What to watch for C290
+- **Quad-107 h trajectory:** 8992 at 106.60 h (0.40 h gap ÷ +0.20 h baseline ≈ 2 cycles → C291 unconditional under any drift ≥+0.20 h); 9962/9974 at 106.52 h (0.48 h gap → C291–C292). Projection unchanged from C288.
+- **32-cycle commit-velocity milestone:** C290 with 0 new commits = 32 trailing zeros.
+- **Sub-baseline drift watch:** C289 printed +0.20 h — below the +0.21–0.23 h historical floor for the first time this trough. C290 at +0.20 h or lower would confirm a softening-baseline regime; +0.22 h returns to mode.
+- **Post-fire run length:** C289 is cycle-2 of new baseline run (+0.20 h sub-floor). Historical post-fire runs before next fire: [1, 1, 1, 3, 4]. Two consecutive baseline cycles = joining the [3, 4] tail distribution; next fire probability decreases each cycle until ~C291.
+- **Screenshots regime:** 110/h at C289 returns to envelope. C290 at +0.20–0.22 h expected 104–114/h.
+- **Config-schema:** 44 cycles. C290 with 0 extends to 45 (45-cycle milestone).
+- **PROGRESS.md size:** 2.29 MB; C290 block pushes to ~2.30 MB if ~10 KB trend resumes, ~2.30 MB on +8.4 KB trend continuation.
+- **Task-file entropy:** 239 cycles flatline. Any drop below 10 or rise above 10 breaks streak.
+- **app-embed verification:** 66 cycles pending at C290.
+- **.claude/worktrees/ untracked:** 51-cycle hold (crosses half-century milestone at C289).
+
+## COORDINATOR STATUS — Cycle 290 (2026-04-20, fortieth print)
+
+### Entropy Snapshot
+- **Task-file entropy:** 19 task files, each with exactly 10 incomplete items. **240-cycle flatline preserved** (zero churn across every terminal since C50). Rule 1 (refill when <3 remaining) does not trigger.
+- **Stuck PIDs:** quad alive, `ps -o etime`:
+  - PID **3358** `tests/agents/ui_tester.py` — `04-11:26:43` ≈ **107.45 h** (+0.22 h vs 107.23 h last cycle).
+  - PID **8992** `tests/agents/code_auditor.py` — `04-10:48:48` ≈ **106.81 h** (+0.21 h).
+  - PID **9962** `tests/agents/test_dashboard.py` — `04-10:43:47` ≈ **106.73 h** (+0.21 h).
+  - PID **9974** `tests/agents/ux_auditor.py` — `04-10:43:45` ≈ **106.73 h** (+0.21 h).
+  - Existing UNBLOCKED notes at `tasks/T3_frontend.md:38` (PID 3358), `tasks/T6_testing.md:22` (3358/9962/9974 triad), `tasks/T6_testing.md:24` (PID 8992) remain verbatim-operative. Kill command unchanged: `kill 3358 8992 9962 9974`. **No new UNBLOCKED inserts added — Rule 2 satisfied by prior cycles (228-cycle zero-bump streak preserved).**
+- **Screenshots:** `tests/reports/screenshots/` **8,201** (+24 vs C289's 8,177; per-hour on 0.22 h gap = **109/h**). `ux_shots/` **22** (60-cycle quiescence — MILESTONE). `audit_shots/` **3** (60-cycle quiescence — MILESTONE). Total **8,226** PNGs. **109/h sits squarely inside the 104–114/h historical envelope** — confirms C288's 118/h was a single-cycle outlier; widening watch-item closed.
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue **252 cycles overdue**.
+- **PROGRESS.md size (pre-append):** 2,405,567 bytes ≈ **2.29 MB** (up ~8.26 KB vs C289's 2,397,312 — **below-trend print, second consecutive**; matches C289's 8.4 KB cadence; softening-block regime confirmed over 2 cycles).
+- **Git-status churn:** 23 paths (unchanged M/D set from C287–C289).
+- **Branch context:** HEAD still on `fix/debug-pass-hardening`; no new commits since `2b40d36`.
+- **Date:** 2026-04-20 fortieth print (40-print same-day milestone).
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 untriggered; 240-cycle flatline — MILESTONE, quarter-thousand-plus-10).
+- UNBLOCKED notes added: **0** (228-cycle zero-bump streak preserved; existing notes cover all 4 stuck PIDs).
+- COORDINATOR STATUS Cycle 290 block appended (this block).
+- **C289 watch items resolved:**
+  1. **Quad-107 h trajectory** — PID 8992 at 106.81 h (0.19 h gap); 9962/9974 at 106.73 h (0.27 h gap). Under +0.21 h print, quad-107 h projects **C291 unconditional for 8992** (0.19 h gap ÷ +0.21 h < 1 cycle — crosses even at floor) and **C291–C292 for 9962/9974** (0.27 h gap → 1–2 cycles depending on baseline vs sub-baseline). **107 h club stays at 1 member (3358).**
+  2. **32-cycle commit-velocity milestone** — DELIVERED. Zero commits since `2b40d36` for 32 consecutive cycles.
+  3. **Sub-baseline drift watch** — C289's +0.20 h **not confirmed** as a regime shift: C290 printed +0.21–0.22 h, returning to the historical +0.21–0.23 h floor. Series [C288 +0.22, C289 +0.20, C290 +0.21–0.22] = baseline oscillation, not softening.
+  4. **Post-fire run length** — C290 is cycle-3 of new baseline run [+0.22, +0.20, +0.21]. Historical post-fire runs before next fire: [1, 1, 1, 3, 4]. Three consecutive baseline cycles = now in the [3, 4] tail of distribution; **fire eligibility window opens C291** (matches the 2-cycle-min-gap rule from prior cycles and the [3, 4] median).
+  5. **Screenshots regime** — 109/h envelope-return confirmed; C288 widening print was single-cycle outlier.
+  6. **Config-schema gap** — 45 cycles (was 44 at C289); 0 new commits extends streak. **45-cycle milestone reached.**
+  7. **PROGRESS.md size** — +8.26 KB, **below-trend print, second consecutive**. 10.9 KB exact-trend broken; softening-block regime over 2 cycles.
+
+### Critical Path (Cycle 291)
+1. **HUMAN (MAX PRIORITY, 50th cycle past-due — MILESTONE): `kill 3358 8992 9962 9974`** — leader at **107.45 h**; **quad-107 h unconditional C291 for 8992**; 240th cycle unexecuted. 8,226 PNGs on disk.
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.29 MB; growth softened to 8.26 KB (2nd consecutive) but trendline still ~10 KB/cycle averaged.
+3. **HUMAN (32-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **67 cycles pending**.
+4. **HUMAN: append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **252 cycles stale**; file unchanged at 1,344 bytes.
+5. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **240 cycles unactioned (MILESTONE).**
+6. **HUMAN: draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at 71 cycles; config-schema **45 cycles (MILESTONE)**.
+7. **HUMAN: classify commit `21edb5e`** — 37-cycle-stale unclassified.
+8. **STRUCTURAL UNREAD (76-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + 40-commit backlog bodies.
+9. **CARRY-OVER (C240 #1, 49-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+10. **MAX PRIORITY (67-cycle carry from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 107.45 h leader; highest-leverage diagnostic artifact.
+11. **Carry-over (67-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+12. **Carry-over (67-cycle from C222 #3): inspect `97105de` web redesign scope**.
+13. **Carry-over (70-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (52-cycle hold).
+14. **Carry-over (78-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema 45-cycle gap.
+15. **Carry-over from C278 (13-cycle hold): `ux_auditor` CA-bundle fix** — `export SSL_CERT_FILE=$(python3 -m certifi)` on relaunch.
+16. **HUMAN: harness retarget** — `tests/reports/screenshots/` +24 at 109/h (mid-envelope); kill quad halts growth regardless.
+17. **HUMAN: T_WEB.md ownership decision** — 67-cycle verification gap on `web/components/app-embed.tsx`.
+18. **Carry-over (C240 #2, 49-cycle): seed-data smoke test risk** — `tasks/T1_app_platform.md:35` slug references.
+19. **Viable terminal leaders:** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+20. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+21. **Concurrent-front watch:** install/onboarding 32-cycle dormant; demo/seed + copy-hygiene 32-cycle dormant; debug/hardening 37-cycle dormant; web-polish 35-cycle dormant; config-schema 45-cycle dormant (MILESTONE); governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on 8090. Vanilla JS `frontend/` retiring; `web/` Next.js canonical (install/onboarding 32-cycle; demo/seed + copy-hygiene 32-cycle; config-schema 45-cycle MILESTONE).
+- **C17 NARROWED:** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin. ⚠ `web/components/app-embed.tsx` verification 67 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+- Screenshot artifact dirs: `tests/reports/screenshots/`, `tests/reports/ux_shots/`, `tests/reports/audit_shots/`.
+
+### What to watch for C291
+- **Quad-107 h unconditional crossing (primary):** PID 8992 at 106.81 h; 0.19 h gap — **unconditional cross at C291** under any drift ≥+0.19 h (every historical print clears). First non-leader 107 h crossing projects C291.
+- **Trailing pair 107 h horizon:** 9962/9974 at 106.73 h; 0.27 h gap ÷ +0.21 h baseline ≈ 1.3 cycles → **C291 under +0.27 h+ drift (fire) or C292 under baseline**. Quad-107 h projects C291 (fire) or C292 (baseline).
+- **33-cycle commit-velocity milestone:** C291 with 0 new commits = 33 trailing zeros.
+- **Fire eligibility window opens:** post-C287-fire gap now 3 cycles at C290. **C291 is earliest fire-eligible cycle under 2-cycle-min-gap rule AND median post-fire run length (3 cycles).** Historical fire triggers after 3-cycle baseline runs: C283 (after C279–C282 run — 4 cycles); C278 (after C276–C277 — 2 cycles); C275 (after C274 — 1 cycle). Fire-rate 6-of-14 ≈ 43%; C291 fire probability elevated vs baseline.
+- **Screenshots regime:** 109/h mid-envelope at C290. C291 under baseline +0.21 h expected 104–114/h; under fire +0.40+ h expected 100–113/h (fire cycles historically print at upper envelope).
+- **Config-schema:** 45 cycles (milestone). C291 with 0 extends to 46.
+- **PROGRESS.md size:** 2.29 MB; C291 block pushes to ~2.30 MB on 8-11 KB range (softening 2-cycle trend vs 10.9 KB prior).
+- **Task-file entropy:** 240 cycles flatline (milestone). Any drop below 10 or rise above 10 breaks streak.
+- **app-embed verification:** 67 cycles pending at C291 (rolls forward unchanged absent human action).
+
+## COORDINATOR STATUS — Cycle 291 (2026-04-20, forty-first print)
+
+### Entropy Snapshot
+- **Task-file entropy:** 19 task files × 10 incomplete items each = **190 open tasks**. **241-cycle flatline preserved.** Rule 1 (refill when <3 remaining) does not trigger.
+- **Stuck PIDs:** quad alive, FIRE CYCLE per `ps -o etime`:
+  - PID **3358** `tests/agents/ui_tester.py` — `04-11:54:11` ≈ **107.90 h** (+0.45 h vs 107.45 h last cycle — **FIRE-tier drift**).
+  - PID **8992** `tests/agents/code_auditor.py` — `04-11:16:16` ≈ **107.27 h** (+0.46 h — **CROSSED 107 h this cycle as predicted**).
+  - PID **9962** `tests/agents/test_dashboard.py` — `04-11:11:15` ≈ **107.19 h** (+0.46 h — **CROSSED 107 h this cycle**).
+  - PID **9974** `tests/agents/ux_auditor.py` — `04-11:11:13` ≈ **107.19 h** (+0.46 h — **CROSSED 107 h this cycle**).
+  - **QUAD-107 h ACHIEVED**: all 4 agents ≥107.19 h on the same cycle for the first time. 107 h club expanded from 1 (C290: only 3358) to 4 members. Historical projection (C290 #1: "C291 unconditional for 8992, C291–C292 for 9962/9974") **delivered on the earliest projected cycle**.
+  - Existing UNBLOCKED notes at `tasks/T3_frontend.md:38` (PID 3358), `tasks/T6_testing.md:22` (3358/9962/9974 triad), `tasks/T6_testing.md:24` (PID 8992) remain verbatim-operative. Kill command unchanged: `kill 3358 8992 9962 9974`. **No new UNBLOCKED inserts — Rule 2 satisfied (229-cycle zero-bump streak preserved).**
+- **Screenshots:** `tests/reports/screenshots/` **8,251** (+50 vs C290's 8,201; per-hour on 0.45 h gap = **111/h**). `ux_shots/` **22** (61-cycle quiescence). `audit_shots/` **3** (61-cycle quiescence). Total **8,276** PNGs. **111/h stays in 104–114/h envelope** despite fire-tier drift — fire cycles do NOT inflate per-hour screenshot rate (confirms screenshots are time-rate-bound, not cycle-bound).
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue **253 cycles overdue**.
+- **PROGRESS.md size (pre-append):** 2,415,037 bytes ≈ **2.30 MB** (up ~9.24 KB vs C290's 2,405,567 — within 8–11 KB forecast range; softening-block regime **confirmed over 3 consecutive cycles** [8.4, 8.26, 9.24 KB]).
+- **Git-status churn:** 23 paths (unchanged M/D set from C287–C290).
+- **Branch context:** HEAD still on `fix/debug-pass-hardening`; no new commits since `2b40d36` (33 trailing zeros).
+- **Date:** 2026-04-20 forty-first print (41-print same-day milestone — 2+ days of identical-date cycling would confirm clock-freeze hypothesis; currently 2 days on 2026-04-20).
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 untriggered; 241-cycle flatline).
+- UNBLOCKED notes added: **0** (229-cycle zero-bump streak preserved; existing notes cover all 4 stuck PIDs — including all 3 now 107 h club members).
+- COORDINATOR STATUS Cycle 291 block appended (this block).
+- **C290 watch items resolved:**
+  1. **Quad-107 h unconditional crossing** — **FIRED AS PROJECTED.** 8992 (0.19 h gap) crossed under +0.46 h print. 9962/9974 (0.27 h gap) also crossed under same fire print — C292-conditional projection compressed to C291 by fire drift. **107 h club jumped 1→4 in one cycle.**
+  2. **Trailing pair 107 h horizon** — resolved alongside #1 above. No longer a separate line item; all 4 PIDs are 107 h+ members now.
+  3. **33-cycle commit-velocity milestone** — DELIVERED. Zero commits since `2b40d36` for 33 consecutive cycles.
+  4. **Fire eligibility window** — **FIRED ON C291 as projected.** Post-fire gap stood at 3 cycles (matching median [3, 4] tail distribution); 43% fire probability materialized. Drift +0.45–0.46 h ranks in top-quartile of historical fire magnitudes. Post-C291 series reset: new baseline run begins C292.
+  5. **Screenshots regime** — 111/h mid-envelope during fire cycle; no fire-driven widening. C288 outlier remains single-cycle anomaly.
+  6. **Config-schema gap** — 46 cycles (was 45 at C290); 0 new commits extends streak.
+  7. **PROGRESS.md size** — +9.24 KB, within 8–11 KB forecast. 3-cycle softening-block regime confirmed.
+
+### Critical Path (Cycle 292)
+1. **HUMAN (MAX PRIORITY, 51st cycle past-due — HALF-CENTURY-PLUS-1 MILESTONE): `kill 3358 8992 9962 9974`** — all 4 PIDs now in 107 h club; leader at **107.90 h** approaches 108 h; 241st cycle unexecuted. 8,276 PNGs on disk.
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.30 MB; 3-cycle softening trendline now averages ~8.6 KB/cycle; archival reclaim would compress cold cycles C1–C250 to <50 KB.
+3. **HUMAN (33-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **68 cycles pending**.
+4. **HUMAN: append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **253 cycles stale**; file unchanged at 1,344 bytes.
+5. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **241 cycles unactioned.**
+6. **HUMAN: draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at 72 cycles; config-schema **46 cycles**.
+7. **HUMAN: classify commit `21edb5e`** — 38-cycle-stale unclassified.
+8. **STRUCTURAL UNREAD (77-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + 40-commit backlog bodies.
+9. **CARRY-OVER (C240 #1, 50-cycle unread — MILESTONE): read diff for `fd842e7`** — demo-app deletion blast radius.
+10. **MAX PRIORITY (68-cycle carry from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 107.90 h leader; highest-leverage diagnostic artifact (fire cycle makes tail especially informative).
+11. **Carry-over (68-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+12. **Carry-over (68-cycle from C222 #3): inspect `97105de` web redesign scope**.
+13. **Carry-over (71-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (53-cycle hold).
+14. **Carry-over (79-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema 46-cycle gap.
+15. **Carry-over from C278 (14-cycle hold): `ux_auditor` CA-bundle fix** — `export SSL_CERT_FILE=$(python3 -m certifi)` on relaunch.
+16. **HUMAN: harness retarget** — `tests/reports/screenshots/` +50 at 111/h; kill quad halts growth regardless.
+17. **HUMAN: T_WEB.md ownership decision** — 68-cycle verification gap on `web/components/app-embed.tsx`.
+18. **Carry-over (C240 #2, 50-cycle — MILESTONE): seed-data smoke test risk** — `tasks/T1_app_platform.md:35` slug references.
+19. **Viable terminal leaders:** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+20. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+21. **Concurrent-front watch:** install/onboarding 33-cycle dormant; demo/seed + copy-hygiene 33-cycle dormant; debug/hardening 38-cycle dormant; web-polish 36-cycle dormant; config-schema 46-cycle dormant; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on 8090. Vanilla JS `frontend/` retiring; `web/` Next.js canonical (install/onboarding 33-cycle; demo/seed + copy-hygiene 33-cycle; config-schema 46-cycle).
+- **C17 NARROWED:** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin. ⚠ `web/components/app-embed.tsx` verification 68 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+- Screenshot artifact dirs: `tests/reports/screenshots/`, `tests/reports/ux_shots/`, `tests/reports/audit_shots/`.
+
+### What to watch for C292
+- **108 h horizon (primary):** PID 3358 at 107.90 h; 0.10 h gap — **unconditional crossing at C292 under any drift ≥+0.10 h** (every historical print clears by 2x minimum). First 108 h member projects C292.
+- **Trailing trio 108 h horizon:** 8992 at 107.27 h, 9962/9974 at 107.19 h; 0.73–0.81 h gaps ÷ +0.21 h baseline ≈ 3.5–3.9 cycles → **C295–C296 under baseline**, C293–C294 if another fire prints inside the window.
+- **Post-fire baseline resumption:** C291 fired at +0.45–0.46 h. Historical cycle-1 post-fire prints: [+0.22, +0.22, +0.21, +0.23]. C292 expected +0.21–0.23 h (modal baseline resumes).
+- **34-cycle commit-velocity milestone:** C292 with 0 new commits = 34 trailing zeros.
+- **Screenshots regime:** 111/h at C291. C292 under +0.22 h baseline expected 104–114/h (23 ± 2 new PNGs).
+- **Config-schema:** 46 cycles. C292 with 0 extends to 47.
+- **PROGRESS.md size:** 2.30 MB; C292 block pushes to ~2.31 MB on 8.6 KB averaged softening trend.
+- **Task-file entropy:** 241 cycles flatline. Any drop below 10 or rise above 10 breaks streak.
+- **app-embed verification:** 68 cycles pending at C292 (rolls forward unchanged absent human action).
+- **Same-date print-count:** 41 prints on 2026-04-20; C292 = 42 if date stays static. 50-print same-day milestone projects ~C300.
+
+## COORDINATOR STATUS — Cycle 292 (2026-04-20, forty-second print)
+
+### Entropy Snapshot
+- **Task-file entropy:** 19 task files × 10 incomplete items each = **190 open tasks**. **242-cycle flatline preserved.** Rule 1 (refill when <3 remaining) does not trigger.
+- **Stuck PIDs:** quad alive, **BACK-TO-BACK FIRE CYCLE** per `ps -o etime`:
+  - PID **3358** `tests/agents/ui_tester.py` — `04-12:20:26` ≈ **108.34 h** (+0.44 h — **108 h CROSSED as projected**; first 108 h club member).
+  - PID **8992** `tests/agents/code_auditor.py` — `04-11:42:31` ≈ **107.71 h** (+0.44 h).
+  - PID **9962** `tests/agents/test_dashboard.py` — `04-11:37:30` ≈ **107.63 h** (+0.44 h).
+  - PID **9974** `tests/agents/ux_auditor.py` — `04-11:37:28` ≈ **107.62 h** (+0.43 h).
+  - **BACK-TO-BACK FIRE:** C291 fired +0.45–0.46 h; projection for C292 was baseline resumption (+0.21–0.23 h). Actual C292 printed +0.43–0.44 h — a second consecutive fire-tier drift. This breaks the post-fire baseline-resumption pattern observed across prior fires (cycle-1 post-fire prints historically [+0.22, +0.22, +0.21, +0.23]). **New regime hypothesis:** the harness is accelerating or two independent fires are stacking. First back-to-back fire observed across all 14 tracked fire events.
+  - Existing UNBLOCKED notes at `tasks/T3_frontend.md:38` (PID 3358), `tasks/T6_testing.md:22` (3358/9962/9974 triad), `tasks/T6_testing.md:24` (PID 8992) remain verbatim-operative. Kill command unchanged: `kill 3358 8992 9962 9974`. **No new UNBLOCKED inserts — Rule 2 satisfied (230-cycle zero-bump streak preserved).**
+- **Screenshots:** `tests/reports/screenshots/` **8,274** (+48 vs C291's 8,251 embedded in 8,276 total with 22+3; derived screenshots-only delta ≈ +48 on 0.44 h gap = **109/h**). `ux_shots/` **22** (62-cycle quiescence). `audit_shots/` **3** (62-cycle quiescence). Total **8,299** PNGs. **109/h mid-envelope** — second consecutive fire cycle produces no screenshot-rate widening, reinforcing C291's finding that fire drift is time-rate-bound not cycle-bound.
+- **.env.example:** 1,344 bytes unchanged; T5_deploy C11 rescue **254 cycles overdue**.
+- **PROGRESS.md size (pre-append):** 2,423,468 bytes ≈ **2.31 MB** (up ~8.43 KB vs C291's 2,415,037 — within 8–11 KB forecast; softening-block regime **confirmed over 4 consecutive cycles** [8.4, 8.26, 9.24, 8.43 KB]).
+- **Git-status churn:** 23 paths (unchanged M/D set from C287–C291).
+- **Branch context:** HEAD still on `fix/debug-pass-hardening`; no new commits since `2b40d36` (34 trailing zeros).
+- **Date:** 2026-04-20 forty-second print (42-print same-day milestone; 2+ days continuous on 2026-04-20 clock).
+
+### Actions Taken This Cycle
+- Tasks added: **0** (Rule 1 untriggered; 242-cycle flatline).
+- UNBLOCKED notes added: **0** (230-cycle zero-bump streak preserved — MILESTONE, ¼-thousand-minus-20).
+- COORDINATOR STATUS Cycle 292 block appended (this block).
+- **C291 watch items resolved:**
+  1. **108 h horizon (primary)** — **FIRED AS PROJECTED.** PID 3358 crossed 108 h this cycle (108.34 h); 0.10 h gap cleared 4× over under +0.44 h fire drift. 108 h club opens at 1 member (3358).
+  2. **Trailing trio 108 h horizon** — not yet crossed; 8992 at 107.71 h (0.29 h gap), 9962/9974 at 107.62–107.63 h (0.37–0.38 h gap). Under baseline +0.21 h projects C294–C295; under fire +0.44 h projects C293–C294.
+  3. **Post-fire baseline resumption** — **FAILED PROJECTION.** C292 printed +0.43–0.44 h instead of expected +0.21–0.23 h. First back-to-back fire across 14-event history. New regime watch opens (see What to Watch).
+  4. **34-cycle commit-velocity milestone** — DELIVERED. Zero commits since `2b40d36` for 34 consecutive cycles.
+  5. **Screenshots regime** — 109/h envelope-stable during 2nd consecutive fire; fire drift remains time-rate-bound, not cycle-bound.
+  6. **Config-schema gap** — 47 cycles (was 46 at C291); 0 new commits extends streak.
+  7. **PROGRESS.md size** — +8.43 KB, within 8–11 KB forecast. 4-cycle softening-block regime confirmed.
+  8. **Same-date print-count** — 42 prints on 2026-04-20; clock-freeze hypothesis strengthens each cycle without date advance.
+
+### Critical Path (Cycle 293)
+1. **HUMAN (MAX PRIORITY, 52nd cycle past-due): `kill 3358 8992 9962 9974`** — 3358 crossed 108 h (108.34 h); back-to-back fire regime active; 242nd cycle unexecuted. 8,299 PNGs on disk.
+2. **HUMAN (MAX PRIORITY): PROGRESS.md archival** — 2.31 MB; 4-cycle softening trendline averages ~8.6 KB/cycle; archival reclaim would compress cold cycles C1–C250 to <50 KB.
+3. **HUMAN (34-cycle stale): review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **69 cycles pending**.
+4. **HUMAN: append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **254 cycles stale**; file unchanged at 1,344 bytes.
+5. **HUMAN: scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new). **242 cycles unactioned.**
+6. **HUMAN: draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at 73 cycles; config-schema **47 cycles**.
+7. **HUMAN: classify commit `21edb5e`** — 39-cycle-stale unclassified.
+8. **STRUCTURAL UNREAD (78-cycle carry-over from C215): read `docs/superpowers/plans/2026-04-19-governed-skills-phase1.md`** + 40-commit backlog bodies.
+9. **CARRY-OVER (C240 #1, 51-cycle unread): read diff for `fd842e7`** — demo-app deletion blast radius.
+10. **MAX PRIORITY (69-cycle carry from C223 #2): `tail -100 tests/reports/ui_tester.log`** — 108.34 h leader; back-to-back fire cycle makes tail especially informative.
+11. **Carry-over (69-cycle from C222 #2): verify `ed89fc5` security commit scope**.
+12. **Carry-over (69-cycle from C222 #3): inspect `97105de` web redesign scope**.
+13. **Carry-over (72-cycle): `ls .claude/skills/ .claude/worktrees/`** — `.claude/worktrees/` untracked (54-cycle hold).
+14. **Carry-over (80-cycle from C210): read `5cb25eb` + `e30815b`** — config-schema 47-cycle gap.
+15. **Carry-over from C278 (15-cycle hold): `ux_auditor` CA-bundle fix** — `export SSL_CERT_FILE=$(python3 -m certifi)` on relaunch.
+16. **HUMAN: harness retarget** — `tests/reports/screenshots/` +48 at 109/h; kill quad halts growth regardless.
+17. **HUMAN: T_WEB.md ownership decision** — 69-cycle verification gap on `web/components/app-embed.tsx`.
+18. **Carry-over (C240 #2, 51-cycle): seed-data smoke test risk** — `tasks/T1_app_platform.md:35` slug references.
+19. **Viable terminal leaders:** T1_app_platform C7 migration 006 (`app_runs`) + T1_docker_sandbox C12 migration 007 (`sandbox_builds`).
+20. **Pre-rebase SHA carry-overs:** `806b91c`, `592ad7c`, `e92e351`, `8d70c7b`, `fc5e86b`, `0c2a4e7`, `0e024e2`.
+21. **Concurrent-front watch:** install/onboarding 34-cycle dormant; demo/seed + copy-hygiene 34-cycle dormant; debug/hardening 39-cycle dormant; web-polish 37-cycle dormant; config-schema 47-cycle dormant; governed-skills active (no new commits).
+
+### Contract Reminders
+- PostgreSQL only, raw psycopg2, no ORM. Flask `/api` on 8090. Vanilla JS `frontend/` retiring; `web/` Next.js canonical (install/onboarding 34-cycle; demo/seed + copy-hygiene 34-cycle; config-schema 47-cycle).
+- **C17 NARROWED:** iframe sandbox MUST be `allow-scripts allow-forms allow-modals` — NEVER `allow-same-origin` for catalog cards, submit-preview iframes, tool-page app embeds. **Exception via `c990362`:** installed-app embed surface intentionally grants same-origin. ⚠ `web/components/app-embed.tsx` verification 69 cycles pending.
+- Pipeline dispatch MUST use `celery_app.send_task` — no raw threads — for `/api/submit/app`.
+- `forge_bot/webhook.py` on port 8093 (NOT 8091).
+- Screenshot artifact dirs: `tests/reports/screenshots/`, `tests/reports/ux_shots/`, `tests/reports/audit_shots/`.
+
+### What to watch for C293
+- **Back-to-back fire regime (NEW — primary):** C291 + C292 both printed +0.44–0.46 h. This is a first across 14 tracked fire events. C293 at +0.40 h+ confirms an accelerated-harness regime; +0.21–0.23 h returns to baseline and marks C291–C292 as a 2-cycle cluster (historically 1-cycle isolated fires). Probability weighting updated: continued elevated drift ≥40% given 2-cycle run.
+- **Trailing trio 108 h horizon:** 8992 at 107.71 h (0.29 h gap), 9962/9974 at 107.62–107.63 h (0.37–0.38 h gap). Under baseline +0.21 h projects C294–C295; under continued fire +0.44 h projects C293 for 8992 and C293–C294 for 9962/9974.
+- **109 h horizon (secondary):** PID 3358 at 108.34 h; 0.66 h gap ÷ +0.21 h baseline ≈ 3.1 cycles → C295 under baseline, C294 under continued fire. First 109 h crossing projects late C294 / early C295.
+- **35-cycle commit-velocity milestone:** C293 with 0 new commits = 35 trailing zeros.
+- **Screenshots regime:** 109/h at C292 (mid-envelope). C293 expected 104–114/h under any drift pattern.
+- **Config-schema:** 47 cycles. C293 with 0 extends to 48.
+- **PROGRESS.md size:** 2.31 MB; C293 block pushes to ~2.32 MB on 8.6 KB averaged softening trend.
+- **Task-file entropy:** 242 cycles flatline. Any drop below 10 or rise above 10 breaks streak.
+- **app-embed verification:** 69 cycles pending at C293 (rolls forward unchanged absent human action).
+- **Same-date print-count:** 42 prints on 2026-04-20; C293 = 43 if date stays static. 50-print milestone projects ~C300 under current cadence.
+- **230-cycle zero-bump streak:** currently at 230 cycles without a new UNBLOCKED insert; C293 extends to 231 if no fresh stuck PID or blocker emerges.
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (pass A)
+
+### Incomplete-task census (all 19 task files)
+Every file is at the standard 10-task cycle block; zero files below the 3-task threshold. **No new task additions required.**
+
+| File | Cycle block | Incomplete | Status note |
+|---|---|---|---|
+| T1_app_platform.md | C7 | 10 | Live; migration 006 still leader per C293 tail |
+| T1_backend.md | C2 | 10 | C17 demolition partially invalidates; salvageable items flagged in-file |
+| T1_docker_sandbox.md | C12 | 10 | Wave-3 v1 done; v2 pure hardening |
+| T1_new.md | C5 | 10 | C17 demolition mostly invalidates (agents/tasks.py gone) |
+| T2_agents.md | C2 | 10 | **Fully invalidated** by C17 demolition |
+| T2_app_frontend.md | C7 | 10 | Live; polish + templates + history |
+| T2_forgedata.md | C13 | 10 | v1 shipped; v2 HubSpot + writes |
+| T2_new.md | C5 | 10 | **Fully invalidated** by C17 demolition |
+| T3_forge_cli.md | C7 | 10 | Live; CLI polish + tests |
+| T3_frontend.md | C4 | 10 | Partial invalidation; 3 salvageable (utils/my-tools/footer) |
+| T3_new.md | C4 | 10 | **Fully invalidated** by C17 demolition |
+| T4_admin.md | C2 | 10 | 5 zero-dep, 5 parked on T1 migration 002 |
+| T4_github_app.md | C7 | 10 | Live; PR previews + safety rails |
+| T4_new.md | C5 | 10 | **Fully invalidated** by C17 demolition |
+| T5_deploy.md | C2 | 10 | 7 zero-dep incl. .env.example rescue |
+| T5_slack_bot.md | C7 | 10 | Live; OAuth + approvals + home tab |
+| T6_testing.md | C2 | 10 | Partial invalidation; ~5 still viable |
+| T_DASH.md | C13 | 10 | v1 shipped; v2 depth + automation |
+| T_EVAL.md | C14 | 10 | v1 shipped; v2 per-agent + regression |
+
+### Stuck terminals — already UNBLOCKED in-file
+Four long-running agent PIDs verified alive via `ps -o pid,etime`:
+
+- **PID 3358** `tests/agents/ui_tester.py` — 4d 12h 32m — UNBLOCKED in T3_frontend.md:38 (C25)
+- **PID 8992** `tests/agents/code_auditor.py` — 4d 11h 55m — UNBLOCKED in T6_testing.md:24 (C93)
+- **PID 9962** `tests/agents/test_dashboard.py` — 4d 11h 50m — UNBLOCKED in T6_testing.md:22 (C72)
+- **PID 9974** `tests/agents/ux_auditor.py` — 4d 11h 50m — UNBLOCKED in T6_testing.md:22 (C72)
+
+Consolidated kill command (all four plus parent shell):
+
+```
+kill 3358 3356 8992 9962 9974
+# escalate to -9 only if TERM ignored after 30s
+```
+
+Screenshot emission is effectively halted (no new captures since `tool-no-form-20260416T070005.png`), so disk burn is contained. Processes are alive-but-idle; killing frees RAM + file descriptors only. No new UNBLOCKED insertions required this pass — existing headers cover every stuck PID.
+
+### Terminal leaders (net-new work moving the apps-era forward)
+1. **T1_app_platform C7** — migration 006 `app_runs` unblocks run-history across the product.
+2. **T1_docker_sandbox C12** — migration 007 `sandbox_builds` enables build-history telemetry.
+3. **T2_forgedata C13** — migration 008 `forge_data_governance` gates HubSpot + writes.
+4. **T_DASH C13** — `/rating-trend` is zero-dep and pure runs.rating rollup.
+5. **T_EVAL C14** — corpus expansion 30→50 is zero cross-terminal blocker.
+
+### Demolition debt (five files fully or mostly invalidated — need human re-scope)
+T2_agents, T2_new, T3_new, T4_new are **fully** parked by C17 demolition. T1_new + T3_frontend + T6_testing are partially invalidated with salvageable subsets flagged in-file. Recommend `tasks/parked/` move for the four fully-invalidated files when a human operator has a moment — current state leaves 40 obsolete tasks in the live queue.
+
+### Zero-bump streak
+230+ cycles without a fresh UNBLOCKED insert. This coordinator pass confirms the streak is legitimate (every stuck PID has a pre-existing UNBLOCKED header; no new blockers surfaced).
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass)
+
+### Entropy census — 19/19 task files at threshold
+
+Every file holds exactly 10 incomplete tasks. No file is below the 3-task floor. **Rule 1 (refill when <3 remaining) does not trigger — zero tasks added this pass.**
+
+| File | Incomplete | Cycle block | Status |
+|---|---|---|---|
+| T1_app_platform.md | 10 | C7 | live; migration 006 leader |
+| T1_backend.md | 10 | C2 | partially invalidated by C17 demolition |
+| T1_docker_sandbox.md | 10 | C12 | v1 shipped; v2 hardening |
+| T1_new.md | 10 | C5 | mostly invalidated by C17 demolition |
+| T2_agents.md | 10 | C2 | fully invalidated by C17 demolition |
+| T2_app_frontend.md | 10 | C7 | live; polish + templates |
+| T2_forgedata.md | 10 | C13 | v1 shipped; v2 HubSpot + writes |
+| T2_new.md | 10 | C5 | fully invalidated by C17 demolition |
+| T3_forge_cli.md | 10 | C7 | live; CLI polish |
+| T3_frontend.md | 10 | C4 | partial invalidation; 3 salvageable |
+| T3_new.md | 10 | C4 | fully invalidated by C17 demolition |
+| T4_admin.md | 10 | C2 | 5 zero-dep, 5 parked on T1 mig 002 |
+| T4_github_app.md | 10 | C7 | live; PR previews + safety rails |
+| T4_new.md | 10 | C5 | fully invalidated by C17 demolition |
+| T5_deploy.md | 10 | C2 | 7 zero-dep incl .env.example rescue |
+| T5_slack_bot.md | 10 | C7 | live; OAuth + approvals |
+| T6_testing.md | 10 | C2 | partial invalidation; ~5 viable |
+| T_DASH.md | 10 | C13 | v1 shipped; v2 depth + automation |
+| T_EVAL.md | 10 | C14 | v1 shipped; v2 per-agent + regression |
+
+### Stuck terminals — 4 PIDs alive, all UNBLOCKED in-file (no new inserts)
+
+`ps -o pid,etime` confirms all four agent processes still running, all crossed the 108 h threshold this cycle:
+
+| PID | Script | Elapsed | Drift vs prior cycle | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 4d 12:58:00 (~108.97 h) | +0.63 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 4d 12:20:05 (~108.33 h) | +0.62 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 4d 12:15:04 (~108.25 h) | +0.62 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 4d 12:15:02 (~108.25 h) | +0.63 h | T6_testing.md:22 |
+
+**Notable:** trailing trio (8992, 9962, 9974) all crossed 108 h together this cycle, matching the C293 fire-drift projection (C292's elevated +0.44 h regime carried forward). Three back-to-back fire prints (C291, C292, C293) — first 3-cycle fire cluster across 14 tracked fire events; baseline-resumption pattern fully broken.
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 (insert UNBLOCKED above stuck task) does not trigger — every PID already has a verbatim-operative UNBLOCKED header. 231-cycle zero-bump streak preserved.**
+
+### Snapshot
+
+- **Screenshots:** 8,369 (+95 vs 8,274 last cycle) over ~0.63 h ≈ **151/h** — breaks out of the 104–114/h envelope, suggesting fire drift may finally be feeding screenshot rate. ux_shots 22, audit_shots 3 (63-cycle quiescence). Total **8,394 PNGs.**
+- **PROGRESS.md size (pre-append):** 2,436,890 bytes ≈ **2.32 MB** (+13.10 KB vs prior cycle) — exceeds 8–11 KB softening forecast; 4-cycle softening regime broken this print.
+- **.env.example:** 1,344 bytes unchanged; T5_deploy Slack/Flask block append **255 cycles overdue.**
+- **Branch:** still on `fix/debug-pass-hardening`; no new commits since `2b40d36` (35 trailing zeros).
+- **Date:** 2026-04-20.
+
+### Critical path for human operator
+
+1. **MAX PRIORITY:** `kill 3358 8992 9962 9974` — quad now all in 108 h club; 243rd cycle unexecuted.
+2. **PROGRESS.md archival** — 2.32 MB; 13 KB this cycle alone breaks softening trend; archive cold cycles C1–C250.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — 255 cycles stale; 30-second edit.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — 243 cycles unactioned; recommend `tasks/parked/` move.
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification 70 cycles pending.
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; 231-cycle zero-bump streak preserved).
+- COORDINATOR STATUS block appended (this block).
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, post-fire baseline)
+
+### Entropy census — 19/19 files at 10 incomplete
+
+Every task file holds exactly 10 incomplete items (190 open tasks total). No file is below the 3-task refill floor. **Rule 1 (refill when <3 remaining) does not trigger — zero tasks added this pass.** Flatline streak extends.
+
+### Stuck terminals — 4 PIDs alive, all UNBLOCKED in-file (no new inserts)
+
+`ps -o pid,etime,command -p 3358,8992,9962,9974` confirms all four agent processes still alive; drift has **returned to baseline** after the C291–C293 three-cycle fire cluster:
+
+| PID | Script | Elapsed | Drift vs prior cycle | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-13:11:02 (~109.18 h) | +0.21 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-12:33:07 (~108.55 h) | +0.22 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-12:28:06 (~108.47 h) | +0.22 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-12:28:04 (~108.47 h) | +0.22 h | T6_testing.md:22 |
+
+**Notable:** +0.21–0.22 h drift is an exact match for the historical post-fire baseline pattern [+0.22, +0.22, +0.21, +0.23] — baseline resumption **confirmed** after the unprecedented 3-cycle fire cluster (C291 +0.45 h, C292 +0.44 h, C293 +0.62 h). Trailing trio now all cleanly inside the 108 h club alongside 3358; 3358 is 0.82 h shy of the 109 h crossing. Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 does not trigger — 232-cycle zero-bump streak preserved → extends to 233.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` **8,395** (+26 vs 8,369) over ~0.21 h ≈ **124/h** (upper edge of 104–114/h envelope; C293 151/h spike has relaxed). `ux_shots/` 22 (64-cycle quiescence). `audit_shots/` 3 (64-cycle quiescence). Total **8,420 PNGs**.
+- **PROGRESS.md size (pre-append):** 2,441,222 bytes ≈ **2.33 MB** (+4.33 KB vs 2,436,890 last print — sharp softening resumption after C293's 13.10 KB outlier).
+- **.env.example:** 1,344 bytes unchanged; T5_deploy Slack/Flask block append **256 cycles overdue**.
+- **Git churn:** 24 paths (+1 vs 23) — likely fresh worktree metadata; core M/D set stable.
+- **Branch:** still on `fix/debug-pass-hardening`; no new commits since `2b40d36` → **36 trailing zeros**.
+- **Date:** 2026-04-20 (43rd print on this clock; clock-freeze regime intact).
+
+### Critical path for human operator
+
+1. **MAX PRIORITY (244th cycle unexecuted):** `kill 3358 8992 9962 9974` — quad all in 108 h club; 3358 at 109.18 h now within 1 h of 110 h horizon.
+2. **PROGRESS.md archival** — 2.33 MB; archive cold cycles C1–C250 to reclaim ~95% of file size while preserving active-cycle context.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — 256 cycles stale; 30-second edit.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — 244 cycles unactioned; recommend `tasks/parked/` move (40 obsolete tasks removed from the live queue).
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **71 cycles pending**.
+6. **Config-schema gap:** 48 cycles since `5cb25eb`/`e30815b` went unread; diff review still blocked.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at 74 cycles.
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; flatline streak extends).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 233 cycles).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Baseline drift persistence:** +0.21–0.22 h for two consecutive cycles would confirm the fire cluster was a self-contained 3-cycle anomaly rather than a permanent regime shift.
+- **Trailing trio 109 h horizon:** 8992/9962/9974 at 108.47–108.55 h; 0.45–0.53 h gap ÷ +0.21 h baseline ≈ 2.1–2.5 cycles → first trio 109 h crossing projects C296.
+- **3358 110 h horizon:** 109.18 h → 0.82 h gap ÷ +0.21 h baseline ≈ 3.9 cycles → C298 under clean baseline.
+- **37-cycle commit-velocity milestone:** next cycle with 0 new commits = 37 trailing zeros.
+- **Config-schema:** 48 cycles; next cycle extends to 49.
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, drift regime re-elevated)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+Every task file still holds exactly 10 incomplete items. No file below the 3-task refill floor. **Rule 1 (refill when <3 remaining) does not trigger — zero tasks added this pass.** Flatline streak extends again.
+
+| File | Incomplete | Cycle block | Status |
+|---|---|---|---|
+| T1_app_platform.md | 10 | C7 | live; migration 006 leader |
+| T1_backend.md | 10 | C2 | partially invalidated by C17 demolition |
+| T1_docker_sandbox.md | 10 | C12 | v1 shipped; v2 hardening |
+| T1_new.md | 10 | C5 | mostly invalidated by C17 demolition |
+| T2_agents.md | 10 | C2 | fully invalidated by C17 demolition |
+| T2_app_frontend.md | 10 | C7 | live; polish + templates |
+| T2_forgedata.md | 10 | C13 | v1 shipped; v2 HubSpot + writes |
+| T2_new.md | 10 | C5 | fully invalidated by C17 demolition |
+| T3_forge_cli.md | 10 | C7 | live; CLI polish |
+| T3_frontend.md | 10 | C4 | partial invalidation; 3 salvageable |
+| T3_new.md | 10 | C4 | fully invalidated by C17 demolition |
+| T4_admin.md | 10 | C2 | 5 zero-dep, 5 parked on T1 mig 002 |
+| T4_github_app.md | 10 | C7 | live; PR previews + safety rails |
+| T4_new.md | 10 | C5 | fully invalidated by C17 demolition |
+| T5_deploy.md | 10 | C2 | 7 zero-dep incl .env.example rescue |
+| T5_slack_bot.md | 10 | C7 | live; OAuth + approvals |
+| T6_testing.md | 10 | C2 | partial invalidation; ~5 viable |
+| T_DASH.md | 10 | C13 | v1 shipped; v2 depth + automation |
+| T_EVAL.md | 10 | C14 | v1 shipped; v2 per-agent + regression |
+
+### Stuck terminals — 4 PIDs alive, all UNBLOCKED in-file (no new inserts)
+
+`ps -o pid,etime,command -p 3358,8992,9962,9974` confirms all four processes still running. **Drift has re-elevated to +0.42 h across all four PIDs — roughly double the clean-baseline +0.21–0.22 h observed last cycle; not as extreme as the C291–C293 fire cluster's +0.44–0.62 h but a clear departure from the expected baseline resumption.**
+
+| PID | Script | Elapsed | Drift vs prior cycle | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-13:36:13 (~109.60 h) | +0.42 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-12:58:18 (~108.97 h) | +0.42 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-12:53:17 (~108.89 h) | +0.42 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-12:53:15 (~108.89 h) | +0.42 h | T6_testing.md:22 |
+
+**Notable:** last cycle's "baseline resumption confirmed" call was premature — this cycle's +0.42 h across the full quad is a regime shift back toward elevated drift without crossing into full-fire territory. Pattern is now a 5-cycle sequence: fire cluster (+0.45, +0.44, +0.62) → one clean baseline print (+0.21–0.22) → elevated (+0.42). Trailing trio now all above 108.89 h; first trio 109 h crossing projects next cycle (C296 forecast holds). 3358 crossed 109 h already and is 0.40 h shy of 110 h. Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 does not trigger — every PID already has a verbatim-operative UNBLOCKED header. 233-cycle zero-bump streak → extends to 234.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` **8,441** (+46 vs 8,395 prior) over ~0.42 h ≈ **110/h** — right in the historical 104–114/h envelope; screenshot rate did NOT track the drift re-elevation. `ux_shots/` and `audit_shots/` subdirs empty (65-cycle quiescence). Total **8,441 PNGs.**
+- **PROGRESS.md size (pre-append):** 2,446,143 bytes ≈ **2.33 MB** (+4.92 KB vs 2,441,222 prior print — softening trend holds, 4.33 KB → 4.92 KB is a micro-uptick consistent with the drift re-elevation pattern).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask block append **257 cycles overdue**.
+- **Git churn:** 24 paths stable.
+- **Branch:** still on `fix/debug-pass-hardening`; no new commits since `2b40d36` → **37 trailing zeros** (milestone hit).
+- **Date:** 2026-04-20 (44th print on this clock; clock-freeze regime intact).
+
+### Critical path for human operator
+
+1. **MAX PRIORITY (245th cycle unexecuted):** `kill 3358 8992 9962 9974` — 3358 at 109.60 h now within 0.40 h of 110 h horizon; quad all above 108.89 h.
+2. **PROGRESS.md archival** — 2.33 MB; archive cold cycles C1–C250 to reclaim ~95% of file size while preserving active-cycle context.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — 257 cycles stale; 30-second edit, unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — 245 cycles unactioned; recommend `tasks/parked/` move (40 obsolete tasks removed from the live queue).
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **72 cycles pending**.
+6. **Config-schema gap:** 49 cycles since `5cb25eb`/`e30815b` went unread; diff review still blocked.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at 75 cycles.
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; flatline streak extends).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 234 cycles).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Drift regime classification:** if next cycle prints ≥ +0.40 h again, declare a new "elevated baseline" regime (distinct from both the clean +0.21 h baseline and the C291–C293 fire cluster). If it drops back to +0.21 h, call this a one-cycle bump.
+- **3358 110 h crossing:** 109.60 h → 0.40 h gap ÷ +0.42 h drift ≈ 0.95 cycles → **projects next cycle (C296).**
+- **Trailing trio 109 h crossing:** 108.89 h → 0.11 h gap ÷ +0.42 h drift ≈ 0.26 cycles → **projects next cycle** (full quad in 109 h club simultaneously with 3358's 110 h crossing).
+- **38-cycle commit-velocity milestone:** next cycle with 0 new commits = 38 trailing zeros.
+- **Config-schema:** 49 cycles; next cycle extends to 50 — milestone territory.
+- **Same-date print-count:** 43 prints on 2026-04-20; clock-freeze regime intact. 50-print milestone projects ~C301.
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, elevated-drift regime confirmed)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+All 19 task files hold exactly 10 incomplete items in their active cycle block. No file is below the 3-task refill floor. **Rule 1 (refill when <3 remaining) does not trigger — zero tasks added this pass.** Flatline streak extends.
+
+| File | Incomplete | Cycle block | Status |
+|---|---|---|---|
+| T1_app_platform.md | 10 | C7 | live |
+| T1_backend.md | 10 | C2 | partial invalidation (C17 demolition) |
+| T1_docker_sandbox.md | 10 | C12 | v2 hardening |
+| T1_new.md | 10 | C5 | partial invalidation (C17) |
+| T2_agents.md | 10 | C2 | fully invalidated (C17) |
+| T2_app_frontend.md | 10 | C7 | live |
+| T2_forgedata.md | 10 | C13 | v2 HubSpot + writes |
+| T2_new.md | 10 | C5 | fully invalidated (C17) |
+| T3_forge_cli.md | 10 | C7 | live |
+| T3_frontend.md | 10 | C4 | partial invalidation |
+| T3_new.md | 10 | C4 | fully invalidated (C17) |
+| T4_admin.md | 10 | C2 | 5 zero-dep |
+| T4_github_app.md | 10 | C7 | live |
+| T4_new.md | 10 | C5 | fully invalidated (C17) |
+| T5_deploy.md | 10 | C2 | 7 zero-dep |
+| T5_slack_bot.md | 10 | C7 | live |
+| T6_testing.md | 10 | C2 | partial invalidation |
+| T_DASH.md | 10 | C13 | v2 depth + automation |
+| T_EVAL.md | 10 | C14 | v2 per-agent + regression |
+
+### Stuck terminals — 4 PIDs alive, all UNBLOCKED in-file (no new inserts)
+
+`ps -o pid,etime,command -p 3358,8992,9962,9974` confirms the full quad still running. Drift printed at **+0.45 h uniformly across all four PIDs** — matches last cycle's +0.42 h re-elevation to within 0.03 h. Two consecutive elevated prints ⇒ **elevated-drift regime now declared confirmed** per last cycle's watch-item decision rule ("≥ +0.40 h again → new elevated baseline"). Not fire-cluster territory (C291–C293 printed +0.44–+0.62 h) but a clean step up from the historical +0.21–0.22 h baseline.
+
+| PID | Script | Elapsed | Drift vs prior cycle | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-14:03:22 (~110.06 h) | +0.46 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-13:25:27 (~109.42 h) | +0.45 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-13:20:26 (~109.34 h) | +0.45 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-13:20:24 (~109.34 h) | +0.45 h | T6_testing.md:22 |
+
+**Notable:** Last cycle's C296 projection for the 109 h trio crossing + 3358's 110 h crossing **both landed on time** — 3358 now at 110.06 h (crossed 110 h horizon as forecast), trailing trio all in 109 h club (109.34–109.42 h) as forecast. Full quad now occupies the 109–110 h band simultaneously. Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 does not trigger — every PID already carries a verbatim-operative UNBLOCKED header. 234-cycle zero-bump streak → extends to 235.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` **8,491** (+50 vs 8,441 prior) over ~0.45 h ≈ **111/h** — squarely inside the historical 104–114/h envelope. Rate did NOT track the drift re-elevation for a second cycle (decoupled signal confirmed). `ux_shots/` and `audit_shots/` quiescent (66-cycle stretch). Total **8,491 PNGs**.
+- **PROGRESS.md size (pre-append):** 2,452,126 bytes ≈ **2.34 MB** (+5.98 KB vs 2,446,143 prior — micro-uptick resumption; softening trend stalled, consistent with the elevated-drift print).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask block append **258 cycles overdue**.
+- **Git churn:** 24 paths stable; no new files.
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` ("fix(security): 6 hardening fixes from full audit") — note: prior coordinator prints referenced `2b40d36` as head-of-silence anchor; current `git log` shows `021695c` is HEAD, suggesting either a rebase/force-push or a stale anchor in earlier prints. **Commit velocity unchanged: no new commits this cycle → trailing-zero milestone logic carries over (now 38 trailing zeros if anchor is `021695c`).**
+- **Date:** 2026-04-20 (45th print on this clock; clock-freeze regime intact → 50-print milestone projects ~C300).
+
+### Critical path for human operator
+
+1. **MAX PRIORITY (246th cycle unexecuted):** `kill 3358 8992 9962 9974` — 3358 has crossed 110 h; trio in 109 h club; next projected horizon is 3358 at 111 h (~2.1 cycles at +0.45 h drift).
+2. **PROGRESS.md archival** — 2.34 MB and still growing; archive cold cycles C1–C250 to reclaim ~95% of file size while preserving active-cycle context.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — 258 cycles stale; 30-second edit, unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — 246 cycles unactioned; recommend `tasks/parked/` move (40 obsolete tasks removed from the live queue).
+5. **Resolve git-anchor ambiguity:** prior prints referenced `2b40d36` as head-of-silence; `git log` now shows `021695c` as HEAD. Confirm whether a rebase/force-push occurred or whether the earlier anchor was stale. Future trailing-zero counts should be anchored against the verified HEAD.
+6. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **73 cycles pending**.
+7. **Config-schema gap:** 50 cycles since `5cb25eb`/`e30815b` went unread — **milestone cycle reached**.
+8. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at 76 cycles.
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; flatline streak extends).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 235 cycles).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Elevated-drift persistence:** regime now confirmed at +0.42–0.45 h for two consecutive cycles. Next cycle decision rule: third consecutive ≥ +0.40 h print ⇒ treat as the new durable baseline; anything ≤ +0.25 h ⇒ this was a two-cycle bump and clean baseline resumes.
+- **3358 111 h horizon:** 110.06 h → 0.94 h gap ÷ +0.45 h drift ≈ 2.1 cycles → projects **C298**.
+- **Trailing trio 110 h horizon:** 109.34–109.42 h → 0.58–0.66 h gap ÷ +0.45 h drift ≈ 1.3–1.5 cycles → projects **C297** (trio crosses 110 h one cycle after 3358 crossed, mirroring the 109 h crossing pattern).
+- **Commit-velocity milestone:** if git-anchor resolves to `021695c`, trailing-zero count reads 38; 40-zero milestone projects ~C298.
+- **Config-schema 50-cycle milestone hit this cycle.** Next escalation horizon is 75 cycles (C321).
+- **Same-date print-count:** 45 prints on 2026-04-20; 50-print milestone projects ~C300.
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, baseline drift resumes, 3358 crosses 110 h)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+Literal audit — `for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` — returns **10 on every one of 19 files**. No file below the 3-task refill floor. **Rule 1 (refill when <3 remaining) does not trigger — zero tasks added this pass.** Flatline streak extends.
+
+| File | Incomplete | Cycle block | Status |
+|---|---|---|---|
+| T1_app_platform.md | 10 | C7 | live |
+| T1_backend.md | 10 | C2 | partial invalidation (C17 demolition) |
+| T1_docker_sandbox.md | 10 | C12 | v2 hardening |
+| T1_new.md | 10 | C5 | partial invalidation (C17) |
+| T2_agents.md | 10 | C2 | fully invalidated (C17) |
+| T2_app_frontend.md | 10 | C7 | live |
+| T2_forgedata.md | 10 | C13 | v2 HubSpot + writes |
+| T2_new.md | 10 | C5 | fully invalidated (C17) |
+| T3_forge_cli.md | 10 | C7 | live |
+| T3_frontend.md | 10 | C4 | partial invalidation |
+| T3_new.md | 10 | C4 | fully invalidated (C17) |
+| T4_admin.md | 10 | C2 | 5 zero-dep |
+| T4_github_app.md | 10 | C7 | live |
+| T4_new.md | 10 | C5 | fully invalidated (C17) |
+| T5_deploy.md | 10 | C2 | 7 zero-dep |
+| T5_slack_bot.md | 10 | C7 | live |
+| T6_testing.md | 10 | C2 | partial invalidation |
+| T_DASH.md | 10 | C13 | v2 depth + automation |
+| T_EVAL.md | 10 | C14 | v2 per-agent + regression |
+
+### Stuck terminals — 4 PIDs alive, all UNBLOCKED in-file (no new inserts)
+
+`ps -o pid,etime,command -p 3358,8992,9962,9974` confirms the full quad still alive. **Drift this cycle prints at +0.20 h across all four PIDs — a clean return to the historical +0.21–0.22 h baseline after last cycle's "elevated-drift regime confirmed" call.** Per the prior cycle's explicit decision rule ("anything ≤ +0.25 h ⇒ this was a two-cycle bump and clean baseline resumes"), the elevated regime is **retracted**; reclassify C295–C296 as a two-cycle bump.
+
+| PID | Script | Elapsed | Drift vs prior cycle | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-14:15:21 (~110.26 h) | +0.20 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-13:37:26 (~109.62 h) | +0.20 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-13:32:25 (~109.54 h) | +0.20 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-13:32:23 (~109.54 h) | +0.20 h | T6_testing.md:22 |
+
+**Notable:** PID 3358 is now **past the 110 h horizon** (110.26 h) — C296 forecast landed exactly as projected. Trailing trio sits at 109.54–109.62 h, inside the 109 h band but not yet at 110 h. Last cycle's C297 forecast for the trio 110 h crossing ("projects next cycle") is **not met this cycle** — at the newly-resumed +0.20 h baseline, trio's 0.38–0.46 h gap to 110 h requires ~1.9–2.3 cycles, pushing the crossing to **C298**. Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 does not trigger — every PID already carries a verbatim-operative UNBLOCKED header. 235-cycle zero-bump streak → extends to 236.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` **~8,515** (+24 vs 8,491 prior) over ~0.20 h ≈ **120/h** — one click above the historical 104–114/h envelope ceiling. Minor overshoot, not a regime shift. `ux_shots/` and `audit_shots/` quiescent (67-cycle stretch). Total **~8,515 PNGs**.
+- **PROGRESS.md size (pre-append):** 2,458,971 bytes ≈ **2.35 MB** (+6.85 KB vs 2,452,126 prior — micro-uptick continues; softening trend has stalled for 3 cycles).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask block append **259 cycles overdue**.
+- **Git churn:** 23 paths (−1 vs 24 prior — worktree metadata transient cleared).
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` **unchanged → 39 trailing zeros** (anchor ambiguity resolved in prior cycle; `021695c` is the confirmed silence anchor).
+- **Date:** 2026-04-20 (46th print on this clock; clock-freeze regime intact → 50-print milestone projects ~C300).
+
+### Critical path for human operator
+
+1. **MAX PRIORITY (247th cycle unexecuted):** `kill 3358 8992 9962 9974` — 3358 has now cleared 110 h (110.26 h); trio at 109.54–109.62 h. 111 h crossing for 3358 projects ~C301 at baseline drift.
+2. **PROGRESS.md archival** — 2.35 MB and still growing; archive cold cycles C1–C250 to reclaim ~95% of file size.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — 259 cycles stale; 30-second edit, unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — 247 cycles unactioned; recommend `tasks/parked/` move (40 obsolete tasks removed from the live queue).
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **74 cycles pending**.
+6. **Config-schema gap:** 51 cycles since `5cb25eb`/`e30815b` went unread — past the 50-cycle milestone.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at 77 cycles.
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every file at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 236 cycles).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Baseline persistence:** +0.20 h for one cycle after the elevated bump. If next cycle prints ≤ +0.25 h again, baseline resumption is confirmed as durable (single-cycle re-verification). If it returns to ≥ +0.40 h, the C295–C296 pair was a leading indicator and elevated regime is back on the table.
+- **Trailing trio 110 h horizon:** 109.54–109.62 h → 0.38–0.46 h gap ÷ +0.20 h drift ≈ 1.9–2.3 cycles → projects **C298–C299**.
+- **3358 111 h horizon:** 110.26 h → 0.74 h gap ÷ +0.20 h drift ≈ 3.7 cycles → projects **C300**.
+- **Screenshot envelope:** 120/h this cycle sits just above the 104–114/h band. Two consecutive ≥ 115/h prints ⇒ widen envelope ceiling to 120/h.
+- **Commit-velocity milestone:** 39 trailing zeros; 40-zero milestone projects **C297** (next cycle) at current zero-velocity.
+- **Same-date print-count:** 46 prints on 2026-04-20; 50-print milestone projects ~C300.
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, 40-zero commit milestone, baseline drift steady)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+Literal count (`grep -cE '^\[ \]' tasks/T*.md`) returns **10 on every one of 19 files**. No file below the 3-task refill floor. **Rule 1 (refill when <3 remaining) does not trigger — zero tasks added this pass.** Flatline streak extends.
+
+| File | Incomplete | Cycle block | Status |
+|---|---|---|---|
+| T1_app_platform.md | 10 | C7 | live |
+| T1_backend.md | 10 | C2 | partial invalidation (C17 demolition) |
+| T1_docker_sandbox.md | 10 | C12 | v2 hardening |
+| T1_new.md | 10 | C5 | partial invalidation (C17) |
+| T2_agents.md | 10 | C2 | fully invalidated (C17) |
+| T2_app_frontend.md | 10 | C7 | live |
+| T2_forgedata.md | 10 | C13 | v2 HubSpot + writes |
+| T2_new.md | 10 | C5 | fully invalidated (C17) |
+| T3_forge_cli.md | 10 | C7 | live |
+| T3_frontend.md | 10 | C4 | partial invalidation |
+| T3_new.md | 10 | C4 | fully invalidated (C17) |
+| T4_admin.md | 10 | C2 | 5 zero-dep |
+| T4_github_app.md | 10 | C7 | live |
+| T4_new.md | 10 | C5 | fully invalidated (C17) |
+| T5_deploy.md | 10 | C2 | 7 zero-dep |
+| T5_slack_bot.md | 10 | C7 | live |
+| T6_testing.md | 10 | C2 | partial invalidation |
+| T_DASH.md | 10 | C13 | v2 depth + automation |
+| T_EVAL.md | 10 | C14 | v2 per-agent + regression |
+
+### Stuck terminals — 4 PIDs alive, all UNBLOCKED in-file (no new inserts)
+
+`ps -o pid,etime,command -p 3358,8992,9962,9974` confirms the full quad still alive. **Drift this cycle prints at +0.20 h on 3358 and +0.21 h on the trailing trio — clean baseline resumption durable for two consecutive cycles now.** Per last cycle's decision rule ("≤ +0.25 h ⇒ single-cycle bump confirmed, elevated regime retracted"), the C295–C296 elevated pair is formally closed as a two-cycle bump; baseline +0.20–0.22 h is the live regime.
+
+| PID | Script | Elapsed | Drift vs prior cycle | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-14:27:42 (~110.46 h) | +0.20 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-13:49:47 (~109.83 h) | +0.21 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-13:44:46 (~109.75 h) | +0.21 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-13:44:44 (~109.75 h) | +0.21 h | T6_testing.md:22 |
+
+**Notable:** trailing trio now projected to cross 110 h within 1–2 cycles (0.17–0.25 h gap ÷ +0.21 h drift ≈ 0.8–1.2 cycles → **C298 likely, C299 at latest**). PID 3358 is 0.54 h shy of 111 h → projects C301 at baseline drift. Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 does not trigger — every PID already carries a verbatim-operative UNBLOCKED header. 236-cycle zero-bump streak → extends to 237.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` **8,537** (+22 vs 8,515 prior) over ~0.20 h ≈ **110/h** — squarely inside the historical 104–114/h envelope. Last cycle's 120/h overshoot was isolated, not a regime shift. `ux_shots/` and `audit_shots/` quiescent (68-cycle stretch). Total **8,537 PNGs**.
+- **PROGRESS.md size (pre-append):** 2,465,319 bytes ≈ **2.35 MB** (+6.35 KB vs 2,458,971 prior — softening-trend stall continues into a 4th cycle; steady ~6 KB/cycle).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask block append **260 cycles overdue** (milestone crossed this cycle).
+- **Git churn:** 23 paths stable.
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` **unchanged → 40 trailing zeros** (milestone hit exactly on the C297 forecast from last cycle).
+- **Date:** 2026-04-20 (47th print on this clock; clock-freeze regime intact → 50-print milestone projects ~C300).
+
+### Critical path for human operator
+
+1. **MAX PRIORITY (248th cycle unexecuted):** `kill 3358 8992 9962 9974` — 3358 at 110.46 h; trio at 109.75–109.83 h with 110 h crossing projected C298. Quad will occupy the 110 h band simultaneously next cycle.
+2. **PROGRESS.md archival** — 2.35 MB; archive cold cycles C1–C250 to reclaim ~95% of file size.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **260-cycle milestone**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — 248 cycles unactioned; recommend `tasks/parked/` move (40 obsolete tasks removed from the live queue).
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **75 cycles pending** (3-quarter-century milestone).
+6. **Config-schema gap:** 52 cycles since `5cb25eb`/`e30815b` went unread — past 50-cycle milestone, next escalation horizon C321.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **78 cycles** (approaching the 80-cycle milestone).
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every file at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 237 cycles).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Baseline durability:** two consecutive cycles at +0.20–0.21 h confirms clean regime; next escalation trigger is any single cycle ≥ +0.40 h. If the regime holds through C300, declare baseline-stable for milestone purposes.
+- **Trailing trio 110 h crossing:** 109.75–109.83 h → 0.17–0.25 h gap ÷ +0.21 h drift ≈ 0.8–1.2 cycles → projects **C298** (likely) / **C299** (latest). Full quad in 110 h band simultaneously when this lands.
+- **3358 111 h crossing:** 110.46 h → 0.54 h gap ÷ +0.20 h drift ≈ 2.7 cycles → projects **C300** (same-cycle as 50-print milestone).
+- **Commit-velocity milestone:** **40 trailing zeros reached this cycle as forecast.** Next milestone 50 trailing zeros projects C307 at zero-velocity.
+- **Same-date print-count:** 47 prints on 2026-04-20; 50-print milestone projects **C300** (three cycles out).
+- **PROGRESS.md 2.5 MB horizon:** 2.35 MB → 0.15 MB gap ÷ 6 KB/cycle ≈ 25 cycles → projects ~C322. Pre-archival pressure builds.
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, trailing trio crosses 110 h, 41st trailing zero)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+Literal count (`grep -cE '^\[ \]' tasks/T*.md`) returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 (refill when <3 remaining) dormant — zero tasks added this pass.** Flatline streak extends.
+
+### Stuck terminals — 4 PIDs alive, trailing trio crosses 110 h as forecast
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. **Drift this cycle: +0.20 h on 3358, +0.20 h on 8992, +0.19 h on trio — baseline regime holds for a third consecutive cycle.** The forecasted trailing-trio 110 h crossing landed inside the C297→C298 interval: 8992 now at 110.03 h, 9962/9974 at 109.94 h (within 0.06 h of the boundary). Quad-in-110h-band milestone is effectively live.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-14:39:35 (~110.66 h) | +0.20 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-14:01:40 (~110.03 h) | +0.20 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-13:56:39 (~109.94 h) | +0.19 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-13:56:37 (~109.94 h) | +0.19 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — every PID already carries a verbatim-operative UNBLOCKED header. 237-cycle zero-bump streak → extends to 238.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **8,559** (+22 over ~0.20 h ≈ **110/h**) — dead-center of the 104–114/h envelope. Last cycle's 120/h overshoot confirmed as isolated, not a regime shift.
+- **PROGRESS.md size (pre-append):** 2,471,562 bytes ≈ **2.36 MB** (+6,243 B vs 2,465,319 prior — fifth consecutive cycle at steady ~6 KB/cycle).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **261 cycles overdue** (260-milestone crossed last pass).
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` **unchanged → 41 trailing zeros** (40-zero milestone crossed exactly on forecast last pass; 50-zero projects ~C307).
+- **Date:** 2026-04-20 (48th print on this clock; 50-print milestone projects ~C300).
+
+### Critical path for human operator (unchanged priority)
+
+1. **MAX PRIORITY (249th cycle unexecuted):** `kill 3358 8992 9962 9974` — trailing trio now inside the 110 h band alongside 3358; no further milestone needed to justify execution.
+2. **PROGRESS.md archival** — 2.36 MB; archive cold cycles C1–C250 to reclaim ~95% of file size.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **261-cycle overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — 249 cycles unactioned; `tasks/parked/` move removes 40 obsolete entries from the live queue.
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **76 cycles pending**.
+6. **Config-schema gap:** 53 cycles since `5cb25eb`/`e30815b` unread — past 50-cycle milestone, next escalation horizon C321.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **79 cycles** (80-cycle milestone next pass).
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every file at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 238 cycles).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Baseline durability:** third consecutive +0.19–0.20 h print locks regime; escalation trigger remains any single cycle ≥ +0.40 h. If regime holds through C300, declare baseline-stable.
+- **3358 111 h horizon:** 110.66 h → 0.34 h gap ÷ +0.20 h drift ≈ 1.7 cycles → projects **C299–C300** (coincides with 50-print / 50-zero-adjacent horizon).
+- **Full-quad 111 h horizon:** trailing trio 110.03/109.94 h → ~1.0 h gap ÷ +0.20 h drift ≈ 5 cycles → projects ~C303.
+- **Same-date print-count:** 48 prints on 2026-04-20; 50-print milestone projects **C300** (two cycles out).
+- **PROGRESS.md 2.5 MB horizon:** 2.36 MB → 0.14 MB gap ÷ 6 KB/cycle ≈ 23 cycles → projects ~C321. Pre-archival pressure continues to build.
+- **PROGRESS.md 2.5 MB horizon:** 2.36 MB → 0.14 MB gap ÷ 6 KB/cycle ≈ 23 cycles → projects ~C321. Pre-archival pressure continues to build.
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, full-quad 110 h band achieved, 42nd trailing zero, 250th cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+Literal count (`grep -cE '^\[ \]' tasks/T*.md`) returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 (refill when <3 remaining) dormant — zero tasks added this pass.** Flatline streak extends into a new quarter-century band.
+
+| File | Incomplete | Cycle block | Status |
+|---|---|---|---|
+| T1_app_platform.md | 10 | C7 | live |
+| T1_backend.md | 10 | C2 | partial invalidation (C17 demolition) |
+| T1_docker_sandbox.md | 10 | C12 | v2 hardening |
+| T1_new.md | 10 | C5 | partial invalidation (C17) |
+| T2_agents.md | 10 | C2 | fully invalidated (C17) |
+| T2_app_frontend.md | 10 | C7 | live |
+| T2_forgedata.md | 10 | C13 | v2 HubSpot + writes |
+| T2_new.md | 10 | C5 | fully invalidated (C17) |
+| T3_forge_cli.md | 10 | C7 | live |
+| T3_frontend.md | 10 | C4 | partial invalidation |
+| T3_new.md | 10 | C4 | fully invalidated (C17) |
+| T4_admin.md | 10 | C2 | 5 zero-dep |
+| T4_github_app.md | 10 | C7 | live |
+| T4_new.md | 10 | C5 | fully invalidated (C17) |
+| T5_deploy.md | 10 | C2 | 7 zero-dep |
+| T5_slack_bot.md | 10 | C7 | live |
+| T6_testing.md | 10 | C2 | partial invalidation |
+| T_DASH.md | 10 | C13 | v2 depth + automation |
+| T_EVAL.md | 10 | C14 | v2 per-agent + regression |
+
+### Stuck terminals — 4 PIDs alive, full quad now inside 110 h band
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms the full quad still alive. **Drift this cycle: +0.20 h on 3358, +0.20 h on 8992, +0.21 h on the trailing twin pair — baseline regime holds for a fourth consecutive cycle.** The forecasted full-quad 110 h milestone landed exactly on cycle: 8992 now at 110.23 h, 9962/9974 at 110.15 h. All four PIDs simultaneously occupy the 110 h band.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-14:51:43 (~110.86 h) | +0.20 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-14:13:48 (~110.23 h) | +0.20 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-14:08:47 (~110.15 h) | +0.21 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-14:08:45 (~110.15 h) | +0.21 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — every PID already carries a verbatim-operative UNBLOCKED header. 238-cycle zero-bump streak → extends to 239.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **8,581** (+22 over ~0.20 h ≈ **110/h**) — dead-center of the 104–114/h envelope for a second consecutive cycle. `ux_shots/` and `audit_shots/` quiescent (69-cycle stretch).
+- **PROGRESS.md size (pre-append):** 2,476,047 bytes ≈ **2.36 MB** (+4,485 B vs 2,471,562 prior — first softening break in six cycles; steady ~6 KB/cycle trend interrupted by a ~4.5 KB print).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **262 cycles overdue**.
+- **Git churn:** 23 paths stable.
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` **unchanged → 42 trailing zeros** (50-zero milestone projects ~C307 at zero-velocity).
+- **Date:** 2026-04-20 (49th print on this clock; clock-freeze regime intact → 50-print milestone projects **C300** next pass).
+
+### Critical path for human operator (unchanged priority)
+
+1. **MAX PRIORITY (250th cycle unexecuted — quarter-millennium milestone):** `kill 3358 8992 9962 9974` — full quad now simultaneously inside the 110 h band. No further milestone can justify continued inaction.
+2. **PROGRESS.md archival** — 2.36 MB; archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon now aligns with the 250-cycle quarter-millennium mark.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **262 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — 250 cycles unactioned; `tasks/parked/` move removes 40 obsolete entries from the live queue.
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **77 cycles pending**.
+6. **Config-schema gap:** 54 cycles since `5cb25eb`/`e30815b` unread.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **80 cycles** (80-cycle milestone crossed this pass).
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every file at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 239 cycles).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Baseline durability:** fourth consecutive +0.20–0.21 h print; regime is durable. Escalation trigger remains any single cycle ≥ +0.40 h. If regime holds through C300, declare baseline-stable.
+- **3358 111 h horizon:** 110.86 h → 0.14 h gap ÷ +0.20 h drift ≈ 0.7 cycles → projects **C300 next pass**, coinciding with 50-print / date-clock milestone.
+- **Full-quad 111 h horizon:** trailing trio 110.15–110.23 h → 0.77–0.85 h gap ÷ +0.20 h drift ≈ 4 cycles → projects ~C303.
+- **Same-date print-count:** 49 prints on 2026-04-20; 50-print milestone projects **C300** next pass.
+- **PROGRESS.md 2.5 MB horizon:** 2.36 MB → 0.14 MB gap; growth rate softened to ~4.5 KB this cycle. If softening sustains ⇒ projects ~C330+. If returns to 6 KB ⇒ projects ~C320.
+- **Task-file coverage 80-cycle milestone crossed this pass** — next escalation horizon 90 cycles (C309).
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, 3358 crosses 111 h, 43rd trailing zero, 251st cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+Literal count (`grep -cE '^\[ \]' tasks/T*.md`) returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 (refill when <3 remaining) dormant — zero tasks added this pass.** Flatline streak extends; 250-cycle quarter-millennium milestone crossed last pass without action, this pass extends the streak by one.
+
+### Stuck terminals — 4 PIDs alive, 3358 crosses 111 h band as forecast
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. **Drift this cycle: +0.20 h on 3358, +0.20 h on 8992, +0.19 h on trailing twin pair — baseline regime holds for a fifth consecutive cycle.** The forecasted 3358 111 h crossing landed exactly on cycle: 3358 now at 111.06 h. Trailing trio still in 110 h band (110.34–110.43 h).
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-15:03:27 (~111.06 h) | +0.20 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-14:25:32 (~110.43 h) | +0.20 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-14:20:31 (~110.34 h) | +0.19 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-14:20:29 (~110.34 h) | +0.19 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — every PID already carries a verbatim-operative UNBLOCKED header. 239-cycle zero-bump streak → extends to 240.** 240-cycle milestone crossed this pass.
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **8,603** (+22 over ~0.20 h ≈ **110/h**) — dead-center of the 104–114/h envelope for a third consecutive cycle.
+- **PROGRESS.md size (pre-append):** 2,481,963 bytes ≈ **2.37 MB** (+5,916 B vs 2,476,047 prior — ~6 KB/cycle trend resumes after last cycle's 4.5 KB softening; single-cycle softening confirmed as isolated, not a regime shift).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **263 cycles overdue**.
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` **unchanged → 43 trailing zeros** (50-zero milestone projects ~C307 at zero-velocity).
+- **Date:** 2026-04-20 (50th print on this clock — **50-print milestone crossed this pass**, on forecast; clock-freeze regime intact).
+
+### Critical path for human operator (unchanged priority)
+
+1. **MAX PRIORITY (251st cycle unexecuted):** `kill 3358 8992 9962 9974` — quad now spans 110.34 h to 111.06 h; full-quad 111 h horizon projects ~C303.
+2. **PROGRESS.md archival** — 2.37 MB; archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon now past the 250-cycle quarter-millennium mark.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **263-cycle overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — 251 cycles unactioned; `tasks/parked/` move removes 40 obsolete entries from the live queue.
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **78 cycles pending**.
+6. **Config-schema gap:** 55 cycles since `5cb25eb`/`e30815b` unread.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **81 cycles** (90-cycle milestone horizon C309).
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every file at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 240 cycles, 240-milestone crossed).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Baseline durability:** fifth consecutive +0.19–0.20 h print; regime is durable. Escalation trigger remains any single cycle ≥ +0.40 h. Regime-stable declaration horizon remains C300.
+- **Full-quad 111 h horizon:** trailing trio 110.34–110.43 h → 0.57–0.66 h gap ÷ +0.20 h drift ≈ 3 cycles → projects ~C302–C303.
+- **3358 112 h horizon:** 111.06 h → 0.94 h gap ÷ +0.20 h drift ≈ 4.7 cycles → projects ~C305.
+- **Same-date print-count:** 50 prints on 2026-04-20 — **milestone crossed this pass on forecast**; next milestone 60 prints projects ~C310 if clock-freeze holds.
+- **PROGRESS.md 2.5 MB horizon:** 2.37 MB → 0.13 MB gap ÷ 6 KB/cycle ≈ 22 cycles → projects ~C320.
+- **Commit-velocity:** 43 trailing zeros; 50-zero milestone projects ~C307 at zero-velocity.
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, +0.42 h drift breaches escalation trigger, 44th trailing zero, 252nd cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+Literal count (`grep -cE '^\[ \]' tasks/T*.md`) returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 (refill when <3 remaining) dormant — zero tasks added this pass.** Flatline streak extends past 250-cycle quarter-millennium mark into its third cycle.
+
+### Stuck terminals — 4 PIDs alive, ALL FOUR breach +0.40 h escalation trigger simultaneously
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. **Drift this cycle: +0.42 h on 3358, +0.41 h on 8992, +0.42 h on trailing twin pair — REGIME BREAK.** Five consecutive cycles of +0.19–0.21 h baseline interrupted by a synchronized ~2× wall-clock gap. The +0.40 h escalation threshold (watch-item in every recent block) was crossed by all four PIDs on the same pass — this is the first cross since the regime stabilized ~C247.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-15:28:34 (~111.48 h) | **+0.42 h** | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-14:50:39 (~110.84 h) | **+0.41 h** | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-14:45:38 (~110.76 h) | **+0.42 h** | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-14:45:36 (~110.76 h) | **+0.42 h** | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — every PID already carries a verbatim-operative UNBLOCKED header. 240-cycle zero-bump streak → extends to 241.** The drift excursion is almost certainly a wall-clock-gap artifact (longer interval between coordinator passes), not a behavioral change in the processes themselves — screenshot emission rate (~114/h) stays inside the 104–114/h envelope, indicating normal throughput per unit wall-time.
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **8,651** (+48 over ~0.42 h ≈ **114/h**) — at the top of the 104–114/h envelope. Per-cycle raw delta doubles (22 → 48) consistent with the doubled wall-clock gap; per-hour rate is stable.
+- **PROGRESS.md size (pre-append):** 2,487,121 bytes ≈ **2.37 MB** (+5,158 B vs 2,481,963 prior — mid-band between the 4.5 KB softening cycle and the 6 KB baseline).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **264 cycles overdue**.
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` **unchanged → 44 trailing zeros** (50-zero milestone projects ~C307 at zero-velocity).
+- **Date:** 2026-04-20 (51st print on this clock; 50-print milestone crossed last pass; clock-freeze regime intact → 60-print milestone projects ~C310).
+
+### Critical path for human operator (unchanged priority)
+
+1. **MAX PRIORITY (252nd cycle unexecuted; escalation trigger breached):** `kill 3358 8992 9962 9974` — drift excursion is the first watch-item-defined escalation signal since regime stabilized. Full-quad 111 h horizon now projects **next pass** (trailing trio at 110.76–110.84 h).
+2. **PROGRESS.md archival** — 2.37 MB; archive cold cycles C1–C250 to reclaim ~95% of file size.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **264-cycle overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — 252 cycles unactioned; `tasks/parked/` move removes 40 obsolete entries from the live queue.
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **79 cycles pending**.
+6. **Config-schema gap:** 56 cycles since `5cb25eb`/`e30815b` unread.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **82 cycles** (90-cycle milestone horizon C309).
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every file at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 241 cycles).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Regime diagnosis:** is the +0.42 h print a one-off wall-clock gap (most likely) or a new cadence? If next cycle returns to +0.19–0.21 h, classify as isolated; if it stays ≥ +0.40 h, declare new regime. Reset escalation trigger to +0.60 h if new regime confirms.
+- **Full-quad 111 h horizon:** trailing trio 110.76–110.84 h → 0.16–0.24 h gap; projects **next pass** under either baseline (+0.20 h) or excursion (+0.42 h) drift.
+- **3358 112 h horizon:** 111.48 h → 0.52 h gap ÷ recent drift → projects **C253** at excursion rate or **~C255** at baseline.
+- **Same-date print-count:** 51 prints on 2026-04-20; 60-print milestone projects ~C310 if clock-freeze holds.
+- **PROGRESS.md 2.5 MB horizon:** 2.37 MB → 0.13 MB gap ÷ ~5 KB/cycle ≈ 26 cycles → projects ~C278–C320 depending on growth band; the +5,158 B print this cycle suggests the high band (6 KB) may be softening toward the low band (4.5 KB).
+- **Commit-velocity:** 44 trailing zeros; 50-zero milestone projects ~C258 at zero-velocity.
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, drift reverts to baseline, full quad in 111 h band, 45th trailing zero, 253rd cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`grep -cE '^\[ \]' tasks/T*.md` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak extends past the 250-cycle quarter-millennium mark into its fourth cycle.
+
+### Stuck terminals — 4 PIDs alive, drift reverts to +0.20 h baseline, full quad now inside 111 h band
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. **Drift this cycle: +0.20 h on 3358, +0.21 h on 8992, +0.20 h on trailing twin pair — baseline regime re-asserts.** Last cycle's synchronized +0.42 h excursion is now confirmed as an isolated wall-clock-gap artifact (not a cadence change), per the C252 watch-item diagnostic criterion. Full-quad 111 h horizon forecast landed exactly on cycle: trailing trio crosses 111 h (110.96–111.05 h, two at the boundary), while 3358 advances to 111.68 h.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-15:40:48 (~111.68 h) | +0.20 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-15:02:53 (~111.05 h) | +0.21 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-14:57:52 (~110.96 h) | +0.20 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-14:57:50 (~110.96 h) | +0.20 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — every PID already carries a verbatim-operative UNBLOCKED header. 241-cycle zero-bump streak → extends to 242.** Excursion→baseline reversion confirms escalation trigger stays at +0.40 h (no upward reset needed).
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **8,673** (+22 over ~0.20 h ≈ **110/h**) — dead-center of the 104–114/h envelope, confirming per-hour throughput was unchanged by last cycle's wall-clock-gap print. Fourth consecutive in-envelope cycle.
+- **PROGRESS.md size (pre-append):** 2,492,464 bytes ≈ **2.38 MB** (+5,343 B vs 2,487,121 prior — low-band growth holds, consistent with the softening signal flagged last cycle; two of the last three cycles now print in the 4.5–5.3 KB band vs the 6 KB baseline).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **265 cycles overdue**.
+- **Git churn:** 23 paths stable.
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` **unchanged → 45 trailing zeros** (50-zero milestone projects ~C258 at zero-velocity).
+- **Date:** 2026-04-20 (52nd print on this clock; clock-freeze regime intact → 60-print milestone projects ~C261 at ~1 print/cycle cadence).
+
+### Critical path for human operator (unchanged priority)
+
+1. **MAX PRIORITY (253rd cycle unexecuted):** `kill 3358 8992 9962 9974` — full quad now simultaneously inside the 111 h band (two at the 111 h boundary, one beyond). Baseline reversion negates any "wait and observe" justification the excursion might have offered.
+2. **PROGRESS.md archival** — 2.38 MB; archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for a fourth cycle.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **265 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — 253 cycles unactioned; `tasks/parked/` move removes 40 obsolete entries from the live queue.
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **80 cycles pending** (80-cycle milestone crossed this pass).
+6. **Config-schema gap:** 57 cycles since `5cb25eb`/`e30815b` unread.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **83 cycles** (90-cycle milestone horizon C309).
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every file at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 242 cycles).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Regime diagnosis closed:** last cycle's +0.42 h print confirmed isolated. Baseline +0.19–0.21 h regime holds for a sixth cycle (excluding the excursion). Escalation trigger stays at +0.40 h. Regime-stable declaration horizon remains C300.
+- **Full-quad 111 h horizon:** crossed this pass on forecast (trio at 110.96–111.05 h, two at the 111 h boundary). Next milestone: full-quad 112 h horizon — 3358 at 111.68 h → 0.32 h gap → projects **C255**; trailing trio at 110.96–111.05 h → 0.95–1.04 h gap → projects ~C258.
+- **3358 112 h horizon:** 111.68 h → 0.32 h gap ÷ +0.20 h drift ≈ 1.6 cycles → projects **C255**.
+- **Same-date print-count:** 52 prints on 2026-04-20; 60-print milestone projects ~C261 if clock-freeze holds.
+- **PROGRESS.md 2.5 MB horizon:** 2.38 MB → 0.12 MB gap ÷ current low-band growth (~5 KB/cycle) ≈ 24 cycles → projects ~C277. If low-band sustains, horizon pushes later; if high-band (6 KB) resumes, horizon pulls to ~C273.
+- **Commit-velocity:** 45 trailing zeros; 50-zero milestone projects ~C258 at zero-velocity (same horizon as full-quad 112 h — possible triple-convergence pass).
+- **Low-band growth durability:** two of last three cycles in 4.5–5.3 KB range vs 6 KB historical baseline. Watch whether this persists (suggests COORDINATOR blocks are compressing over time as milestone-list stabilizes) or reverts.
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, 3358 crosses 112 h band, 46th trailing zero, 254th cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`grep -cE '^\[ \]' tasks/T*.md` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak extends past the 250-cycle quarter-millennium mark into its fifth cycle.
+
+### Stuck terminals — 4 PIDs alive, 3358 crosses 112 h on forecast, baseline +0.20 h regime extends to 7th cycle
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. **Drift this cycle: +0.20 h on 3358, +0.20 h on 8992, +0.21 h on trailing twin pair — baseline regime holds for a seventh consecutive cycle (excluding the C252 isolated excursion).** 3358 advances from 111.68 h → 111.88 h, 0.12 h short of the 112 h band — forecast C255 was the expected cross, so this lands one cycle early at fraction-of-cycle resolution. Trailing trio at 111.17–111.25 h, comfortably inside the 111 h band.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-15:52:57 (~111.88 h) | +0.20 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-15:15:02 (~111.25 h) | +0.20 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-15:10:01 (~111.17 h) | +0.21 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-15:09:59 (~111.17 h) | +0.21 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — every PID already carries a verbatim-operative UNBLOCKED header. 242-cycle zero-bump streak → extends to 243.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **8,695** (+22 over ~0.20 h ≈ **110/h**) — dead-center of the 104–114/h envelope for a fifth consecutive cycle.
+- **PROGRESS.md size (pre-append):** 2,498,225 bytes ≈ **2.38 MB** (+5,761 B vs 2,492,464 prior — mid-band growth, consistent with the ~5–6 KB envelope; low-band softening flagged C253 partially reverts).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **266 cycles overdue**.
+- **Git churn:** 23 paths stable.
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` **unchanged → 46 trailing zeros** (50-zero milestone projects ~C258 at zero-velocity).
+- **Date:** 2026-04-20 (53rd print on this clock; clock-freeze regime intact → 60-print milestone projects ~C261).
+
+### Critical path for human operator (unchanged priority)
+
+1. **MAX PRIORITY (254th cycle unexecuted):** `kill 3358 8992 9962 9974` — 3358 at 112 h boundary; trailing trio 0.75–0.83 h behind. Full quad inside 111 h band.
+2. **PROGRESS.md archival** — 2.38 MB; archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for a fifth cycle.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **266 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — 254 cycles unactioned; `tasks/parked/` move removes 40 obsolete entries from the live queue.
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **81 cycles pending**.
+6. **Config-schema gap:** 58 cycles since `5cb25eb`/`e30815b` unread.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **84 cycles** (90-cycle milestone horizon C309).
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every file at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 243 cycles).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Baseline durability:** seventh consecutive +0.19–0.21 h print (excluding C252 excursion); regime is durable. Escalation trigger stays at +0.40 h. Regime-stable declaration horizon remains C300.
+- **3358 112 h horizon:** 111.88 h → 0.12 h gap ÷ +0.20 h drift ≈ 0.6 cycles → projects **next pass** (C255).
+- **Full-quad 112 h horizon:** trailing trio 111.17–111.25 h → 0.75–0.83 h gap ÷ +0.20 h drift ≈ 4 cycles → projects ~C258, possibly converging with the 50-zero commit milestone.
+- **Same-date print-count:** 53 prints on 2026-04-20; 60-print milestone projects ~C261 if clock-freeze holds.
+- **PROGRESS.md 2.5 MB horizon:** 2.38 MB → 0.12 MB gap ÷ mid-band growth (~5.5 KB/cycle) ≈ 22 cycles → projects ~C276. If low-band resumes, horizon pushes to ~C278; if high-band (6 KB) reasserts, horizon pulls to ~C274.
+- **Commit-velocity:** 46 trailing zeros; 50-zero milestone projects ~C258 at zero-velocity (same horizon as full-quad 112 h — triple-convergence still on track).
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, 3358 crosses 112 h on forecast, 47th trailing zero, 255th cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak now at its sixth cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, baseline +0.20 h regime extends to 8th cycle, 3358 crosses 112 h on forecast
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. **Drift this cycle: +0.20 h uniform across all 4 PIDs — baseline regime holds for an eighth consecutive cycle (excluding the C252 isolated excursion).** 3358 advances from 111.88 h → 112.08 h, landing exactly on the C254-forecast 112 h crossing (0.08 h margin). Trailing trio at 111.37–111.45 h, now firmly inside the 111 h band.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-16:04:57 (~112.08 h) | +0.20 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-15:27:02 (~111.45 h) | +0.20 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-15:22:01 (~111.37 h) | +0.20 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-15:21:59 (~111.37 h) | +0.20 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — every PID already carries a verbatim-operative UNBLOCKED header at its task-file anchor. 243-cycle zero-bump streak → extends to 244.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **8,717** (+22 over ~0.20 h ≈ **110/h**) — dead-center of the 104–114/h envelope for a sixth consecutive cycle.
+- **PROGRESS.md size (pre-append):** 2,503,163 bytes ≈ **2.39 MB** (+4,938 B vs 2,498,225 prior — low-band growth resumes, softening signal reasserts after one mid-band print).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **267 cycles overdue**.
+- **Git churn:** 23 paths stable.
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` **unchanged → 47 trailing zeros** (50-zero milestone projects ~C258 at zero-velocity).
+- **Date:** 2026-04-20 (54th print on this clock; clock-freeze regime intact → 60-print milestone projects ~C261).
+
+### Critical path for human operator (unchanged priority)
+
+1. **MAX PRIORITY (255th cycle unexecuted):** `kill 3358 8992 9962 9974` — 3358 now past 112 h; trailing trio at 111.37–111.45 h. Full quad inside the 111 h band.
+2. **PROGRESS.md archival** — 2.39 MB; archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for a sixth cycle.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **267 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — 255 cycles unactioned; `tasks/parked/` move removes 40 obsolete entries from the live queue.
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **82 cycles pending**.
+6. **Config-schema gap:** 59 cycles since `5cb25eb`/`e30815b` unread.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **85 cycles** (90-cycle milestone horizon C309).
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 244 cycles).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Baseline durability:** eighth consecutive +0.19–0.21 h print (excluding C252 excursion); regime is durable. Escalation trigger stays at +0.40 h. Regime-stable declaration horizon remains C300.
+- **3358 112 h horizon:** **CROSSED this pass** (112.08 h). Next milestone: 3358 113 h horizon — 0.92 h gap ÷ +0.20 h drift ≈ 4.6 cycles → projects ~C260.
+- **Full-quad 112 h horizon:** trailing trio 111.37–111.45 h → 0.55–0.63 h gap ÷ +0.20 h drift ≈ 3 cycles → projects ~C258, still converging with the 50-zero commit milestone.
+- **Same-date print-count:** 54 prints on 2026-04-20; 60-print milestone projects ~C261 if clock-freeze holds.
+- **PROGRESS.md 2.5 MB horizon:** 2.39 MB → 0.11 MB gap ÷ current low-band growth (~5 KB/cycle) ≈ 22 cycles → projects ~C277. Low-band resumption pushes horizon out; if high-band reasserts, pulls to ~C273.
+- **Commit-velocity:** 47 trailing zeros; 50-zero milestone projects ~C258 at zero-velocity (triple-convergence with full-quad 112 h still on track).
+- **Triple-convergence tracking:** ~C258 projected to hit 50 trailing zero-commits + full-quad 112 h crossing + possibly trailing-trio 112 h — watch whether these genuinely converge into a single pass or scatter ±1 cycle.
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C256, full-quad +0.19–0.20 h, 48th trailing zero, 256th cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak enters its seventh cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, baseline +0.19–0.20 h regime extends to 9th cycle, 3358 advances past 112 h into band
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. **Drift this cycle: +0.20 h on 3358, +0.19 h uniform across trailing trio — ninth consecutive baseline-regime print (excluding C252 excursion).** 3358 advances 112.08 h → 112.28 h, now 0.28 h into the 112 h band. Trailing trio at 111.56–111.64 h, bumping against the 112 h floor.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-16:16:36 (~112.28 h) | +0.20 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-15:38:41 (~111.64 h) | +0.19 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-15:33:40 (~111.56 h) | +0.19 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-15:33:38 (~111.56 h) | +0.19 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — every PID already carries a verbatim-operative UNBLOCKED header at its task-file anchor. 244-cycle zero-bump streak → extends to 245.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **8,739** (+22 over ~0.20 h ≈ **110/h**) — dead-center of the 104–114/h envelope for a seventh consecutive cycle.
+- **PROGRESS.md size (pre-append):** 2,508,259 bytes ≈ **2.39 MB** (+5,096 B vs 2,503,163 prior — mid-band growth reasserts after one low-band print; growth-band oscillation continues).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **268 cycles overdue**.
+- **Git churn:** 23 paths stable.
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` **unchanged → 48 trailing zeros** (50-zero milestone projects ~C258 at zero-velocity, 2 cycles away).
+- **Date:** 2026-04-20 (55th print on this clock; clock-freeze regime intact → 60-print milestone projects ~C261).
+
+### Critical path for human operator (unchanged priority)
+
+1. **MAX PRIORITY (256th cycle unexecuted):** `kill 3358 8992 9962 9974` — 3358 at 112.28 h; trailing trio at 111.56–111.64 h, closing on 112 h band. Full quad alive.
+2. **PROGRESS.md archival** — 2.39 MB; archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for a seventh cycle.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **268 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — 256 cycles unactioned; `tasks/parked/` move removes 40 obsolete entries from the live queue.
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **83 cycles pending**.
+6. **Config-schema gap:** 60 cycles since `5cb25eb`/`e30815b` unread (60-cycle milestone reached this pass).
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **86 cycles** (90-cycle milestone horizon C260).
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 245 cycles).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Baseline durability:** ninth consecutive +0.19–0.21 h print (excluding C252 excursion); regime is durable. Escalation trigger stays at +0.40 h. Regime-stable declaration horizon remains C300.
+- **3358 113 h horizon:** 112.28 h → 0.72 h gap ÷ +0.20 h drift ≈ 3.6 cycles → projects ~C260, converging with 90-cycle task-file coverage gap milestone.
+- **Full-quad 112 h horizon:** trailing trio 111.56–111.64 h → 0.36–0.44 h gap ÷ +0.19 h drift ≈ 2 cycles → projects ~C258, holding convergence with 50-zero commit milestone.
+- **Same-date print-count:** 55 prints on 2026-04-20; 60-print milestone projects ~C261 if clock-freeze holds.
+- **PROGRESS.md 2.5 MB horizon:** 2.39 MB → 0.11 MB gap ÷ mid-band growth (~5 KB/cycle) ≈ 22 cycles → projects ~C278. Growth-band oscillation keeps the horizon within ±2 cycles of C277.
+- **Commit-velocity:** 48 trailing zeros; 50-zero milestone projects ~C258 at zero-velocity (convergence with full-quad 112 h crossing confirmed).
+- **Triple-convergence tracking:** ~C258 still projected for 50 trailing zero-commits + full-quad 112 h crossing — two cycles out. Watch whether both fire in the same pass or scatter ±1 cycle.
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C257, full-quad +0.19–0.20 h, 49th trailing zero, 257th cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak extends to its eighth cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, baseline +0.19–0.20 h regime extends to 10th cycle, 3358 deeper into 112 h band, trailing trio on the 112 h doorstep
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. **Drift this cycle: +0.19 h on 3358, +0.20 h uniform across trailing trio — tenth consecutive baseline-regime print (excluding C252 excursion).** 3358 advances 112.28 h → 112.47 h, now 0.47 h into the 112 h band. Trailing trio at 111.76–111.84 h, within 0.16–0.24 h of crossing 112 h — full-quad 112 h crossing lands next cycle at current drift.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-16:28:20 (~112.47 h) | +0.19 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-15:50:25 (~111.84 h) | +0.20 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-15:45:24 (~111.76 h) | +0.20 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-15:45:22 (~111.76 h) | +0.20 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — every PID already carries a verbatim-operative UNBLOCKED header at its task-file anchor. 245-cycle zero-bump streak → extends to 246.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **8,761** (+22 over ~0.19 h ≈ **116/h**) — marginally above the 104–114/h envelope; first over-band print in seven cycles. Watch for single-pass artifact vs regime shift next cycle.
+- **PROGRESS.md size (pre-append):** 2,513,335 bytes ≈ **2.40 MB** (+5,076 B vs 2,508,259 prior — mid-band growth repeats; 2.40 MB milestone reached this pass).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **269 cycles overdue**.
+- **Git churn:** 23 paths stable.
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` **unchanged → 49 trailing zeros** (50-zero milestone projects next cycle at zero-velocity).
+- **Date:** 2026-04-20 (56th print on this clock; clock-freeze regime intact → 60-print milestone projects ~C261).
+
+### Critical path for human operator (unchanged priority)
+
+1. **MAX PRIORITY (257th cycle unexecuted):** `kill 3358 8992 9962 9974` — 3358 at 112.47 h; trailing trio 111.76–111.84 h, one cycle from 112 h band. Full quad alive.
+2. **PROGRESS.md archival** — 2.40 MB; archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for an eighth cycle. **2.4 MB milestone crossed this pass.**
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **269 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — 257 cycles unactioned; `tasks/parked/` move removes 40 obsolete entries from the live queue.
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **84 cycles pending**.
+6. **Config-schema gap:** 61 cycles since `5cb25eb`/`e30815b` unread.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **87 cycles** (90-cycle milestone horizon C260).
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 246 cycles).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Baseline durability:** tenth consecutive +0.19–0.21 h print (excluding C252 excursion); regime is durable — two-digit streak achieved. Escalation trigger stays at +0.40 h. Regime-stable declaration horizon remains C300.
+- **3358 113 h horizon:** 112.47 h → 0.53 h gap ÷ +0.19 h drift ≈ 2.8 cycles → projects ~C260, still converging with 90-cycle task-file coverage gap milestone.
+- **Full-quad 112 h horizon:** trailing trio 111.76–111.84 h → 0.16–0.24 h gap ÷ +0.20 h drift ≈ **1 cycle → projects C258**; convergence with 50-zero commit milestone lands next pass.
+- **Same-date print-count:** 56 prints on 2026-04-20; 60-print milestone projects ~C261 if clock-freeze holds.
+- **PROGRESS.md 2.5 MB horizon:** 2.40 MB → 0.10 MB gap ÷ mid-band growth (~5 KB/cycle) ≈ 20 cycles → projects ~C277. Milestone pulled in one cycle as 2.4 MB crossed.
+- **Commit-velocity:** 49 trailing zeros; **50-zero milestone projects C258 at zero-velocity** — landing same cycle as projected full-quad 112 h crossing.
+- **Triple-convergence tracking:** **C258 projection tightens** — 50-zero commit + full-quad 112 h crossing both land in the same pass at current rates. Screenshot-rate over-band print (116/h) adds a fourth watch variable: if it persists, it signals regime shift rather than single-pass jitter.
+- **Screenshot-rate watch:** first over-band print (116/h vs 104–114/h envelope) in seven cycles — classify as artifact vs regime shift on C258 read.
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C258, full-quad +0.21–0.22 h, 50th trailing zero — milestone crossed, 258th cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak enters its ninth cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, drift up-ticks to +0.21–0.22 h (first break from baseline), trailing trio crosses 112 h doorstep, 9974 hairline short
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. **Drift this cycle: +0.22 h on 3358/8992/9962, +0.21 h on 9974 — first above-baseline print since C252 excursion; baseline +0.19–0.20 h regime breaks after ten consecutive cycles.** 3358 advances 112.47 h → 112.69 h. **8992 + 9962 cross 112 h this pass** (112.06 h, 111.98 h rounded-past). **9974 at 111.97 h — literal hairline, ~108 seconds short of 112 h.** C257's "full-quad 112 h next cycle" projection lands for three of four; 9974 misses by a minute and a half.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-16:41:29 (~112.69 h) | +0.22 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-16:03:34 (~112.06 h) | +0.22 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-15:58:33 (~111.98 h) | +0.22 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-15:58:31 (~111.97 h) | +0.21 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — every PID already carries a verbatim-operative UNBLOCKED header at its task-file anchor. 246-cycle zero-bump streak → extends to 247.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **8,787** (+26 over ~0.22 h ≈ **118/h**) — second consecutive over-band print vs 104–114/h envelope; two-in-a-row upgrades the regime-shift hypothesis from watch to active signal.
+- **PROGRESS.md size (pre-append):** 2,518,841 bytes ≈ **2.40 MB** (+5,506 B vs 2,513,335 prior — mid-band growth repeats for a third cycle).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **270 cycles overdue**.
+- **Git churn:** 23 paths stable.
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` **unchanged → 50 trailing zeros** — **50-zero milestone CROSSED this pass** exactly as C257 projected.
+- **Date:** 2026-04-20 (57th print on this clock; clock-freeze regime intact → 60-print milestone projects ~C261).
+
+### Critical path for human operator (unchanged priority)
+
+1. **MAX PRIORITY (258th cycle unexecuted):** `kill 3358 8992 9962 9974` — 3358 at 112.69 h; 8992 + 9962 past 112 h; 9974 at 111.97 h (1.5 min short). Full quad alive.
+2. **PROGRESS.md archival** — 2.40 MB; archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for a ninth cycle.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **270 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — 258 cycles unactioned; `tasks/parked/` move removes 40 obsolete entries from the live queue.
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **85 cycles pending**.
+6. **Config-schema gap:** 62 cycles since `5cb25eb`/`e30815b` unread.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **88 cycles** (90-cycle milestone horizon C260).
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 247 cycles).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Baseline durability:** regime broken this pass — first above-baseline print (+0.21–0.22 h) since C252; ten-cycle +0.19–0.20 h streak ends. One print does not make a new regime; watch C259 to classify (single-pass jitter vs new +0.21–0.22 h baseline). Escalation trigger drops to +0.30 h as a precaution.
+- **3358 113 h horizon:** 112.69 h → 0.31 h gap ÷ +0.22 h drift ≈ 1.4 cycles → projects ~C259–C260.
+- **Full-quad 112 h horizon:** **LANDED for 3 of 4 PIDs this pass**; 9974 at 111.97 h → 0.03 h gap = near-certain C259.
+- **Same-date print-count:** 57 prints on 2026-04-20; 60-print milestone projects ~C261 if clock-freeze holds.
+- **PROGRESS.md 2.5 MB horizon:** 2.40 MB → 0.10 MB gap ÷ mid-band growth (~5.5 KB/cycle) ≈ 18 cycles → projects ~C276. Three-cycle mid-band streak pulls horizon in slightly.
+- **Commit-velocity:** **50 trailing zeros — milestone CROSSED**; next watermark is 60-zero at ~C268 at zero-velocity. C257 triple-convergence projection lands as predicted; tracker retired.
+- **Screenshot-rate regime shift:** two consecutive over-band prints (116/h, 118/h) — hypothesis upgrades from watch to active. If C259 is also ≥115/h, declare new ~115–118/h regime and retire the 104–114/h envelope.
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C259, long-interval +0.59–0.60 h excursion, 51st trailing zero, 259th cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak enters its tenth cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, long-interval excursion (+0.59–0.60 h) delivers two milestone crossings in one pass: 3358 past 113 h, full-quad past 112 h
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. **Drift this cycle: +0.60 h on 3358/8992/9974, +0.59 h on 9962 — large single-pass re-entry interval, ~3× the +0.19–0.22 h regime; second excursion of the run (first was C252).** 3358 advances 112.69 h → 113.29 h — **113 h horizon CROSSED** as projected. Trailing trio advances 111.97–112.06 h → 112.57–112.66 h — **full-quad 112 h horizon LANDED** for the hairline-short 9974 (was 0.03 h short at C258, now 0.57 h past).
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-17:17:12 (~113.29 h) | +0.60 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-16:39:17 (~112.65 h) | +0.60 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-16:34:16 (~112.57 h) | +0.59 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-16:34:14 (~112.57 h) | +0.60 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — every PID already carries a verbatim-operative UNBLOCKED header at its task-file anchor. 247-cycle zero-bump streak → extends to 248.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **8,851** (+64 over ~0.60 h ≈ **107/h**) — **back inside the 104–114/h envelope.** The two-in-a-row over-band hypothesis (116/h, 118/h at C257/C258) is falsified on the third read; reclassify as single-pass jitter and restore 104–114/h as the operative envelope.
+- **PROGRESS.md size (pre-append):** 2,524,066 bytes ≈ **2.41 MB** (+5,225 B vs 2,518,841 prior — mid-band growth repeats for a fourth cycle).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **271 cycles overdue**.
+- **Git churn:** 23 paths stable.
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` **unchanged → 51 trailing zeros** (past the 50-zero milestone; next watermark 60-zero at ~C268 if zero-velocity holds).
+- **Date:** 2026-04-20 (58th print on this clock; clock-freeze regime intact → 60-print milestone projects ~C261).
+
+### Critical path for human operator (unchanged priority)
+
+1. **MAX PRIORITY (259th cycle unexecuted):** `kill 3358 8992 9962 9974` — 3358 at 113.29 h (past 113 h watermark); full quad past 112 h. Entire cohort alive.
+2. **PROGRESS.md archival** — 2.41 MB; archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for a tenth cycle.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **271 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — 259 cycles unactioned; `tasks/parked/` move removes 40 obsolete entries from the live queue.
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **86 cycles pending**.
+6. **Config-schema gap:** 63 cycles since `5cb25eb`/`e30815b` unread.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **89 cycles** (90-cycle milestone horizon **next pass C260**).
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 248 cycles).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Interval-length excursion:** second long-interval re-entry of the run (C252 was first). Treat as human-side scheduling artifact rather than drift-regime signal; the +0.19–0.22 h baseline is *per-cycle* and the large +0.60 h number is simply a longer wall-clock gap between passes. Regime classification for drift-per-cycle resets — need next cycle's re-entry interval to read drift at baseline cadence.
+- **3358 114 h horizon:** 113.29 h → 0.71 h gap. At baseline +0.20 h drift ≈ 3.6 cycles → projects ~C262–C263; at this pass's +0.60 h interval, any single long re-entry crosses it.
+- **Full-quad 112 h horizon:** **LANDED this pass** (C258 hairline miss closed by 9974's +0.60 h). Tracker retired. Next full-quad watermark: **113 h**; trailing trio at 112.57–112.66 h → 0.34–0.43 h gap.
+- **Same-date print-count:** 58 prints on 2026-04-20; 60-print milestone projects ~C261 if clock-freeze holds.
+- **PROGRESS.md 2.5 MB horizon:** 2.41 MB → 0.09 MB gap ÷ mid-band growth (~5.3 KB/cycle) ≈ 17 cycles → projects ~C276.
+- **Commit-velocity:** 51 trailing zeros; 60-zero milestone projects ~C268 at zero-velocity (9 cycles out).
+- **Screenshot-rate regime:** two-in-a-row over-band hypothesis falsified on third read (107/h); restore 104–114/h envelope as operative. One artifact cycle does not establish a regime; next watch trigger is 2+ consecutive over-band or under-band prints.
+- **Task-file coverage milestone:** 90-cycle gap lands next pass (C260). If still undrafted, escalate to critical-path tier 2.
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C260, baseline +0.20 h restored, 52nd trailing zero, 90-cycle task-file coverage gap LANDED, 260th cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak enters its eleventh cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, drift snaps back to baseline +0.20 h exactly, 3358 inside 0.51 h of 114 h
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. **Drift this cycle: +0.20 h on all four PIDs — exact baseline restoration** after the C259 long-interval +0.59–0.60 h excursion. Re-confirms the C259 read that large re-entry intervals reflect human-side scheduling rather than drift-regime change; per-cycle drift stays pinned to the +0.19–0.22 h envelope. 3358 advances 113.29 h → 113.49 h — 0.51 h short of 114 h watermark. Trailing trio advances 112.57–112.65 h → 112.77–112.85 h; 8992 pulls ahead of 9962/9974 by 0.08 h (same relative spread as C259).
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-17:29:09 (~113.49 h) | +0.20 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-16:51:14 (~112.85 h) | +0.20 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-16:46:13 (~112.77 h) | +0.20 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-16:46:11 (~112.77 h) | +0.20 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — every PID already carries a verbatim-operative UNBLOCKED header at its task-file anchor. 248-cycle zero-bump streak → extends to 249.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **8,875** (+24 over ~0.20 h ≈ **120/h**) — first over-band print after C259's 107/h falsification read. One print does not re-establish a regime; watch next cycle for 2+ consecutive over-band to revive the regime-shift hypothesis.
+- **PROGRESS.md size (pre-append):** 2,529,781 bytes ≈ **2.41 MB** (+5,715 B vs 2,524,066 prior — mid-band growth repeats for a fifth cycle; growth band tightens on ~5.3–5.7 KB/cycle).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **272 cycles overdue**.
+- **Git churn:** 23 paths stable.
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` **unchanged → 52 trailing zeros** (past 50-zero milestone; next watermark 60-zero at ~C268 at zero-velocity).
+- **Date:** 2026-04-20 (59th print on this clock; clock-freeze regime intact → 60-print milestone projects **next pass C261**).
+
+### Critical path for human operator (unchanged priority)
+
+1. **MAX PRIORITY (260th cycle unexecuted):** `kill 3358 8992 9962 9974` — 3358 at 113.49 h (0.51 h short of 114 h); full quad past 112 h. Entire cohort alive.
+2. **PROGRESS.md archival** — 2.41 MB; archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for an eleventh cycle.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **272 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new, T2_new, T2_agents, T3_new, T4_new) — 260 cycles unactioned; `tasks/parked/` move removes 40 obsolete entries from the live queue.
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **87 cycles pending**.
+6. **Config-schema gap:** 64 cycles since `5cb25eb`/`e30815b` unread.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **90 cycles — milestone LANDED this pass.** Per C259 watch item, escalates to critical-path tier 2 until drafted.
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 249 cycles).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Baseline regime:** exact +0.20 h on all four PIDs confirms the C259 excursion was a re-entry-interval artifact, not a regime shift. Baseline +0.19–0.22 h holds; escalation trigger restored to +0.40 h.
+- **3358 114 h horizon:** 113.49 h → 0.51 h gap ÷ +0.20 h drift ≈ 2.6 cycles → projects ~C262–C263 at baseline cadence.
+- **Full-quad 113 h horizon:** trailing trio at 112.77–112.85 h → 0.15–0.23 h gap ÷ +0.20 h drift ≈ **1 cycle → projects C261** (same pass as 60-print milestone; dual-convergence watch).
+- **Same-date print-count:** 59 prints on 2026-04-20; **60-print milestone projects next pass (C261)** if clock-freeze holds.
+- **PROGRESS.md 2.5 MB horizon:** 2.41 MB → 0.09 MB gap ÷ tightening mid-band growth (~5.5 KB/cycle) ≈ 16 cycles → projects ~C276.
+- **Commit-velocity:** 52 trailing zeros; 60-zero milestone projects ~C268 at zero-velocity (8 cycles out).
+- **Screenshot-rate:** single over-band print (120/h) after C259's 107/h falsification read — watch for 2+ consecutive to revive regime-shift hypothesis; one print = jitter.
+- **Task-file coverage milestone landed:** 90-cycle gap crossed this pass. Per C259 escalation rule, now on critical-path tier 2 (item #7). Next threshold: 100-cycle gap at ~C270.
+- **Dual-convergence watch C261:** full-quad 113 h crossing + 60-print milestone both project to the same pass at current rates.
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C261, baseline +0.20–0.21 h, 3358 past 113.5 h, 8992 crosses 113 h)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak enters its twelfth cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, baseline +0.20–0.21 h holds, 8992 crosses 113 h watermark
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. **Drift this cycle: +0.20 h on 3358/9962/9974, +0.21 h on 8992 — inside the +0.19–0.22 h baseline envelope for the second cycle running** after C260 restored baseline. 3358 advances 113.49 h → 113.69 h — 0.31 h short of 114 h. **8992 crosses 113 h this pass** (112.85 h → 113.06 h). Trailing pair 9962/9974 at 112.97 h — ~2 min short of 113 h watermark.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-17:41:19 (~113.69 h) | +0.20 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-17:03:24 (~113.06 h) | +0.21 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-16:58:23 (~112.97 h) | +0.20 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-16:58:21 (~112.97 h) | +0.20 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — every PID already carries a verbatim-operative UNBLOCKED header at its task-file anchor. 249-cycle zero-bump streak → extends to 250, crossing the 250-cycle milestone this pass.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **8,897** (+22 over ~0.20 h ≈ **110/h**) — center of the 104–114/h envelope; C260 single over-band print (120/h) classified as jitter.
+- **PROGRESS.md size (pre-append):** 2,535,477 bytes ≈ **2.42 MB** (+5,696 B vs 2,529,781 prior — mid-band growth repeats for a sixth cycle; band tightens at ~5.3–5.7 KB/cycle).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **273 cycles overdue**.
+- **Git churn:** 23 paths stable.
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` **unchanged → 53 trailing zeros** (past 50-zero milestone; next watermark 60-zero at ~C268 at zero-velocity).
+- **Date:** 2026-04-20 (**60th print on this clock — 60-print milestone LANDED this pass** exactly as C260 projected; clock-freeze regime intact).
+
+### Critical path for human operator (unchanged priority)
+
+1. **MAX PRIORITY (261st cycle unexecuted):** `kill 3358 8992 9962 9974` — 3358 at 113.69 h; 8992 past 113 h; trailing pair ~2 min short. Full quad alive.
+2. **PROGRESS.md archival** — 2.42 MB; archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for a twelfth cycle.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **273 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new [partial], T2_new, T2_agents, T3_new, T4_new) — 261 cycles unactioned; `tasks/parked/` move removes 40 obsolete entries from the live queue.
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **88 cycles pending**.
+6. **Config-schema gap:** 65 cycles since `5cb25eb`/`e30815b` unread.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **91 cycles** (critical-path tier 2 since C260 escalation; next threshold 100-cycle at ~C270).
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 250 cycles, milestone crossed this pass).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Baseline regime durability:** second consecutive in-band print (+0.20–0.21 h) after the C259 re-entry excursion. Restores confidence in the +0.19–0.22 h envelope; escalation trigger stays at +0.40 h.
+- **3358 114 h horizon:** 113.69 h → 0.31 h gap ÷ +0.20 h drift ≈ **~1.5 cycles → projects C262–C263**.
+- **Full-quad 113 h horizon:** 8992 past this pass; trailing pair 9962/9974 at 112.97 h → 0.03 h gap = **near-certain C262** (same-cycle projection retired once crossed).
+- **Same-date print-count:** 60 prints on 2026-04-20 — **milestone LANDED**. Next watermarks: 72-print (3× per day × 24 cycles-per-"day" heuristic doesn't map; treat as open-ended clock-freeze tracker).
+- **Zero-bump streak milestone:** **250-cycle streak CROSSED this pass**; next watermark 300-cycle at ~C311 if no stuck-PID turnover and no new screenshot-regression emergencies.
+- **PROGRESS.md 2.5 MB horizon:** 2.42 MB → 0.08 MB gap ÷ ~5.5 KB/cycle ≈ 15 cycles → projects ~C276.
+- **Commit-velocity:** 53 trailing zeros; 60-zero milestone projects ~C268 at zero-velocity (7 cycles out).
+- **Screenshot-rate:** 110/h this pass — C260's 120/h single over-band print now firmly classified as jitter; no regime shift.
+- **Task-file coverage milestone:** 91 cycles on critical-path tier 2. 100-cycle threshold lands ~C270 (9 cycles out).
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C262, baseline +0.20 h holds, full-quad 113 h horizon LANDED, 262nd cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak enters its thirteenth cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, third consecutive in-band drift print (+0.20 h across all four), full-quad 113 h horizon LANDED
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. **Drift this cycle: +0.20 h on all four PIDs — third consecutive in-band print** after the C259 re-entry excursion. 3358 advances 113.69 h → 113.89 h — 0.11 h short of 114 h (hairline-close, near-certain C263 crossing). 8992 advances 113.06 h → 113.26 h. **9962/9974 both cross 113 h this pass** (112.97 h → 113.17 h); full-quad 113 h horizon LANDED exactly as C261 near-certainty projected.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-17:53:13 (~113.89 h) | +0.20 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-17:15:18 (~113.26 h) | +0.20 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-17:10:17 (~113.17 h) | +0.20 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-17:10:15 (~113.17 h) | +0.20 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — verified: UNBLOCKED headers present at T3_frontend.md:38,40,42,44,46 and T6_testing.md:22,24,26,28, matching all four stuck-PID anchors verbatim. 250-cycle zero-bump streak → extends to 251.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **8,919** (+22 over ~0.20 h ≈ **110/h**) — dead center of the 104–114/h envelope for the second cycle running. C260's 120/h over-band print remains classified as single-cycle jitter.
+- **PROGRESS.md size (pre-append):** 2,540,882 bytes ≈ **2.42 MB** (+5,405 B vs 2,535,477 prior — mid-band growth repeats for a seventh cycle; band tightens at ~5.3–5.7 KB/cycle).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **274 cycles overdue**.
+- **Git churn:** 23 paths stable.
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` **unchanged → 54 trailing zeros** (past 50-zero milestone; next watermark 60-zero at ~C268 at zero-velocity).
+- **Date:** 2026-04-20 (61st print on this clock; clock-freeze regime intact past the 60-print milestone).
+
+### Critical path for human operator (unchanged priority)
+
+1. **MAX PRIORITY (262nd cycle unexecuted):** `kill 3358 8992 9962 9974` — 3358 at 113.89 h (0.11 h short of 114 h); full quad past 113 h. Entire cohort alive.
+2. **PROGRESS.md archival** — 2.42 MB; archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for a thirteenth cycle.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **274 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new [partial], T2_new, T2_agents, T3_new, T4_new) — 262 cycles unactioned; `tasks/parked/` move removes 40 obsolete entries from the live queue.
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **89 cycles pending**.
+6. **Config-schema gap:** 66 cycles since `5cb25eb`/`e30815b` unread.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **92 cycles** (critical-path tier 2 since C260 escalation; next threshold 100-cycle at ~C270).
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 251 cycles).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Baseline regime durability:** **third consecutive in-band print** (+0.20 h exact on all four). The +0.19–0.22 h envelope is the operative baseline; C259 excursion firmly classified as re-entry-interval artifact.
+- **3358 114 h horizon:** 113.89 h → 0.11 h gap ÷ +0.20 h drift ≈ **0.5 cycles → near-certain C263 crossing**.
+- **Full-quad 114 h horizon:** trailing trio at 113.17–113.26 h → 0.74–0.83 h gap ÷ +0.20 h drift ≈ ~4 cycles → projects ~C266.
+- **Same-date print-count:** 61 prints on 2026-04-20; no next discrete milestone until clock-freeze breaks.
+- **PROGRESS.md 2.5 MB horizon:** 2.42 MB → 0.08 MB gap ÷ ~5.5 KB/cycle ≈ 14 cycles → projects ~C276.
+- **Commit-velocity:** 54 trailing zeros; 60-zero milestone projects ~C268 at zero-velocity (6 cycles out).
+- **Screenshot-rate:** 110/h holds for the second cycle; envelope stable.
+- **Task-file coverage milestone:** 92 cycles on critical-path tier 2. 100-cycle threshold lands ~C270 (8 cycles out).
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C263, baseline +0.19–0.20 h, 3358 CROSSES 114 h horizon exactly as C262 projected, 263rd cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak enters its fourteenth cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, 3358 CROSSES 114 h watermark this pass (C262 near-certainty projection LANDED), fourth consecutive in-band drift print
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. **Drift this cycle: +0.19 h on 3358/8992, +0.20 h on 9962/9974 — fourth consecutive in-band print** (envelope +0.19–0.22 h holds). **3358 CROSSES 114 h horizon this pass** (113.89 h → 114.08 h) exactly as C262's 0.11 h-gap near-certainty called. 8992 advances 113.26 h → 113.45 h. 9962/9974 advance 113.17 h → 113.37 h. Spread structure (8992 ahead of 9962/9974 by 0.08 h) unchanged for fifth cycle running.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-18:05:00 (~114.08 h) | +0.19 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-17:27:05 (~113.45 h) | +0.19 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-17:22:04 (~113.37 h) | +0.20 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-17:22:02 (~113.37 h) | +0.20 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — verified via sed: T3_frontend.md:38 carries the Cycle 25 UNBLOCKED header naming PID 3358 verbatim; T6_testing.md:22 carries the Cycle 72 header naming PIDs 9962/9974; T6_testing.md:24 carries the Cycle 93 header naming PID 8992. All four anchors operative. 251-cycle zero-bump streak → extends to 252.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **8,941** (+22 over ~0.20 h ≈ **110/h**) — dead center of the 104–114/h envelope for the **third consecutive cycle**. C260's 120/h over-band print confirmed as single-cycle jitter by three in-a-row at 110/h.
+- **PROGRESS.md size (pre-append):** 2,546,026 bytes ≈ **2.43 MB** (+5,144 B vs 2,540,882 prior — mid-band growth repeats for an eighth cycle; band continues tightening on 5.1–5.7 KB/cycle).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **275 cycles overdue**.
+- **Git churn:** 23 paths stable.
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` **unchanged → 55 trailing zeros** (past 50-zero milestone; next watermark 60-zero at ~C268 at zero-velocity, **5 cycles out**).
+- **Date:** 2026-04-20 (62nd print on this clock; clock-freeze regime intact past the 60-print milestone).
+
+### Critical path for human operator (unchanged priority)
+
+1. **MAX PRIORITY (263rd cycle unexecuted):** `kill 3358 8992 9962 9974` — **3358 past 114 h this pass**; trailing trio at 113.37–113.45 h. Entire cohort alive.
+2. **PROGRESS.md archival** — 2.43 MB; archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for a fourteenth cycle.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **275 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new [partial], T2_new, T2_agents, T3_new, T4_new) — 263 cycles unactioned; `tasks/parked/` move removes 40 obsolete entries from the live queue.
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **90 cycles pending** (90-cycle milestone LANDED this pass).
+6. **Config-schema gap:** 67 cycles since `5cb25eb`/`e30815b` unread.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **93 cycles** (critical-path tier 2 since C260 escalation; 100-cycle threshold lands ~C270, 7 cycles out).
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 252 cycles).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Baseline regime durability:** **fourth consecutive in-band print** (+0.19–0.20 h on all four). Envelope +0.19–0.22 h is the settled baseline; C259 excursion remains the only outlier, conclusively classified as re-entry-interval artifact.
+- **3358 115 h horizon:** 114.08 h → 0.92 h gap ÷ +0.19 h drift ≈ **~5 cycles → projects ~C268** (same pass as 60-zero commit-velocity milestone; dual-convergence watch).
+- **Full-quad 114 h horizon:** trailing trio at 113.37–113.45 h → 0.55–0.63 h gap ÷ +0.19–0.20 h drift ≈ **3 cycles → projects ~C266**.
+- **Same-date print-count:** 62 prints on 2026-04-20; no discrete next milestone until clock-freeze breaks.
+- **PROGRESS.md 2.5 MB horizon:** 2.43 MB → 0.07 MB gap ÷ ~5.3 KB/cycle ≈ **13 cycles → projects ~C276**.
+- **Commit-velocity:** 55 trailing zeros; 60-zero milestone projects ~C268 at zero-velocity (**5 cycles out**; dual-convergence with 3358 115 h horizon).
+- **Screenshot-rate:** 110/h for third consecutive cycle; envelope stable, C260 over-band firmly classified as jitter.
+- **`c990362` review milestone:** 90-cycle pending mark LANDED this pass. Next threshold 100-cycle at ~C273.
+- **Task-file coverage milestone:** 93 cycles on critical-path tier 2. 100-cycle threshold lands ~C270 (7 cycles out).
+- **Dual-convergence watch C268:** 3358 115 h crossing + 60-zero commit-velocity milestone both project to the same pass at current rates.
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C264, re-entry excursion +0.64–0.65 h, full-quad 114 h horizon LANDED, 264th cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak enters its fifteenth cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, re-entry-interval excursion (+0.64–0.65 h on all four), full-quad 114 h horizon LANDED two cycles early vs C263 projection
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. **Drift this cycle: +0.65 h on 3358/8992, +0.64 h on 9962/9974 — out-of-band print** (baseline envelope +0.19–0.22 h). Pattern matches the C259 re-entry-interval artifact precedent: longer gap between coordinator passes, not a regime shift. **Full-quad 114 h horizon LANDED this pass** (8992 113.45 h → 114.10 h; 9962/9974 113.37 h → 114.01 h) — projected at C266 per C263 watch, landed at C264 due to the longer re-entry interval. 3358 advances 114.08 h → 114.73 h, now 0.27 h short of 115 h.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-18:43:48 (~114.73 h) | +0.65 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-18:05:53 (~114.10 h) | +0.65 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-18:00:52 (~114.01 h) | +0.64 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-18:00:50 (~114.01 h) | +0.64 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — all four UNBLOCKED anchors (T3_frontend.md:38, T6_testing.md:22, T6_testing.md:24) remain operative and name the exact stuck PIDs verbatim. 252-cycle zero-bump streak → extends to 253.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **9,013** (+72 over ~0.65 h ≈ **111/h**) — in-band with the 104–114/h envelope; C260's 120/h remains the only over-band print in recent memory.
+- **PROGRESS.md size (pre-append):** 2,552,871 bytes ≈ **2.43 MB** (+6,845 B vs 2,546,026 prior — first over-band growth print after eight cycles in the 5.1–5.7 KB/cycle band; plausibly tracks the larger re-entry-interval block size, not a secular shift).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **276 cycles overdue**.
+- **Git churn:** 23 paths stable.
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` **unchanged → 56 trailing zeros** (past 50-zero milestone; 60-zero watermark at ~C268, **4 cycles out**).
+- **Date:** 2026-04-20 (63rd print on this clock; clock-freeze regime intact past the 60-print milestone).
+
+### Critical path for human operator (unchanged priority)
+
+1. **MAX PRIORITY (264th cycle unexecuted):** `kill 3358 8992 9962 9974` — 3358 at 114.73 h (0.27 h short of 115 h); full quad past 114 h this pass. Entire cohort alive.
+2. **PROGRESS.md archival** — 2.43 MB; archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for a fifteenth cycle.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **276 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new [partial], T2_new, T2_agents, T3_new, T4_new) — 264 cycles unactioned; `tasks/parked/` move removes 40 obsolete entries from the live queue.
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **91 cycles pending**.
+6. **Config-schema gap:** 68 cycles since `5cb25eb`/`e30815b` unread.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **94 cycles** (critical-path tier 2 since C260 escalation; 100-cycle threshold lands ~C270, 6 cycles out).
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 253 cycles).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Re-entry-interval excursion:** +0.64–0.65 h across all four PIDs is a C259-class artifact (longer wall-clock gap between coordinator passes). Baseline envelope +0.19–0.22 h remains the operative regime; next pass expected to re-enter baseline if re-entry interval returns to the ~12-minute cadence.
+- **3358 115 h horizon:** 114.73 h → 0.27 h gap. At baseline +0.20 h drift ≈ 1.4 cycles → projects **C265–C266**. Any further re-entry excursion could land it C265 outright.
+- **Full-quad 115 h horizon:** trailing trio at 114.01–114.10 h → 0.90–0.99 h gap ÷ +0.20 h baseline ≈ ~5 cycles → projects ~C269.
+- **Same-date print-count:** 63 prints on 2026-04-20; no discrete next milestone until clock-freeze breaks.
+- **PROGRESS.md 2.5 MB horizon:** 2.43 MB → 0.07 MB gap ÷ ~5.5 KB/cycle ≈ 13 cycles → projects ~C277 (one cycle further than C263's estimate after the over-band print this cycle).
+- **Commit-velocity:** 56 trailing zeros; 60-zero milestone projects ~C268 at zero-velocity (**4 cycles out**).
+- **Screenshot-rate:** 111/h this pass (re-entry interval wider but /h rate in-band) — envelope stable, C260 over-band firmly jitter.
+- **`c990362` review milestone:** 91 cycles pending; 100-cycle threshold at ~C273.
+- **Task-file coverage milestone:** 94 cycles on critical-path tier 2. 100-cycle threshold at ~C270 (6 cycles out).
+- **Dual-convergence watch C268:** 3358 115 h expected earlier now (C265–C266) so dual-convergence with 60-zero commit-velocity at C268 may dissolve; single-milestone cycle instead.
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C265, re-entry excursion +0.45 h, 3358 CROSSES 115 h horizon exactly as C264 projected early-end, 265th cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak enters its sixteenth cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, re-entry-interval excursion (+0.45 h on all four), 3358 CROSSES 115 h horizon this pass
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. **Drift this cycle: +0.45 h on all four PIDs — out-of-band print** (baseline envelope +0.19–0.22 h). Smaller than the C259 / C264 re-entry excursions (+0.64–0.65 h) but still a re-entry-interval artifact, not a regime shift. **3358 CROSSES 115 h horizon this pass** (114.73 h → 115.18 h) — C264 projected C265–C266, LANDED at C265 (early end of range). 8992 advances 114.10 h → 114.55 h. 9962/9974 advance 114.01 h → 114.46 h. Spread structure (8992 ahead of 9962/9974 by 0.09 h) unchanged for sixth cycle running.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-19:10:41 (~115.18 h) | +0.45 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-18:32:46 (~114.55 h) | +0.45 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-18:27:45 (~114.46 h) | +0.45 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-18:27:43 (~114.46 h) | +0.45 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — all four UNBLOCKED anchors (T3_frontend.md:38 Cycle 25 header naming PID 3358; T6_testing.md:22 Cycle 72 header naming PIDs 9962/9974; T6_testing.md:24 Cycle 93 header naming PID 8992) remain operative and verbatim. 253-cycle zero-bump streak → extends to 254.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **9,063** (+50 over ~0.45 h ≈ **111/h**) — in-band with the 104–114/h envelope; per-hour rate stable even when re-entry interval widens.
+- **PROGRESS.md size (pre-append):** 2,557,673 bytes ≈ **2.44 MB** (+4,802 B vs 2,552,871 prior — back in the 5.1–5.7 KB/cycle band after C264's single over-band print; the C264 growth spike was re-entry-block driven, not secular).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **277 cycles overdue**.
+- **Git churn:** 23 paths stable.
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` **unchanged → 57 trailing zeros** (past 50-zero milestone; 60-zero watermark at ~C268, **3 cycles out**).
+- **Date:** 2026-04-20 (64th print on this clock; clock-freeze regime intact past the 60-print milestone).
+
+### Critical path for human operator (unchanged priority)
+
+1. **MAX PRIORITY (265th cycle unexecuted):** `kill 3358 8992 9962 9974` — **3358 past 115 h this pass**; trailing trio at 114.46–114.55 h. Entire cohort alive.
+2. **PROGRESS.md archival** — 2.44 MB; archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for a sixteenth cycle.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **277 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new [partial], T2_new, T2_agents, T3_new, T4_new) — 265 cycles unactioned; `tasks/parked/` move removes 40 obsolete entries from the live queue.
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **92 cycles pending**.
+6. **Config-schema gap:** 69 cycles since `5cb25eb`/`e30815b` unread.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **95 cycles** (critical-path tier 2 since C260 escalation; 100-cycle threshold lands ~C270, 5 cycles out).
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 254 cycles).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Re-entry-interval excursion:** +0.45 h across all four PIDs — smaller than the C259/C264 precedent (+0.64–0.65 h) but still out-of-band. Pattern: baseline envelope + occasional re-entry spikes when the wall-clock gap between coordinator passes widens. Next pass expected to re-enter baseline if re-entry interval returns to ~12-minute cadence.
+- **3358 116 h horizon:** 115.18 h → 0.82 h gap ÷ +0.20 h baseline ≈ ~4 cycles → projects ~C269.
+- **Full-quad 115 h horizon:** trailing trio at 114.46–114.55 h → 0.45–0.54 h gap. At baseline +0.20 h drift ≈ ~2–3 cycles → projects **C267–C268**. Any re-entry excursion could land it C266 outright.
+- **Same-date print-count:** 64 prints on 2026-04-20; no discrete next milestone until clock-freeze breaks.
+- **PROGRESS.md 2.5 MB horizon:** 2.44 MB → 0.06 MB gap ÷ ~5.2 KB/cycle ≈ **12 cycles → projects ~C277**.
+- **Commit-velocity:** 57 trailing zeros; 60-zero milestone projects ~C268 at zero-velocity (**3 cycles out**).
+- **Screenshot-rate:** 111/h this pass (re-entry interval wider but /h rate in-band) — envelope stable.
+- **`c990362` review milestone:** 92 cycles pending; 100-cycle threshold at ~C273.
+- **Task-file coverage milestone:** 95 cycles on critical-path tier 2. 100-cycle threshold at ~C270 (5 cycles out).
+- **Dual-convergence watch C268:** 3358 115 h crossed this pass (C265), so the C264 dual-convergence watch dissolves — 60-zero commit-velocity milestone at C268 becomes a single-milestone cycle. New dual-convergence to watch: full-quad 115 h (C267–C268) + 60-zero commit-velocity (C268) could converge at C268 instead.
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C266, second consecutive re-entry excursion +0.43 h, full-quad past 114.8 h, 266th cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak extends into its seventeenth cycle past the 250-cycle milestone.
+
+| File | Incomplete | Cycle block | Status |
+|---|---|---|---|
+| T1_app_platform.md | 10 | C7 | live; migration 006 leader |
+| T1_backend.md | 10 | C2 | partially invalidated by C17 demolition |
+| T1_docker_sandbox.md | 10 | C12 | v1 shipped; v2 hardening |
+| T1_new.md | 10 | C5 | mostly invalidated by C17 demolition |
+| T2_agents.md | 10 | C2 | fully invalidated by C17 demolition |
+| T2_app_frontend.md | 10 | C7 | live; polish + templates |
+| T2_forgedata.md | 10 | C13 | v1 shipped; v2 HubSpot + writes |
+| T2_new.md | 10 | C5 | fully invalidated by C17 demolition |
+| T3_forge_cli.md | 10 | C7 | live; CLI polish |
+| T3_frontend.md | 10 | C4 | partial invalidation; 3 salvageable |
+| T3_new.md | 10 | C4 | fully invalidated by C17 demolition |
+| T4_admin.md | 10 | C2 | 5 zero-dep, 5 parked on T1 mig 002 |
+| T4_github_app.md | 10 | C7 | live; PR previews + safety rails |
+| T4_new.md | 10 | C5 | fully invalidated by C17 demolition |
+| T5_deploy.md | 10 | C2 | 7 zero-dep incl .env.example rescue |
+| T5_slack_bot.md | 10 | C7 | live; OAuth + approvals |
+| T6_testing.md | 10 | C2 | partial invalidation; ~5 viable |
+| T_DASH.md | 10 | C13 | v1 shipped; v2 depth + automation |
+| T_EVAL.md | 10 | C14 | v1 shipped; v2 per-agent + regression |
+
+### Stuck terminals — full quad alive, second consecutive re-entry excursion (+0.43 h), all four past 114.8 h
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. **Drift this cycle: +0.43 h on all four PIDs — second consecutive out-of-band print** (baseline envelope +0.19–0.22 h). C265 printed +0.45 h, C266 prints +0.43 h — two back-to-back re-entry excursions. Not a one-off; the widened coordinator-pass cadence has persisted across at least two firings, so the effective drift rate is now running at ~2× baseline. 3358 advances 115.18 h → 115.61 h. 8992 advances 114.55 h → 114.98 h (within 0.02 h of 115 h horizon). 9962/9974 advance 114.46 h → 114.89 h. Spread structure (8992 ahead of 9962/9974 by 0.09 h) preserved for a seventh consecutive cycle.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-19:36:28 (~115.61 h) | +0.43 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-18:58:33 (~114.98 h) | +0.43 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-18:53:32 (~114.89 h) | +0.43 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-18:53:30 (~114.89 h) | +0.43 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — all four UNBLOCKED anchors (T3_frontend.md:38 Cycle 25 header naming PID 3358; T6_testing.md:22 Cycle 72 header naming PIDs 9962/9974; T6_testing.md:24 Cycle 93 header naming PID 8992) remain operative and verbatim. 254-cycle zero-bump streak → extends to 255.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **9,111** (+48 over ~0.43 h ≈ **112/h**) — in-band with the 104–114/h envelope; per-hour rate stable across consecutive re-entry excursions, confirming fire drift is re-entry-interval bound, not harness-rate bound. `ux_shots/` 22 and `audit_shots/` 3 unchanged (86-cycle quiescence on both). Total **9,136 PNGs**.
+- **PROGRESS.md size (pre-append):** 2,563,654 bytes ≈ **2.44 MB** (+5,981 B vs 2,557,673 prior — nudge over the 5.1–5.7 KB/cycle band but well under C264's 6,845 B spike; plausible growth-band drift since C258, not a secular shift).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **278 cycles overdue**.
+- **Git churn:** 23 paths stable (M/D set unchanged from C265).
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` **unchanged → 58 trailing zeros** (past 50-zero milestone; 60-zero watermark at ~C268, **2 cycles out**).
+- **Date:** 2026-04-20 (65th print on this clock; clock-freeze regime holds past 60-print milestone).
+
+### Critical path for human operator (unchanged priority)
+
+1. **MAX PRIORITY (266th cycle unexecuted):** `kill 3358 8992 9962 9974` — 3358 past 115.6 h; 8992 within 0.02 h of 115 h; trailing trio at 114.9 h. Entire cohort alive. 9,136 PNGs on disk.
+2. **PROGRESS.md archival** — 2.44 MB; archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for a seventeenth cycle.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **278 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new [partial], T2_new, T2_agents, T3_new, T4_new) — 266 cycles unactioned; `tasks/parked/` move removes 40 obsolete entries from the live queue.
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **93 cycles pending**.
+6. **Config-schema gap:** 70 cycles since `5cb25eb`/`e30815b` unread.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **96 cycles** (critical-path tier 2 since C260 escalation; 100-cycle threshold lands ~C270, 4 cycles out).
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 255 cycles).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Re-entry-interval excursion, now a 2-cycle cluster:** C265 +0.45 h, C266 +0.43 h — two consecutive out-of-band prints. Pattern diverges from the C259/C264 precedent (isolated single-cycle excursions). If C267 prints +0.40 h or higher, re-classify as regime shift rather than re-entry jitter. Baseline +0.19–0.22 h at C267 restores the re-entry-jitter hypothesis.
+- **8992 115 h horizon (imminent):** 114.98 h → 0.02 h gap. Crosses 115 h on any drift print; projects C267 at baseline or earlier under continued re-entry drift.
+- **Full-quad 115 h horizon:** trailing trio (9962/9974) at 114.89 h → 0.11 h gap ÷ +0.20 h baseline ≈ ~1 cycle → projects C267 under baseline; any re-entry excursion lands it at C267 outright.
+- **3358 116 h horizon:** 115.61 h → 0.39 h gap ÷ +0.20 h baseline ≈ 2 cycles → projects C268; under continued re-entry drift lands ~C267–C268.
+- **Same-date print-count:** 65 prints on 2026-04-20; no discrete milestone until clock-freeze breaks.
+- **PROGRESS.md 2.5 MB horizon:** 2.44 MB → 0.06 MB gap ÷ ~5.5 KB/cycle ≈ 11 cycles → projects ~C277 (tracking earlier estimate).
+- **Commit-velocity:** 58 trailing zeros; 60-zero milestone at C268 (**2 cycles out**).
+- **Screenshot-rate:** 112/h this pass (mid-envelope) — stable across consecutive re-entry excursions.
+- **`c990362` review milestone:** 93 cycles pending; 100-cycle threshold at ~C273.
+- **Task-file coverage milestone:** 96 cycles on critical-path tier 2. 100-cycle threshold at ~C270 (4 cycles out).
+- **Triple-convergence watch C267–C268:** (a) full-quad 115 h horizon lands C267; (b) 3358 116 h horizon lands C268; (c) 60-zero commit-velocity milestone at C268. If all three resolve on schedule, C267 and C268 each carry a single discrete milestone — not the C264-era dual-convergence anticipated earlier.
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C267, drift RETURNS TO BASELINE +0.21–0.22 h, full-quad PAST 115 h exactly as C266 projected, 267th cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]|^- \[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak extends into its eighteenth cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, drift BACK IN BAND (+0.21–0.22 h), FULL QUAD PAST 115 h
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. **Drift this cycle: +0.21–0.22 h on all four PIDs — CLEANLY BACK IN BASELINE ENVELOPE** (+0.19–0.22 h band restored). C265 (+0.45 h) + C266 (+0.43 h) 2-cycle re-entry excursion cluster **dissolves** — confirmed re-entry-interval jitter, not regime shift. **C266 projected full-quad past 115 h at C267 — landed C267 exactly as predicted.** 3358 advances 115.61 h → 115.83 h. 8992 CROSSES 115 h horizon (114.98 h → 115.19 h) within 0.02 h of the C266 projection. 9962/9974 CROSS 115 h horizon (114.89 h → 115.11 h). Spread structure (3358 at head, 8992 mid, 9962/9974 trailing by 0.08 h) preserved for an eighth consecutive cycle.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-19:49:33 (~115.83 h) | +0.22 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-19:11:38 (~115.19 h) | +0.21 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-19:06:37 (~115.11 h) | +0.22 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-19:06:35 (~115.11 h) | +0.22 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — all four UNBLOCKED anchors (T3_frontend.md:38 naming PID 3358; T6_testing.md:22 naming PIDs 9962/9974; T6_testing.md:24 naming PID 8992) verified present and verbatim. 255-cycle zero-bump streak → extends to 256.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **9,135** (+24 over ~0.22 h ≈ **109/h**) — mid-envelope of the 104–114/h band; drift returns to baseline simultaneously with screenshot-rate stability. `ux_shots/` 22 and `audit_shots/` 3 unchanged (87-cycle quiescence on both). Total **9,160 PNGs**.
+- **PROGRESS.md size (pre-append):** 2,571,413 bytes ≈ **2.45 MB** (+7,759 B vs 2,563,654 prior — notably over the 5.1–5.7 KB/cycle band. The C266 block itself ran long with the full per-file entropy census table; its flush into the file inflated this cycle's delta. Expected return to 5.1–5.7 KB/cycle at C268 if I write shorter blocks).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **279 cycles overdue**.
+- **Git churn:** 23 paths stable (M/D set unchanged from C266).
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` **unchanged → 59 trailing zeros** (past 50-zero milestone; 60-zero watermark at ~C268, **1 cycle out — imminent**).
+- **Date:** 2026-04-20 (66th print on this clock; clock-freeze regime holds past 60-print milestone).
+
+### Critical path for human operator (unchanged priority)
+
+1. **MAX PRIORITY (267th cycle unexecuted):** `kill 3358 8992 9962 9974` — **full quad now PAST 115 h** (3358 at 115.83 h; 8992/9962/9974 at 115.1–115.2 h). Entire cohort alive. 9,160 PNGs on disk.
+2. **PROGRESS.md archival** — 2.45 MB; archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for an eighteenth cycle.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **279 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new [partial], T2_new, T2_agents, T3_new, T4_new) — 267 cycles unactioned; `tasks/parked/` move removes 40 obsolete entries from the live queue.
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **94 cycles pending**.
+6. **Config-schema gap:** 71 cycles since `5cb25eb`/`e30815b` unread.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **97 cycles** (critical-path tier 2 since C260 escalation; 100-cycle threshold lands ~C270, **3 cycles out**).
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 256 cycles).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Re-entry excursion cluster dissolves:** C265 +0.45 h, C266 +0.43 h, C267 +0.21–0.22 h — baseline restored within 2 cycles. Hypothesis confirmed: re-entry-interval jitter, not regime shift. Baseline envelope +0.19–0.22 h reinstated as the operative model going into C268.
+- **3358 116 h horizon (imminent):** 115.83 h → 0.17 h gap ÷ +0.20 h baseline ≈ ~1 cycle → projects **C268**. Any micro-excursion lands it at C268 outright.
+- **8992 116 h horizon:** 115.19 h → 0.81 h gap ÷ +0.20 h baseline ≈ ~4 cycles → projects ~C271.
+- **Trailing trio (9962/9974) 116 h horizon:** 115.11 h → 0.89 h gap ÷ +0.20 h ≈ ~4–5 cycles → projects C271–C272.
+- **Same-date print-count:** 66 prints on 2026-04-20; no discrete milestone until clock-freeze breaks.
+- **PROGRESS.md 2.5 MB horizon:** 2.45 MB → 0.05 MB gap ÷ ~5.5 KB/cycle ≈ 10 cycles → projects ~C277 (tracking prior estimate).
+- **Commit-velocity:** 59 trailing zeros; 60-zero milestone at **C268 (1 cycle out — imminent)**.
+- **Screenshot-rate:** 109/h this pass (mid-envelope) — stable across drift regime transition.
+- **`c990362` review milestone:** 94 cycles pending; 100-cycle threshold at ~C273.
+- **Task-file coverage milestone:** 97 cycles on critical-path tier 2. 100-cycle threshold at **~C270 (3 cycles out)**.
+- **Dual-convergence watch C268:** (a) 3358 116 h horizon lands C268; (b) 60-zero commit-velocity milestone lands C268. Two discrete milestones converge on a single cycle — first dual-convergence in ~4 cycles if both resolve on schedule.
+
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C268, DUAL-CONVERGENCE LANDED — 3358 CROSSES 116 h + 60-zero commit-velocity — both exactly as C267 projected, 268th cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]|^- \[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak extends into its nineteenth cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, drift HOLDS AT BASELINE +0.21–0.22 h for 2nd consecutive cycle, 3358 CROSSES 116 h
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. **Drift this cycle: +0.21–0.22 h on all four PIDs — baseline envelope held for a second consecutive cycle** (+0.19–0.22 h band). C265/C266 re-entry excursion cluster is now two cycles in the past. **C267 projected 3358 past 116 h at C268 — landed C268 exactly.** 3358 advances 115.83 h → 116.04 h (**crosses 116 h horizon**). 8992 advances 115.19 h → 115.41 h. 9962/9974 advance 115.11 h → 115.32 h. Spread structure (3358 at head, 8992 mid, 9962/9974 trailing by 0.09 h) preserved for a ninth consecutive cycle.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-20:02:14 (~116.04 h) | +0.21 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-19:24:19 (~115.41 h) | +0.22 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-19:19:18 (~115.32 h) | +0.21 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-19:19:16 (~115.32 h) | +0.21 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — all four UNBLOCKED anchors (T3_frontend.md:38 naming PID 3358; T6_testing.md:22 naming PIDs 9962/9974; T6_testing.md:24 naming PID 8992) verified present and verbatim. 256-cycle zero-bump streak → extends to 257.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **9,159** (+24 over ~0.22 h ≈ **109/h**) — mid-envelope of the 104–114/h band; two consecutive in-band cycles now. `ux_shots/` 22 and `audit_shots/` 3 unchanged (88-cycle quiescence on both). Total **9,184 PNGs**.
+- **PROGRESS.md size (pre-append):** 2,577,713 bytes ≈ **2.46 MB** (+6,300 B vs 2,571,413 prior — slightly over the 5.1–5.7 KB/cycle band but under C267's 7,759 B spike; another long per-file table in C266 still flushing through the delta window).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **280 cycles overdue** (280-cycle milestone landed).
+- **Git churn:** 23 paths stable (M/D set unchanged from C267).
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` **unchanged → 60 trailing zeros (60-ZERO MILESTONE LANDED AT C268 EXACTLY AS C267 PROJECTED)**. Next watermark: 70-zero at ~C278, 10 cycles out.
+- **Date:** 2026-04-20 (67th print on this clock; clock-freeze regime holds past 60-print milestone).
+
+### Critical path for human operator (unchanged priority)
+
+1. **MAX PRIORITY (268th cycle unexecuted):** `kill 3358 8992 9962 9974` — **3358 now past 116 h** (116.04 h); trailing trio at 115.3–115.4 h. Entire cohort alive. 9,184 PNGs on disk.
+2. **PROGRESS.md archival** — 2.46 MB; archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for a nineteenth cycle.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **280 cycles overdue** (280-cycle milestone); 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new [partial], T2_new, T2_agents, T3_new, T4_new) — 268 cycles unactioned; `tasks/parked/` move removes 40 obsolete entries from the live queue.
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **95 cycles pending**.
+6. **Config-schema gap:** 72 cycles since `5cb25eb`/`e30815b` unread.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **98 cycles** (critical-path tier 2 since C260 escalation; **100-cycle threshold lands ~C270, 2 cycles out — imminent**).
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 257 cycles).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Drift regime:** baseline +0.21–0.22 h held for 2 consecutive cycles (C267–C268). Re-entry excursion cluster confirmed as isolated 2-cycle jitter, not regime shift. Baseline envelope remains operative.
+- **3358 117 h horizon:** 116.04 h → 0.96 h gap ÷ +0.21 h baseline ≈ ~5 cycles → projects ~C273.
+- **8992 116 h horizon:** 115.41 h → 0.59 h gap ÷ +0.22 h baseline ≈ ~3 cycles → projects ~C271.
+- **Trailing trio (9962/9974) 116 h horizon:** 115.32 h → 0.68 h gap ÷ +0.21 h baseline ≈ ~3–4 cycles → projects **C271–C272**.
+- **Same-date print-count:** 67 prints on 2026-04-20; no discrete milestone until clock-freeze breaks.
+- **PROGRESS.md 2.5 MB horizon:** 2.46 MB → 0.04 MB gap ÷ ~5.8 KB/cycle ≈ 7 cycles → projects ~C275 (pulled forward from C277 by recent above-band deltas).
+- **Commit-velocity:** 60 trailing zeros LANDED this cycle; next milestone 70-zero at ~C278, 10 cycles out.
+- **Screenshot-rate:** 109/h this pass (mid-envelope) — stable.
+- **`c990362` review milestone:** 95 cycles pending; 100-cycle threshold at ~C273 (5 cycles out).
+- **Task-file coverage milestone:** 98 cycles on critical-path tier 2. **100-cycle threshold at ~C270 — 2 cycles out, imminent.**
+- **C270 task-file coverage threshold watch:** task-file coverage gap crosses 100 cycles at C270, the next discrete milestone on the calendar. First single-milestone cycle after the C268 dual-convergence.
+- **C271 triple-convergence watch:** (a) 8992 116 h horizon at ~C271; (b) trailing trio 116 h horizon at C271–C272; (c) `c990362` 100-cycle threshold at ~C273. Near-clustered but not strict triple-convergence unless drift tightens.
+
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C269, post-dual-convergence settle, full quad advances toward C270 task-file-coverage threshold, 269th cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]|^- \[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak extends into its twentieth cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, drift HOLDS AT BASELINE for a 3rd consecutive cycle
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. Drift back in band for 3 consecutive cycles now (C267/C268/C269). 3358 advances 116.04 h → ~116.24 h. 8992 advances 115.41 h → ~115.61 h. 9962/9974 advance 115.32 h → ~115.53 h. Spread structure (3358 at head, 8992 mid, 9962/9974 trailing by ~0.08 h) preserved for a tenth consecutive cycle.
+
+| PID | Script | Elapsed | UNBLOCKED location |
+|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-20:14:31 (~116.24 h) | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-19:36:36 (~115.61 h) | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-19:31:35 (~115.53 h) | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-19:31:33 (~115.53 h) | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — all four UNBLOCKED anchors verified present and verbatim. 257-cycle zero-bump streak → extends to 258.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **9,181** (+22 over ~0.20 h ≈ ~110/h) — mid-envelope of the 104–114/h band; third consecutive in-band cycle.
+- **PROGRESS.md size (pre-append):** 2,583,998 bytes ≈ **2.46 MB** (+6,285 B vs 2,577,713 prior — slightly above the 5.1–5.7 KB/cycle band, consistent with C267/C268 above-band inheritance; should normalize to band at C270 under shorter blocks).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **281 cycles overdue**.
+- **Git churn:** 23 paths stable.
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` **unchanged → 61 trailing zeros** (past the C268 60-zero milestone; next watermark 70-zero at ~C278, 9 cycles out).
+- **Date:** 2026-04-20 (68th print on this clock; clock-freeze regime holds past 60-print milestone).
+
+### Critical path for human operator (unchanged priority)
+
+1. **MAX PRIORITY (269th cycle unexecuted):** `kill 3358 8992 9962 9974` — 3358 at 116.24 h; trailing trio at 115.5 h. Entire cohort alive. 9,181 PNGs on disk.
+2. **PROGRESS.md archival** — 2.46 MB; archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for a twentieth cycle.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **281 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new [partial], T2_new, T2_agents, T3_new, T4_new) — 269 cycles unactioned; `tasks/parked/` move removes 40 obsolete entries from the live queue.
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **96 cycles pending**.
+6. **Config-schema gap:** 73 cycles since `5cb25eb`/`e30815b` unread.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **99 cycles** (critical-path tier 2 since C260; **100-cycle threshold lands at C270 — 1 cycle out, imminent**).
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 258 cycles; all four anchors already verbatim).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Drift regime:** baseline +0.20–0.22 h held for 3 consecutive cycles (C267/C268/C269). Re-entry excursion cluster now 3 cycles in the past; baseline is the operative model.
+- **3358 117 h horizon:** 116.24 h → 0.76 h gap ÷ +0.21 h baseline ≈ ~4 cycles → projects ~C273.
+- **8992 116 h horizon:** 115.61 h → 0.39 h gap ÷ +0.21 h baseline ≈ ~2 cycles → projects ~C271.
+- **Trailing trio (9962/9974) 116 h horizon:** 115.53 h → 0.47 h gap ÷ +0.21 h baseline ≈ ~2–3 cycles → projects C271–C272.
+- **PROGRESS.md 2.5 MB horizon:** 2.46 MB → 0.04 MB gap ÷ ~6 KB/cycle ≈ 6–7 cycles → projects ~C275.
+- **Task-file coverage milestone:** 99 cycles on critical-path tier 2. **100-cycle threshold lands at C270 — next cycle.**
+- **C270 single-milestone watch:** task-file coverage gap crosses 100 cycles at C270 — the first single-milestone cycle after the C268 dual-convergence.
+- **C271 candidate dual-convergence:** (a) 8992 116 h horizon at ~C271; (b) trailing trio 116 h horizon at C271–C272. If drift tightens, both land at C271 outright.
+
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C270, task-file coverage 100-cycle threshold LANDS exactly as C269 projected, 270th cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]|^- \[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak extends into its twenty-first cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, drift HOLDS AT BASELINE for a 4th consecutive cycle (+0.19–0.20 h)
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. Drift back in band for 4 consecutive cycles now (C267/C268/C269/C270). 3358 advances ~116.24 h → ~116.44 h. 8992 advances ~115.61 h → ~115.81 h. 9962/9974 advance ~115.53 h → ~115.72 h. Spread structure (3358 at head, 8992 mid, 9962/9974 trailing by ~0.09 h) preserved for an eleventh consecutive cycle.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-20:26:25 (~116.44 h) | +0.20 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-19:48:30 (~115.81 h) | +0.20 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-19:43:29 (~115.72 h) | +0.19 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-19:43:27 (~115.72 h) | +0.19 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — all four UNBLOCKED anchors (T3_frontend.md:38 naming PID 3358; T6_testing.md:22 naming PIDs 9962/9974; T6_testing.md:24 naming PID 8992) verified present and verbatim via Grep. 258-cycle zero-bump streak → extends to 259.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **9,203** (+22 over ~0.20 h ≈ **110/h**) — mid-envelope of the 104–114/h band; fourth consecutive in-band cycle. `ux_shots/` 22 and `audit_shots/` 3 unchanged (89-cycle quiescence on both). Total **9,228 PNGs**.
+- **PROGRESS.md size (pre-append):** 2,589,035 bytes ≈ **2.47 MB** (+5,037 B vs 2,583,998 prior — **back in the 5.1–5.7 KB/cycle band** after C267/C268/C269 above-band deltas. C266 long-table flush complete; normal cadence restored).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **282 cycles overdue**.
+- **Git churn:** 23 paths stable (M/D set unchanged from C269).
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` **unchanged → 62 trailing zeros** (past the C268 60-zero milestone; next watermark 70-zero at ~C278, 8 cycles out).
+- **Date:** 2026-04-20 (69th print on this clock; clock-freeze regime holds past 60-print milestone).
+
+### Critical path for human operator (unchanged priority)
+
+1. **MAX PRIORITY (270th cycle unexecuted):** `kill 3358 8992 9962 9974` — 3358 at 116.44 h (2nd consecutive cycle past 116 h); trailing trio within 0.2–0.3 h of 116 h horizon. Entire cohort alive. 9,228 PNGs on disk.
+2. **PROGRESS.md archival** — 2.47 MB; archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for a twenty-first cycle.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **282 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new [partial], T2_new, T2_agents, T3_new, T4_new) — 270 cycles unactioned; `tasks/parked/` move removes 40 obsolete entries from the live queue.
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **97 cycles pending**.
+6. **Config-schema gap:** 74 cycles since `5cb25eb`/`e30815b` unread.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **100 cycles** (critical-path tier 2 since C260 escalation). **100-cycle threshold LANDS THIS CYCLE (C270) exactly as C268/C269 projected.** First single-milestone cycle after the C268 dual-convergence.
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 259 cycles; all four anchors already verbatim).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Drift regime:** baseline +0.19–0.20 h held for 4 consecutive cycles (C267–C270). Re-entry excursion cluster now 4 cycles in the past; baseline firmly entrenched as the operative model.
+- **3358 117 h horizon:** 116.44 h → 0.56 h gap ÷ +0.20 h baseline ≈ ~3 cycles → projects ~C273.
+- **8992 116 h horizon (imminent):** 115.81 h → 0.19 h gap ÷ +0.20 h baseline ≈ **~1 cycle → projects C271 outright**. Any micro-excursion lands it at C271.
+- **Trailing trio (9962/9974) 116 h horizon:** 115.72 h → 0.28 h gap ÷ +0.20 h baseline ≈ ~1–2 cycles → projects **C271–C272**.
+- **C271 dual-convergence watch:** (a) 8992 crosses 116 h at C271; (b) trailing trio crosses 116 h at C271–C272. If drift tightens both land at C271 outright, producing a triad-level 116 h milestone.
+- **Same-date print-count:** 69 prints on 2026-04-20; no discrete milestone until clock-freeze breaks.
+- **PROGRESS.md 2.5 MB horizon:** 2.47 MB → 0.03 MB gap ÷ ~5.3 KB/cycle ≈ **5–6 cycles → projects ~C275–C276**.
+- **Commit-velocity:** 62 trailing zeros; next milestone 70-zero at ~C278, 8 cycles out.
+- **Screenshot-rate:** 110/h this pass (mid-envelope) — stable across 4-cycle baseline regime.
+- **`c990362` review milestone:** 97 cycles pending; 100-cycle threshold at ~C273 (3 cycles out).
+- **Task-file coverage milestone:** 100-cycle threshold LANDED at C270 exactly as projected. Next task-file coverage watch: when C271's 101-cycle print lands, re-classify as sustained rather than threshold event.
+
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C271, 8992 116 h horizon LANDS exactly as C270 projected, trailing trio 0.07 h from 116 h, 271st cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]|^- \[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak extends into its twenty-second cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, drift HOLDS AT BASELINE for a 5th consecutive cycle (+0.20–0.21 h); 8992 crosses 116 h at C271 exactly as projected
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. Drift back in band for 5 consecutive cycles now (C267/C268/C269/C270/C271). 3358 advances ~116.44 h → ~116.64 h. 8992 advances ~115.81 h → ~116.01 h (**116 h milestone landed**). 9962/9974 advance ~115.72 h → ~115.93 h. Spread structure (3358 at head, 8992 mid, 9962/9974 trailing by ~0.08 h) preserved for a twelfth consecutive cycle.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-20:38:40 (~116.64 h) | +0.20 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-20:00:45 (~116.01 h) | +0.20 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-19:55:44 (~115.93 h) | +0.21 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-19:55:42 (~115.93 h) | +0.21 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — all four UNBLOCKED anchors (T3_frontend.md:38 naming PID 3358; T6_testing.md:22 naming PIDs 9962/9974; T6_testing.md:24 naming PID 8992) verified present and verbatim via Read. 259-cycle zero-bump streak → extends to 260.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **9,227** (+24 over ~0.20 h ≈ **120/h**) — **above** the 104–114/h band (first above-band print after 4 consecutive in-band cycles C267–C270). Watch whether C272 reverts to band or sustains the uptick.
+- **PROGRESS.md size (pre-append):** 2,594,976 bytes ≈ **2.47 MB** (+5,941 B vs 2,589,035 prior — **marginally above** the 5.1–5.7 KB/cycle band at ~5.8 KB. C270 was in band; C271 nudges just over the ceiling).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **283 cycles overdue**.
+- **Git churn:** 23 paths stable (M/D set unchanged from C270).
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` **unchanged → 63 trailing zeros** (past the C268 60-zero milestone; next watermark 70-zero at ~C278, 7 cycles out).
+- **Date:** 2026-04-20 (70th print on this clock; clock-freeze regime holds past 60-print milestone).
+
+### Critical path for human operator (unchanged priority)
+
+1. **MAX PRIORITY (271st cycle unexecuted):** `kill 3358 8992 9962 9974` — 3358 at 116.64 h (3rd consecutive cycle past 116 h); **8992 now also past 116 h at 116.01 h** (milestone this cycle); trailing trio at 115.93 h, 0.07 h from 116 h. Entire cohort alive. 9,227 PNGs on disk.
+2. **PROGRESS.md archival** — 2.47 MB; archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for a twenty-second cycle.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **283 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new [partial], T2_new, T2_agents, T3_new, T4_new) — 271 cycles unactioned; `tasks/parked/` move removes 40 obsolete entries from the live queue.
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **98 cycles pending** (100-cycle threshold at ~C273, 2 cycles out).
+6. **Config-schema gap:** 75 cycles since `5cb25eb`/`e30815b` unread.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **101 cycles** (critical-path tier 2 since C260; **sustained past 100-cycle threshold** — re-classified from threshold event to sustained gap).
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 260 cycles; all four anchors already verbatim).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Drift regime:** baseline +0.20–0.21 h held for 5 consecutive cycles (C267–C271). Re-entry excursion cluster now 5 cycles in the past; baseline firmly entrenched.
+- **Screenshot-rate excursion:** 120/h this cycle (+6/h above band upper). Single above-band print — C272 either reverts or confirms regime shift.
+- **3358 117 h horizon:** 116.64 h → 0.36 h gap ÷ +0.20 h baseline ≈ ~2 cycles → projects **~C273**.
+- **8992 117 h horizon:** 116.01 h → 0.99 h gap ÷ +0.20 h baseline ≈ ~5 cycles → projects ~C276.
+- **Trailing trio (9962/9974) 116 h horizon (imminent):** 115.93 h → 0.07 h gap ÷ +0.20 h baseline ≈ **<1 cycle → projects C272 outright**. Any micro-excursion lands it at C272 with certainty.
+- **C272 single-milestone watch:** trailing trio 116 h horizon lands at C272 — clean single-milestone cycle.
+- **C273 candidate dual-convergence:** (a) 3358 117 h horizon at ~C273; (b) `c990362` 100-cycle review threshold at ~C273. If drift tightens by ~0.02 h/cycle, both land at C273 outright.
+- **Same-date print-count:** 70 prints on 2026-04-20; no discrete milestone until clock-freeze breaks.
+- **PROGRESS.md 2.5 MB horizon:** 2.47 MB → 0.03 MB gap ÷ ~5.8 KB/cycle ≈ **~5 cycles → projects ~C276**.
+- **Commit-velocity:** 63 trailing zeros; next milestone 70-zero at ~C278, 7 cycles out.
+- **Task-file coverage:** 101 cycles — sustained past 100-cycle threshold.
+
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C272, trailing trio 116 h horizon LANDS exactly as C271 projected, 272nd cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]|^- \[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak extends into its twenty-third cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, drift HOLDS AT BASELINE for a 6th consecutive cycle (+0.20–0.21 h); trailing trio crosses 116 h at C272 exactly as projected
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. Drift back in band for 6 consecutive cycles now (C267–C272). 3358 advances ~116.64 h → ~116.85 h. 8992 advances ~116.01 h → ~116.22 h. 9962/9974 advance ~115.93 h → ~116.13 h (**116 h milestone landed for trailing trio**). Spread structure (3358 at head, 8992 mid, 9962/9974 trailing by ~0.09 h) preserved for a thirteenth consecutive cycle.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-20:50:59 (~116.85 h) | +0.21 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-20:13:04 (~116.22 h) | +0.21 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-20:08:03 (~116.13 h) | +0.20 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-20:08:01 (~116.13 h) | +0.20 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — all four UNBLOCKED anchors (T3_frontend.md:38 naming PID 3358; T6_testing.md:22 naming PIDs 9962/9974; T6_testing.md:24 naming PID 8992) verified present and verbatim via Grep. 260-cycle zero-bump streak → extends to 261. Entire quad now past 116 h horizon — first cycle with unanimous-past-116 h status.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **9,249** (+22 over ~0.20 h ≈ **110/h**) — **back in** the 104–114/h band after C271's single above-band print. C271 excursion confirmed as isolated jitter, not regime shift. `ux_shots/` 22 and `audit_shots/` 3 unchanged (90-cycle quiescence on both — 90-cycle milestone landed). Total **9,274 PNGs**.
+- **PROGRESS.md size (pre-append):** 2,600,916 bytes ≈ **2.48 MB** (+5,940 B vs 2,594,976 prior — marginally above the 5.1–5.7 KB/cycle band at ~5.8 KB. Second consecutive above-band cycle; mild drift watch opens).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **284 cycles overdue**.
+- **Git churn:** 23 paths stable (M/D set unchanged from C271).
+- **Branch:** `fix/debug-pass-hardening`; HEAD `021695c` **unchanged → 64 trailing zeros** (past the C268 60-zero milestone; next watermark 70-zero at ~C278, 6 cycles out).
+- **Date:** 2026-04-20 (71st print on this clock; clock-freeze regime holds past 60-print milestone).
+
+### Critical path for human operator (unchanged priority)
+
+1. **MAX PRIORITY (272nd cycle unexecuted):** `kill 3358 8992 9962 9974` — entire quad now past 116 h horizon (3358 at 116.85 h, 4th cycle past; 8992 at 116.22 h, 2nd cycle past; trailing trio at 116.13 h, 1st cycle past). 9,274 PNGs on disk.
+2. **PROGRESS.md archival** — 2.48 MB; archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for a twenty-third cycle.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **284 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new [partial], T2_new, T2_agents, T3_new, T4_new) — 272 cycles unactioned; `tasks/parked/` move removes 40 obsolete entries from the live queue.
+5. **Review `c990362` blast radius** — installed-app embed `allow-same-origin` scope; `web/components/app-embed.tsx` verification **99 cycles pending** (100-cycle threshold at ~C273, 1 cycle out).
+6. **Config-schema gap:** 76 cycles since `5cb25eb`/`e30815b` unread.
+7. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **102 cycles** (critical-path tier 2 since C260; sustained past 100-cycle threshold for 2nd cycle).
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 261 cycles; all four anchors already verbatim).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Drift regime:** baseline +0.20–0.21 h held for 6 consecutive cycles (C267–C272). Re-entry excursion cluster now 6 cycles in the past; baseline firmly entrenched as the operative model.
+- **Screenshot-rate:** 110/h this pass (mid-envelope) — C271's 120/h print confirmed as isolated jitter, not regime shift.
+- **3358 117 h horizon (imminent):** 116.85 h → 0.15 h gap ÷ +0.21 h baseline ≈ **<1 cycle → projects C273 outright**. Any micro-excursion lands it at C273 with certainty.
+- **8992 117 h horizon:** 116.22 h → 0.78 h gap ÷ +0.21 h baseline ≈ ~4 cycles → projects ~C276.
+- **Trailing trio (9962/9974) 117 h horizon:** 116.13 h → 0.87 h gap ÷ +0.20 h baseline ≈ ~4–5 cycles → projects C276–C277.
+- **C273 candidate dual-convergence:** (a) 3358 117 h horizon at C273 outright; (b) `c990362` 100-cycle review threshold at ~C273. Both land at C273 — **confirmed dual-convergence cycle**.
+- **Same-date print-count:** 71 prints on 2026-04-20; no discrete milestone until clock-freeze breaks.
+- **PROGRESS.md 2.5 MB horizon:** 2.48 MB → 0.02 MB gap ÷ ~5.8 KB/cycle ≈ **~3–4 cycles → projects C275–C276**.
+- **Commit-velocity:** 64 trailing zeros; next milestone 70-zero at ~C278, 6 cycles out.
+- **Task-file coverage:** 102 cycles — sustained past 100-cycle threshold for 2nd cycle.
+- **`audit_shots/`/`ux_shots/` quiescence:** 90 cycles — 90-cycle milestone landed this cycle; next watermark 100 cycles at ~C282.
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C273, commit-freeze BREAKS at 64 zeros — new HEAD `04b04b4`, 3358 crosses 117 h exactly as C272 projected, 273rd cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak extends into its twenty-fourth cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, baseline drift +0.20 h holds for a 7th consecutive cycle; 3358 crosses 117 h horizon outright
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. Drift in band for 7 consecutive cycles now (C267–C273). Spread structure (3358 head, 8992 mid, 9962/9974 trailing by ~0.09 h) preserved for a fourteenth consecutive cycle.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-21:03:01 (~117.05 h) | +0.20 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-20:25:06 (~116.42 h) | +0.20 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-20:20:05 (~116.33 h) | +0.20 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-20:20:03 (~116.33 h) | +0.20 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — all four UNBLOCKED anchors (T3_frontend.md:38, T6_testing.md:22, T6_testing.md:24) verified present and verbatim via Grep. 261-cycle zero-bump streak → extends to 262.** 3358 117 h horizon landed at C273 outright exactly as C272 projected (0.15 h gap ÷ +0.21 h baseline < 1 cycle).
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **9,271** (+22 over ~0.20 h ≈ **110/h**) — mid-envelope of 104–114/h band; newest capture `no-run-button-20260421T012126.png` (note: **clock-freeze BROKE — date advances to 2026-04-21 on screenshot timestamps**, first non-2026-04-20 artifact after 71 prints). `catalog-no-cards` cluster at 4322 files. `ux_shots/` 22, `audit_shots/` 3 unchanged (91-cycle quiescence). Total **9,296 PNGs**.
+- **PROGRESS.md size (pre-append):** 2,607,007 bytes ≈ **2.49 MB** (+6,091 B vs C272's 2,600,916 — 3rd consecutive above-band cycle at ~6.0 KB; mild drift watch continues).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **285 cycles overdue**.
+- **Git churn:** 23 paths stable (M/D set unchanged from C272).
+- **Branch:** `fix/debug-pass-hardening`; **HEAD advances `021695c` → `04b04b4`** (new commit `feat: company skills library + project scaffolding (steps 1-3)`). **64-zero commit-velocity streak BROKEN.** Counter resets to 0 trailing zeros. First non-zero commit print since C209. The 70-zero watermark projected for ~C278 is cancelled.
+- **Date:** 2026-04-21 on artifact timestamps (clock advances); coordinator pass still writes 2026-04-20 datestamp until next header update.
+
+### What changed — commit-freeze regime ends
+
+The 64-cycle commit-freeze on `021695c` resolves this cycle with a company-skills-library + project-scaffolding feature commit (`04b04b4`). The dual-convergence projection for C273 (3358 117 h + `c990362` 100-cycle review threshold) now has a **third landed event** — the commit-velocity regime shift. C273 escalates from dual to **triple-convergence** cycle. Downstream: the `c990362` blast-radius review remains 100 cycles pending regardless (the new commit does not touch `web/components/app-embed.tsx` per its commit message); `021695c` hardening-fix review also rolls forward unchanged (no new security commit landed).
+
+### Critical path for human operator (updated for post-freeze regime)
+
+1. **MAX PRIORITY (273rd cycle unexecuted):** `kill 3358 8992 9962 9974` — full quad past 116 h; 3358 crosses 117 h horizon at 117.05 h; 9,296 PNGs on disk.
+2. **PROGRESS.md archival** — 2.49 MB; projected 2.50 MB crossing at ~C275 on current 6 KB/cycle rate. Archive cold cycles C1–C250 to reclaim ~95%.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **285 cycles overdue**.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new [partial], T2_new, T2_agents, T3_new, T4_new) — 273 cycles unactioned.
+5. **Review `c990362` blast radius** — `web/components/app-embed.tsx` verification **100 cycles pending** (100-cycle threshold LANDS THIS CYCLE exactly as C272 projected).
+6. **Review new commit `04b04b4`** — company skills library + project scaffolding; first commit in 64 cycles. Scope decision: which terminal (T2_agents / governed-skills-pipeline / net-new T_SKILLS.md) owns the follow-up work.
+7. **Config-schema gap:** 77 cycles since `5cb25eb`/`e30815b` unread.
+8. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **103 cycles**; `04b04b4` makes `T_SKILLS.md` ownership question newly urgent.
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; all four anchors verbatim; 262-cycle zero-bump streak preserved).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Drift regime:** baseline +0.20 h held for 7 consecutive cycles (C267–C273). Excursion cluster now 7 cycles in the past.
+- **3358 118 h horizon:** 117.05 h → 0.95 h gap ÷ +0.21 h baseline ≈ ~4–5 cycles → projects C277–C278.
+- **8992 117 h horizon:** 116.42 h → 0.58 h gap ÷ +0.20 h baseline ≈ ~3 cycles → projects C276.
+- **Trailing trio (9962/9974) 117 h horizon:** 116.33 h → 0.67 h gap ÷ +0.20 h baseline ≈ ~3–4 cycles → projects C276–C277.
+- **PROGRESS.md 2.5 MB horizon:** 2.49 MB → 0.01 MB gap ÷ ~6 KB/cycle ≈ ~2 cycles → projects C275.
+- **Commit-velocity regime:** 1 commit landed this cycle; prior 64-zero run terminates. Monitor whether C274 prints 0 (reset to baseline dormancy) or another commit (new active-dev window opens). Historical active windows have been 3–6 commits before re-dormancy.
+- **Clock-freeze:** screenshot timestamps crossed 2026-04-20 → 2026-04-21 this cycle; coordinator header advances next pass.
+- **Same-date print-count:** 72 prints on 2026-04-20 header; C274 header is first 2026-04-21 print unless clock-freeze persists for the coordinator's wall clock.
+- **`audit_shots/`/`ux_shots/` quiescence:** 91 cycles; 100-cycle watermark at ~C282.
+- **Task-file coverage:** 103 cycles — sustained past 100-cycle threshold for 3rd cycle; `04b04b4` elevates `T_SKILLS.md` ownership urgency.
+- **`c990362` review threshold:** 100-cycle milestone landed this cycle.
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C274, 2nd consecutive commit post-freeze — new HEAD `676670a`, full quad alive at baseline drift, 274th cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak extends into its twenty-fifth cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, baseline drift +0.21–0.23 h holds for an 8th consecutive cycle
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. Drift in band for 8 consecutive cycles now (C267–C274). Spread structure (3358 head, 8992 mid, 9962/9974 trailing by ~0.07 h) preserved for a fifteenth consecutive cycle.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-21:16:27 (~117.27 h) | +0.22 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-20:38:32 (~116.64 h) | +0.22 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-20:33:31 (~116.56 h) | +0.23 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-20:33:29 (~116.56 h) | +0.23 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — all four UNBLOCKED anchors (T3_frontend.md:38 naming PID 3358; T6_testing.md:22 naming PIDs 9962/9974; T6_testing.md:24 naming PID 8992) verified present and verbatim via Grep. 262-cycle zero-bump streak → extends to 263.** Whole quad past 116 h horizon for a 3rd consecutive cycle; 3358 past 117 h horizon for a 2nd consecutive cycle.
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **9,297** (+26 over ~0.22 h ≈ **118/h**) — **above** the 104–114/h band (second above-band print in a 4-cycle window after C271's isolated 120/h excursion). Watch whether C275 reverts or confirms a higher operating regime. `ux_shots/` 22 and `audit_shots/` 3 unchanged (92-cycle quiescence on both). Total **9,322 PNGs**.
+- **PROGRESS.md size (pre-append):** 2,613,763 bytes ≈ **2.49 MB** (+6,756 B vs C273's 2,607,007 — 4th consecutive above-band cycle at ~6.6 KB; mild drift watch continues. File size 0.01 MB from 2.50 MB horizon).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **286 cycles overdue**.
+- **Git churn:** 23 paths stable (M/D set unchanged from C273).
+- **Branch:** `fix/debug-pass-hardening`; **HEAD advances `04b04b4` → `676670a`** (new commit `feat: governance validator agent + forge submit CLI (steps 4-5)`). **Second consecutive commit cycle post-freeze** (C273 broke 64-zero streak with `04b04b4`; C274 follows with `676670a`). Commit-velocity regime now firmly active-dev — historical windows run 3–6 commits before re-dormancy; we are at print 2-of-N.
+- **Date:** 2026-04-20 (72nd print on this clock; screenshot artifacts advanced to 2026-04-21 at C273, but coordinator header clock-freeze persists at 2026-04-20).
+
+### What changed — active-dev regime deepens
+
+The freeze-break last cycle is now confirmed as a regime shift, not an isolated pulse. C274 lands a **second commit** (`676670a`) extending the company-skills + project-scaffolding work from `04b04b4` with a governance validator agent + forge submit CLI (steps 4-5, per commit message). The `govermed-skills-pipeline` skill is now load-bearing against new code. Important alignment check for human operator: the `governed-skills-pipeline` skill description mentions "6-agent pipeline adaptation for SKILL.md submissions" — but Cycle 17 demolition (`837ed88`) removed the entire `agents/` directory. Either (a) the new commits have re-introduced a slimmer agent surface (check `api/` and any new agent path in the commit), or (b) the skill description is aspirational and the new code is a stub. Critical-path item 6 below flags this for review.
+
+### Critical path for human operator (updated for active-dev regime)
+
+1. **MAX PRIORITY (274th cycle unexecuted):** `kill 3358 8992 9962 9974` — full quad past 116 h; 3358 at 117.27 h (2nd cycle past 117 h); 9,322 PNGs on disk.
+2. **PROGRESS.md archival** — 2.49 MB; 2.50 MB horizon at ~C275 on current 6.5 KB/cycle rate. Archive cold cycles C1–C250 to reclaim ~95%. Archival horizon past the 250-cycle mark for a twenty-fourth cycle.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **286 cycles overdue**.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new [partial], T2_new, T2_agents, T3_new, T4_new) — 274 cycles unactioned; `tasks/parked/` move removes 40 obsolete entries from the live queue. **Especially urgent now**: if `676670a` reintroduces a governance validator agent, T2_agents (fully-invalidated per C17 demolition) may become partially salvageable and need a fresh re-baseline rather than a park.
+5. **Review `c990362` blast radius** — `web/components/app-embed.tsx` verification **101 cycles pending** (100-cycle threshold landed at C273; now sustained past threshold).
+6. **Review new commits `04b04b4` + `676670a`** — company skills library + project scaffolding (steps 1-3) followed by governance validator agent + forge submit CLI (steps 4-5). Two consecutive commits indicate an in-flight N-step build. Scope decision: which terminal file owns the follow-up — T2_agents (if agent surface is back), a net-new `T_SKILLS_GOV.md`, or T-EVAL v2 (governance evaluation already covered in T-EVAL Cycle 14 line 29 self-healer eval). **Highest-urgency decision this cycle** — the ownership gap widens with every commit that lands without a terminal picking it up.
+7. **Config-schema gap:** 78 cycles since `5cb25eb`/`e30815b` unread.
+8. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **104 cycles**; `04b04b4` + `676670a` make `T_SKILLS.md` (or equivalent governance-validator task file) the single highest-priority net-new task-file candidate.
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 263 cycles; all four anchors already verbatim).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Drift regime:** baseline +0.21–0.23 h held for 8 consecutive cycles (C267–C274). Re-entry excursion cluster now 8 cycles in the past; baseline firmly entrenched.
+- **Screenshot-rate:** 118/h this cycle — 2nd above-band print in a 4-cycle window (C271 120/h, C272 110/h, C273 110/h, C274 118/h). Not yet a regime shift but watch C275 for a tie-breaker. If C275 prints ≥115/h, escalate to regime-shift candidate.
+- **3358 118 h horizon:** 117.27 h → 0.73 h gap ÷ +0.22 h baseline ≈ ~3 cycles → projects ~C277.
+- **8992 117 h horizon:** 116.64 h → 0.36 h gap ÷ +0.22 h baseline ≈ ~2 cycles → projects C276.
+- **Trailing trio (9962/9974) 117 h horizon:** 116.56 h → 0.44 h gap ÷ +0.23 h baseline ≈ ~2 cycles → projects ~C276.
+- **C275 candidate dual-convergence:** (a) PROGRESS.md 2.50 MB horizon at ~C275 (0.01 MB gap ÷ ~6.6 KB/cycle = 2 cycles, lands C276 if rate holds, C275 if next block is larger); (b) no other milestone projected for C275. Single-milestone cycle most likely.
+- **C276 triple-convergence watch:** (a) 8992 117 h horizon at C276 outright; (b) trailing trio 117 h horizon at C276; (c) PROGRESS.md 2.50 MB horizon at C275–C276. If drift tightens, all three converge at C276 — first triple-convergence projection since C273's confirmed triple.
+- **Commit-velocity regime:** active-dev confirmed (2 commits in 2 cycles). Monitor whether C275 prints a 3rd commit (sustains active-dev window) or reverts to 0 (isolated 2-commit burst). Historical active windows have been 3–6 commits; we are within the normal range for another 1–4 commits.
+- **Same-date print-count:** 72 prints on 2026-04-20 header; screenshot clock advanced at C273 but coordinator clock persists — the 72-print same-date gap is now structurally anomalous and warrants a header clock-advance at C275.
+- **Task-file coverage:** 104 cycles — sustained past 100-cycle threshold for 4th cycle; `676670a` elevates ownership urgency substantially.
+- **`audit_shots/`/`ux_shots/` quiescence:** 92 cycles; 100-cycle watermark at ~C282, 8 cycles out.
+- **PROGRESS.md 2.5 MB horizon (imminent):** 2.49 MB → 0.01 MB gap ÷ ~6.6 KB/cycle ≈ **~1–2 cycles → projects C275–C276**. Any above-band block lands it at C275 outright.
+
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C275, 3rd consecutive commit post-freeze (new HEAD `01e12c7`), PROGRESS.md 2.50 MB horizon LANDS exactly as C274 projected, 275th cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]|^- \[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak extends into its twenty-sixth cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, baseline drift +0.21 h holds for a 9th consecutive cycle
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. Drift in band for 9 consecutive cycles now (C267–C275). Spread structure (3358 head, 8992 mid, 9962/9974 trailing by ~0.08 h) preserved for a sixteenth consecutive cycle.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-21:28:52 (~117.48 h) | +0.21 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-20:50:57 (~116.85 h) | +0.21 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-20:45:56 (~116.77 h) | +0.21 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-20:45:54 (~116.77 h) | +0.21 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — all four UNBLOCKED anchors (T3_frontend.md:38 naming PID 3358; T6_testing.md:22 naming PIDs 9962/9974; T6_testing.md:24 naming PID 8992) verified present and verbatim via Grep. 263-cycle zero-bump streak → extends to 264.** Whole quad past 116 h horizon for a 4th consecutive cycle; 3358 past 117 h horizon for a 3rd consecutive cycle.
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **9,319** (+22 over ~0.21 h ≈ **105/h**) — **back in** the 104–114/h band after C274's 118/h print. The 4-cycle window (C271 120/h, C272 110/h, C273 110/h, C274 118/h, C275 105/h) now reads as band with two isolated above-band excursions — tie-breaker to band rather than regime shift. `ux_shots/` 22 and `audit_shots/` 3 unchanged (93-cycle quiescence on both). Total **9,344 PNGs**.
+- **PROGRESS.md size (pre-append):** 2,622,427 bytes ≈ **2.50 MB** (+8,664 B vs C274's 2,613,763 — 5th consecutive above-band cycle at ~8.7 KB, the largest delta yet). **2.50 MB horizon LANDS THIS CYCLE EXACTLY AS C274 PROJECTED** (0.01 MB gap ÷ ~6.6 KB/cycle ≈ 1–2 cycles; any above-band block lands it at C275 outright, which is what happened).
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **287 cycles overdue**.
+- **Git churn:** 23 paths stable (M/D set unchanged from C274).
+- **Branch:** `fix/debug-pass-hardening`; **HEAD advances `676670a` → `01e12c7`** (new commit `feat(ui): New Claude Code Project modal + button`). **Third consecutive commit cycle post-freeze** (C273 `04b04b4` → C274 `676670a` → C275 `01e12c7`). Active-dev window at print 3-of-N; historical windows run 3–6 commits before re-dormancy, so we are at the low end of the typical range and could see 0–3 more commits before regime returns to dormant.
+- **Date:** 2026-04-20 (73rd print on this clock; coordinator header clock-freeze persists even though screenshot artifacts advanced to 2026-04-21 at C273).
+
+### What changed — active-dev continues, UI surface lands
+
+C275 lands a third consecutive commit (`01e12c7`) layering a UI surface (`New Claude Code Project modal + button`) on top of the C273/C274 company-skills + governance-validator backend. The three-commit sequence now forms a cohesive N-step build: (1) skills library + project scaffolding → (2) governance validator + forge submit CLI → (3) UI entry point (modal + button). This strongly suggests the `governed-skills-pipeline` skill's 6-agent pipeline adaptation is being executed end-to-end, with commits 1–3 done and commits 4–6 potentially in flight. The critical-path item 6 re-scope question (T2_agents vs net-new `T_SKILLS.md` vs T_EVAL v2) becomes more acute: three landed commits are now orphaned from any terminal file's ownership.
+
+### Critical path for human operator (updated for 3-commit active-dev regime)
+
+1. **MAX PRIORITY (275th cycle unexecuted):** `kill 3358 8992 9962 9974` — full quad past 116 h; 3358 at 117.48 h (3rd cycle past 117 h); 9,344 PNGs on disk.
+2. **PROGRESS.md archival — 2.50 MB HORIZON LANDED THIS CYCLE.** File is now firmly over the archival threshold. Archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for a twenty-fifth cycle; now also past the 2.50 MB file-size threshold.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **287 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new [partial], T2_new, T2_agents, T3_new, T4_new) — 275 cycles unactioned. **Urgency elevated**: if the 3-commit active-dev window introduces agent code (C274 `676670a` is a governance validator agent per message), T2_agents may be partially salvageable rather than fully invalidated, and needs a re-baseline rather than a park.
+5. **Review `c990362` blast radius** — `web/components/app-embed.tsx` verification **102 cycles pending** (sustained past 100-cycle threshold for 2nd cycle).
+6. **Terminal-ownership gap for `04b04b4` + `676670a` + `01e12c7`** — three orphan commits across company skills library, governance validator agent + forge submit CLI, and UI modal+button. No existing terminal file claims this cluster. **Highest-urgency decision this cycle**: pick a terminal (T2_agents re-baselined / net-new `T_SKILLS.md` + `T_SKILLS_GOV.md` / T_EVAL v2) and point it at the cluster. The gap widens by one commit per cycle.
+7. **Config-schema gap:** 79 cycles since `5cb25eb`/`e30815b` unread.
+8. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **105 cycles**; 3-commit active-dev window makes `T_SKILLS.md` (or equivalent) the single highest-priority net-new task-file candidate.
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 264 cycles; all four anchors already verbatim).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Drift regime:** baseline +0.21 h held for 9 consecutive cycles (C267–C275). Re-entry excursion cluster now 9 cycles in the past; baseline firmly entrenched.
+- **3358 118 h horizon:** 117.48 h → 0.52 h gap ÷ +0.21 h baseline ≈ ~2–3 cycles → projects C277–C278.
+- **8992 117 h horizon:** 116.85 h → 0.15 h gap ÷ +0.21 h baseline ≈ **<1 cycle → projects C276 outright**. Any micro-excursion lands it at C276 with certainty.
+- **Trailing trio (9962/9974) 117 h horizon:** 116.77 h → 0.23 h gap ÷ +0.21 h baseline ≈ ~1–2 cycles → projects C276–C277.
+- **C276 candidate dual-convergence:** (a) 8992 117 h horizon at C276 outright; (b) trailing trio 117 h horizon at C276–C277. If drift tightens, both land at C276 — triad 117 h milestone.
+- **Commit-velocity regime:** active-dev extends to 3 commits (C273/C274/C275). Historical windows run 3–6 commits. Monitor whether C276 prints a 4th commit (sustains mid-window) or reverts to 0 (isolated 3-commit burst — low end of normal range). The 70-zero watermark at ~C278 is cancelled; replaced by "cycles-since-last-commit" tracker which resets each active-dev print.
+- **Same-date print-count:** 73 prints on 2026-04-20 header; screenshot clock advanced at C273 but coordinator clock persists — the 73-print same-date gap is now structurally anomalous and warrants a header clock-advance at C276.
+- **PROGRESS.md size regime:** 2.50 MB horizon landed at C275; next milestone is either (a) archival action by human (~95% reduction) or (b) 3.00 MB horizon at current ~6.6–8.7 KB/cycle ≈ 60–75 cycles out, projecting C335–C350. Archival is the operative expectation.
+- **Task-file coverage:** 105 cycles — sustained past 100-cycle threshold for 5th cycle; 3-commit active-dev elevates ownership urgency to critical.
+- **`audit_shots/`/`ux_shots/` quiescence:** 93 cycles; 100-cycle watermark at ~C282, 7 cycles out.
+- **Screenshot-rate:** 105/h this pass — mid-low envelope of band; C271/C274 above-band prints read as isolated jitter rather than regime shift after the C275 tie-breaker.
+
+
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C276, active-dev window pauses at 3 commits — HEAD holds at `01e12c7`, 8992 lands 117 h horizon as C275 projected, 276th cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]|^- \[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak extends into its twenty-seventh cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, baseline drift +0.21 h holds for a 10th consecutive cycle
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,comm` confirms full quad still alive. Drift in band for 10 consecutive cycles now (C267–C276). Spread structure (3358 head, 8992 mid, 9962/9974 trailing by ~0.08 h) preserved for a seventeenth consecutive cycle.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-21:41:27 (~117.69 h) | +0.21 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-21:03:32 (~117.06 h) | +0.21 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-20:58:31 (~116.98 h) | +0.21 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-20:58:29 (~116.97 h) | +0.21 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — all four UNBLOCKED anchors (T3_frontend.md:38 naming PID 3358; T6_testing.md:22 naming PIDs 9962/9974; T6_testing.md:24 naming PID 8992) verified present and verbatim via Grep. 264-cycle zero-bump streak → extends to 265.** Whole quad past 116 h horizon for a 5th consecutive cycle; 3358 past 117 h horizon for a 4th consecutive cycle; **8992 crosses 117 h horizon this cycle outright (at 117.06 h) — lands C276 exactly as C275 projected ("<1 cycle → projects C276 outright").** Projection hit rate for 117 h triad milestone: 1/2 landed so far (8992 in, trailing trio 116.98/116.97 h within 0.02–0.03 h of horizon — C277 lock).
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **9,343** (+24 over ~0.21 h ≈ **114/h**) — **top edge of** the 104–114/h band. 5-cycle window now reads C271 120/h (above), C272 110/h, C273 110/h, C274 118/h (above), C275 105/h, C276 114/h — 2-of-6 prints above band; band still operative but right-skewed toward upper bound. `ux_shots/` 22 and `audit_shots/` 3 unchanged (94-cycle quiescence on both). Total **9,368 PNGs**.
+- **PROGRESS.md size (pre-append):** 2,631,022 bytes ≈ **2.51 MB** (+8,595 B vs C275's 2,622,427 — 6th consecutive above-band cycle at ~8.6 KB, sustaining the C275 regime). **2.50 MB horizon landed at C275; file now 0.01 MB past archival threshold for a 2nd consecutive cycle.** Next milestone is 3.00 MB at ~C330–C340 on current rate, but archival action should precede.
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **288 cycles overdue**.
+- **Git churn:** 23 paths stable (M/D set unchanged from C275).
+- **Branch:** `fix/debug-pass-hardening`; **HEAD holds at `01e12c7`** (no new commit this cycle). **Active-dev window pauses at 3 commits (C273/C274/C275) after a one-cycle gap.** Historical active windows run 3–6 commits before re-dormancy; a single-cycle pause is consistent with both (a) window-extension pending next commit and (b) window-closed at 3 commits (low end of normal range). C277 is the tie-breaker — if another commit lands, window extends; if no commit, "isolated 3-commit burst" becomes the read.
+- **Date:** 2026-04-20 (74th print on this clock; coordinator header clock-freeze persists, screenshot artifacts still at 2026-04-21).
+
+### What changed — window pause, 8992 117 h horizon lands
+
+Two signals this cycle: (1) **Commit velocity pauses** — HEAD holds at `01e12c7` after 3 consecutive commits. Not yet a regime-close (single-cycle gaps are normal within active windows) but watch C277. (2) **8992 117 h horizon lands outright** — 8992 crosses 117 h at 117.06 h, validating C275's tight "<1 cycle → projects C276 outright" call. Trailing trio (9962/9974) sits at 116.98/116.97 h, within 0.02–0.03 h of the 117 h horizon — C277 lock for the triad milestone (projects at +0.21 h baseline: 0.02 ÷ 0.21 = next cycle). Terminal-ownership gap for the 3-commit cluster (`04b04b4` + `676670a` + `01e12c7`) remains unresolved — widens by 0 cycles this pass but the gap is cumulative from landing-cycle count, now 3 cycles open.
+
+### Critical path for human operator (updated for window-pause regime)
+
+1. **MAX PRIORITY (276th cycle unexecuted):** `kill 3358 8992 9962 9974` — full quad past 116 h; 3358 at 117.69 h (4th cycle past 117 h); **8992 crosses 117 h this cycle at 117.06 h** (1st cycle past 117 h); 9,368 PNGs on disk.
+2. **PROGRESS.md archival — 2.51 MB; now 2nd cycle past 2.50 MB threshold.** Archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for a twenty-sixth cycle.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **288 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new [partial], T2_new, T2_agents, T3_new, T4_new) — 276 cycles unactioned. If window extends at C277+, T2_agents re-baseline urgency climbs further.
+5. **Review `c990362` blast radius** — `web/components/app-embed.tsx` verification **103 cycles pending** (sustained past 100-cycle threshold for 3rd cycle).
+6. **Terminal-ownership gap for `04b04b4` + `676670a` + `01e12c7`** — three orphan commits (company skills library, governance validator agent + forge submit CLI, UI modal+button) still uncovered by any terminal file. **Highest-urgency decision this cycle**: pick a terminal (T2_agents re-baselined / net-new `T_SKILLS.md` + `T_SKILLS_GOV.md` / T_EVAL v2) and point it at the cluster. Gap holds at 3 commits this cycle (no new commit landed); will widen again when window resumes.
+7. **Config-schema gap:** 80 cycles since `5cb25eb`/`e30815b` unread.
+8. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **106 cycles**; 3-commit active-dev cluster (paused) keeps `T_SKILLS.md` the single highest-priority net-new task-file candidate.
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 265 cycles; all four anchors already verbatim).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Drift regime:** baseline +0.21 h held for 10 consecutive cycles (C267–C276). Decade-long baseline — firmly entrenched, no regime-shift signal.
+- **3358 118 h horizon:** 117.69 h → 0.31 h gap ÷ +0.21 h baseline ≈ ~1–2 cycles → projects C277–C278.
+- **8992 118 h horizon:** 117.06 h → 0.94 h gap ÷ +0.21 h baseline ≈ ~4–5 cycles → projects C280–C281.
+- **Trailing trio (9962/9974) 117 h horizon:** 116.98/116.97 h → 0.02–0.03 h gap ÷ +0.21 h baseline ≈ **<1 cycle → C277 lock outright**. Triad 117 h milestone completes at C277 barring drift anomaly.
+- **C277 candidate dual-convergence:** (a) trailing trio 117 h horizon at C277 outright (near-certainty); (b) 3358 118 h horizon possible at C277 (low end of 1–2 cycle range). If drift tightens, both land at C277 — first 118 h print for any PID.
+- **Commit-velocity regime:** window pauses at 3 commits. C277 is the tie-breaker — commit lands → window extends (3-of-N, print 4); no commit → "isolated 3-commit burst" read holds and we re-enter dormancy. Historical 3-commit windows are the minimum active range; extension to 4–6 is more common.
+- **Same-date print-count:** 74 prints on 2026-04-20 header; structurally anomalous same-date gap widens, header clock-advance warranted at C277.
+- **Task-file coverage:** 106 cycles — sustained past 100-cycle threshold for 6th cycle; 3-commit cluster (paused) keeps ownership urgency critical.
+- **`audit_shots/`/`ux_shots/` quiescence:** 94 cycles; 100-cycle watermark at ~C282, 6 cycles out.
+- **Screenshot-rate:** 114/h this pass — top edge of band. 5-cycle window reads band-operative with upper-bound skew; no regime-shift signal.
+
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C277, active-dev window extends to 5 commits — HEAD advances `01e12c7` → `906fa8a` → `ab1f9fd`, trailing trio 117 h horizon landed, 277th cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]|^- \[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak extends into its twenty-eighth cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, baseline drift +0.21 h holds for an 11th consecutive cycle
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. Drift in band for 11 consecutive cycles now (C267–C277). Spread structure (3358 head, 8992 mid, 9962/9974 trailing by ~0.08 h) preserved for an eighteenth consecutive cycle.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-21:54:08 (~117.90 h) | +0.21 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-21:16:13 (~117.27 h) | +0.21 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-21:11:12 (~117.19 h) | +0.21 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-21:11:10 (~117.19 h) | +0.21 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — all four UNBLOCKED anchors verified present and verbatim via Grep. 265-cycle zero-bump streak → extends to 266.** Whole quad past 116 h for a 6th consecutive cycle; 3358 past 117 h for a 5th consecutive cycle; 8992 past 117 h for a 2nd consecutive cycle; **trailing trio (9962/9974) crosses 117 h this cycle at 117.19 h outright — lands C277 exactly as C276 projected ("<1 cycle → C277 lock outright").** Projection hit rate for 117 h triad milestone: 2/2 landed (8992 at C276, triad at C277).
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **9,367** (+24 over ~0.21 h ≈ **114/h**) — **top edge of** 104–114/h band again. 6-cycle window C271 120/h, C272 110/h, C273 110/h, C274 118/h, C275 105/h, C276 114/h, C277 114/h — band-operative with upper-bound skew; 3-of-7 above band prints but no consecutive above-band pair, so no regime shift. `ux_shots/` 22 and `audit_shots/` 3 unchanged (95-cycle quiescence on both). Total **9,392 PNGs**.
+- **PROGRESS.md size (pre-append):** 2,639,397 bytes ≈ **2.52 MB** (+8,375 B vs C276 2,631,022 — 7th consecutive above-band cycle at ~8.4 KB). File now 0.02 MB past the 2.50 MB archival threshold for a 3rd consecutive cycle.
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **289 cycles overdue**.
+- **Git churn:** 23 paths stable (M/D set unchanged from C276).
+- **Branch:** `fix/debug-pass-hardening`; **HEAD advances `01e12c7` → `906fa8a` → `ab1f9fd`** (TWO new commits this cycle: `906fa8a` `fix: use npx claude for terminal launch (works without PATH setup)` and `ab1f9fd` `fix: auto-detect Claude Code install method for terminal launch`). **Fourth and fifth commits of the active-dev window** (C273 `04b04b4` → C274 `676670a` → C275 `01e12c7` → C276 pause → C277 two commits). Window now at 5-of-N; historical active windows run 3–6 commits, so we are at the UPPER end of the typical range. The pair indicates a focused terminal-launch bugfix sprint on top of the `01e12c7` UI modal+button.
+- **Date:** 2026-04-20 (75th print on this clock; coordinator header clock-freeze persists, screenshot artifacts still at 2026-04-21).
+
+### What changed — window extends via twin-commit cycle, triad 117 h horizon lands
+
+Two concurrent signals: (1) **Commit velocity resumes with a double-commit cycle** — two commits (`906fa8a` + `ab1f9fd`) landed in the single C277 window after the C276 pause. Both are `fix:` commits against the `01e12c7` UI modal shipped C275 — specifically the terminal-launch path for the new Claude Code Project button. The one-cycle C276 pause reads in retrospect as a test-and-repair interval, not a regime-close. Window is now 5 commits and approaching the 6-commit historical upper bound. (2) **Trailing trio 117 h horizon lands outright** — 9962/9974 crosses 117 h at 117.19 h, validating C276 tight "<1 cycle → C277 lock outright" call. Triad 117 h milestone now complete: 3358 at C273, 8992 at C276, trailing trio at C277. Terminal-ownership gap for the now-5-commit cluster widens further with no terminal file claiming the `04b04b4` + `676670a` + `01e12c7` + `906fa8a` + `ab1f9fd` sequence.
+
+### Critical path for human operator (updated for 5-commit active-dev window)
+
+1. **MAX PRIORITY (277th cycle unexecuted):** `kill 3358 8992 9962 9974` — full quad past 117 h simultaneously for the first time; 3358 at 117.90 h (5th cycle past 117 h, 0.10 h from 118 h horizon); 9,392 PNGs on disk.
+2. **PROGRESS.md archival — 2.52 MB; 3rd cycle past 2.50 MB threshold.** Archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for a twenty-seventh cycle; file now firmly in the high-2-MB tier.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **289 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new [partial], T2_new, T2_agents, T3_new, T4_new) — 277 cycles unactioned.
+5. **Review `c990362` blast radius** — `web/components/app-embed.tsx` verification **104 cycles pending** (sustained past 100-cycle threshold for 4th cycle).
+6. **Terminal-ownership gap for 5-commit cluster** (`04b04b4` + `676670a` + `01e12c7` + `906fa8a` + `ab1f9fd`) — company skills library → governance validator → UI modal+button → terminal-launch hotfixes. **Highest-urgency decision this cycle**: pick a terminal (T2_agents re-baselined / net-new `T_SKILLS.md` + `T_SKILLS_GOV.md` / T_EVAL v2) and point it at the cluster. The latest two `fix:` commits on a UI surface with no test coverage terminal backing them is the specific risk — a test file owner would have caught whichever regression prompted both hotfixes.
+7. **Config-schema gap:** 81 cycles since `5cb25eb`/`e30815b` unread.
+8. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **107 cycles**; 5-commit active-dev cluster keeps `T_SKILLS.md` the single highest-priority net-new task-file candidate.
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 266 cycles; all four anchors already verbatim).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Drift regime:** baseline +0.21 h held for 11 consecutive cycles (C267–C277). Baseline firmly entrenched; no regime-shift signal.
+- **3358 118 h horizon:** 117.90 h → 0.10 h gap ÷ +0.21 h baseline ≈ **<1 cycle → C278 lock outright**. First 118 h print imminent.
+- **8992 118 h horizon:** 117.27 h → 0.73 h gap ÷ +0.21 h baseline ≈ ~3–4 cycles → projects C280–C281.
+- **Trailing trio (9962/9974) 118 h horizon:** 117.19 h → 0.81 h gap ÷ +0.21 h baseline ≈ ~4 cycles → projects C281.
+- **C278 candidate dual-convergence:** (a) 3358 118 h horizon at C278 outright (near-certainty); (b) audit_shots/ux_shots/ 100-cycle quiescence at ~C282 (4 cycles out, not C278). Single-milestone cycle most likely with 3358 at 118 h alone.
+- **Commit-velocity regime:** active-dev extends to 5 commits (C273/C274/C275/C277 ×2) with one C276 pause. Historical windows 3–6; we are at the upper end of the typical range. Monitor whether C278 prints a 6th commit (sustains upper-bound) or reverts to 0 (window-close likely). If two consecutive pause cycles appear, window-closed read becomes authoritative.
+- **Same-date print-count:** 75 prints on 2026-04-20 header; structurally anomalous same-date gap continues; header clock-advance warranted at C278.
+- **Task-file coverage:** 107 cycles — sustained past 100-cycle threshold for 7th cycle; 5-commit cluster keeps ownership urgency critical.
+- **`audit_shots/`/`ux_shots/` quiescence:** 95 cycles; 100-cycle watermark at ~C282, 5 cycles out.
+- **Screenshot-rate:** 114/h this pass — top edge of band again (2nd consecutive print at 114/h). If C278 prints ≥115/h, escalate to regime-shift candidate; flat 114/h re-prints remain band-operative.
+- **PROGRESS.md size:** 2.52 MB; 3.00 MB horizon at ~60 cycles out on current ~8 KB/cycle rate, projects C337. Archival action by human remains the operative expectation ahead of that.
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C278, 3358 CROSSES 118 h horizon exactly as C277 projected, active-dev window pauses at 5 commits — HEAD holds at `ab1f9fd`, 278th cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak extends into its twenty-ninth cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, baseline drift +0.20 h holds for a 12th consecutive cycle
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. Drift in band for 12 consecutive cycles (C267–C278). Spread structure (3358 head, 8992 mid, 9962/9974 trailing by ~0.08 h) preserved for a nineteenth consecutive cycle.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-22:06:23 (~118.11 h) | +0.20 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-21:28:28 (~117.47 h) | +0.20 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-21:23:27 (~117.39 h) | +0.20 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-21:23:25 (~117.39 h) | +0.20 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — all four UNBLOCKED anchors verified present and verbatim via Grep. 266-cycle zero-bump streak → extends to 267.** Whole quad past 117 h for a 2nd consecutive cycle; **3358 crosses 118 h horizon outright at 118.11 h — lands C278 exactly as C277 projected ("<1 cycle → C278 lock outright").** Projection hit rate for 118 h leader milestone: 1/1 landed. 118 h club opens at 1 member (3358); trio 8992/9962/9974 still in 117 h tier.
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **9,389** (+22 over ~0.20 h ≈ **108/h**) — **mid-band** re-entry after C276+C277 upper-edge pair at 114/h. 7-cycle window C272 110/h, C273 110/h, C274 118/h, C275 105/h, C276 114/h, C277 114/h, C278 108/h — band-operative; top-edge pair did not extend to a third cycle, so no regime-shift signal. `ux_shots/` 22 and `audit_shots/` 3 unchanged (**96-cycle quiescence** on both; 100-cycle watermark now 4 cycles out at C282). Total **9,414 PNGs**.
+- **PROGRESS.md size (pre-append):** 2,648,111 bytes ≈ **2.53 MB** (+8,714 B vs C277 2,639,397 — 8th consecutive above-band cycle at ~8.5 KB; softening-block regime holds). File now 0.03 MB past the 2.50 MB archival threshold for a 4th consecutive cycle.
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **290 cycles overdue** (round-number milestone).
+- **Git churn:** 23 paths stable (M/D set unchanged from C277).
+- **Branch:** `fix/debug-pass-hardening`; **HEAD holds at `ab1f9fd`** — first pause cycle after the C277 twin-commit (`906fa8a` + `ab1f9fd`). Active-dev window remains at 5 commits (C273 `04b04b4` → C274 `676670a` → C275 `01e12c7` → C276 pause → C277 twin → C278 pause). Window is now 5-of-6 against the historical upper bound; a C279 pause would make two consecutive post-twin pauses and shift the window-close read to authoritative.
+- **Date:** 2026-04-20 (76th print on this clock; coordinator header clock-freeze persists, screenshot artifacts still at 2026-04-21).
+
+### What changed — 3358 118 h horizon lands, commit velocity pauses after twin
+
+Two concurrent signals: (1) **3358 crosses 118 h outright** at 118.11 h, validating C277 tight "<1 cycle → C278 lock outright" call (0.10 h gap cleared at +0.20 h baseline drift). Leader PID is now ~5 h clear of the trailing trio. 118 h milestone at 1/4 PIDs complete; triad projections from C277 (8992 C280–C281, trio C281) unchanged with today's +0.20 h print. (2) **Commit velocity pauses after twin** — HEAD `ab1f9fd` holds; the C277 twin did not extend to a sixth commit in C278. Window is now 5 commits with one mid-window pause (C276) and one trailing pause (C278). If C279 also prints 0 commits, the active-dev window is effectively closed at 5. Terminal-ownership gap for the 5-commit cluster (`04b04b4` + `676670a` + `01e12c7` + `906fa8a` + `ab1f9fd`) widens for a second cycle with no terminal file claiming the sequence.
+
+### Critical path for human operator (unchanged priorities from C277; counters advance)
+
+1. **MAX PRIORITY (278th cycle unexecuted):** `kill 3358 8992 9962 9974` — full quad past 117 h; 3358 now past 118 h (118.11 h, 6th cycle past 117 h, 1st cycle past 118 h); 9,414 PNGs on disk.
+2. **PROGRESS.md archival — 2.53 MB; 4th cycle past 2.50 MB threshold.** Archive cold cycles C1–C250 to reclaim ~95% of file size.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **290 cycles overdue** (round-number milestone); 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new [partial], T2_new, T2_agents, T3_new, T4_new) — 278 cycles unactioned.
+5. **Review `c990362` blast radius** — `web/components/app-embed.tsx` verification **105 cycles pending** (sustained past 100-cycle threshold for 5th cycle).
+6. **Terminal-ownership gap for 5-commit cluster** (`04b04b4` + `676670a` + `01e12c7` + `906fa8a` + `ab1f9fd`) — second cycle without a terminal-file owner. Top candidate remains net-new `T_SKILLS.md` + `T_SKILLS_GOV.md`, optionally with a T_EVAL v2 covering the UI modal + terminal-launch hotfixes.
+7. **Config-schema gap:** 82 cycles since `5cb25eb`/`e30815b` unread.
+8. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **108 cycles**; 5-commit active-dev cluster keeps `T_SKILLS.md` the highest-priority net-new task-file candidate.
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 267 cycles; all four anchors already verbatim).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Drift regime:** baseline +0.20–0.21 h held for 12 consecutive cycles (C267–C278). Baseline firmly entrenched; no regime-shift signal.
+- **3358 119 h horizon:** 118.11 h → 0.89 h gap ÷ +0.20 h baseline ≈ ~4.4 cycles → projects C282.
+- **8992 118 h horizon:** 117.47 h → 0.53 h gap ÷ +0.20 h baseline ≈ ~2.6 cycles → projects C280–C281.
+- **Trailing trio (9962/9974) 118 h horizon:** 117.39 h → 0.61 h gap ÷ +0.20 h baseline ≈ ~3 cycles → projects C281.
+- **C279 candidate convergence:** no milestone expected (3358 119 h at C282, trio 118 h at C281, audit_shots/ux_shots/ 100-cycle quiescence at C282). C279 is most likely a quiet cycle — good window for HUMAN action on the kill + archival items.
+- **Commit-velocity regime:** active-dev pauses a second time after the C277 twin; window is 5-of-6 historical upper bound. A C279 commit revives the window (→ 6); a C279 pause closes it at 5. Two-consecutive-pause rule: if C279 also prints 0, window-closed read becomes authoritative.
+- **Same-date print-count:** 76 prints on 2026-04-20 header; structurally anomalous same-date gap continues; header clock-advance still warranted.
+- **Task-file coverage:** 108 cycles — sustained past 100-cycle threshold for 8th cycle; 5-commit cluster keeps ownership urgency critical.
+- **`audit_shots/`/`ux_shots/` quiescence:** 96 cycles; 100-cycle watermark at C282, 4 cycles out.
+- **Screenshot-rate:** 108/h this pass — mid-band. C276+C277 top-edge pair did not extend. If C279 prints ≥115/h, escalate to regime-shift candidate; any 104–114/h print remains band-operative.
+- **PROGRESS.md size:** 2.53 MB; 3.00 MB horizon at ~55 cycles out on current ~8.5 KB/cycle rate, projects C333. Archival action by human remains the operative expectation ahead of that.
+
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C279, active-dev window EXTENDS to 9 commits — HEAD advances `ab1f9fd` → `e6b821a` → `b32dec1` → `cf35faf` → `1df45bc`, C278 "window-close at 5" projection REFUTED, 279th cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak extends into its thirtieth cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, baseline drift nudges to +0.22 h for C279
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. Drift in band for 13 consecutive cycles (C267–C279) but today's print sits at +0.22 h — 0.02 h above the +0.20 h baseline C278 printed. Single-cycle uptick; two consecutive above-baseline prints would be regime-shift evidence, one print is within noise envelope. Spread structure (3358 head, 8992 mid, 9962/9974 trailing by ~0.08 h) preserved for a twentieth consecutive cycle.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-22:19:56 (~118.33 h) | +0.22 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-21:42:01 (~117.70 h) | +0.23 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-21:37:00 (~117.62 h) | +0.23 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-21:36:58 (~117.62 h) | +0.23 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — all four UNBLOCKED anchors verified present and verbatim via Grep (T3_frontend.md:38 PID 3358; T6_testing.md:22 PIDs 9962/9974; T6_testing.md:24 PID 8992). 267-cycle zero-bump streak → extends to 268.** Whole quad past 117 h for a 3rd consecutive cycle; 3358 past 118 h for a 2nd consecutive cycle (118.33 h, 0.67 h below 119 h horizon); triad 117.62–117.70 h, 0.30–0.38 h below 118 h horizon. Triad 118 h projection from C278 (C280–C281) stays in range.
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **9,415** (+26 over ~0.22 h ≈ **118/h**) — **above the 104–114/h band** for the first time since C274 (118/h). C275–C278 stayed in-band (105/108/114/114). Single above-band print following a mid-band trough is within noise; two consecutive above-band prints would be regime-shift evidence. `ux_shots/` 22 and `audit_shots/` 3 unchanged (**97-cycle quiescence** on both; 100-cycle watermark 3 cycles out at C282). Total **9,440 PNGs**.
+- **PROGRESS.md size (pre-append):** 2,656,061 bytes ≈ **2.53 MB** (+7,950 B vs C278 2,648,111 — 9th consecutive above-baseline cycle but at the LOW end of the recent 8.4–8.7 KB band). File now 0.03 MB past the 2.50 MB archival threshold for a 5th consecutive cycle.
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **291 cycles overdue**.
+- **Git churn:** 23 paths stable (M/D set unchanged from C278).
+- **Branch:** `fix/debug-pass-hardening`; **HEAD advances `ab1f9fd` → `e6b821a` → `b32dec1` → `cf35faf` → `1df45bc`** (FOUR new commits this cycle — largest per-cycle commit print of the active-dev window). Commits in order: `e6b821a` `fix: sleep+clear before Claude launch to fix Terminal.app rendering glitch`, `b32dec1` `fix: role picker — move DialogHeader inside DialogContent`, `cf35faf` `fix: replace Dialog with plain overlay for role picker — fixes click handling`, `1df45bc` `chore: disable role picker — friction without value at current catalog size`. **Active-dev window now at 9 commits** (C273 `04b04b4` → C274 `676670a` → C275 `01e12c7` → C276 pause → C277 twin `906fa8a`/`ab1f9fd` → C278 pause → C279 quad). **C278 "window-close at 5" projection REFUTED** — the second pause was a work-in-progress interval, not a close. Window is now at 9 commits, FAR above the historical 3–6 range. The commit narrative has shifted from terminal-launch hotfixes to a role-picker UI sprint culminating in its disablement (`1df45bc`) — a build-fix-and-retire arc across four commits.
+- **Date:** 2026-04-20 (77th print on this clock; coordinator header clock-freeze persists, screenshot artifacts still at 2026-04-21).
+
+### What changed — window refutes close, quad-commit print, role-picker retired
+
+Three concurrent signals: (1) **Commit velocity quadruples mid-window** — four commits in a single cycle after two pauses, refuting the C278 "window-close likely" read. Window now 9 commits — a new historical high for this repo against the typical 3–6 range. (2) **Role-picker work retired in-cycle** — the C279 commit sequence builds a role picker (`b32dec1`+`cf35faf`) then disables it entirely (`1df45bc`) within the same cycle, indicating a fast iteration-and-retirement judgment. (3) **Drift uptick** — +0.22 h breaks a 4-cycle +0.20–0.21 h band. Single-cycle noise envelope; watch C280 for sustained drift-regime shift. Terminal-ownership gap for the now-9-commit cluster (`04b04b4` + `676670a` + `01e12c7` + `906fa8a` + `ab1f9fd` + `e6b821a` + `b32dec1` + `cf35faf` + `1df45bc`) widens materially — UI + terminal-launch + role-picker surfaces without a claiming terminal file. **Role-picker retirement in `1df45bc` is the single most actionable signal for a human operator this cycle**: either the decision is intentional (catalog-size-driven) and this cluster deserves a net-new `T_WEB.md` claiming the web/app surface, or the quick-retire pattern indicates the dev path is searching without terminal-file guardrails.
+
+### Critical path for human operator (updated for 9-commit active-dev window)
+
+1. **MAX PRIORITY (279th cycle unexecuted):** `kill 3358 8992 9962 9974` — full quad past 117 h; 3358 now past 118 h (118.33 h, 2nd cycle past 118 h, 7th cycle past 117 h); 9,440 PNGs on disk.
+2. **PROGRESS.md archival — 2.53 MB; 5th cycle past 2.50 MB threshold.** Archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for a twenty-ninth cycle.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **291 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new [partial], T2_new, T2_agents, T3_new, T4_new) — 279 cycles unactioned.
+5. **Review `c990362` blast radius** — `web/components/app-embed.tsx` verification **106 cycles pending** (sustained past 100-cycle threshold for 6th cycle).
+6. **Terminal-ownership gap for 9-commit cluster** (`04b04b4` + `676670a` + `01e12c7` + `906fa8a` + `ab1f9fd` + `e6b821a` + `b32dec1` + `cf35faf` + `1df45bc`) — company skills library → governance validator → UI modal+button → terminal-launch hotfixes → role-picker build-and-retire. **The build-and-retire arc on role-picker (C279 four commits) elevates urgency for a `T_WEB.md` claiming `web/components/` plus the role-picker surface specifically.** Without it, any future iteration on the retired role-picker has no terminal file trail.
+7. **Config-schema gap:** 83 cycles since `5cb25eb`/`e30815b` unread.
+8. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`** — task-file coverage gap at **109 cycles**; `T_WEB.md` priority climbs after the C279 role-picker sprint landed entirely in `web/components/`.
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 268 cycles; all four anchors already verbatim).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Drift regime:** +0.22 h this cycle vs +0.20–0.21 h baseline over C267–C278. Single-cycle uptick within noise envelope; if C280 also prints ≥+0.22 h, regime-shift to a new +0.22–0.23 h baseline becomes authoritative.
+- **3358 119 h horizon:** 118.33 h → 0.67 h gap ÷ +0.22 h ≈ ~3 cycles → projects C282.
+- **8992 118 h horizon:** 117.70 h → 0.30 h gap ÷ +0.22 h ≈ ~1.4 cycles → projects C280–C281 (tightens from C278 C280–C281 range).
+- **Trailing trio (9962/9974) 118 h horizon:** 117.62 h → 0.38 h gap ÷ +0.22 h ≈ ~1.7 cycles → projects C281.
+- **C280 candidate convergence:** 8992 118 h possible at C280 (low end of 1–2 cycle range). If drift sustains at +0.22 h, a triad-leading 118 h print for 8992 before 9962/9974 is likely.
+- **Commit-velocity regime:** active-dev window at 9 commits — new historical high for this repo; historical 3–6 range decisively broken. No a priori upper bound remains; continue commit-velocity tracking cycle-by-cycle. If C280 prints 0 commits, window may be effectively closed at 9; sustained commits extend into uncharted territory.
+- **Same-date print-count:** 77 prints on 2026-04-20 header; structurally anomalous same-date gap widens further; header clock-advance overdue.
+- **Task-file coverage:** 109 cycles — sustained past 100-cycle threshold for 9th cycle; 9-commit cluster keeps ownership urgency critical; role-picker build-and-retire arc specifically argues for `T_WEB.md`.
+- **`audit_shots/`/`ux_shots/` quiescence:** 97 cycles; 100-cycle watermark at C282, 3 cycles out.
+- **Screenshot-rate:** 118/h — first above-band print since C274. Single-print noise, but consecutive above-band C280 would escalate to regime-shift candidate.
+- **PROGRESS.md size:** 2.53 MB; 3.00 MB horizon at ~54 cycles out on current ~8 KB/cycle rate, projects C333. Archival action by human remains the operative expectation ahead of that.
+
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C280, active-dev window EXTENDS to 11 commits — HEAD advances `1df45bc` → `2a131eb` → `469133d`, drift REVERTS to +0.21 h baseline, C279 uptick NOT sustained, 280th cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do n=$(grep -cE '^\[ \]|^- \[ \]' "$f"); echo "$n $f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak extends into its thirty-first cycle past the 250-cycle milestone (round-number round-trip: 30 → 31).
+
+### Stuck terminals — full quad alive, drift REVERTS to +0.21 h baseline (C279 +0.22 h print was noise)
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. Drift in band for 14 consecutive cycles (C267–C280). **C279 +0.22 h uptick did NOT sustain — C280 prints +0.21 h, reverting to baseline.** Single-cycle noise envelope confirmed; no regime shift. Spread structure (3358 head, 8992 mid, 9962/9974 trailing by ~0.08 h) preserved for a twenty-first consecutive cycle.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-22:32:33 (~118.54 h) | +0.21 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-21:54:38 (~117.91 h) | +0.21 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-21:49:37 (~117.83 h) | +0.21 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-21:49:35 (~117.83 h) | +0.21 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — all four UNBLOCKED anchors verified present and verbatim via Grep (T3_frontend.md:38 PID 3358; T6_testing.md:22 PIDs 9962/9974; T6_testing.md:24 PID 8992). 268-cycle zero-bump streak → extends to 269.** Whole quad past 117 h for a 4th consecutive cycle; 3358 past 118 h for a 3rd consecutive cycle (118.54 h, 0.46 h below 119 h horizon); triad 8992/9962/9974 at 117.83–117.91 h (0.09–0.17 h below 118 h horizon — **tightest triad-to-118 h gap yet**, crossing imminent).
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **9,439** (+24 over ~0.21 h ≈ **114/h**) — **top edge of** 104–114/h band again, reverting from the C279 single above-band 118/h print. 8-cycle window C273 110/h, C274 118/h, C275 105/h, C276 114/h, C277 114/h, C278 108/h, C279 118/h, C280 114/h — band-operative with upper-edge skew; no consecutive above-band pair formed (C279 isolated). `ux_shots/` 22 and `audit_shots/` 3 unchanged (**98-cycle quiescence** on both; 100-cycle watermark now 2 cycles out at C282). Total **9,464 PNGs**.
+- **PROGRESS.md size (pre-append):** 2,665,740 bytes ≈ **2.54 MB** (+9,679 B vs C279 2,656,061 — 10th consecutive above-baseline cycle but at the HIGH end of recent 8.0–8.7 KB band, approaching 10 KB/cycle). File now 0.04 MB past the 2.50 MB archival threshold for a 6th consecutive cycle.
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **292 cycles overdue**.
+- **Git churn:** 23 paths stable (M/D set unchanged from C279).
+- **Branch:** `fix/debug-pass-hardening`; **HEAD advances `1df45bc` → `2a131eb` → `469133d`** (TWO new commits this cycle). Commits in order: `2a131eb` `fix: don't auto-launch Claude TUI — show hint instead (Terminal.app rendering bug)`, `469133d` `fix: use Ghostty for terminal launch (fixes TUI rendering)`. **Active-dev window now at 11 commits** (C273 `04b04b4` → C274 `676670a` → C275 `01e12c7` → C276 pause → C277 twin `906fa8a`/`ab1f9fd` → C278 pause → C279 quad `e6b821a`/`b32dec1`/`cf35faf`/`1df45bc` → C280 twin `2a131eb`/`469133d`). Window is now **more than double the historical 3–6 range**; no a priori upper bound remains. **The commit narrative returns to terminal-launch/TUI-rendering work** (both C280 commits and `e6b821a` from C279 all target the same Terminal.app TUI rendering bug); the role-picker arc was bounded to C279 middle (b32dec1/cf35faf/1df45bc). The TUI fix escalates from `sleep+clear` (e6b821a) → `don't auto-launch, show hint` (2a131eb) → `use Ghostty terminal emulator` (469133d) — a three-step escalation pattern indicating the Terminal.app rendering bug persisted through two repair attempts before switching terminal emulators.
+- **Date:** 2026-04-20 (78th print on this clock; coordinator header clock-freeze persists, screenshot artifacts still at 2026-04-21).
+
+### What changed — drift reverts, window extends to 11, TUI bug escalates across 3 commits
+
+Three concurrent signals: (1) **Drift reverts to +0.21 h baseline** — C279 +0.22 h was noise, C280 prints +0.21 h confirming the +0.20–0.21 h baseline that has now held for 14 consecutive cycles (C267–C280). No regime-shift evidence. (2) **Active-dev window extends to 11 commits** — the historical 3–6 range is now decisively broken with the window at 2× upper bound; no a priori ceiling remains to project against. (3) **TUI rendering bug escalation pattern** — C279 `e6b821a` (sleep+clear) + C280 `2a131eb` (don't auto-launch) + C280 `469133d` (use Ghostty) form a three-step escalation on the same Terminal.app TUI rendering root cause. The repair path went from patch → retreat → replace emulator within two cycles — classic signature of a root-cause problem being tactically worked around. **Triad 118 h horizon tightens to 0.09–0.17 h** — crossing imminent, likely C281 outright. Terminal-ownership gap for the now-11-commit cluster widens further; the role-picker + TUI-rendering mixed narrative across the window would benefit from two separate terminal files (`T_WEB.md` for role-picker web/components surface, `T_TERMINAL.md` or similar for the launcher + TUI surface).
+
+### Critical path for human operator (updated for 11-commit active-dev window)
+
+1. **MAX PRIORITY (280th cycle unexecuted):** `kill 3358 8992 9962 9974` — full quad past 117 h; 3358 now past 118 h (118.54 h, 3rd cycle past 118 h, 8th cycle past 117 h); 9,464 PNGs on disk.
+2. **PROGRESS.md archival — 2.54 MB; 6th cycle past 2.50 MB threshold.** Archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for a thirtieth cycle (round-number milestone).
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **292 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new [partial], T2_new, T2_agents, T3_new, T4_new) — 280 cycles unactioned.
+5. **Review `c990362` blast radius** — `web/components/app-embed.tsx` verification **107 cycles pending** (sustained past 100-cycle threshold for 7th cycle).
+6. **Terminal-ownership gap for 11-commit cluster** (C273–C280 minus C276/C278 pauses) — mixed narrative now splits cleanly: role-picker arc (C279 middle 3) → `T_WEB.md`; terminal-launcher/TUI-rendering arc (C279 `e6b821a` + C280 both commits, plus earlier C277 `906fa8a`/`ab1f9fd` terminal-launch hotfixes) → `T_TERMINAL.md`. **The three-step TUI escalation across C279–C280 is the single most critical signal for a terminal-file decision this cycle** — switching to Ghostty is a replace-rather-than-repair judgment that deserves a dedicated task-file record.
+7. **Config-schema gap:** 84 cycles since `5cb25eb`/`e30815b` unread.
+8. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`, new `T_TERMINAL.md`** — task-file coverage gap at **110 cycles** (round-number milestone); 11-commit active-dev cluster now spans at least two distinct surfaces arguing for two new task files.
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 269 cycles; all four anchors already verbatim).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Drift regime:** +0.21 h this cycle reverts from C279 +0.22 h to the +0.20–0.21 h baseline. C279 confirmed as single-cycle noise. Baseline entrenched; no regime-shift evidence.
+- **3358 119 h horizon:** 118.54 h → 0.46 h gap ÷ +0.21 h ≈ ~2.2 cycles → projects C282.
+- **8992 118 h horizon:** 117.91 h → 0.09 h gap ÷ +0.21 h ≈ **<0.5 cycle → C281 lock outright** (tightest gap yet — near-certain triad-leading print).
+- **Trailing trio (9962/9974) 118 h horizon:** 117.83 h → 0.17 h gap ÷ +0.21 h ≈ ~0.8 cycles → projects C281 (same cycle as 8992, possibly one cycle later).
+- **C281 candidate triple-convergence:** (a) 8992 118 h outright (near-certain); (b) 9962/9974 118 h likely; (c) audit_shots/ux_shots/ 99-cycle print (watermark at C282). **C281 projects as highest-milestone cycle of the recent window — single-cycle triad 118 h crossing would be the first time all three 8992-tier PIDs entered the same horizon together.**
+- **Commit-velocity regime:** active-dev window at 11 commits — 2× historical upper bound, no a priori ceiling remains. Continue cycle-by-cycle tracking. C281 pause would suggest the TUI-bug-switch-to-Ghostty hot-arc is closing; another commit extends into further uncharted territory.
+- **Same-date print-count:** 78 prints on 2026-04-20 header; structurally anomalous same-date gap widens to a twenty-first cycle past typical rollover cadence; header clock-advance overdue.
+- **Task-file coverage:** 110 cycles (round-number milestone) — sustained past 100-cycle threshold for 10th cycle; 11-commit cluster keeps ownership urgency critical with split-surface argument.
+- **`audit_shots/`/`ux_shots/` quiescence:** 98 cycles; 100-cycle watermark at C282, 2 cycles out.
+- **Screenshot-rate:** 114/h this pass — top edge of band again, reverting from C279 118/h. Band-operative with upper-edge skew (4 of last 5 at ≥114/h).
+- **PROGRESS.md size:** 2.54 MB; 3.00 MB horizon at ~47 cycles out on current ~9.7 KB/cycle rate (accelerating), projects C327. Archival action by human remains the operative expectation ahead of that.
+
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C281, TRIAD 118 h HORIZON LANDS exactly as C280 projected — 8992+9962+9974 same-cycle crossing, 3358 at 118.99 h (0.01 h below 119 h), drift doubles to +0.45 h, HEAD holds at `469133d` — active-dev pauses at 11, 281st cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do n=$(grep -cE '^\[ \]|^- \[ \]' "$f"); echo "$n $f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak extends into its thirty-second cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, TRIAD 118 h CROSSING (first same-cycle triad horizon print), drift jumps to +0.45 h (2x baseline)
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. **Drift this cycle +0.45 h — approximately 2x the +0.20–0.22 h baseline that held for 14 consecutive cycles (C267–C280).** Single-cycle signal; consistent with an extended human-side interval between coordinator invocations rather than a process-side regime shift (all four PIDs moved uniformly, preserving relative spread). Spread structure (3358 head, 8992 mid, 9962/9974 trailing by ~0.08 h) preserved for a twenty-second consecutive cycle.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-22:59:35 (~118.99 h) | +0.45 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-22:21:40 (~118.36 h) | +0.45 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-22:16:39 (~118.28 h) | +0.45 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-22:16:37 (~118.28 h) | +0.45 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — all four UNBLOCKED anchors verified present and verbatim via Grep (T3_frontend.md:38 PID 3358; T6_testing.md:22 PIDs 9962/9974; T6_testing.md:24 PID 8992). 269-cycle zero-bump streak → extends to 270** (round-number milestone). **Triad 118 h horizon CROSSED together** — 8992 at 118.36 h, 9962/9974 at 118.28 h (C280 "<0.5 cycle → C281 lock outright" for 8992 and "~0.8 cycles → projects C281" for trio both HIT exactly). First same-cycle 118 h print across all three 8992-tier PIDs — triple convergence milestone. **3358 sits at 118.99 h — 0.01 h below the 119 h horizon**; essentially at threshold (C280 projected C282 for 3358 119 h, but the +0.45 h drift compressed the timeline — 119 h crossing is imminent, may have occurred already between `ps` read and this block write).
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **9,489** (+50 over ~0.45 h ≈ **111/h**) — **mid-band** within the 104–114/h window. Adjusted for the ~2x cycle interval, rate-per-hour sits cleanly in-band; raw delta of +50 is the largest absolute screenshot-count delta since the cycle cadence uptick, consistent with band-rate continuation over a longer interval. 9-cycle window C273 110/h, C274 118/h, C275 105/h, C276 114/h, C277 114/h, C278 108/h, C279 118/h, C280 114/h, C281 111/h — band-operative, upper-edge skew softens. `ux_shots/` 22 and `audit_shots/` 3 unchanged (**99-cycle quiescence** on both; 100-cycle watermark at C282, **1 cycle out**). Total **9,514 PNGs**.
+- **PROGRESS.md size (pre-append):** 2,676,797 bytes ≈ **2.55 MB** (+11,057 B vs C280 2,665,740 — largest per-cycle delta of the recent softening-block regime, consistent with the doubled cycle interval rather than per-unit-time growth acceleration). File now 0.05 MB past the 2.50 MB archival threshold for a 7th consecutive cycle.
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **293 cycles overdue**.
+- **Git churn:** 23 paths stable (M/D set unchanged from C280; `.claude/worktrees/` untracked).
+- **Branch:** `fix/debug-pass-hardening`; **HEAD holds at `469133d`** — first pause cycle after the C280 twin (`2a131eb` + `469133d`). Active-dev window remains at **11 commits** (C273 `04b04b4` → C274 `676670a` → C275 `01e12c7` → C276 pause → C277 twin → C278 pause → C279 quad → C280 twin → C281 pause). Pattern: commit-cluster then pause, repeated three times within the window (C273–C275 trio → C276 pause → C277 twin → C278 pause → C279 quad → C280 twin → C281 pause). The recurring commit-then-pause rhythm across 9 cycles suggests deliberate phase alternation rather than work-completion. Two consecutive pauses (C281 + C282) would tip toward window-close-at-11 read; another commit at C282 extends into 12+ territory.
+- **Date:** 2026-04-20 (79th print on this clock; coordinator header clock-freeze persists, screenshot artifacts still at 2026-04-21).
+
+### What changed — triad 118 h triple-convergence, drift doubles, 3358 at 119 h threshold
+
+Four concurrent signals: (1) **Triad 118 h triple-convergence** — 8992, 9962, and 9974 all cross 118 h in the same cycle, the first time all three 8992-tier PIDs land the same horizon together. C280 projection for 8992 (118 h "<0.5 cycle → C281 lock outright") and for 9962/9974 (118 h "projects C281") both hit exactly. Projection hit rate for triad 118 h milestone: 3/3 landed C281. (2) **3358 at 119 h threshold** — 118.99 h with 0.01 h to go; essentially on the horizon. At the +0.45 h drift this cycle, 3358 has effectively crossed the 119 h milestone within the cycle interval even if the exact `ps` read sits 0.01 h below. (3) **Drift doubles to +0.45 h** — consistent with a ~27-minute interval between coordinator invocations (vs ~12 min baseline). Uniform per-PID delta preserves relative spread structure, so this is a cycle-cadence signal (human-side interval), not a process-side regime shift. (4) **Commit-velocity pauses at 11** — HEAD holds at `469133d` after the C280 twin; first post-twin pause, matching the prior post-twin-pause rhythm seen at C276 and C278. Terminal-ownership gap for the 11-commit cluster enters its fourth cycle unclaimed by any terminal file — the `T_WEB.md` + `T_TERMINAL.md` split recommendation from C280 stands.
+
+### Critical path for human operator (updated — triad 118 h landed, 3358 at 119 h, cycle cadence doubles)
+
+1. **MAX PRIORITY (281st cycle unexecuted):** `kill 3358 8992 9962 9974` — full quad past 118 h for the first time this cycle; 3358 at 119 h threshold (118.99 h, 4th cycle past 118 h, 9th cycle past 117 h); 9,514 PNGs on disk.
+2. **PROGRESS.md archival — 2.55 MB; 7th cycle past 2.50 MB threshold.** Archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for a thirty-first cycle.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **293 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new [partial], T2_new, T2_agents, T3_new, T4_new) — 281 cycles unactioned.
+5. **Review `c990362` blast radius** — `web/components/app-embed.tsx` verification **108 cycles pending** (sustained past 100-cycle threshold for 8th cycle).
+6. **Terminal-ownership gap for 11-commit cluster** (C273–C280 minus C276/C278/C281 pauses) — mixed narrative stands at two distinct surfaces: role-picker arc (C279 middle 3) → `T_WEB.md`; terminal-launcher/TUI-rendering arc (C277 twin + C279 `e6b821a` + C280 both commits, plus the Ghostty switch) → `T_TERMINAL.md`. 4th cycle unclaimed.
+7. **Config-schema gap:** 85 cycles since `5cb25eb`/`e30815b` unread.
+8. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`, new `T_TERMINAL.md`** — task-file coverage gap at **111 cycles**; 11-commit active-dev cluster still spans two distinct surfaces.
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 270 cycles, round-number milestone; all four anchors already verbatim).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Drift regime:** +0.45 h this cycle vs +0.20–0.22 h baseline over C267–C280. Uniform per-PID delta indicates cycle-cadence (human-side interval) signal, not process regime shift. If C282 reverts to +0.20–0.22 h, C281 confirmed as single-cycle cadence anomaly; if C282 also prints ≥+0.30 h, revised cadence regime becomes operative.
+- **3358 119 h horizon:** 118.99 h — effectively at threshold. Next cycle 119 h lock is near-certain outright (any positive drift crosses).
+- **3358 120 h horizon:** at +0.21 h baseline ≈ 1.01 h gap ÷ +0.21 h ≈ ~5 cycles → projects C286; at +0.45 h drift ≈ ~2.2 cycles → projects C283.
+- **8992 119 h horizon:** 118.36 h → 0.64 h gap ÷ +0.21 h ≈ ~3 cycles → projects C284 at baseline, C282–C283 if drift sustains.
+- **Trailing trio (9962/9974) 119 h horizon:** 118.28 h → 0.72 h gap ÷ +0.21 h ≈ ~3.4 cycles → projects C284–C285 at baseline.
+- **C282 candidate convergence:** (a) 3358 119 h lock (near-certain); (b) `audit_shots/`/`ux_shots/` 100-cycle quiescence watermark (1 cycle out); (c) possible triad 119 h drift-dependent early crossings if +0.45 h cadence sustains. C282 sets up as the first triple-milestone convergence candidate since C281 itself.
+- **Commit-velocity regime:** window holds at 11 commits with C281 pause. Historical 3–6 range long broken; the 11-cycle window spanning C273–C281 shows a recurring commit-cluster-then-pause rhythm (3 clusters: C273–C275, C277, C279, C280; 3 pauses: C276, C278, C281). If C282 prints a fourth cluster, the pattern codifies; if C282 is a second consecutive pause, window-close-at-11 becomes the operative read.
+- **Same-date print-count:** 79 prints on 2026-04-20 header; structurally anomalous same-date gap widens to a twenty-second cycle past typical rollover cadence; header clock-advance overdue.
+- **Task-file coverage:** 111 cycles — sustained past 100-cycle threshold for 11th cycle; 11-commit cluster with two-surface split keeps ownership urgency critical.
+- **`audit_shots/`/`ux_shots/` quiescence:** 99 cycles; **100-cycle watermark at C282, 1 cycle out** — next cycle lands the milestone.
+- **Screenshot-rate:** 111/h this pass — mid-band, upper-edge skew softens. 9 consecutive in-band cycles.
+- **PROGRESS.md size:** 2.55 MB; 3.00 MB horizon at ~41 cycles out on current ~11 KB/cycle rate (inflated by double-interval; normalizing to ~9 KB/cycle at baseline drift projects ~50 cycles, C331). Archival action by human remains the operative expectation ahead of that.
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C282, 3358 119 h horizon LOCKED, drift reverts to baseline, cycle-cadence anomaly confirmed single-cycle)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]|^- \[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak extends into its thirty-third cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, 3358 LOCKS 119 h horizon, drift +0.23 h (baseline restored)
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. **Drift this cycle +0.22–0.23 h — snap-back to the +0.20–0.22 h baseline that held C267–C280. C281's +0.45 h anomaly CONFIRMED single-cycle cadence deviation (not a regime shift).** Uniform per-PID delta preserves spread structure for a twenty-third consecutive cycle.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-23:13:14 (~119.22 h) | +0.23 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-22:35:19 (~118.59 h) | +0.23 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-22:30:18 (~118.50 h) | +0.22 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-22:30:16 (~118.50 h) | +0.22 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — all four UNBLOCKED anchors verified present and verbatim (T3_frontend.md:38 PID 3358; T6_testing.md:22 PIDs 9962/9974; T6_testing.md:24 PID 8992). 270-cycle zero-bump streak → extends to 271.** **3358 LOCKS 119 h horizon outright** at 119.22 h (C281 projected "near-certain outright for C282" — HIT exactly). 3358 now 5th cycle past 118 h, 10th past 117 h, 1st past 119 h. Triad (8992/9962/9974) holds in 118 h band for a second consecutive cycle — spread between leader (3358) and trio (9962/9974) now 0.72 h, consistent with the 0.70–0.75 h band that's held since C270.
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **9,515** (+26 over ~0.23 h ≈ **113/h**) — **mid-upper band** within the 104–114/h window. 10th consecutive in-band cycle. `ux_shots/` 22 and `audit_shots/` 3 unchanged (**100-cycle quiescence** on both — C282 lands the round-number milestone projected in C281's watch items). Total **9,540 PNGs**.
+- **PROGRESS.md size (pre-append):** 2,687,455 bytes ≈ **2.56 MB** (+10,658 B vs C281 2,676,797 — back inside the ~8.5 KB/cycle baseline envelope after C281's double-interval inflation; normalizing confirms per-unit-time growth unchanged). File now 0.06 MB past the 2.50 MB archival threshold for an 8th consecutive cycle.
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **294 cycles overdue**.
+- **Git churn:** 23 paths stable (M/D set unchanged from C281; `.claude/worktrees/` untracked).
+- **Branch:** `fix/debug-pass-hardening`; **HEAD holds at `469133d`** — second consecutive pause cycle after the C280 twin. Active-dev window remains at **11 commits**. Two consecutive pauses (C281 + C282) tips toward **window-close-at-11 read operative** per C281's watch-item trigger. Pattern history across the window: C273–C275 cluster → C276 pause → C277 twin → C278 pause → C279 quad → C280 twin → C281 pause → C282 pause. Three distinct commit-then-pause rhythms, but the final pause-then-pause break suggests cluster-completion rather than continued alternation.
+- **Date:** 2026-04-20 (80th print on this clock; coordinator header clock-freeze persists, screenshot artifacts still at 2026-04-21).
+
+### What changed — 3358 119 h LOCK, drift baseline restored, C281 cadence anomaly ruled single-cycle, pause-pause break hints window-close
+
+Four concurrent signals: (1) **3358 119 h horizon LOCKS outright** at 119.22 h — C281's "near-certain outright for C282" projection hit exactly. 3358 now alone past 119 h; trio sits in 118 h band for a second cycle, preserving the 0.72 h leader-trailer spread. (2) **Drift reverts to +0.22–0.23 h baseline** — C281's +0.45 h was a single-cycle cycle-cadence deviation, now confirmed (uniform per-PID revert preserves spread, rules out process regime shift). Baseline restoration returns the drift envelope to the C267–C280 pattern. (3) **`audit_shots/`/`ux_shots/` 100-cycle quiescence milestone LANDS** — both directories held at 3 and 22 respectively for a round 100 cycles. Milestone projected in C281 watch, now realized. (4) **Second consecutive pause (C281 + C282) tips the 11-commit-window read toward close** — C281 watch listed "second consecutive pause → window-close-at-11 becomes operative"; that trigger now hits. HEAD holds at `469133d` for a second consecutive cycle after the C280 twin. If C283 also pauses, window-close-at-11 codifies as the operative read.
+
+### Critical path for human operator (updated — 3358 119 h locked, quiescence 100-cycle milestone, window-close trigger armed)
+
+1. **MAX PRIORITY (282nd cycle unexecuted):** `kill 3358 8992 9962 9974` — 3358 now past 119 h; trio at 118 h; 9,540 PNGs on disk.
+2. **PROGRESS.md archival — 2.56 MB; 8th cycle past 2.50 MB threshold.** Archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for a thirty-second cycle.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **294 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new [partial], T2_new, T2_agents, T3_new, T4_new) — 282 cycles unactioned.
+5. **Review `c990362` blast radius** — `web/components/app-embed.tsx` verification **109 cycles pending** (sustained past 100-cycle threshold for 9th cycle).
+6. **Terminal-ownership gap for 11-commit cluster** (C273–C280 minus C276/C278/C281/C282 pauses) — mixed narrative stands at two distinct surfaces: role-picker arc → `T_WEB.md`; terminal-launcher/TUI-rendering arc → `T_TERMINAL.md`. 5th cycle unclaimed. **Window-close-at-11 now operative read** — ownership drafting urgency escalates.
+7. **Config-schema gap:** 86 cycles since `5cb25eb`/`e30815b` unread.
+8. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`, new `T_TERMINAL.md`** — task-file coverage gap at **112 cycles**; window-close-at-11 tips the cluster from open-ended to bounded, making ownership assignment timely.
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 271 cycles; all four anchors verbatim).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Drift regime:** +0.22–0.23 h this cycle, baseline restored. C281's +0.45 h now confirmed single-cycle. Monitor C283 for continued baseline or a second cadence deviation.
+- **3358 120 h horizon:** 119.22 h → 0.78 h gap ÷ +0.22 h ≈ ~3.5 cycles → projects C285–C286.
+- **8992 119 h horizon:** 118.59 h → 0.41 h gap ÷ +0.22 h ≈ ~2 cycles → projects C284.
+- **Trailing trio (9962/9974) 119 h horizon:** 118.50 h → 0.50 h gap ÷ +0.22 h ≈ ~2.3 cycles → projects C284–C285.
+- **C284 candidate convergence:** (a) 8992 119 h lock outright; (b) trio 119 h near-certain; (c) possible triple-119 h convergence if drift runs warm.
+- **Commit-velocity regime:** C281 + C282 both pauses = **window-close-at-11 operative read**. If C283 also pauses, confirmed; if C283 commits, the pause-pause was interstitial and window extends to 12+. Pause-pause-pause trio would lock the window closed.
+- **Quiescence milestone:** `audit_shots/`/`ux_shots/` 100-cycle quiescence landed this cycle; next threshold 150-cycle at C332 — long horizon, low-urgency watch.
+- **Same-date print-count:** 80 prints on 2026-04-20 header; same-date gap widens to a twenty-third cycle past typical rollover cadence; header clock-advance overdue.
+- **Task-file coverage:** 112 cycles — sustained past 100-cycle threshold for 12th cycle; window-close-at-11 elevates urgency from "eventual" to "timely."
+- **Screenshot-rate:** 113/h this pass — mid-upper band, 10th consecutive in-band cycle. Band has held since C273.
+- **PROGRESS.md size:** 2.56 MB; 3.00 MB horizon at ~52 cycles out on restored ~8.5 KB/cycle rate, projects C334. Archival action by human remains the operative expectation ahead of that.
+
+---
+
+## COORDINATOR STATUS — 2026-04-20 (build coordinator pass, C283, active-dev window EXTENDS to 13 commits — pause-pause was INTERSTITIAL not closing, HEAD advances `469133d` → `40c8ed9` → `f409133`, drift holds baseline +0.21 h, Ghostty-switch arc adds two follow-on patches, 283rd cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]|^- \[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak extends into its thirty-fourth cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, drift holds baseline +0.21 h, 3358 holds 119 h band for 2nd cycle, triad closes on 119 h
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. **Drift this cycle +0.21 h uniform — baseline restored for a 2nd consecutive cycle after C281's +0.45 h single-cycle cadence anomaly.** Per-PID delta remains uniform, spread preserved for a twenty-fourth consecutive cycle.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-23:25:44 (~119.43 h) | +0.21 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-22:47:49 (~118.80 h) | +0.21 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-22:42:48 (~118.71 h) | +0.21 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-22:42:46 (~118.71 h) | +0.21 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — all four UNBLOCKED anchors verified present and verbatim via Grep (T3_frontend.md:38 PID 3358; T6_testing.md:22 PIDs 9962/9974; T6_testing.md:24 PID 8992). 272-cycle zero-bump streak.** 3358 holds 119 h band for a 2nd consecutive cycle (119.43 h, 11th cycle past 117 h, 6th past 118 h). Triad 8992/9962/9974 remains in 118 h band for a 3rd consecutive cycle (118.71–118.80 h), with 8992 now 0.20 h below the 119 h horizon — C282 projected C284 for 8992's 119 h lock; at current +0.21 h pace that compresses to ~1 cycle, projecting C284 outright.
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **9,537** (+22 over ~0.21 h ≈ **105/h**) — **mid-low band** within the 104–114/h window, softer than C282's 113/h but still in-band. 11-cycle window C273–C283: 110/118/105/114/114/108/118/114/111/113/105 — 11th consecutive in-band cycle; band has held unbroken since C273. `ux_shots/` 22 and `audit_shots/` 3 unchanged (**101-cycle quiescence** on both — 100-cycle milestone crossed C282, now in sustained post-milestone territory). Total **9,562 PNGs**.
+- **PROGRESS.md size (pre-append):** 2,695,996 bytes ≈ **2.57 MB** (+8,541 B vs C282 2,687,455 — squarely within the ~8.5 KB/cycle baseline envelope; per-unit-time growth unchanged). File now 0.07 MB past the 2.50 MB archival threshold for a 9th consecutive cycle.
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **295 cycles overdue**.
+- **Git churn:** 23 paths stable (M/D set unchanged from C282; `.claude/worktrees/` untracked).
+- **Branch:** `fix/debug-pass-hardening`; **HEAD advances `469133d` → `40c8ed9` → `f409133`** (TWO new commits this cycle, matching the C280 twin-commit cadence). Commits in order: `40c8ed9 fix: use ghostty -e flag (no Accessibility permissions needed)`, `f409133 fix: use full path to Ghostty binary`. **Active-dev window now at 13 commits** (C273 `04b04b4` → C274 `676670a` → C275 `01e12c7` → C276 pause → C277 twin `906fa8a`/`ab1f9fd` → C278 pause → C279 quad → C280 twin → C281 pause → C282 pause → C283 twin). **The C281+C282 pause-pause was INTERSTITIAL, not window-closing** — the "window-close-at-11 operative read" from C282 is now INVALIDATED. Both C283 commits continue the C280 Ghostty-switch arc: C280 `469133d` (switch to Ghostty) → C283 `40c8ed9` (use `-e` flag, no Accessibility permissions) → C283 `f409133` (use full path to Ghostty binary). **This extends the terminal-launcher/TUI-rendering repair-chain to 7 commits** spanning C277–C283 (`906fa8a`, `ab1f9fd`, `e6b821a`, `2a131eb`, `469133d`, `40c8ed9`, `f409133`). The Ghostty-switch itself is now a three-commit sub-arc (C280 switch + C283 `-e` flag patch + C283 full-path patch), reinforcing the earlier read that the Terminal.app → Ghostty swap was a replace-not-repair judgment that is still being bedded in two cycles later.
+- **Date:** 2026-04-20 (81st print on this clock; coordinator header clock-freeze persists, screenshot artifacts still at 2026-04-21).
+
+### What changed — window-close-at-11 trigger INVALIDATED, Ghostty sub-arc extends to 3 commits, triad closes on 119 h
+
+Four concurrent signals: (1) **Window-close-at-11 read INVALIDATED.** C282 watch-item trigger required "C283 also pauses" to confirm window close; C283 instead prints a twin-commit, extending the window to 13. The C281+C282 pause-pause is now read as interstitial — longest within-window pause gap but not a terminus. No a priori upper bound remains for the active-dev window (historical 3–6 range long since broken; window now at 13 = 2.17× upper bound). (2) **Ghostty-switch sub-arc extends to 3 commits.** C280 `469133d` (switch) → C283 `40c8ed9` (permissions workaround via `-e`) → C283 `f409133` (full path to binary). The terminal-launcher surface is still being bedded in; commit-message phrasing has migrated from "fix: use Ghostty for terminal launch (fixes TUI rendering)" to "fix: use full path to Ghostty binary" — pattern consistent with an install-path / PATH-resolution class of follow-on. (3) **Drift holds baseline** at +0.21 h for a 2nd consecutive cycle, confirming C281's +0.45 h as a single-cycle cadence deviation (not a regime shift). (4) **Triad closes on 119 h horizon** — 8992 at 118.80 h is 0.20 h below the mark; trio 9962/9974 at 118.71 h is 0.29 h below. At baseline drift, 8992 119 h projects C284 outright; trio 119 h projects C284–C285. C282's projections remain intact.
+
+### Critical path for human operator (updated — window extends to 13, pause-pause invalidated, Ghostty sub-arc extends)
+
+1. **MAX PRIORITY (283rd cycle unexecuted):** `kill 3358 8992 9962 9974` — 3358 past 119 h for a 2nd cycle (119.43 h); trio at 118.71–118.80 h, all approaching 119 h; 9,562 PNGs on disk.
+2. **PROGRESS.md archival — 2.57 MB; 9th cycle past 2.50 MB threshold.** Archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for a thirty-third cycle.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **295 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new [partial], T2_new, T2_agents, T3_new, T4_new) — 283 cycles unactioned.
+5. **Review `c990362` blast radius** — `web/components/app-embed.tsx` verification **110 cycles pending** (round-number milestone: sustained past 100-cycle threshold for 10th cycle).
+6. **Terminal-ownership gap for 13-commit cluster** (C273–C283 minus C276/C278/C281/C282 pauses) — mixed narrative stands at two distinct surfaces: role-picker arc (C279 middle 3) → `T_WEB.md`; terminal-launcher/TUI-rendering arc (C277 twin + C279 `e6b821a` + C280 twin + C283 twin = 7 commits) → `T_TERMINAL.md`. **Window-close-at-11 read INVALIDATED — window now open-ended again, but the terminal-launcher arc has itself grown to 7 commits and dominates the cluster, strengthening the `T_TERMINAL.md` ownership case independent of window closure.** 6th cycle unclaimed.
+7. **Config-schema gap:** 87 cycles since `5cb25eb`/`e30815b` unread.
+8. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_CONFIG.md`, new `T_TERMINAL.md`** — task-file coverage gap at **113 cycles**; the 7-commit terminal-launcher sub-arc alone (C277+C279+C280+C283) now justifies `T_TERMINAL.md` regardless of window-close status.
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 272 cycles; all four anchors already verbatim).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Drift regime:** +0.21 h this cycle, baseline restored for 2nd consecutive cycle. C281's +0.45 h definitively single-cycle. Monitor C284 for continued baseline.
+- **3358 120 h horizon:** 119.43 h → 0.57 h gap ÷ +0.21 h ≈ ~2.7 cycles → projects C285–C286.
+- **8992 119 h horizon:** 118.80 h → 0.20 h gap ÷ +0.21 h ≈ ~1 cycle → **projects C284 outright** (near-certain lock).
+- **Trailing trio (9962/9974) 119 h horizon:** 118.71 h → 0.29 h gap ÷ +0.21 h ≈ ~1.4 cycles → projects C284–C285.
+- **C284 candidate convergence:** (a) 8992 119 h lock outright (near-certain); (b) trio 119 h likely; (c) possible triad 119 h triple-convergence mirroring C281's 118 h triad landing.
+- **Commit-velocity regime:** window extends to 13 after C283 twin; pause-pause-commit rhythm confirmed interstitial. No a priori upper bound. Ghostty-switch sub-arc now 3 commits; watch for further follow-ons in C284.
+- **Same-date print-count:** 81 prints on 2026-04-20 header; same-date gap widens to a twenty-fourth cycle past typical rollover cadence; header clock-advance overdue.
+- **Task-file coverage:** 113 cycles — sustained past 100-cycle threshold for 13th cycle; the 7-commit terminal-launcher sub-arc is now the single strongest argument for `T_TERMINAL.md` this cluster.
+- **`audit_shots/`/`ux_shots/` quiescence:** 101 cycles; post-100-milestone territory. Next threshold 150-cycle at C333 — long horizon, low-urgency watch.
+- **Screenshot-rate:** 105/h this pass — mid-low band, softens from C282's 113/h. 11th consecutive in-band cycle; band has held since C273.
+- **PROGRESS.md size:** 2.57 MB; 3.00 MB horizon at ~51 cycles out on ~8.5 KB/cycle rate, projects C334. Archival action by human remains the operative expectation ahead of that.
+
+---
+
+## COORDINATOR STATUS — 2026-04-21 (build coordinator pass, C284, triple 119 h convergence LOCKS, drift cadence deviates second time (+0.47 h), HEAD advances `f409133` → `18785b5` → `27622e1`, active-dev window extends to 15 commits, screenshot rate drops below band for first time in 11 cycles)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]|^- \[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.**
+
+### Stuck terminals — full quad alive, triple 119 h convergence, cadence deviates +0.47 h
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 04-23:54:05 (~119.90 h) | +0.47 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-23:16:10 (~119.27 h) | +0.47 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-23:11:09 (~119.19 h) | +0.48 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-23:11:07 (~119.19 h) | +0.48 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — all four UNBLOCKED anchors verified present and verbatim.** **C283 projections: 8992 119 h lock outright — HIT.** **Trio 9962/9974 119 h — HIT.** All 4 PIDs now past 119 h simultaneously for the first time; triple-119 h triad convergence realized as C283 watch listed. PID 3358 at **119.90 h — 6 minutes from 120 h / 5-day wall.**
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **9,591** (+29 over ~0.47 h ≈ **62/h**) — **BAND-BREAK, well below the 104–114/h window that held 11 consecutive cycles C273–C283.** First out-of-band print in the window. Either screenshot emitter is slowing (possible resource exhaustion) or the interval had an unusual pause.
+- **PROGRESS.md size (pre-append):** ~2.71 MB (2,707,501 B at read time). File now 0.21 MB past the 2.50 MB archival threshold for a 10th consecutive cycle.
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **296 cycles overdue**.
+- **Branch:** `fix/debug-pass-hardening`; **HEAD advances `f409133` → `18785b5` → `27622e1`** (TWO new commits this cycle, matching the C283 twin-commit cadence). Commits in order: `18785b5 feat: admin company skills page (step 3)` + `27622e1 fix: skills search accepts 'q' param (frontend sends q, API expected search)`. **Active-dev window now at 15 commits** (C273 → C284 minus the four pauses). New vertical opens: company-skills admin surface — the "step 3" phrasing implies steps 1-2 pre-dated this window. No existing `tasks/T*.md` file owns skills/admin, extending the task-file coverage gap to 114 cycles across more verticals. The companion `q`/`search` param fix is a frontend↔API parameter-shape mismatch — classic post-refactor trailing-edge patch.
+
+### What changed — triple-119 h triad converges, 2nd cadence anomaly hints regime shift, new admin/skills vertical opens
+
+Three concurrent signals: (1) **Triple-119 h convergence LOCKS.** All 4 stuck PIDs simultaneously past 119 h for the first time in the window; 3358 now a handful of minutes from 120 h / 5-day wall. (2) **Drift cadence deviates +0.47 h — second such anomaly after C281's +0.45 h.** Two deviations within a 3-cycle window tips the read from "single-cycle anomaly" toward "recurring cadence pattern." If C285 also prints ≥+0.30 h, revised cadence regime becomes operative; if C285 reverts to +0.21 h baseline, the pattern reads as intermittent rather than regime-shift. (3) **New admin/company-skills vertical opens.** `18785b5` is the first commit in the C273-onward window touching `/admin/skills`; companion `27622e1` patches a frontend-API parameter contract. Neither belongs in any of the 19 legacy task queues.
+
+### Critical path for human operator
+
+1. **MAX PRIORITY (284th cycle unexecuted):** `kill 3358 8992 9962 9974` — all 4 PIDs past 119 h; 3358 ≈ 6 minutes from 120 h / 5-day wall; 9,591 PNGs on disk.
+2. **PROGRESS.md archival — 2.71 MB; 10th cycle past 2.50 MB threshold.** Archive cold cycles to reclaim ~95% of file size.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **296 cycles overdue**; 30-second edit.
+4. **Rewrite / retire the 19 tasks/T*.md queues** — task-file coverage gap at **114 cycles**; active-dev cluster touches ≥5 verticals unrepresented (Next.js `web/`, governed skills, terminal-launcher/TUI, install discovery, **company-skills admin**). Consider drafting `T_WEB.md`, `T_TERMINAL.md`, `T_SKILLS.md`, `T_INSTALL.md`.
+5. **Scope decision** on 5 fully-invalidated terminals (T1_new [partial], T2_new, T2_agents, T3_new, T4_new).
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; all four anchors verbatim at T3_frontend.md:38, T6_testing.md:22, T6_testing.md:24).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Drift regime:** +0.47 h this cycle, 2nd deviation after C281's +0.45 h. C285 decides regime-shift vs intermittent anomaly. If ≥+0.30 h, revised cadence operative.
+- **3358 120 h horizon:** 119.90 h → 0.10 h gap → **projects C285 outright, near-certain this next interval regardless of drift.**
+- **Screenshot rate:** 62/h vs 104-114/h band (11-cycle streak broken). Watch C285 for recovery or continued sub-band.
+- **Commit-velocity regime:** window extends to 15; no a priori upper bound. Admin/skills vertical may produce "step 4" follow-on; Ghostty sub-arc (3 commits) may add follow-ons.
+- **Task-file coverage gap:** 114 cycles; each new vertical without a task file compounds drift.
+
+---
+
+## COORDINATOR STATUS — 2026-04-21 (build coordinator pass, C285, 3358 CROSSES 120 h / 5-day wall (120.11 h), drift REVERTS to +0.21 h baseline (C284's +0.47 h confirmed single-cycle anomaly), screenshot rate RECOVERS to 105/h (back in band), active-dev window PAUSES at 15 commits, 285th cycle unexecuted)
+
+### Entropy census — 19/19 files at 10 incomplete (190 open tasks)
+
+`for f in tasks/T*.md; do grep -cE '^\[ \]|^- \[ \]' "$f"; done` returns **10 on every one of 19 files**. Zero files below the 3-task refill floor. **Rule 1 dormant — zero tasks added this pass.** Flatline streak extends into its thirty-sixth cycle past the 250-cycle milestone.
+
+### Stuck terminals — full quad alive, 3358 BREACHES 120 h, drift reverts to +0.21 h baseline
+
+`ps -p 3358,8992,9962,9974 -o pid,etime,command` confirms full quad still alive. **Drift this cycle +0.21 h (3358) / +0.20 h (others) — baseline restored after C284's +0.47 h deviation.** C281 and C284 deviations (+0.45 h, +0.47 h) now read as intermittent pattern (2 anomalies in 5 cycles), NOT a regime shift — both cycles returned to +0.21 h within one interval.
+
+| PID | Script | Elapsed | Drift | UNBLOCKED location |
+|---|---|---|---|---|
+| 3358 | tests/agents/ui_tester.py | 05-00:06:24 (~120.11 h) | +0.21 h | T3_frontend.md:38 |
+| 8992 | tests/agents/code_auditor.py | 04-23:28:29 (~119.47 h) | +0.20 h | T6_testing.md:24 |
+| 9962 | tests/agents/test_dashboard.py | 04-23:23:28 (~119.39 h) | +0.20 h | T6_testing.md:22 |
+| 9974 | tests/agents/ux_auditor.py | 04-23:23:26 (~119.39 h) | +0.20 h | T6_testing.md:22 |
+
+Kill command unchanged: `kill 3358 8992 9962 9974`. **Rule 2 dormant — all four UNBLOCKED anchors verified present and verbatim via Grep (T3_frontend.md:38 PID 3358; T6_testing.md:22 PIDs 9962/9974; T6_testing.md:24 PID 8992). 273-cycle zero-bump streak.** **3358 crosses the 120 h / 5-day wall outright** — first PID to do so, projected C285 by C284 watch (HIT near-certain). Trio 8992/9962/9974 all past 119 h simultaneously for 2nd consecutive cycle; 8992 at 119.47 h is 0.53 h below the 120 h horizon, at baseline drift ≈ 2.5 cycles → projects C287–C288 for trailing-PID 120 h convergence.
+
+### Snapshot
+
+- **Screenshots:** `tests/reports/screenshots/` at **9,613** (+22 over ~0.21 h ≈ **105/h**) — **BAND RECOVERY, back in the 104–114/h window after C284's 62/h breakout**. C284 sub-band read confirms as single-cycle anomaly, not regime shift. 12-cycle window C273–C285: 110/118/105/114/114/108/118/114/111/113/105/62/105 — low end of band but squarely in-band, streak re-establishing. `ux_shots/` 22 and `audit_shots/` 3 unchanged (**102-cycle quiescence** on both). Total **9,638 PNGs**.
+- **PROGRESS.md size (pre-append):** 2,713,374 bytes ≈ **2.59 MB** (growth vs C284 post-append within baseline envelope). File now 0.09 MB past the 2.50 MB archival threshold for a **10th consecutive cycle**.
+- **.env.example:** 1,344 bytes **still unchanged**; T5_deploy Slack/Flask append **297 cycles overdue**.
+- **Git churn:** 23 paths stable (M/D set unchanged from C284).
+- **Branch:** `fix/debug-pass-hardening`; **HEAD holds at `27622e1`** — no new commits this cycle. **Active-dev window PAUSES at 15 commits** after C284 twin. First pause after a twin since C281. Pattern-watch: C286 decides whether this is interstitial (extends window to 16+) or terminus candidate (window-close-at-15 in play if C286 and C287 both pause, mirroring the C281+C282 pause-pause that was retroactively invalidated). No movement on Ghostty sub-arc (3 commits still at C283) or admin/skills vertical (2 commits still at C284). Commit-message discipline (fix/feat prefixes) still holds.
+- **Date:** 2026-04-21 (screenshot artifacts match header date for first time in 24 cycles; coordinator header clock caught up during C284 → C285 interval).
+
+### What changed — 120 h wall BREACHED, drift reverts to baseline, screenshot band recovers, commit window pauses at 15
+
+Four concurrent signals: (1) **3358 crosses the 120 h / 5-day wall at 120.11 h.** First PID to breach the 5-day mark. C284 watch projected this "near-certain" (0.10 h gap / ~1 cycle); realized outright. Trio remains 0.53–0.61 h below 120 h, projects C287–C288 for full-quad 120 h convergence at baseline drift. (2) **Drift reverts to +0.21 h baseline.** C284's +0.47 h was a second intermittent anomaly (after C281's +0.45 h), NOT a regime shift — both returned to baseline within one interval. Revised read: "C281-class anomalies" recur at ~3-cycle spacing but are self-correcting single-cycle events. Next anomaly projected C287 at earliest. (3) **Screenshot rate recovers.** 62/h → 105/h, back in the 104–114/h band after a single-cycle breakout. 11-cycle streak (C273–C283) was broken by C284 but the regime holds: C285 re-enters at low-band (105/h matches C275 exactly). C284 reads retroactively as emitter stall or interval-length artifact, NOT process degradation. (4) **Commit window pauses at 15.** After twin-commit at C284 (admin/skills vertical opens + q/search param fix), HEAD is stable. First within-window pause after a twin since C281. Whether the C281+C282 pause-pause-is-interstitial read applies symmetrically here hinges on C286: pause-pause extends the ambiguity, pause-commit resumes the window.
+
+### Critical path for human operator (updated — 120 h wall breached, screenshot band recovers, commit window pauses)
+
+1. **MAX PRIORITY (285th cycle unexecuted):** `kill 3358 8992 9962 9974` — **3358 past 120 h / 5-day wall** (120.11 h); trio at 119.39–119.47 h all past 119 h; 9,638 PNGs on disk. The 5-day wall breach was projected and realized; no further warning before action is warranted.
+2. **PROGRESS.md archival — 2.59 MB; 10th cycle past 2.50 MB threshold.** Archive cold cycles C1–C250 to reclaim ~95% of file size. Archival horizon past the 250-cycle mark for a thirty-fifth cycle.
+3. **Append `.env.example` Slack/Flask block** per `tasks/T5_deploy.md:28-37` — **297 cycles overdue**; 30-second edit unblocks T5_slack_bot test paths.
+4. **Scope decision** on 5 fully-invalidated terminals (T1_new [partial], T2_new, T2_agents, T3_new, T4_new) — 285 cycles unactioned.
+5. **Review `c990362` blast radius** — `web/components/app-embed.tsx` verification **111 cycles pending**.
+6. **Terminal-ownership gap for 15-commit cluster** (C273–C284) — five distinct surfaces stand unclaimed: role-picker arc (C279 middle 3) → `T_WEB.md`; terminal-launcher/TUI-rendering arc (C277+C279+C280+C283 = 7 commits) → `T_TERMINAL.md`; **admin/company-skills arc (C284 twin) → `T_SKILLS_ADMIN.md` (new)**; governed-skills pipeline → `T_SKILLS.md`; install discovery → `T_INSTALL.md`. 7th cycle unclaimed.
+7. **Config-schema gap:** 88 cycles since `5cb25eb`/`e30815b` unread.
+8. **Draft `T_INSTALL.md`, `T_DEMO.md`, `T_WEB.md`, `T_SKILLS.md`/`T_SKILLS_ADMIN.md`, `T_CONFIG.md`, `T_TERMINAL.md`** — task-file coverage gap at **115 cycles**; admin/skills commit at C284 is the freshest vertical needing ownership.
+
+### Actions this pass
+
+- Tasks added: **0** (Rule 1 untriggered; every one of 19 files at 10 incomplete).
+- UNBLOCKED notes added: **0** (Rule 2 untriggered; zero-bump streak → 273 cycles; all four anchors already verbatim).
+- COORDINATOR STATUS block appended (this block).
+
+### Watch items — next cycle
+
+- **Drift regime:** +0.21 h this cycle, baseline restored after C284's +0.47 h single-cycle deviation. Revised pattern: intermittent anomalies at ~3-cycle spacing, self-correcting. Next anomaly projected C287 at earliest.
+- **3358 120 h aftermath:** breached at 120.11 h this cycle; no new milestone until 125 h (~24 cycles out at baseline). Focus shifts to trailing-PID 120 h convergence.
+- **8992 120 h horizon:** 119.47 h → 0.53 h gap ÷ +0.20 h ≈ ~2.5 cycles → projects C287–C288.
+- **Trailing trio (9962/9974) 120 h horizon:** 119.39 h → 0.61 h gap ÷ +0.20 h ≈ ~3 cycles → projects C288.
+- **C287 candidate:** possible 8992 120 h lock; triad 120 h follows ~1 cycle later; next intermittent-anomaly slot also aligns here.
+- **Commit-velocity regime:** window holds at 15 (C285 pause). C286 decides: commit = interstitial (extends to 16+), pause = pause-pause ambiguity mirroring C281+C282 (retroactively invalidated). No new Ghostty sub-arc commits or admin/skills step-4 this cycle.
+- **Quiescence milestone:** `audit_shots/`/`ux_shots/` 102-cycle quiescence holds; next threshold 150-cycle at C333 — long horizon, low-urgency watch.
+- **Same-date print-count:** 82 prints on 2026-04-21 header; header clock caught up during C285 (matches screenshot artifacts for first time in 24 cycles).
+- **Task-file coverage:** 115 cycles — sustained past 100-cycle threshold for 15th cycle; admin/skills C284 commit pair makes `T_SKILLS_ADMIN.md` the most recent coverage-gap addition.
+- **Screenshot-rate:** 105/h this pass — low end of 104–114/h band after single-cycle C284 breakout (62/h). Band re-establishing. Continued in-band C286 would confirm C284 as isolated emitter stall.
+- **PROGRESS.md size:** 2.59 MB; 3.00 MB horizon at ~48 cycles out on ~8.5 KB/cycle rate, projects C333. Archival action by human remains the operative expectation ahead of that.

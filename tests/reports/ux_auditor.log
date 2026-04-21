@@ -1,0 +1,1440 @@
+[ux_auditor] started. Cycle 1800s. Report: /Users/nicholasruzicka/projects/forge/tests/reports/ux_report.json
+[ux_auditor] 2026-04-16T05:07:08.137972+00:00 pages=9 high=14 medium=33 low=27
+[ux_auditor] 2026-04-16T05:42:18.328721+00:00 pages=9 high=10 medium=27 low=24
+[ux_auditor] 2026-04-16T06:17:24.412327+00:00 pages=9 high=11 medium=29 low=24
+[ux_auditor] 2026-04-16T06:52:40.394560+00:00 pages=9 high=16 medium=35 low=28
+[ux_auditor] 2026-04-16T07:27:21.850739+00:00 pages=9 high=13 medium=33 low=23
+[ux_auditor] 2026-04-16T08:02:23.712720+00:00 pages=9 high=13 medium=38 low=26
+[ux_auditor] 2026-04-16T08:37:20.868884+00:00 pages=9 high=13 medium=35 low=23
+[ux_auditor] 2026-04-16T09:12:17.551183+00:00 pages=9 high=13 medium=36 low=23
+[ux_auditor] 2026-04-16T09:47:08.390652+00:00 pages=9 high=14 medium=37 low=23
+[ux_auditor] 2026-04-16T10:21:55.558717+00:00 pages=9 high=14 medium=37 low=22
+[ux_auditor] 2026-04-16T10:56:49.601484+00:00 pages=9 high=10 medium=29 low=23
+[ux_auditor] 2026-04-16T11:31:42.799824+00:00 pages=9 high=14 medium=35 low=23
+[ux_auditor] 2026-04-16T12:06:37.522191+00:00 pages=9 high=14 medium=37 low=22
+[ux_auditor] 2026-04-16T12:41:30.322500+00:00 pages=9 high=12 medium=37 low=24
+[ux_auditor] 2026-04-16T13:11:44.999636+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-16T13:41:59.047580+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-16T14:12:12.909906+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-16T14:42:27.244585+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-16T15:12:45.758564+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-16T15:43:01.427273+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-16T16:13:16.791900+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-16T16:43:32.023877+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-16T17:13:47.136693+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-16T17:44:03.211693+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-16T18:14:18.849432+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-16T18:44:34.474196+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-16T19:14:51.275556+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-16T19:45:07.663634+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-16T20:24:01.989667+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-16T21:15:53.172619+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-16T21:46:08.400482+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-16T22:16:23.180466+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-16T22:46:38.032967+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-16T23:16:53.935055+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-16T23:47:08.870230+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-17T00:17:33.193359+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-17T00:59:36.287829+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-17T01:32:02.830199+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-17T02:07:31.897648+00:00 pages=9 high=20 medium=38 low=20
+[ux_auditor] 2026-04-17T02:42:59.760858+00:00 pages=9 high=20 medium=39 low=20
+[ux_auditor] 2026-04-17T03:36:49.859867+00:00 pages=9 high=14 medium=31 low=18
+[ux_auditor] 2026-04-17T04:12:33.486415+00:00 pages=9 high=17 medium=34 low=19
+[ux_auditor] 2026-04-17T04:48:01.900577+00:00 pages=9 high=16 medium=33 low=19
+[ux_auditor] 2026-04-17T05:23:26.841710+00:00 pages=9 high=15 medium=29 low=16
+[ux_auditor] 2026-04-17T05:58:59.466987+00:00 pages=9 high=19 medium=34 low=17
+[ux_auditor] 2026-04-17T06:34:33.035229+00:00 pages=9 high=19 medium=34 low=20
+[ux_auditor] 2026-04-17T07:10:22.246621+00:00 pages=9 high=17 medium=33 low=19
+[ux_auditor] 2026-04-17T07:45:51.314501+00:00 pages=9 high=21 medium=38 low=22
+[ux_auditor] 2026-04-17T08:21:22.182905+00:00 pages=9 high=18 medium=37 low=19
+[ux_auditor] 2026-04-17T13:03:52.606870+00:00 pages=9 high=18 medium=35 low=18
+[ux_auditor] 2026-04-17T13:39:39.047409+00:00 pages=9 high=17 medium=31 low=17
+[ux_auditor] 2026-04-17T14:15:19.590295+00:00 pages=9 high=16 medium=34 low=20
+[ux_auditor] 2026-04-17T14:50:53.106231+00:00 pages=9 high=17 medium=33 low=18
+[ux_auditor] 2026-04-17T16:43:42.473207+00:00 pages=9 high=17 medium=35 low=17
+[ux_auditor] 2026-04-17T17:19:07.675208+00:00 pages=9 high=12 medium=28 low=15
+[ux_auditor] 2026-04-18T04:01:42.255364+00:00 pages=9 high=17 medium=36 low=21
+[ux_auditor] 2026-04-18T04:37:07.222558+00:00 pages=9 high=18 medium=36 low=18
+[ux_auditor] 2026-04-18T05:12:49.592033+00:00 pages=9 high=14 medium=33 low=19
+[ux_auditor] 2026-04-18T05:48:09.105546+00:00 pages=9 high=18 medium=35 low=22
+[ux_auditor] 2026-04-18T06:23:08.916694+00:00 pages=9 high=17 medium=33 low=20
+[ux_auditor] 2026-04-18T06:58:25.455860+00:00 pages=9 high=17 medium=33 low=18
+[ux_auditor] 2026-04-18T07:33:27.459716+00:00 pages=9 high=16 medium=32 low=17
+[ux_auditor] 2026-04-18T08:08:35.044495+00:00 pages=9 high=19 medium=34 low=20
+[ux_auditor] 2026-04-18T08:44:00.485820+00:00 pages=9 high=19 medium=34 low=18
+[ux_auditor] 2026-04-18T09:19:04.111733+00:00 pages=9 high=19 medium=34 low=19
+[ux_auditor] 2026-04-18T09:54:12.265055+00:00 pages=9 high=20 medium=35 low=19
+[ux_auditor] 2026-04-18T14:02:05.628164+00:00 pages=9 high=21 medium=36 low=20
+[ux_auditor] 2026-04-18T14:37:15.753235+00:00 pages=9 high=19 medium=34 low=20
+[ux_auditor] 2026-04-18T15:12:21.494924+00:00 pages=9 high=19 medium=33 low=19
+[ux_auditor] 2026-04-18T15:47:45.368429+00:00 pages=9 high=18 medium=34 low=18
+[ux_auditor] 2026-04-18T16:22:43.367230+00:00 pages=9 high=21 medium=35 low=18
+[ux_auditor] 2026-04-18T16:57:26.803409+00:00 pages=9 high=19 medium=33 low=20
+[ux_auditor] 2026-04-18T17:32:18.134847+00:00 pages=9 high=19 medium=34 low=18
+[ux_auditor] 2026-04-18T18:07:22.029328+00:00 pages=9 high=16 medium=31 low=19
+[ux_auditor] 2026-04-18T18:42:11.851607+00:00 pages=9 high=20 medium=32 low=20
+[ux_auditor] 2026-04-18T19:16:52.498780+00:00 pages=9 high=18 medium=31 low=19
+[ux_auditor] 2026-04-18T19:47:06.120838+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-18T20:17:19.976165+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-18T20:47:32.852717+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-18T21:17:46.386188+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-18T21:48:00.937691+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-19T12:46:43.173274+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-19T13:16:56.555236+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-19T13:47:13.395782+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-19T14:17:27.053274+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-19T14:47:41.044202+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-19T15:17:54.449245+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-19T15:48:07.199605+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] screenshot failed for admin: Page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:8090/admin.html
+Call log:
+  - navigating to "http://localhost:8090/admin.html", waiting until "networkidle"
+
+[ux_auditor] screenshot failed for app_kanban: Page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:8090/apps/job-search-pipeline
+Call log:
+  - navigating to "http://localhost:8090/apps/job-search-pipeline", waiting until "networkidle"
+
+[ux_auditor] 2026-04-19T16:18:32.781174+00:00 pages=9 high=0 medium=0 low=0
+[ux_auditor] 2026-04-19T16:53:13.142285+00:00 pages=9 high=15 medium=31 low=19
+[ux_auditor] 2026-04-19T17:28:17.805842+00:00 pages=9 high=13 medium=28 low=22
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+[ux_auditor] cycle crash:
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 231, in main
+    report = run_cycle()
+  File "/Users/nicholasruzicka/projects/forge/tests/agents/ux_auditor.py", line 152, in run_cycle
+    client = Anthropic()
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_client.py", line 105, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 958, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 879, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_transports/default.py", line 153, in __init__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_config.py", line 40, in create_ssl_context
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ssl.py", line 745, in create_default_context
+    context.load_verify_locations(cafile, capath, cadata)
+FileNotFoundError: [Errno 2] No such file or directory
+
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
+Exception ignored in: <function SyncHttpxClientWrapper.__del__ at 0x104d8a1f0>
+Traceback (most recent call last):
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/anthropic/_base_client.py", line 905, in __del__
+  File "/Users/nicholasruzicka/projects/forge/venv/lib/python3.9/site-packages/httpx/_client.py", line 228, in is_closed
+AttributeError: 'SyncHttpxClientWrapper' object has no attribute '_state'
