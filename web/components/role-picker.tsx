@@ -35,21 +35,22 @@ export function RolePicker({ open, onOpenChange }: RolePickerProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogHeader>
-        <DialogTitle>Welcome to Forge</DialogTitle>
-        <DialogDescription>
-          Select your role to personalize your experience.
-        </DialogDescription>
-      </DialogHeader>
       <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Welcome to Forge</DialogTitle>
+          <DialogDescription>
+            Select your role to personalize your experience.
+          </DialogDescription>
+        </DialogHeader>
         <div className="grid grid-cols-4 gap-2">
-          {ROLES.map((role) => (
+          {ROLES.map((r) => (
             <button
-              key={role}
-              onClick={() => handleSelect(role)}
+              key={r}
+              type="button"
+              onClick={() => handleSelect(r)}
               className="flex items-center justify-center rounded-lg border border-border bg-surface px-3 py-3 text-sm font-medium text-foreground transition-colors hover:border-border-strong hover:bg-surface-2"
             >
-              {role}
+              {r}
             </button>
           ))}
         </div>
