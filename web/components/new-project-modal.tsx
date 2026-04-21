@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { X, Check, Loader2, FolderPlus, ChevronDown, ChevronRight } from "lucide-react";
+import { X, Check, Loader2, FolderPlus, ChevronDown, ChevronRight, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -148,7 +148,7 @@ export function NewProjectModal({ open, onOpenChange }: NewProjectModalProps) {
         claudeMdPreview: preview,
       });
 
-      // Try to open terminal
+      // Open terminal with Claude Code
       try {
         await fetch("/api/forge-agent/open-terminal", {
           method: "POST",
@@ -214,9 +214,25 @@ export function NewProjectModal({ open, onOpenChange }: NewProjectModalProps) {
                     </div>
                   </div>
 
-                  <div className="rounded-xl bg-surface-2/50 p-4 text-[13px] text-text-secondary leading-relaxed">
-                    Terminal opening with Claude Code. Start building — the governance rules
-                    are already loaded in CLAUDE.md.
+                  <div className="flex flex-col gap-2 rounded-xl bg-surface-2/50 p-4">
+                    <span className="text-[12px] font-semibold text-text-secondary">Open your terminal and run:</span>
+                    <div className="flex items-center gap-2 rounded-lg bg-surface-2 p-2.5 ring-1 ring-border">
+                      <code className="flex-1 font-mono text-[13px] text-foreground">
+                        cd {result.path} && claude
+                      </code>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText(`cd ${result.path} && claude`);
+                        }}
+                        className="shrink-0 rounded p-1 text-text-muted hover:text-foreground transition-colors"
+                      >
+                        <Copy className="size-3.5" />
+                      </button>
+                    </div>
+                    <span className="text-[11px] text-text-muted">
+                      Governance rules are already loaded in CLAUDE.md. Start building.
+                    </span>
                   </div>
 
                   {/* Skills applied */}

@@ -1070,10 +1070,9 @@ class AgentHandler(http.server.BaseHTTPRequestHandler):
         cwd = body.get("cwd", os.path.expanduser("~"))
         launch_claude = body.get("then_launch_claude", False)
 
-        # If requested, cd to directory and show instructions (don't auto-launch TUI — Terminal.app renders it badly)
+        # If requested, append Claude launch command
         if launch_claude and _CLAUDE_AVAILABLE:
-            claude_hint = _CLAUDE_CMD.split("/")[-1] if "/" in _CLAUDE_CMD else _CLAUDE_CMD
-            command = f"{command} && echo '' && echo '✓ Ready. Type: {claude_hint}' && echo ''"
+            command = f"{command} && {_CLAUDE_CMD}" if command else _CLAUDE_CMD
 
         if not command:
             self._json({"error": "command required"}, 400)
@@ -1098,17 +1097,55 @@ class AgentHandler(http.server.BaseHTTPRequestHandler):
             if len(command) > 500:
                 self._json({"error": "Command too long (max 500 chars)"}, 400)
                 return
-            # Escape for AppleScript embedding
-            safe_cmd = command.replace('\\', '\\\\').replace('"', '\\"')
-            safe_cwd = cwd.replace('\\', '\\\\').replace('"', '\\"')
-            script = (
-                f'tell application "Terminal"\n'
-                f'  activate\n'
-                f'  do script "cd \\"{safe_cwd}\\" && {safe_cmd}"\n'
-                f'end tell'
-            )
-            subprocess.Popen(["osascript", "-e", script])
-            self._json({"success": True, "terminal": "Terminal.app", "command": command})
+            # Detect best terminal: Ghostty (great TUI) > iTerm2 > Terminal.app
+            ghostty = os.path.exists("/Applications/Ghostty.app")
+            iterm = os.path.exists("/Applications/iTerm.app")
+
+            if ghostty:
+                # Ghostty: use osascript to open and run command
+                safe_cmd = command.replace('\\', '\\\\').replace('"', '\\"')
+                safe_cwd = cwd.replace('\\', '\\\\').replace('"', '\\"')
+                script = (
+                    f'tell application "Ghostty"\n'
+                    f'  activate\n'
+                    f'end tell\n'
+                    f'delay 0.5\n'
+                    f'tell application "System Events"\n'
+                    f'  tell process "Ghostty"\n'
+                    f'    keystroke "n" using command down\n'
+                    f'  end tell\n'
+                    f'end tell\n'
+                    f'delay 0.3\n'
+                    f'tell application "System Events"\n'
+                    f'  keystroke "cd \\"{safe_cwd}\\" && {safe_cmd}"\n'
+                    f'  key code 36\n'  # Return key
+                    f'end tell'
+                )
+                subprocess.Popen(["osascript", "-e", script])
+                self._json({"success": True, "terminal": "Ghostty", "command": command})
+            elif iterm:
+                safe_cmd = command.replace('\\', '\\\\').replace('"', '\\"')
+                safe_cwd = cwd.replace('\\', '\\\\').replace('"', '\\"')
+                script = (
+                    f'tell application "iTerm2"\n'
+                    f'  create window with default profile command "cd \\"{safe_cwd}\\" && {safe_cmd}"\n'
+                    f'end tell'
+                )
+                subprocess.Popen(["osascript", "-e", script])
+                self._json({"success": True, "terminal": "iTerm2", "command": command})
+            else:
+                # Terminal.app fallback
+                safe_cmd = command.replace('\\', '\\\\').replace('"', '\\"')
+                safe_cwd = cwd.replace('\\', '\\\\').replace('"', '\\"')
+                script = (
+                    f'tell application "Terminal"\n'
+                    f'  activate\n'
+                    f'  do script "cd \\"{safe_cwd}\\" && {safe_cmd}"\n'
+                    f'end tell'
+                )
+                subprocess.Popen(["osascript", "-e", script])
+                self._json({"success": True, "terminal": "Terminal.app", "command": command,
+                            "note": "For best Claude Code experience, install Ghostty: https://ghostty.org"})
         except Exception as exc:
             self._json({"error": f"Failed to open terminal: {exc}"}, 500)
 
