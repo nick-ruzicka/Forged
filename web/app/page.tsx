@@ -2,8 +2,10 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { Search, ArrowRight, TrendingUp } from "lucide-react";
+import { Search, ArrowRight, TrendingUp, FolderPlus } from "lucide-react";
+import { NewProjectModal } from "@/components/new-project-modal";
 import { AppIcon } from "@/components/app-icon";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AppCard } from "@/components/app-card";
 import { CategoryPills } from "@/components/category-pills";
@@ -22,6 +24,9 @@ export default function CatalogPage() {
   const handleRolePickerOpenChange = (next: boolean) => {
     if (!next) setRolePickerDismissed(true);
   };
+
+  // New project modal
+  const [newProjectOpen, setNewProjectOpen] = useState(false);
 
   // Search with debounce
   const [query, setQuery] = useState("");
@@ -83,11 +88,17 @@ export default function CatalogPage() {
   return (
     <div className="flex flex-col gap-8 p-6 md:p-8">
       {/* Header */}
-      <div className="flex flex-col gap-2">
-        <h1 className="text-[28px] font-bold tracking-[-0.03em] text-white/98">Apps</h1>
-        <p className="text-sm text-white/55 leading-relaxed">
-          Discover tools your team has built. Install in one click.
-        </p>
+      <div className="flex items-start justify-between">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-[28px] font-bold tracking-[-0.03em] text-white/98">Apps</h1>
+          <p className="text-sm text-white/55 leading-relaxed">
+            Discover tools your team has built. Install in one click.
+          </p>
+        </div>
+        <Button onClick={() => setNewProjectOpen(true)} className="gap-1.5">
+          <FolderPlus className="size-3.5" />
+          New Project
+        </Button>
       </div>
 
       {/* Search */}
@@ -214,6 +225,9 @@ export default function CatalogPage() {
 
       {/* Role picker dialog */}
       <RolePicker open={rolePickerOpen} onOpenChange={handleRolePickerOpenChange} />
+
+      {/* New project modal */}
+      <NewProjectModal open={newProjectOpen} onOpenChange={setNewProjectOpen} />
     </div>
   );
 }

@@ -2457,6 +2457,24 @@ def scaffold_project():
     })
 
 
+@app.route("/api/projects/scaffold/preview", methods=["GET"])
+def scaffold_preview():
+    """Return the first 25 lines of a scaffolded CLAUDE.md."""
+    path = request.args.get("path", "")
+    if not path:
+        return jsonify({"preview": ""})
+    claude_md_path = os.path.join(path, "CLAUDE.md")
+    if not os.path.exists(claude_md_path):
+        return jsonify({"preview": ""})
+    # Security: only allow reading from forge-projects directory
+    allowed = os.path.expanduser("~/forge-projects")
+    if not os.path.normpath(claude_md_path).startswith(os.path.normpath(allowed)):
+        return jsonify({"preview": "", "error": "path not allowed"}), 403
+    with open(claude_md_path) as f:
+        lines = f.readlines()[:25]
+    return jsonify({"preview": "".join(lines)})
+
+
 @app.route("/api/submit-project", methods=["POST"])
 def submit_project():
     """Submit a Claude Code project for governance review."""
