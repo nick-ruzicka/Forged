@@ -48,13 +48,22 @@ function AdminDashboard() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold text-foreground">Admin</h1>
-        <Link
-          href="/admin/runs"
-          className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
-        >
-          Claude Runs
-          <ArrowRight className="size-3.5" />
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link
+            href="/admin/skills"
+            className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
+          >
+            Company Skills
+            <ArrowRight className="size-3.5" />
+          </Link>
+          <Link
+            href="/admin/runs"
+            className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
+          >
+            Claude Runs
+            <ArrowRight className="size-3.5" />
+          </Link>
+        </div>
       </div>
 
       {/* Stats row */}
