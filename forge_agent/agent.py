@@ -1103,8 +1103,9 @@ class AgentHandler(http.server.BaseHTTPRequestHandler):
 
             if ghostty:
                 # Ghostty: -e flag runs command directly, no permissions needed
+                ghostty_bin = "/Applications/Ghostty.app/Contents/MacOS/ghostty"
                 full_cmd = f"cd {cwd} && {command}"
-                subprocess.Popen(["ghostty", "-e", "/bin/zsh", "-c", full_cmd])
+                subprocess.Popen([ghostty_bin, "-e", "/bin/zsh", "-c", full_cmd])
                 self._json({"success": True, "terminal": "Ghostty", "command": command})
             elif iterm:
                 safe_cmd = command.replace('\\', '\\\\').replace('"', '\\"')
