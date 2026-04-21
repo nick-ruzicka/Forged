@@ -156,7 +156,7 @@ export function NewProjectModal({ open, onOpenChange }: NewProjectModalProps) {
             "Content-Type": "application/json",
             "X-Forge-User-Id": localStorage.getItem("forge_user_id") || "",
           },
-          body: JSON.stringify({ command: `cd ${res.path} && claude`, cwd: res.path }),
+          body: JSON.stringify({ command: `cd ${res.path} && npx claude`, cwd: res.path }),
         });
       } catch {
         // Terminal launch is best-effort
