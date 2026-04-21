@@ -1571,7 +1571,7 @@ def resolve_token(access_token):
 @app.route("/api/skills", methods=["GET"])
 def list_skills():
     category = request.args.get("category")
-    search = request.args.get("search")
+    search = request.args.get("search") or request.args.get("q")
     sort = request.args.get("sort", "upvotes")
     # Admin can see all statuses; default is approved-only
     include = request.args.get("include")
