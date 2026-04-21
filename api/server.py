@@ -2350,6 +2350,133 @@ def configure_tool(slug):
     return jsonify(result), 200 if result["success"] else 422
 
 
+# -------------------- Company Skills --------------------
+
+
+@app.route("/api/admin/company-skills", methods=["GET"])
+def list_company_skills_route():
+    """List all company skills (admin only)."""
+    unauthorized = _require_admin()
+    if unauthorized:
+        return unauthorized
+    skills = db.list_company_skills()
+    # Parse JSON fields
+    for s in skills:
+        for field in ("required_sections", "behavior_tests"):
+            if isinstance(s.get(field), str):
+                try:
+                    s[field] = json.loads(s[field])
+                except (json.JSONDecodeError, TypeError):
+                    s[field] = []
+        if s.get("created_at"):
+            s["created_at"] = s["created_at"].isoformat()
+        if s.get("updated_at"):
+            s["updated_at"] = s["updated_at"].isoformat()
+    return jsonify({"skills": skills})
+
+
+@app.route("/api/company-skills", methods=["GET"])
+def list_company_skills_public():
+    """List company skills (public — for the new project modal)."""
+    skills = db.list_company_skills()
+    # Return only what the modal needs: slug, title, description, is_default, category
+    return jsonify({"skills": [
+        {
+            "slug": s["slug"],
+            "title": s["title"],
+            "description": s.get("description", ""),
+            "is_default": s.get("is_default", False),
+            "category": s.get("category", "governance"),
+        }
+        for s in skills
+    ]})
+
+
+# -------------------- Project Scaffolding --------------------
+
+
+@app.route("/api/projects/scaffold", methods=["POST"])
+def scaffold_project():
+    """Create a new Claude Code project with governance scaffolding."""
+    uid, email = _get_identity()
+    if not uid:
+        return jsonify({"error": "user_id_required"}), 401
+
+    body = request.get_json(silent=True) or {}
+    slug = body.get("slug", "").strip()
+    description = body.get("description", "").strip()
+    skill_slugs = body.get("skills", [])
+
+    if not slug:
+        return jsonify({"error": "slug is required"}), 400
+    if not re.match(r"^[a-z0-9][a-z0-9-]{1,48}[a-z0-9]$", slug):
+        return jsonify({"error": "slug must be lowercase alphanumeric with hyphens, 3-50 chars"}), 400
+
+    # Check if project already exists for this user
+    existing = db.get_project_by_slug(uid, slug)
+    if existing:
+        return jsonify({"error": f"Project '{slug}' already exists"}), 409
+
+    # Resolve skills
+    skills = []
+    for s_slug in skill_slugs:
+        skill = db.get_company_skill_by_slug(s_slug)
+        if skill:
+            skills.append(skill)
+
+    # Also add default skills not already selected
+    all_skills = db.list_company_skills()
+    for s in all_skills:
+        if s.get("is_default") and s["slug"] not in skill_slugs:
+            skills.append(s)
+
+    # Generate scaffolding
+    from api.scaffolder import scaffold_project as do_scaffold
+    try:
+        result = do_scaffold(slug, description, skills, uid, email)
+    except Exception as e:
+        return jsonify({"error": f"Scaffolding failed: {e}"}), 500
+
+    # Store in DB
+    project_id = db.create_project({
+        "user_id": uid,
+        "user_email": email or "",
+        "slug": slug,
+        "description": description,
+        "skills_applied": json.dumps([s["slug"] for s in skills]),
+        "local_path": result["path"],
+        "governance_checksum": result.get("checksum", ""),
+    })
+
+    return jsonify({
+        "project_id": project_id,
+        "slug": slug,
+        "path": result["path"],
+        "skills_applied": [s["slug"] for s in skills],
+        "files_created": result.get("files", []),
+    })
+
+
+@app.route("/api/me/projects", methods=["GET"])
+def list_my_projects():
+    """List current user's Claude Code projects."""
+    uid, _ = _get_identity()
+    if not uid:
+        return jsonify({"error": "user_id_required"}), 401
+    projects = db.list_user_projects(uid)
+    for p in projects:
+        if p.get("created_at"):
+            p["created_at"] = p["created_at"].isoformat()
+        if p.get("last_submitted_at"):
+            p["last_submitted_at"] = p["last_submitted_at"].isoformat()
+        if isinstance(p.get("skills_applied"), str):
+            try:
+                p["skills_applied"] = json.loads(p["skills_applied"])
+            except (json.JSONDecodeError, TypeError):
+                p["skills_applied"] = []
+    return jsonify({"projects": projects})
+
+
 # -------------------- Main --------------------
 
 if __name__ == "__main__":

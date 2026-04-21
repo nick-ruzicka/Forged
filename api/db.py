@@ -560,3 +560,112 @@ def insert_review_timing(review_id: int, skill_id: int, agent_name: str,
             (review_id, skill_id, agent_name, started_at, ended_at,
              duration_ms, outcome, error_detail),
         )
+
+
+# ---------------------------------------------------------------------------
+# Company Skills
+# ---------------------------------------------------------------------------
+
+def list_company_skills(category: str = None) -> list:
+    with get_db() as cur:
+        if category:
+            cur.execute(
+                "SELECT * FROM company_skills WHERE category = %s ORDER BY title",
+                (category,),
+            )
+        else:
+            cur.execute("SELECT * FROM company_skills ORDER BY title")
+        return [dict(r) for r in cur.fetchall()]
+
+
+def get_company_skill(skill_id: int):
+    with get_db() as cur:
+        cur.execute("SELECT * FROM company_skills WHERE id = %s", (skill_id,))
+        row = cur.fetchone()
+        return dict(row) if row else None
+
+
+def get_company_skill_by_slug(slug: str):
+    with get_db() as cur:
+        cur.execute("SELECT * FROM company_skills WHERE slug = %s", (slug,))
+        row = cur.fetchone()
+        return dict(row) if row else None
+
+
+def upsert_company_skill(data: dict) -> int:
+    """Insert or update a company skill by slug."""
+    slug = data["slug"]
+    with get_db() as cur:
+        cur.execute("SELECT id FROM company_skills WHERE slug = %s", (slug,))
+        existing = cur.fetchone()
+        if existing:
+            sets = ", ".join(f"{k} = %s" for k in data.keys() if k != "slug")
+            vals = [v for k, v in data.items() if k != "slug"]
+            vals.append(existing["id"])
+            cur.execute(f"UPDATE company_skills SET {sets}, updated_at = NOW() WHERE id = %s", vals)
+            return existing["id"]
+        else:
+            cols = list(data.keys())
+            placeholders = ", ".join(["%s"] * len(cols))
+            col_sql = ", ".join(cols)
+            cur.execute(
+                f"INSERT INTO company_skills ({col_sql}) VALUES ({placeholders}) RETURNING id",
+                list(data.values()),
+            )
+            return cur.fetchone()["id"]
+
+
+def delete_company_skill(skill_id: int):
+    with get_db() as cur:
+        cur.execute("DELETE FROM company_skills WHERE id = %s", (skill_id,))
+
+
+# ---------------------------------------------------------------------------
+# Claude Code Projects
+# ---------------------------------------------------------------------------
+
+def create_project(data: dict) -> int:
+    cols = list(data.keys())
+    placeholders = ", ".join(["%s"] * len(cols))
+    col_sql = ", ".join(cols)
+    with get_db() as cur:
+        cur.execute(
+            f"INSERT INTO claude_code_projects ({col_sql}) VALUES ({placeholders}) RETURNING id",
+            list(data.values()),
+        )
+        return cur.fetchone()["id"]
+
+
+def get_project(project_id: int):
+    with get_db() as cur:
+        cur.execute("SELECT * FROM claude_code_projects WHERE id = %s", (project_id,))
+        row = cur.fetchone()
+        return dict(row) if row else None
+
+
+def get_project_by_slug(user_id: str, slug: str):
+    with get_db() as cur:
+        cur.execute(
+            "SELECT * FROM claude_code_projects WHERE user_id = %s AND slug = %s",
+            (user_id, slug),
+        )
+        row = cur.fetchone()
+        return dict(row) if row else None
+
+
+def list_user_projects(user_id: str) -> list:
+    with get_db() as cur:
+        cur.execute(
+            "SELECT * FROM claude_code_projects WHERE user_id = %s ORDER BY created_at DESC",
+            (user_id,),
+        )
+        return [dict(r) for r in cur.fetchall()]
+
+
+def update_project(project_id: int, **fields):
+    if not fields:
+        return
+    sets = ", ".join(f"{k} = %s" for k in fields.keys())
+    values = list(fields.values()) + [project_id]
+    with get_db() as cur:
+        cur.execute(f"UPDATE claude_code_projects SET {sets} WHERE id = %s", values)
