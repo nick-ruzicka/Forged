@@ -11,6 +11,7 @@ static/instructions/
 tests/reports/screenshots/
 tests/reports/audit_shots/
 tests/reports/ux_shots/
+_archive/screenshots-pre-methodology-shift/
 
 # Worktrees (subagent-driven dev)
 .worktrees/
