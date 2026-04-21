@@ -1071,8 +1071,9 @@ class AgentHandler(http.server.BaseHTTPRequestHandler):
         launch_claude = body.get("then_launch_claude", False)
 
         # If requested, append the detected Claude command
+        # sleep + clear fixes Terminal.app rendering glitch with TUI apps
         if launch_claude and _CLAUDE_AVAILABLE:
-            command = f"{command} && {_CLAUDE_CMD}" if command else _CLAUDE_CMD
+            command = f"{command} && sleep 0.3 && clear && {_CLAUDE_CMD}" if command else f"sleep 0.3 && clear && {_CLAUDE_CMD}"
 
         if not command:
             self._json({"error": "command required"}, 400)
