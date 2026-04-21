@@ -1102,26 +1102,9 @@ class AgentHandler(http.server.BaseHTTPRequestHandler):
             iterm = os.path.exists("/Applications/iTerm.app")
 
             if ghostty:
-                # Ghostty: use osascript to open and run command
-                safe_cmd = command.replace('\\', '\\\\').replace('"', '\\"')
-                safe_cwd = cwd.replace('\\', '\\\\').replace('"', '\\"')
-                script = (
-                    f'tell application "Ghostty"\n'
-                    f'  activate\n'
-                    f'end tell\n'
-                    f'delay 0.5\n'
-                    f'tell application "System Events"\n'
-                    f'  tell process "Ghostty"\n'
-                    f'    keystroke "n" using command down\n'
-                    f'  end tell\n'
-                    f'end tell\n'
-                    f'delay 0.3\n'
-                    f'tell application "System Events"\n'
-                    f'  keystroke "cd \\"{safe_cwd}\\" && {safe_cmd}"\n'
-                    f'  key code 36\n'  # Return key
-                    f'end tell'
-                )
-                subprocess.Popen(["osascript", "-e", script])
+                # Ghostty: -e flag runs command directly, no permissions needed
+                full_cmd = f"cd {cwd} && {command}"
+                subprocess.Popen(["ghostty", "-e", "/bin/zsh", "-c", full_cmd])
                 self._json({"success": True, "terminal": "Ghostty", "command": command})
             elif iterm:
                 safe_cmd = command.replace('\\', '\\\\').replace('"', '\\"')
