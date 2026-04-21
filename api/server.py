@@ -2457,6 +2457,59 @@ def scaffold_project():
     })
 
 
+@app.route("/api/submit-project", methods=["POST"])
+def submit_project():
+    """Submit a Claude Code project for governance review."""
+    uid, email = _get_identity()
+    if not uid:
+        return jsonify({"error": "user_id_required"}), 401
+
+    body = request.get_json(silent=True) or {}
+    manifest = body.get("manifest", {})
+    claude_md = body.get("claude_md", "")
+    project_slug = body.get("project_slug", manifest.get("project_slug", ""))
+
+    if not project_slug:
+        return jsonify({"error": "project_slug required"}), 400
+    if not claude_md:
+        return jsonify({"error": "claude_md required"}), 400
+
+    # Resolve declared skills
+    declared_slugs = manifest.get("skills_applied", [])
+    company_skills = []
+    for slug in declared_slugs:
+        skill = db.get_company_skill_by_slug(slug)
+        if skill:
+            company_skills.append(skill)
+
+    # Run governance validator synchronously (fast — no LLM calls for section checks)
+    from agents.governance_validator import run as validate_governance
+    try:
+        validation = validate_governance(
+            skill_id=0,  # no skill_id for project submissions
+            review_id=0,
+            manifest=manifest,
+            claude_md=claude_md,
+            company_skills=company_skills,
+        )
+    except Exception as e:
+        validation = {"verdict": "fail", "issues": [f"Validator error: {e}"], "summary": str(e)}
+
+    # Update project status
+    project = db.get_project_by_slug(uid, project_slug)
+    if project:
+        db.update_project(project["id"],
+                          status="submitted" if validation["verdict"] != "fail" else "rejected",
+                          last_submitted_at=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
+
+    return jsonify({
+        "submission_id": project["id"] if project else None,
+        "status": validation["verdict"],
+        "validation": validation,
+        "submitted_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+    })
+
+
 @app.route("/api/me/projects", methods=["GET"])
 def list_my_projects():
     """List current user's Claude Code projects."""
