@@ -46,22 +46,23 @@ function AdminDashboard() {
   return (
     <div className="flex flex-col gap-6 p-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4">
         <h1 className="text-2xl font-semibold text-foreground">Admin</h1>
-        <div className="flex items-center gap-4">
+        <div className="flex gap-2">
+          <span className="rounded-lg bg-white/[0.06] px-3 py-1.5 text-sm font-medium text-white/90">
+            Dashboard
+          </span>
           <Link
             href="/admin/skills"
-            className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
+            className="rounded-lg px-3 py-1.5 text-sm font-medium text-text-muted hover:text-foreground hover:bg-white/[0.04] transition-colors"
           >
             Company Skills
-            <ArrowRight className="size-3.5" />
           </Link>
           <Link
             href="/admin/runs"
-            className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
+            className="rounded-lg px-3 py-1.5 text-sm font-medium text-text-muted hover:text-foreground hover:bg-white/[0.04] transition-colors"
           >
             Claude Runs
-            <ArrowRight className="size-3.5" />
           </Link>
         </div>
       </div>
