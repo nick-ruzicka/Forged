@@ -20,6 +20,76 @@ def hibernate_idle() -> dict:
         return {"error": str(e)}
 
 
+def _run_review_pipeline(*, skill_id: int, review_id: int, text: str,
+                         declared_category: str = "",
+                         declared_sensitivity=None,
+                         parent_skill_id: int = None,
+                         test_cases: list = None) -> dict:
+    """Run the 6-agent pipeline synchronously on the given text.
+
+    Caller creates the review row and persists final status on the target
+    entity. skill_id is passed through to each agent so @timed's reviews_timing
+    row carries it; pass 0 for non-skill entities (projects, tools).
+
+    Agent order: classifier → scanner → red_team → hardener → qa → synthesizer.
+    Each agent writes its own output fields to agent_reviews via
+    db.update_agent_review(review_id, ...). Synthesizer sees every prior
+    agent's return dict via all_results and weighs in failures/timeouts.
+    """
+    from agents.base import TIMEOUTS, with_timeout
+    from agents import classifier, scanner, red_team, hardener, qa, synthesizer
+
+    results = {}
+
+    # 1. Classifier
+    results["classifier"] = with_timeout(
+        classifier.run, TIMEOUTS["classifier"],
+        skill_id, review_id, skill_text=text,
+        declared_category=declared_category,
+    )
+
+    # 2. Security Scanner
+    results["security_scanner"] = with_timeout(
+        scanner.run, TIMEOUTS["security_scanner"],
+        skill_id, review_id, skill_text=text,
+    )
+
+    # 3. Red Team
+    results["red_team"] = with_timeout(
+        red_team.run, TIMEOUTS["red_team"],
+        skill_id, review_id, skill_text=text,
+        parent_skill_id=parent_skill_id,
+    )
+
+    # 4. Prompt Hardener (consumes red team output)
+    rt = results.get("red_team", {})
+    results["prompt_hardener"] = with_timeout(
+        hardener.run, TIMEOUTS["prompt_hardener"],
+        skill_id, review_id, skill_text=text,
+        vulnerabilities=rt.get("vulnerabilities", "[]"),
+        hardening_suggestions=rt.get("hardening_suggestions", "[]"),
+    )
+
+    # 5. QA Tester — caller may supply test_cases (behavior_tests shape OK;
+    # qa._adapt_test_cases handles it). None → skill fallback to DB lookup.
+    qa_kwargs = {"skill_text": text}
+    if test_cases is not None:
+        qa_kwargs["test_cases"] = test_cases
+    results["qa_tester"] = with_timeout(
+        qa.run, TIMEOUTS["qa_tester"],
+        skill_id, review_id, **qa_kwargs,
+    )
+
+    # 6. Synthesizer — sees every prior agent's output via all_results.
+    results["synthesizer"] = with_timeout(
+        synthesizer.run, TIMEOUTS["synthesizer"],
+        skill_id, review_id, all_results=results,
+        declared_data_sensitivity=declared_sensitivity,
+    )
+
+    return results
+
+
 @celery_app.task(name="forge_sandbox.tasks.skill_review_pipeline")
 def skill_review_pipeline(skill_id: int) -> dict:
     """Run the 6-agent review pipeline on a submitted skill.
@@ -38,7 +108,6 @@ def skill_review_pipeline(skill_id: int) -> dict:
     if not skill:
         return {"error": f"skill {skill_id} not found"}
 
-    # Create the review row
     review_id = db.create_review(skill_id, "skill")
 
     if mode == "stub":
@@ -67,56 +136,15 @@ def skill_review_pipeline(skill_id: int) -> dict:
         )
         return {"skill_id": skill_id, "review_id": review_id, "review_status": "approved"}
 
-    # mode == 'real' — run 6-agent pipeline
-    from agents.base import TIMEOUTS, with_timeout
-    from agents import classifier, scanner, red_team, hardener, qa, synthesizer
-
-    skill_text = skill.get("prompt_text") or ""
-    parent_skill_id = skill.get("parent_skill_id")
-    declared_sensitivity = skill.get("data_sensitivity")
-
-    results = {}
-
-    # 1. Classifier
-    results["classifier"] = with_timeout(
-        classifier.run, TIMEOUTS["classifier"],
-        skill_id, review_id, skill_text=skill_text,
+    # mode == 'real' — delegate to shared 6-agent core
+    results = _run_review_pipeline(
+        skill_id=skill_id,
+        review_id=review_id,
+        text=skill.get("prompt_text") or "",
         declared_category=skill.get("category") or "",
-    )
-
-    # 2. Security Scanner
-    results["security_scanner"] = with_timeout(
-        scanner.run, TIMEOUTS["security_scanner"],
-        skill_id, review_id, skill_text=skill_text,
-    )
-
-    # 3. Red Team
-    results["red_team"] = with_timeout(
-        red_team.run, TIMEOUTS["red_team"],
-        skill_id, review_id, skill_text=skill_text,
-        parent_skill_id=parent_skill_id,
-    )
-
-    # 4. Prompt Hardener (uses red team output)
-    rt = results.get("red_team", {})
-    results["prompt_hardener"] = with_timeout(
-        hardener.run, TIMEOUTS["prompt_hardener"],
-        skill_id, review_id, skill_text=skill_text,
-        vulnerabilities=rt.get("vulnerabilities", "[]"),
-        hardening_suggestions=rt.get("hardening_suggestions", "[]"),
-    )
-
-    # 5. QA Tester
-    results["qa_tester"] = with_timeout(
-        qa.run, TIMEOUTS["qa_tester"],
-        skill_id, review_id, skill_text=skill_text,
-    )
-
-    # 6. Synthesizer
-    results["synthesizer"] = with_timeout(
-        synthesizer.run, TIMEOUTS["synthesizer"],
-        skill_id, review_id, all_results=results,
-        declared_data_sensitivity=declared_sensitivity,
+        declared_sensitivity=skill.get("data_sensitivity"),
+        parent_skill_id=skill.get("parent_skill_id"),
+        test_cases=None,  # qa.py falls back to db.get_skill_test_cases(skill_id)
     )
 
     # Set final skill status
@@ -124,7 +152,6 @@ def skill_review_pipeline(skill_id: int) -> dict:
     recommendation = synth.get("agent_recommendation", "needs_revision")
 
     if synth.get("timed_out") or synth.get("error"):
-        # Synthesizer failed — fallback
         recommendation = "needs_revision"
         reason = "review pipeline incomplete — synthesizer unavailable"
         db.update_skill(skill_id,
@@ -158,6 +185,87 @@ def skill_review_pipeline(skill_id: int) -> dict:
     status_map = {"approve": "approved", "block": "blocked"}
     review_status = status_map.get(recommendation, recommendation)
     return {"skill_id": skill_id, "review_id": review_id, "review_status": review_status}
+
+
+@celery_app.task(name="forge_sandbox.tasks.project_review_pipeline")
+def project_review_pipeline(project_id: int, review_id: int, claude_md: str) -> dict:
+    """Run the 6-agent review pipeline on a submitted Claude Code project.
+
+    The governance validator runs synchronously in the HTTP handler before
+    this task is enqueued; its output is already persisted at
+    agent_reviews.governance_output. This task runs the 6 follow-on agents
+    and transitions the project's status based on the synthesizer's verdict:
+    approve → approved, block → rejected, needs_revision (or synth
+    timeout/error) → needs_revision.
+
+    QA test cases are flattened from the declared company_skills'
+    behavior_tests. qa._adapt_test_cases normalizes them to QA's shape.
+    """
+    import json as _json
+
+    from api import db
+
+    project = db.get_project(project_id)
+    if not project:
+        return {"error": f"project {project_id} not found"}
+
+    # Flatten behavior_tests across declared skills — this is QA's test set.
+    declared = project.get("skills_applied") or []
+    if isinstance(declared, str):
+        try:
+            declared = _json.loads(declared)
+        except (ValueError, TypeError):
+            declared = []
+
+    test_cases = []
+    for slug in declared:
+        skill = db.get_company_skill_by_slug(slug)
+        if not skill:
+            continue
+        tests = skill.get("behavior_tests") or "[]"
+        if isinstance(tests, str):
+            try:
+                tests = _json.loads(tests)
+            except (ValueError, TypeError):
+                tests = []
+        test_cases.extend(tests)
+
+    # Run the 6-agent pipeline. skill_id=0 is a placeholder for @timed's
+    # reviews_timing row — projects don't have a skill_id.
+    results = _run_review_pipeline(
+        skill_id=0,
+        review_id=review_id,
+        text=claude_md,
+        declared_category="governance",
+        declared_sensitivity=None,
+        parent_skill_id=None,
+        test_cases=test_cases or None,
+    )
+
+    # Map synthesizer verdict → claude_code_projects.status
+    synth = results.get("synthesizer", {})
+    recommendation = synth.get("agent_recommendation", "needs_revision")
+
+    if synth.get("timed_out") or synth.get("error"):
+        status = "needs_revision"
+    elif recommendation == "approve":
+        status = "approved"
+    elif recommendation == "block":
+        status = "rejected"
+    else:
+        status = "needs_revision"
+
+    db.update_project(project_id,
+        status=status,
+        submission_id=review_id,
+    )
+
+    return {
+        "project_id": project_id,
+        "review_id": review_id,
+        "project_status": status,
+        "synthesizer_confidence": synth.get("agent_confidence"),
+    }
 
 
 @celery_app.task(name="forge_sandbox.tasks.async_skill_sweep")

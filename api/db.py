@@ -327,13 +327,16 @@ def count_runs_by_ip(ip: str, since_timestamp: float) -> int:
 # -------- Agent reviews --------
 
 def create_review(target_id: int, target_type: str) -> int:
-    """Create an agent_reviews row for a tool or skill.
-    target_type must be 'tool' or 'skill'. The XOR constraint in the DB
-    enforces that exactly one of tool_id/skill_id is set.
+    """Create an agent_reviews row for a tool, skill, or project.
+    target_type must be 'tool', 'skill', or 'project'. The XOR constraint
+    in the DB enforces that exactly one of tool_id/skill_id/project_id is set.
     """
-    if target_type not in ("tool", "skill"):
-        raise ValueError(f"target_type must be 'tool' or 'skill', got {target_type!r}")
-    col = "tool_id" if target_type == "tool" else "skill_id"
+    col_map = {"tool": "tool_id", "skill": "skill_id", "project": "project_id"}
+    if target_type not in col_map:
+        raise ValueError(
+            f"target_type must be one of {list(col_map)}, got {target_type!r}"
+        )
+    col = col_map[target_type]
     with get_db() as cur:
         cur.execute(
             f"INSERT INTO agent_reviews ({col}) VALUES (%s) RETURNING id",

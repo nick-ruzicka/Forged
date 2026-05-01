@@ -2477,7 +2477,17 @@ def scaffold_preview():
 
 @app.route("/api/submit-project", methods=["POST"])
 def submit_project():
-    """Submit a Claude Code project for governance review."""
+    """Submit a Claude Code project for governance review.
+
+    Flow:
+    1. Create agent_reviews row (project_id set). All 7 step outputs attach here.
+    2. Run governance_validator synchronously (structural — fast).
+    3. Persist validator output to agent_reviews.governance_output.
+    4. If validator verdict is 'fail': short-circuit, project.status='rejected'.
+    5. Otherwise enqueue project_review_pipeline (Celery) for the 6-agent
+       follow-on. Project status transitions to approved / rejected /
+       needs_revision based on the synthesizer's recommendation.
+    """
     uid, email = _get_identity()
     if not uid:
         return jsonify({"error": "user_id_required"}), 401
@@ -2492,7 +2502,11 @@ def submit_project():
     if not claude_md:
         return jsonify({"error": "claude_md required"}), 400
 
-    # Resolve declared skills
+    project = db.get_project_by_slug(uid, project_slug)
+    if not project:
+        return jsonify({"error": "project not found"}), 404
+
+    # Resolve declared skills (used by governance validator for section checks)
     declared_slugs = manifest.get("skills_applied", [])
     company_skills = []
     for slug in declared_slugs:
@@ -2500,31 +2514,68 @@ def submit_project():
         if skill:
             company_skills.append(skill)
 
-    # Run governance validator synchronously (fast — no LLM calls for section checks)
+    # Create the review row — all 7 step outputs (validator + 6 agents) attach here.
+    review_id = db.create_review(project["id"], "project")
+
+    # 1. Governance validator — synchronous, structural.
     from agents.governance_validator import run as validate_governance
     try:
         validation = validate_governance(
-            skill_id=0,  # no skill_id for project submissions
-            review_id=0,
+            skill_id=0,
+            review_id=review_id,
             manifest=manifest,
             claude_md=claude_md,
             company_skills=company_skills,
         )
     except Exception as e:
-        validation = {"verdict": "fail", "issues": [f"Validator error: {e}"], "summary": str(e)}
+        validation = {
+            "verdict": "fail",
+            "issues": [f"Validator error: {e}"],
+            "summary": str(e),
+        }
 
-    # Update project status
-    project = db.get_project_by_slug(uid, project_slug)
-    if project:
+    # Persist validator output on the review row.
+    db.update_agent_review(review_id, governance_output=validation)
+
+    now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+
+    # 2. Gate: fail → short-circuit, don't enqueue pipeline.
+    if validation["verdict"] == "fail":
         db.update_project(project["id"],
-                          status="submitted" if validation["verdict"] != "fail" else "rejected",
-                          last_submitted_at=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
+            status="rejected",
+            submission_id=review_id,
+            last_submitted_at=now,
+        )
+        return jsonify({
+            "submission_id": review_id,
+            "project_id": project["id"],
+            "status": "rejected",
+            "validation": validation,
+            "submitted_at": now,
+        })
+
+    # 3. Pass or needs-patch → enqueue 6-agent pipeline (async).
+    try:
+        from forge_sandbox.tasks import project_review_pipeline
+        project_review_pipeline.delay(project["id"], review_id, claude_md)
+    except Exception as exc:
+        # Celery down — admin can re-enqueue from the review row. Don't fail the
+        # submit; the validator output is already persisted.
+        print(f"[server] project_review_pipeline enqueue failed "
+              f"for project {project['id']}: {exc}")
+
+    db.update_project(project["id"],
+        status="submitted",
+        submission_id=review_id,
+        last_submitted_at=now,
+    )
 
     return jsonify({
-        "submission_id": project["id"] if project else None,
-        "status": validation["verdict"],
+        "submission_id": review_id,
+        "project_id": project["id"],
+        "status": "submitted",
         "validation": validation,
-        "submitted_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "submitted_at": now,
     })
 
 

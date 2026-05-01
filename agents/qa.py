@@ -62,6 +62,27 @@ Respond with ONLY valid JSON:
 }"""
 
 
+def _adapt_test_cases(test_cases: list) -> list:
+    """Normalize incoming test_cases to QA's {kind, prompt} shape.
+
+    Accepts either:
+      - QA format already: [{"kind": "positive"|"negative", "prompt": "..."}]
+      - company_skills.behavior_tests shape: [{"prompt": "...", "expected": "...", "check": "..."}]
+
+    Behavior tests are all "the skill should engage correctly" assertions —
+    each becomes a positive QA case.
+    """
+    adapted = []
+    for tc in test_cases or []:
+        if not isinstance(tc, dict):
+            continue
+        if "kind" in tc and "prompt" in tc:
+            adapted.append({"kind": tc["kind"], "prompt": tc["prompt"]})
+        elif "prompt" in tc:
+            adapted.append({"kind": "positive", "prompt": tc["prompt"]})
+    return adapted
+
+
 def _run_precision_batch(skill_desc: str, prompts: list, batch_idx: int) -> dict:
     """Evaluate one batch of test prompts for invocation precision."""
     client = get_client()
@@ -90,11 +111,18 @@ def _run_consistency_output(skill_text: str, prompt: str, run_idx: int) -> str:
 
 
 @timed("qa_tester")
-def run(skill_id: int, review_id: int, *, skill_text: str) -> dict:
+def run(skill_id: int, review_id: int, *, skill_text: str,
+        test_cases: list = None) -> dict:
     client = get_client()
 
-    # Load test cases
-    test_cases = db.get_skill_test_cases(skill_id)
+    # Load or adapt test cases. Caller (project pipeline) may pass behavior_tests
+    # directly; adapter normalizes them. Skill pipeline passes None and falls
+    # back to the skill's stored test cases.
+    if test_cases is not None:
+        test_cases = _adapt_test_cases(test_cases)
+    else:
+        test_cases = db.get_skill_test_cases(skill_id)
+
     if not test_cases:
         # Generate from description if author didn't supply
         resp = client.messages.create(
